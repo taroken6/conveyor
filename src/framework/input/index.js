@@ -1,5 +1,5 @@
 import React from 'react'
-import * as consts from '../../framework/consts'
+import { inputTypes } from '../../framework/consts'
 import * as R from 'ramda'
 import {
   InputDate,
@@ -36,20 +36,20 @@ const includeProps = [
   'customLabel' ]
 
 const defaultTypeMap = {
-  [consts.STRING_TYPE]: InputString,
-  [consts.EMAIL_TYPE]: InputString,
-  [consts.PHONE_TYPE]: InputString,
-  [consts.URL_TYPE]: InputString,
-  [consts.TEXTAREA_TYPE]: InputTextArea,
-  [consts.INT_TYPE]: InputInt,
-  [consts.CURRENCY_TYPE]: InputCurrency,
-  [consts.PASSWORD_TYPE]: InputPassword,
-  [consts.DATE_TYPE]: InputDate,
-  [consts.FILE_TYPE]: InputFile,
-  [consts.RADIO_TYPE]: InputRadio,
-  [consts.SELECT_TYPE]: InputSelect,
-  [consts.CHECKBOX_TYPE]: InputCheckbox,
-  [consts.BOOLEAN_TYPE]: InputSwitch
+  [inputTypes.STRING_TYPE]: InputString,
+  [inputTypes.EMAIL_TYPE]: InputString,
+  [inputTypes.PHONE_TYPE]: InputString,
+  [inputTypes.URL_TYPE]: InputString,
+  [inputTypes.TEXTAREA_TYPE]: InputTextArea,
+  [inputTypes.INT_TYPE]: InputInt,
+  [inputTypes.CURRENCY_TYPE]: InputCurrency,
+  [inputTypes.PASSWORD_TYPE]: InputPassword,
+  [inputTypes.DATE_TYPE]: InputDate,
+  [inputTypes.FILE_TYPE]: InputFile,
+  [inputTypes.RADIO_TYPE]: InputRadio,
+  [inputTypes.SELECT_TYPE]: InputSelect,
+  [inputTypes.CHECKBOX_TYPE]: InputCheckbox,
+  [inputTypes.BOOLEAN_TYPE]: InputSwitch
 }
 
 /**
@@ -278,46 +278,46 @@ class FlexibleInput extends React.Component {
 
   _setDefault () {
     switch (this.type) {
-      case consts.STRING_TYPE:
-      case consts.EMAIL_TYPE:
-      case consts.PHONE_TYPE:
-      case consts.URL_TYPE:
-      case consts.TEXTAREA_TYPE:
-      case consts.INT_TYPE:
-      case consts.PASSWORD_TYPE:
-      case consts.CURRENCY_TYPE:
+      case inputTypes.STRING_TYPE:
+      case inputTypes.EMAIL_TYPE:
+      case inputTypes.PHONE_TYPE:
+      case inputTypes.URL_TYPE:
+      case inputTypes.TEXTAREA_TYPE:
+      case inputTypes.INT_TYPE:
+      case inputTypes.PASSWORD_TYPE:
+      case inputTypes.CURRENCY_TYPE:
         this['value'] = R.defaultTo('', this['value'])
         this['className'] = R.defaultTo('form-control', this['className'])
         break
 
-      case consts.DATE_TYPE:
+      case inputTypes.DATE_TYPE:
         this['dateFormat'] = R.defaultTo('YYYY-MM-DD', this['dateFormat'])
         this['className'] = R.defaultTo('form-control', this['className'])
         this['isClearable'] = R.defaultTo(true, this['isClearable'])
         break
 
-      case consts.FILE_TYPE:
+      case inputTypes.FILE_TYPE:
         this['className'] = R.defaultTo('form-control-file', this['className'])
         break
 
-      case consts.RADIO_TYPE:
+      case inputTypes.RADIO_TYPE:
         this['inline'] = R.defaultTo(false, this['inline'])
         this['className'] = R.defaultTo('form-check', this['className'])
         break
 
-      case consts.SELECT_TYPE:
+      case inputTypes.SELECT_TYPE:
         this['className'] = R.defaultTo('basic-single', this['className'])
         this['isClearable'] = R.defaultTo(true, this['isClearable'])
         this['isMulti'] = R.defaultTo(false, this['isMulti'])
         this['noOptionsMessage'] = R.defaultTo(() => 'No Options', this['noOptionsMessage'])
         break
 
-      case consts.CHECKBOX_TYPE:
+      case inputTypes.CHECKBOX_TYPE:
         this['value'] = R.defaultTo(false, this['value'])
         this['className'] = R.defaultTo('form-group form-check', this['className'])
         break
 
-      case consts.BOOLEAN_TYPE:
+      case inputTypes.BOOLEAN_TYPE:
         this['value'] = R.defaultTo(false, this['value'])
         this['className'] = R.defaultTo('form-check', this['className'])
         this['inline'] = R.defaultTo(true, this['inline'])

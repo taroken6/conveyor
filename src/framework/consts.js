@@ -1,17 +1,17 @@
-export const INT_TYPE = 'int'
-export const TEXTAREA_TYPE = 'text'
-export const STRING_TYPE = 'string' // keep name
-export const EMAIL_TYPE = 'email'
-export const PHONE_TYPE = 'phone'
-export const URL_TYPE = 'url'
-export const PASSWORD_TYPE = 'password'
-export const DATE_TYPE = 'date'
-export const FILE_TYPE = 'file'
-export const RADIO_TYPE = 'radio'
-export const SELECT_TYPE = 'select'
-export const CHECKBOX_TYPE = 'checkbox'
-export const BOOLEAN_TYPE = 'boolean'
-export const CURRENCY_TYPE = 'currency'
+const INT_TYPE = 'int'
+const TEXTAREA_TYPE = 'text'
+const STRING_TYPE = 'string' // keep name
+const EMAIL_TYPE = 'email'
+const PHONE_TYPE = 'phone'
+const URL_TYPE = 'url'
+const PASSWORD_TYPE = 'password'
+const DATE_TYPE = 'date'
+const FILE_TYPE = 'file'
+const RADIO_TYPE = 'radio'
+const SELECT_TYPE = 'select'
+const CHECKBOX_TYPE = 'checkbox'
+const BOOLEAN_TYPE = 'boolean'
+const CURRENCY_TYPE = 'currency'
 
 export const inputTypes = {
   STRING_TYPE,
