@@ -1,17 +1,37 @@
+const INT_TYPE = 'int'
+const TEXTAREA_TYPE = 'text'
+const STRING_TYPE = 'string' // keep name
+const EMAIL_TYPE = 'email'
+const PHONE_TYPE = 'phone'
+const URL_TYPE = 'url'
+const PASSWORD_TYPE = 'password'
+const DATE_TYPE = 'date'
+const FILE_TYPE = 'file'
+const RADIO_TYPE = 'radio'
+const SELECT_TYPE = 'select'
+const CHECKBOX_TYPE = 'checkbox'
+const BOOLEAN_TYPE = 'boolean'
+const CURRENCY_TYPE = 'currency'
+
 export const inputTypes = {
-  STRING_TYPE: 'string',
+  STRING_TYPE,
   FLOAT_TYPE: 'float',
-  REL_TYPE: 'relationship',
-  INT_TYPE: 'int',
-  DATE_TYPE: 'date',
-  TEXTAREA_TYPE: 'text',
+  INT_TYPE,
+  DATE_TYPE,
+  TEXTAREA_TYPE,
   ENUM_TYPE: 'enum',
-  LINK_TYPE: 'url',
-  TEL_TYPE: 'phone',
-  EMAIL_TYPE: 'email',
-  BOOLEAN_TYPE: 'boolean',
-  CURRENCY_TYPE: 'currency',
-  FILE_TYPE: 'file'
+  URL_TYPE,
+  PHONE_TYPE,
+  EMAIL_TYPE,
+  BOOLEAN_TYPE,
+  CURRENCY_TYPE,
+  FILE_TYPE,
+  SELECT_TYPE,
+  RELATIONSHIP_SINGLE: 'relSingle',
+  RELATIONSHIP_MULTIPLE: 'relMultiple',
+  PASSWORD_TYPE,
+  RADIO_TYPE,
+  CHECKBOX_TYPE // not used
 }
 
 export const relInputTypes = {

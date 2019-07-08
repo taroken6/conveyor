@@ -2,9 +2,9 @@
 
 import React from 'react'
 import * as R from 'ramda'
-import FlexibleInput from 'flexible-forms'
-import { InputType, getInputType } from './InputType'
-import InputSelectRelationship from './InputSelectRelationship'
+import FlexibleInput from '../input/index'
+import { getInputType } from './InputType'
+import { inputTypes } from '../../framework/consts'
 import { getInputOverride, isCreatable } from '../Utils'
 import { getActions, getEnumChoices, getEnumChoiceOrder, getField } from '../utils/schemaGetters'
 import * as Logger from '../../lib/Logger'
@@ -161,42 +161,43 @@ export const InputCore = ({
   }
 
   switch (inputType) {
-    case InputType.FlexibleForms.STRING_TYPE:
-    case InputType.FlexibleForms.INT_TYPE:
-    case InputType.FlexibleForms.TEXTAREA_TYPE:
-    case InputType.FlexibleForms.DATE_TYPE:
-    case InputType.FlexibleForms.URL_TYPE:
-    case InputType.FlexibleForms.EMAIL_TYPE:
-    case InputType.FlexibleForms.PHONE_TYPE:
-    case InputType.FlexibleForms.BOOLEAN_TYPE:
-    case InputType.FlexibleForms.CURRENCY_TYPE:
-    case InputType.FlexibleForms.PASSWORD_TYPE:
+    case inputTypes.STRING_TYPE:
+    case inputTypes.INT_TYPE:
+    case inputTypes.TEXTAREA_TYPE:
+    case inputTypes.DATE_TYPE:
+    case inputTypes.URL_TYPE:
+    case inputTypes.EMAIL_TYPE:
+    case inputTypes.PHONE_TYPE:
+    case inputTypes.BOOLEAN_TYPE:
+    case inputTypes.CURRENCY_TYPE:
+    case inputTypes.PASSWORD_TYPE:
       return <FlexibleInput {...defaultProps} />
-    case InputType.FlexibleForms.FILE_TYPE:
+    case inputTypes.FILE_TYPE:
       return <FlexibleInput {...{
         ...defaultProps,
         onChange: onChangeFile
       }} />
-    case InputType.FLOAT:
+    case inputTypes.FLOAT_TYPE:
       return <FlexibleInput {...{
         ...defaultProps,
-        type: InputType.FlexibleForms.INT_TYPE,
+        type: inputTypes.INT_TYPE,
         customProps: { step: 'any' }
       }} />
-    case InputType.ENUM:
+    case inputTypes.ENUM_TYPE:
       return <FlexibleInput {...{
         ...defaultProps,
-        type: InputType.FlexibleForms.SELECT_TYPE,
+        type: inputTypes.SELECT_TYPE,
         options: enumChoiceOrder.map(choice => (
           { label: enumChoices[choice], value: choice }
         )),
         customProps: { step: 'any' }
       }} />
-    case InputType.RELATIONSHIP_SINGLE:
-    case InputType.RELATIONSHIP_MULTIPLE:
-      return <InputSelectRelationship {...{
+    case inputTypes.RELATIONSHIP_SINGLE:
+    case inputTypes.RELATIONSHIP_MULTIPLE:
+      return <FlexibleInput {...{
         ...R.dissoc('type', defaultProps),
-        isMulti: inputType === InputType.RELATIONSHIP_MULTIPLE,
+        type: inputTypes.SELECT_TYPE,
+        isMulti: inputType === inputTypes.RELATIONSHIP_MULTIPLE,
         customLabel,
         onMenuOpen: (evt) => onMenuOpen({ modelName, fieldName }),
         options: R.path([modelName, fieldName], selectOptions)

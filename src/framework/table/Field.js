@@ -152,11 +152,11 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
       return <FieldString {...props} />
     case consts.inputTypes.ENUM_TYPE:
       return <FieldEnum {...props} />
-    case consts.inputTypes.LINK_TYPE:
+    case consts.inputTypes.URL_TYPE:
       return <FieldLink {...props} />
     case consts.inputTypes.FILE_TYPE:
       return <FieldImageModal {...props} />
-    case consts.inputTypes.TEL_TYPE:
+    case consts.inputTypes.PHONE_TYPE:
       return <FieldLink {...{ prefix: 'tel:', ...props }} />
     case consts.inputTypes.EMAIL_TYPE:
       return <FieldLink {...{ prefix: 'mailto:', ...props }} />
