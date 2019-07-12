@@ -1,5 +1,5 @@
 import React from 'react'
-import { inputTypes } from '../../framework/consts'
+import { inputTypes } from '../consts'
 import * as R from 'ramda'
 import {
   InputDate,

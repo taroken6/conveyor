@@ -26,7 +26,7 @@ import { Popover, PopoverContent } from './Popover'
 import getDisplayValue from './utils/getDisplayValue'
 import Input, { relationshipLabelFactory } from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
-import '../index.css'
+import '../css/index.css'
 
 export const getFieldLabel = ({ schema, modelName, fieldName, data = {} }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)

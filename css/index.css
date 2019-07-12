@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.content {
+  height: 100vh !important;
+}
+
+.table thead.vertical th, .table thead.vertical th span {
+    writing-mode: vertical-rl;
+    -ms-writing-mode: tb-rl;
+    white-space: nowrap;
+}
+
+.table_btn_col {
+  width: 1%;
+  white-space: nowrap;
+}
+
+
+.tooltip-table {
+    margin: 0px !important;
+}
+
+.tooltip-table td:nth-child(1) {
+    font-weight: bold;
+}
+
+.tooltip-table td:nth-child(2) {
+    text-align: left;
+}
+
+
+
+.edit-icon {
+  display: inline-block;
+  width: 25px;
+  margin-left: 10px;
+}
+.edit-icon:hover {
+  fill: lightgreen;
+  cursor: pointer;
+}
+.text-area {
+    white-space: pre-wrap;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+
+
+.inline-btn-group {
+  display: inline;
+  position: absolute;
+}
+
+.table-btn-padding {
+  padding-bottom: 10px;
+}
+
+.svg-width-height {
+  width: 20px;
+  height: 20px;
+}
+
+
+
