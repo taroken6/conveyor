@@ -1,10 +1,9 @@
 import React from 'react'
 import * as R from 'ramda'
-import { getActions } from '../framework/utils/schemaGetters'
+import { getActions } from './utils/schemaGetters'
 import Input from './form/Input'
 import ReactSVG from 'react-svg'
 
-// TODO: Move SVG into library
 export const InlineEditButton = ({ onEditClick }) =>
   <ReactSVG
     src='/static/img/edit.svg'

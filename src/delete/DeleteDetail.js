@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 import { Modal } from '../Modal'
 import { isEnum } from '../utils/isType'
-import { getEnumLabel } from '../../framework/Utils'
+import { getEnumLabel } from '../Utils'
 import { getFields as getFieldDefinitions, getActions } from '../utils/schemaGetters'
 
 const getFields = (schema, modelName, node) => {

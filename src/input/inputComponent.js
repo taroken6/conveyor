@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker'
 import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
 import * as R from 'ramda'
-import { inputTypes } from '../../framework/consts'
+import { inputTypes } from '../consts'
 import moment from 'moment'
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)

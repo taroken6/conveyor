@@ -4,10 +4,9 @@ import React from 'react'
 import * as R from 'ramda'
 import FlexibleInput from '../input/index'
 import { getInputType } from './InputType'
-import { inputTypes } from '../../framework/consts'
+import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable } from '../Utils'
 import { getActions, getEnumChoices, getEnumChoiceOrder, getField } from '../utils/schemaGetters'
-import * as Logger from '../../lib/Logger'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import { getFieldLabel } from '../Detail'
 import CreateButton from '../CreateButton'
@@ -33,7 +32,7 @@ export const DisabledInput = ({ value, label }) => (
   <React.Fragment>
     <span>{label}</span>
     {
-      // TODO: Move into css files within the framework
+      // TODO: Move into css files
     }
     <div style={{ paddingBottom: '10px', paddingTop: '10px' }} >
       <div style={{ padding: '7px 7px 7px 12px', backgroundColor: '#E0E0E0' }} className='border rounded primary'>
@@ -149,7 +148,6 @@ export const InputCore = ({
         defaultHandleOnChange(converted)
       } else {
         // TODO handle error
-        Logger.log('FileReader error', fileReader.error)
       }
     }
 

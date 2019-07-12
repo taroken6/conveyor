@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { inputTypes } from '../../framework/consts'
+import { inputTypes } from '../consts'
 
 export const getInputType = ({ schema, modelName, fieldName }) => {
   const field = R.pathOr({}, [modelName, 'fields', fieldName], schema)
