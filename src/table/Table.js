@@ -45,7 +45,7 @@ export const DeleteButton = ({
         className='btn btn-sm btn-outline-danger'
         data-toggle='modal'
         data-target={'#' + modalId}
-        onClick={() => onDeleteWarning({ model: modelName, id })}
+        onClick={() => onDeleteWarning({ modelName, id })}
       >Delete</button>
       <DeleteDetail {...{
         schema,
