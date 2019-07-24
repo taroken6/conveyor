@@ -114,18 +114,18 @@ export const FieldToMany = ({ schema, modelName, fieldName, parentModelName, too
   const multiRelField = R.prop(fieldName, node)
 
   const relListWithLink = (field, idx, obj) => (
-    <React.Fragment key={`fragment-${field.node.id}`}>
+    <React.Fragment key={`fragment-${field.id}`}>
       <FieldToOne
-        key={`field-m2o-${field.node.id}`}
-        {...{ schema, modelName, fieldName, parentModelName, tooltipData, node: field.node }}
+        key={`field-m2o-${field.id}`}
+        {...{ schema, modelName, fieldName, parentModelName, tooltipData, node: field }}
       />
       { (idx !== (obj.length - 1)) && <span>{', '}</span>}
     </React.Fragment>
   )
 
   return (
-    <span>{ (multiRelField && multiRelField.edges.length > 0)
-      ? multiRelField.edges.map(relListWithLink) : 'N/A'}
+    <span>{ (multiRelField && multiRelField.length > 0)
+      ? multiRelField.map(relListWithLink) : 'N/A'}
     </span>
   )
 }
