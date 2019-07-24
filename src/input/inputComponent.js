@@ -67,9 +67,16 @@ const CustomErrorComponent = ({ error, id }) =>
 // TODO: get classname for invalid from new react-datepicker
 export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
   console.log('---conv value: ', value)
-  console.log('---conv date:', new Date(value))
 
-  const date = new Date(value)
+
+  let date
+  if (value) {
+    date = new Date(value)
+  } else {
+    date = null
+  }
+  console.log('---conv date:', date)
+
   date.setMinutes( date.getMinutes() + date.getTimezoneOffset() )
   console.log('---timezone', date.getTimezoneOffset())
   console.log('---timexone2', date.getMinutes() + date.getTimezoneOffset())
