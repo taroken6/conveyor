@@ -74,10 +74,10 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
     <div style={{ display: 'inherit' }}>
       <DatePicker
         placeholderText='Click to select a date'
-        fixedHeight
-        dateFormat={'yyyy-MM-dd'}
+        fixedHeight={true}
+        dateFormat={'yyyy/MM/dd'}
         selected={new Date(value)} // YYYY-MM-DD required for Date()
-        className={`${className}${error ? ' is-invalid' : ''}`}
+        //className={`${className}${error ? ' is-invalid' : ''}`}
         onChange={evt => {
           if (evt === undefined || evt === null) {
             return (onChange(null))
