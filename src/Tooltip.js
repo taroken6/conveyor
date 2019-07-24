@@ -44,7 +44,7 @@ const RelTooltip = ({ schema, modelName, id, data, children, html }) => {
     html={<RelTooltipContent data={data} />}
     delay={0}
     theme='light'
-    onShow={() => tooltipOpened({ model: modelName, id })}
+    onShow={() => tooltipOpened({ modelName: modelName, id })}
     popperOptions={{
       modifiers: {
         preventOverflow: {
