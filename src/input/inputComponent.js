@@ -84,9 +84,9 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
             return (onChange(null))
           }
           console.log('---evt', evt)
-          console.log('changes', `${evt.getFullYear()}-${(evt.getMonth() + 1)}-${evt.getDate()}`)
+          console.log('changes', `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`)
           return onChange(
-            `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate() + 1}`
+            `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`
           )
         }}
         isClearable={isClearable}
