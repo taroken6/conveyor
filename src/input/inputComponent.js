@@ -73,7 +73,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
   if (value) {
     date = new Date(value)
   } else {
-    date = null
+    date = ''
   }
   console.log('---conv date:', date)
 
