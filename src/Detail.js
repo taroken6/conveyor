@@ -44,11 +44,6 @@ export const getModelLabel = ({ schema, modelName, data }) => {
   return displayName
 }
 
-const extractEdges = (data) => {
-  if (data) { return data.map(field => R.prop('node', field)) }
-  return data
-}
-
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
     Content={
@@ -254,7 +249,7 @@ export const DefaultDetailTable = ({
   const fieldType = R.path([modelName, 'fields', fieldName, 'type'], schema)
   const targetInverseFieldName = R.prop('backref', fieldType)
   const targetModelName = R.prop('target', fieldType)
-  const data = R.pathOr(null, [fieldName, 'edges'], node)
+  const data = R.propOr(null, fieldName, node)
   const fieldOrder = R.path([modelName, 'fields', fieldName, 'type', 'tableFields'], schema)
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
@@ -292,7 +287,7 @@ export const DefaultDetailTable = ({
             selectOptions,
             tooltipData,
             node,
-            data: extractEdges(data),
+            data,
             onDelete,
             onEditSubmit: ({ ...props }) => onEditSubmit({
               parentModelName: modelName,
@@ -386,7 +381,7 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
-            data: extractEdges(data),
+            data,
             onDelete,
             onEditSubmit: ({ ...props }) => onEditSubmit({
               parentModelName: modelName,
@@ -570,3 +565,4 @@ const Detail = ({
 }
 
 export default Detail
+

@@ -40,6 +40,7 @@ import { storeValueToArrayBuffer } from './utils/fileConverters'
 import { TabFields } from './Tabs'
 import { TableButtonGroup } from './table/Table'
 import Tooltip from './Tooltip'
+import { isManyToMany } from './utils/isType'
 
 export { Index }
 export { Create }
@@ -83,4 +84,5 @@ export { storeValueToArrayBuffer }
 export { TabFields }
 export { TableButtonGroup }
 export { Tooltip }
+export { isManyToMany }
 
