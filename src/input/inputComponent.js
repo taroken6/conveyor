@@ -68,6 +68,10 @@ const CustomErrorComponent = ({ error, id }) =>
 export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
   console.log('---conv value: ', value)
   console.log('---conv date:', new Date(value))
+
+  let date = new Date(value)
+  date = date.setMinutes( date.getMinutes() + date.getTimezoneOffset() )
+  console.log('---conv date2:', date)
   return (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
@@ -77,7 +81,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
         placeholderText='Click to select a date'
         fixedHeight={true}
         dateFormat={'yyyy/MM/dd'}
-        selected={new Date(value)} // YYYY-MM-DD required for Date()
+        selected={date} // YYYY-MM-DD required for Date()
         //className={`${className}${error ? ' is-invalid' : ''}`}
         onChange={evt => {
           if (evt === undefined || evt === null) {
