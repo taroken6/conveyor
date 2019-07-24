@@ -72,14 +72,10 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
   let date
   if (value) {
     date = new Date(value)
+    date.setMinutes( date.getMinutes() + date.getTimezoneOffset() )
   } else {
     date = ''
   }
-  console.log('---conv date:', date)
-
-  date.setMinutes( date.getMinutes() + date.getTimezoneOffset() )
-  console.log('---timezone', date.getTimezoneOffset())
-  console.log('---timexone2', date.getMinutes() + date.getTimezoneOffset())
   console.log('---conv date2:', date)
   return (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
