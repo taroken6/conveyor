@@ -80,15 +80,17 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
       <DatePicker
         placeholderText='Click to select a date'
         fixedHeight
-        dateFormat={dateFormat}
-        selected={dateValueToMoment({ value, format: dateFormat })}
+        dateFormat={'yyyy-MM-dd'}
+        selected={new Date(value)} // YYYY-MM-DD required for Date()
         className={`${className}${error ? ' is-invalid' : ''}`}
         onChange={evt => {
           if (evt === undefined || evt === null) {
             return (onChange(null))
           }
+          console.log('---evt', evt)
+          console.log('changes', `${evt.getFullYear()}-${(evt.getMonth() + 1)}-${evt.getDate()}`)
           return onChange(
-            moment(evt).format('YYYY-MM-DD')
+            `${evt.getFullYear()}-${(evt.getMonth() + 1)}-${evt.getDate()}`
           )
         }}
         isClearable={isClearable}
