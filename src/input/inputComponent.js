@@ -64,6 +64,7 @@ const CustomErrorComponent = ({ error, id }) =>
  * @property { function } customLabel
  */
 
+// TODO: get classname for invalid from new react-datepicker
 export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
   console.log('---conv value: ', value)
   console.log('---conv date:', new Date(value))
@@ -85,7 +86,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
           console.log('---evt', evt)
           console.log('changes', `${evt.getFullYear()}-${(evt.getMonth() + 1)}-${evt.getDate()}`)
           return onChange(
-            `${evt.getFullYear()}-${(evt.getMonth() + 1)}-${evt.getDate()}`
+            `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate() + 1}`
           )
         }}
         isClearable={isClearable}
