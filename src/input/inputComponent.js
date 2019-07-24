@@ -66,9 +66,6 @@ const CustomErrorComponent = ({ error, id }) =>
 
 // TODO: get classname for invalid from new react-datepicker
 export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
-  console.log('---conv value: ', value)
-
-
   let date
   if (value) {
     date = new Date(value)
@@ -76,7 +73,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
   } else {
     date = ''
   }
-  console.log('---conv date2:', date)
+
   return (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
@@ -92,8 +89,6 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
           if (evt === undefined || evt === null) {
             return (onChange(null))
           }
-          console.log('---evt', evt)
-          console.log('changes', `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`)
           return onChange(
             `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`
           )
