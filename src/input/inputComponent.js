@@ -5,7 +5,6 @@ import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
-import moment from 'moment'
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)
 
@@ -43,13 +42,6 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
 const CustomErrorComponent = ({ error, id }) =>
   <div style={{ 'fontSize': '80%', 'color': '#dc3545' }}>{errorBuilder({ error, id })}</div>
 
-export const dateValueToMoment = ({ value, format }) => {
-  if (value === null || value === undefined || value === '') return null
-  if (typeof (value) === 'string') return moment(value, format)
-  if (value._isAMomentObject) return value
-  return null
-}
-
 /**
  * Singular component for Date Type.
  *
@@ -72,7 +64,10 @@ export const dateValueToMoment = ({ value, format }) => {
  * @property { function } customLabel
  */
 
-export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => (
+export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
+  console.log('---conv value: ', value)
+  console.log('---conv date:', new Date(value))
+  return (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
@@ -98,7 +93,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
       />
     </div>
   </FormGroup>
-)
+)}
 
 const inputStringTypeMap = {
   [inputTypes.STRING_TYPE]: 'text',
