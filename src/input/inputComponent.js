@@ -5,7 +5,6 @@ import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
-import moment from 'moment'
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)
 
@@ -43,13 +42,6 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
 const CustomErrorComponent = ({ error, id }) =>
   <div style={{ 'fontSize': '80%', 'color': '#dc3545' }}>{errorBuilder({ error, id })}</div>
 
-export const dateValueToMoment = ({ value, format }) => {
-  if (value === null || value === undefined || value === '') return null
-  if (typeof (value) === 'string') return moment(value, format)
-  if (value._isAMomentObject) return value
-  return null
-}
-
 /**
  * Singular component for Date Type.
  *
@@ -72,23 +64,33 @@ export const dateValueToMoment = ({ value, format }) => {
  * @property { function } customLabel
  */
 
-export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => (
+// TODO: get classname for invalid from new react-datepicker
+export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
+  let date
+  if (value) {
+    date = new Date(value)
+    date.setMinutes( date.getMinutes() + date.getTimezoneOffset() )
+  } else {
+    date = ''
+  }
+
+  return (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
     <div style={{ display: 'inherit' }}>
       <DatePicker
         placeholderText='Click to select a date'
-        fixedHeight
-        dateFormat={dateFormat}
-        selected={dateValueToMoment({ value, format: dateFormat })}
-        className={`${className}${error ? ' is-invalid' : ''}`}
+        fixedHeight={true}
+        dateFormat={'yyyy/MM/dd'}
+        selected={date} // YYYY-MM-DD required for Date()
+        //className={`${className}${error ? ' is-invalid' : ''}`}
         onChange={evt => {
           if (evt === undefined || evt === null) {
             return (onChange(null))
           }
           return onChange(
-            moment(evt).format('YYYY-MM-DD')
+            `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`
           )
         }}
         isClearable={isClearable}
@@ -96,7 +98,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
       />
     </div>
   </FormGroup>
-)
+)}
 
 const inputStringTypeMap = {
   [inputTypes.STRING_TYPE]: 'text',

@@ -291,8 +291,8 @@ class FlexibleInput extends React.Component {
         break
 
       case inputTypes.DATE_TYPE:
-        this['dateFormat'] = R.defaultTo('YYYY-MM-DD', this['dateFormat'])
-        this['className'] = R.defaultTo('form-control', this['className'])
+        // this['dateFormat'] = R.defaultTo('YYYY-MM-DD', this['dateFormat']) //todo: changed
+        // this['className'] = R.defaultTo('form-control', this['className']) //todo: changed
         this['isClearable'] = R.defaultTo(true, this['isClearable'])
         break
 
