@@ -38,6 +38,6 @@
   },
   "peerDependencies": {
     "react-router-dom": "^5.0.1",
-    "react-svg": "^10.0.10"
+    "react-svg": "^7.2.7"
   }
 }
