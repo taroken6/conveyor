@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import { Table, DeleteButton } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
 import Field from './table/Field'
-import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable } from './Utils'
+import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable } from './Utils'
 import {
   getActions, getModelAttribute, getField,
   getDetailFields, getHasIndex
@@ -425,15 +425,17 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, ...props }
   const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
   return (
     <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
-      <div className='float-right'>
-        <DeleteButton {...{
-          schema,
-          modelName,
-          id: node.id,
-          onDelete,
-          modalId: 'confirm-delete-' + modelName,
-          modalData }} />
-      </div>
+      { isDeletable({ schema, modelName, node, ...props}) &&
+        <div className='float-right'>
+          <DeleteButton {...{
+            schema,
+            modelName,
+            id: node.id,
+            onDelete,
+            modalId: 'confirm-delete-' + modelName,
+            modalData }} />
+        </div>
+      }
     </div>
   )
 }
