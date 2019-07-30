@@ -538,7 +538,7 @@ const Detail = ({
   if (tabs && tabs.length > 0) {
     return (
       <Wrapper>
-        <Title {...{ schema, modelName, node, modalData }} />
+        <Title {...{ schema, modelName, node, modalData, ...props }} />
         <Tabs {...{
           schema,
           modelName,
