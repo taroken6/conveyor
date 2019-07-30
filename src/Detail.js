@@ -560,7 +560,7 @@ const Detail = ({
 
   return (
     <Wrapper>
-      <Title {...{ schema, modelName, node, modalData }} />
+      <Title {...{ schema, modelName, node, modalData, ...props }} />
       <DetailFields {...{ schema, modelName, id, node, modalData, editData, tooltipData, path, ...props }} />
     </Wrapper>
   )
