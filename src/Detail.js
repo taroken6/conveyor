@@ -259,7 +259,6 @@ export const DefaultDetailTable = ({
   if (!data) { return <div className='container'>Loading...</div> }
 
   const DetailValue = getDetailValueOverride(schema, modelName, fieldName) || Table
-
   if (type.includes('OneToMany')) {
     const DetailLabel = getDetailLabelOverride(schema, modelName, fieldName) || DefaultDetailO2MTableTitle
     return (
