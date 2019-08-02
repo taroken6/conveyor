@@ -24,7 +24,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
   }
 
   return (
-    <div className='form-group'>
+    <div className='form-group' style={{ "flexGrow": 1 }}>
       {labelComp}
       {children}
       {errorComp}

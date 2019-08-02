@@ -41,6 +41,14 @@ import { TabFields } from './Tabs'
 import { TableButtonGroup } from './table/Table'
 import Tooltip from './Tooltip'
 import { isManyToMany } from './utils/isType'
+import { isTableEditable } from './Utils'
+import { TableRowWithEdit } from './table/Table'
+import { TableButtonCell } from './table/Table'
+import { calcDetailField } from './table/Table'
+import { DefaultDetailO2MTableTitle } from './Detail'
+import { toggleState } from './TreeTable'
+import { formatCSS } from './TreeTable'
+import { getRows } from './TreeTable'
 
 export { Index }
 export { Create }
@@ -85,4 +93,11 @@ export { TabFields }
 export { TableButtonGroup }
 export { Tooltip }
 export { isManyToMany }
-
+export { isTableEditable }
+export { TableRowWithEdit }
+export { TableButtonCell }
+export { calcDetailField }
+export { DefaultDetailO2MTableTitle }
+export { toggleState }
+export { formatCSS }
+export { getRows }

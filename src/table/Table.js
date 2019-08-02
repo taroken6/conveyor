@@ -110,6 +110,83 @@ export const TableButtonGroup = ({
   </div>)
 }
 
+export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, headerIdx, user }) => {
+  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, rowData: node, user })) {
+    const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
+    const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
+    return (
+      <EditInput {...{
+        schema,
+        modelName,
+        fieldName,
+        node,
+        editData: fieldEditData,
+        error,
+        selectOptions
+      }} />
+    )
+  }
+  const Override = getCellOverride(schema, modelName, fieldName)
+  if (Override) {
+    return (
+      <Override
+        {...{ schema, modelName, fieldName, parentModelName, data: node, id: node.id }}
+      />
+    )
+  }
+  // Add DetailLink to the field that is marked as the displayField
+  if (detailField === fieldName) {
+    const displayString = getDisplayValue({ schema, modelName, data: node })
+    return (
+      <DetailLink {...{ modelName, id: node.id }} >
+        {displayString}
+      </DetailLink>
+    )
+  }
+  return (
+    <Field
+      {...{
+        schema,
+        modelName,
+        fieldName,
+        parentModelName,
+        node,
+        tooltipData,
+        id: node.id
+      }}
+    />
+  )
+}
+
+export const TableButtonCell = ({ modelName, parentModelName, node, schema, detailField, editData, onEditSubmit, onEditCancel, deletable, editable, parentId, modalData, parentFieldName, onDelete, idx }) => {
+  return (
+    isEditing(editData, modelName, node.id)
+    ? <div className='table-btn-group'>
+      <div className='btn-group'>
+        <EditSaveButton {...{
+          onClick: (evt) => onEditSubmit({ modelName, id: node.id })
+        }} />
+        <EditCancelButton {...{
+          onClick: (evt) => onEditCancel({ modelName, id: node.id })
+        }} />
+      </div>
+    </div> : <TableButtonGroup {...{
+      schema,
+      modelName,
+      node,
+      detailField,
+      deletable,
+      editable,
+      parentId,
+      idx,
+      modalData,
+      parentModelName,
+      parentFieldName,
+      onDelete
+    }} />
+  )
+}
+
 export const TBody = ({
   schema,
   modelName,
@@ -128,89 +205,30 @@ export const TBody = ({
   tableEditable,
   deletable,
   selectOptions,
+  user,
   ...props
 }) => {
+  // todo: fixed 'props' passing down 'node' as a value and overriding 'node' later on
   const actions = getActions(schema, modelName)
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (<tbody>
     {data.map((node, idx) => {
-      const editable = isRowEditable({ schema, modelName, rowData: node, ...props })
+      const editable = isRowEditable({ schema, modelName, rowData: node, user, ...props })
+      // do not pass '...props' into below component because contains 'node' from parent object: will conflict with new 'node' from data.map()
       return (
         <tr key={`table-tr-${node.id}`}>
-          {fieldOrder.map((fieldName, headerIdx) => {
-            if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, rowData: node, ...props })) {
-              const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
-              const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
-              return (<td key={`${node.id}-${headerIdx}`}>
-                <EditInput {...{
-                  schema,
-                  modelName,
-                  fieldName,
-                  node,
-                  editData: fieldEditData,
-                  error,
-                  selectOptions
-                }} /></td>
-              )
-            }
-            const Override = getCellOverride(schema, modelName, fieldName)
-            if (Override) {
-              return (<td key={`${node.id}-${headerIdx}`}>
-                <Override
-                  {...{ schema, modelName, fieldName, parentModelName, data: node, id: node.id }}
-                />
-              </td>)
-            }
-            // Add DetailLink to the field that is marked as the displayField
-            if (detailField === fieldName) {
-              const displayString = getDisplayValue({ schema, modelName, data: node })
-              return (<td key={`${node.id}-${headerIdx}-detail`}>
-                <DetailLink {...{ modelName, id: node.id }} >
-                  {displayString}
-                </DetailLink>
-              </td>)
-            }
-            return (<td key={`${node.id}-${headerIdx}`}>
-              <Field
-                {...{
-                  schema,
-                  modelName,
-                  fieldName,
-                  parentModelName,
-                  node,
-                  tooltipData,
-                  id: node.id
-                }}
-              />
-            </td>)
-          })}
+          {fieldOrder.map((fieldName, headerIdx) => (
+            <td key={`${node.id}-${headerIdx}`}>
+              <TableRowWithEdit key={`table-td-${node.id}-${headerIdx}`} {...{
+                modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, headerIdx, user
+              }} />
+            </td>
+          ))}
           { showButtonColumn({ deletable, editable: tableEditable, detailField }) &&
           <td key={`${node.id}-edit-delete`}>
-            {isEditing(editData, modelName, node.id)
-              ? <div className='table-btn-group'>
-                <div className='btn-group'>
-                  <EditSaveButton {...{
-                    onClick: (evt) => onEditSubmit({ modelName, id: node.id })
-                  }} />
-                  <EditCancelButton {...{
-                    onClick: (evt) => onEditCancel({ modelName, id: node.id })
-                  }} />
-                </div>
-              </div> : <TableButtonGroup {...{
-                schema,
-                modelName,
-                node,
-                detailField,
-                deletable,
-                editable,
-                parentId,
-                idx,
-                modalData,
-                parentModelName,
-                parentFieldName,
-                onDelete
-              }} />
-            }
+            { <TableButtonCell {...{
+              modelName, parentModelName, node, schema, detailField, editData, onEditSubmit, onEditCancel, deletable, editable, parentId, modalData, parentFieldName, onDelete, idx
+            }} /> }
           </td>
           }
         </tr>
@@ -218,6 +236,18 @@ export const TBody = ({
     })}
   </tbody>
   )
+}
+
+export const calcDetailField = ({schema, modelName, fieldOrder}) => {
+  const model = getModel(schema, modelName)
+  const schemaDefinedLinkField = R.prop('tableLinkField', model)
+
+  // If the schema explicitly defines a field that is not found, raise an error
+  if (schemaDefinedLinkField && !fieldOrder.includes(schemaDefinedLinkField)) {
+    throw new Error('Schema attribute for displayField does not exist in fieldOrder.')
+  }
+  // If the schema does not define a displayField then check if there is a name field
+  return schemaDefinedLinkField || (fieldOrder.includes('name') ? 'name' : null)
 }
 
 /* Generic Overidable Table. To Override th/td pass in Table with <thead>/<tbody> component overriden. */
@@ -243,18 +273,8 @@ export const Table = ({
 
   if (data.length === 0) { return <div>N/A</div> }
 
-  const model = getModel(schema, modelName)
-  const schemaDefinedLinkField = R.prop('tableLinkField', model)
   const deletable = isDeletable({ schema, modelName, ...props })
-
-  // If the schema explicitly defines a field that is not found, raise an error
-  if (schemaDefinedLinkField && !fieldOrder.includes(schemaDefinedLinkField)) {
-    throw new Error('Schema attribute for displayField does not exist in fieldOrder.')
-  }
-
-  // If the schema does not define a displayField then check if there is a name field
-  const detailField = schemaDefinedLinkField || (fieldOrder.includes('name') ? 'name' : null)
-
+  const detailField = calcDetailField({schema, modelName, fieldOrder})
   const editable = isTableEditable({ schema, modelName, data, ...props })
 
   return (
