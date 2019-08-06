@@ -199,12 +199,12 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
           return onChange(null)
         }
         return (
-          onChange(evt.target.value)
+          onChange(Number(evt.target.value))
         )
       }}
       className={`${className}${error ? ' is-invalid' : ''}`}
       id={id}
-      value={value}
+      value={value.toString()}
       {...customProps}
     />
   </FormGroup>
