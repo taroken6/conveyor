@@ -5,7 +5,8 @@
   "description": "",
   "main": "lib/main.js",
   "scripts": {
-    "lib": "./node_modules/.bin/babel src --out-dir lib"
+    "lib": "./node_modules/.bin/babel src --out-dir lib",
+    "build-tar": "./buildFile"
   },
   "repository": {
     "type": "git",
