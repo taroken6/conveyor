@@ -67,5 +67,12 @@ body {
   height: 20px;
 }
 
+.detail-edit {
+    width: 300px;
+    margin-right: 10px;
+}
 
+.table-btn-group {
+    padding-bottom: 30px;
+}
 
