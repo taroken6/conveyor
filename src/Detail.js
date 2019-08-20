@@ -335,7 +335,8 @@ export const DefaultDetailTable = ({
               id,
               modelName,
               ...props
-            })
+            }),
+            node
           }} />
           <div className='table-btn-padding'>
             <EditSaveButton {...{
