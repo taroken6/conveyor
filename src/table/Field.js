@@ -37,11 +37,21 @@ const FieldBoolean = ({ schema, modelName, fieldName, node }) => {
   />
 }
 
-const FieldLink = ({ schema, modelName, fieldName, node, prefix = 'http://' }) => {
-  const displayString = R.prop(fieldName, node)
-  if (!displayString) { return <span>N/A</span> }
+// Render a link to the value. If the value does not start with any of the prefixes,
+// append the first prefix. Produces HTTPS URLs by default.
+const FieldLink = ({ schema, modelName, fieldName, node, prefix = ['https://', 'http://']}) => {
+  // Ensure prefix is a list, allowing a single string instead of a list.
+  prefix = R.pipe(R.prepend(prefix), R.flatten)([])
+  let href = R.prop(fieldName, node)
+  if (!href) { return <span>N/A</span> }
 
-  return <a href={prefix + displayString}>{ displayString }</a>
+  const displayString = href
+
+  if (!R.any(item => R.startsWith(item, href), prefix)) {
+    href = prefix[0] + href
+  }
+
+  return <a href={href}>{ displayString }</a>
 }
 
 const FieldCurrency = ({ schema, modelName, fieldName, node }) => {
