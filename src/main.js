@@ -33,6 +33,7 @@ import { InputCore } from './form/Input'
 import { inputTypes } from './consts'
 import { isCreatable } from './Utils'
 import { isDeletable } from './Utils'
+import { isTableDeletable } from './Utils'
 import { isRel } from './utils/isType'
 import { Modal } from './Modal'
 import RelTooltip from './Tooltip'
@@ -85,6 +86,7 @@ export { InputCore }
 export { inputTypes }
 export { isCreatable }
 export { isDeletable }
+export { isTableDeletable }
 export { isRel }
 export { Modal }
 export { RelTooltip }

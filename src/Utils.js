@@ -62,6 +62,10 @@ export const isFieldEditable = ({ schema, modelName, fieldName, ...props }) => {
   }
 }
 
+export const isTableDeletable = ({ schema, modelName, data, ...props }) => (
+  !R.isEmpty(data.filter(rowData => isDeletable({ schema, modelName, rowData, ...props })))
+)
+
 export const isDeletable = ({ schema, modelName, ...props }) => {
   const deletable = R.prop('deletable', getModel(schema, modelName))
   if (R.type(deletable) === 'Boolean') {
