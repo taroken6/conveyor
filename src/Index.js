@@ -2,7 +2,7 @@ import React from 'react'
 import { Table as DefaultTable } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
-import { getModel, getFields, getActions, getHasIndex } from './utils/schemaGetters'
+import { getModel, getFields, getActions, getHasIndex, getIndexFields } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
 import { isCreatable } from './Utils'
 
@@ -41,10 +41,7 @@ const Index = ({
   }
   const model = getModel(schema, modelName)
   const fields = getFields(schema, modelName)
-  const fieldOrder = R.pipe(
-    R.prop('fieldOrder'),
-    R.filter(fieldName => R.path([fieldName, 'showIndex'], fields))
-  )(model)
+  const fieldOrder = getIndexFields({ schema, modelName})
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onIndexDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)

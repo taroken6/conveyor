@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
-import { getModel, getFields, getActions, getField } from '../utils/schemaGetters'
+import { getModel, getFields, getActions, getField, getCreateFields } from '../utils/schemaGetters'
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
 import { getModelLabel } from '../Detail'
@@ -10,17 +10,6 @@ import { getModelLabel } from '../Detail'
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
 )
-
-const getCreateFieldOrder = (schema, modelName) => {
-  const fields = getFields(schema, modelName)
-
-  const filtered = R.pipe(
-    R.prop('fieldOrder'),
-    R.filter(fieldName => R.path([fieldName, 'showCreate'], fields))
-  )(getModel(schema, modelName))
-
-  return filtered
-}
 
 export const makeCreateLabel = ({ schema, modelName, fieldName, ...props }) => {
   const type = R.prop('type', getField(schema, modelName, fieldName))
@@ -77,7 +66,7 @@ const Create = ({
   }
   const origin = R.prop('originModelName', formStack)
 
-  const fieldOrder = getCreateFieldOrder(schema, modelName)
+  const fieldOrder = getCreateFields({ schema, modelName })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) { fieldOrder.splice(index, 1) }
