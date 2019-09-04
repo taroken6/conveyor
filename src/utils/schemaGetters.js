@@ -43,10 +43,10 @@ export const getRequiredFields = (schema, modelName) => {
   return getShownFields({ schema, modelName, type: 'required' })
 }
 
-export const getCreateFields = ({ schema, modelName }) => {
+export const getCreateFields = ({ schema, modelName, ...props }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName })
+    return createFieldOrder({ schema, modelName, ...props })
   }
   else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
@@ -58,20 +58,20 @@ export const getHasIndex = (schema, modelName) => {
   return R.prop('hasIndex', getModel(schema, modelName))
 }
 
-export const getDetailFields = ({ schema, modelName, node }) => {
+export const getDetailFields = ({ schema, modelName, node, ...props }) => {
   const detailFieldOrder = R.prop('detailFieldOrder', getModel(schema, modelName))
   if (R.type(detailFieldOrder) === 'Function') {
-    return detailFieldOrder({ schema, modelName })
+    return detailFieldOrder({ schema, modelName, node, ...props })
   }
   else if (R.type(detailFieldOrder) === 'Array') {
     return detailFieldOrder
   }  return getShownFields({ schema, modelName, type: 'showDetail', node })
 }
 
-export const getIndexFields = ({ schema, modelName }) => {
+export const getIndexFields = ({ schema, modelName, ...props }) => {
   const indexFieldOrder = R.prop('indexFieldOrder', getModel(schema, modelName))
   if (R.type(indexFieldOrder) === 'Function') {
-    return indexFieldOrder({ schema, modelName })
+    return indexFieldOrder({ schema, modelName, ...props })
   }
   else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
