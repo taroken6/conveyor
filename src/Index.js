@@ -41,7 +41,7 @@ const Index = ({
   }
   const model = getModel(schema, modelName)
   const fields = getFields(schema, modelName)
-  const fieldOrder = getIndexFields({ schema, modelName})
+  const fieldOrder = getIndexFields({ schema, modelName, data, ...props })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onIndexDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)
