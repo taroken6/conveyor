@@ -83,7 +83,7 @@ const Create = ({
   return (
     <div className='container'>
       <Breadcrumbs schema={schema} formStack={formStack} />
-      <h1>Create {getModelLabel({ schema, modelName })}</h1>
+      <h1>Create {getModelLabel({ schema, modelName, form })}</h1>
       <div>* Indicates a Required Field</div>
       <br />
       <div>{fieldOrder.map(fieldName => {

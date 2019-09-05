@@ -36,10 +36,10 @@ export const getFieldLabel = ({ schema, modelName, fieldName, data = {} }) => {
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, data }) => {
+export const getModelLabel = ({ schema, modelName, data, ...props }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data })
+    return displayName({ schema, modelName, data, ...props })
   }
   return displayName
 }
