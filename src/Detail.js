@@ -81,7 +81,7 @@ export const DefaultDetailAttribute = ({
   const DetailLabel = getDetailLabelOverride(schema, modelName, fieldName) || DefaultDetailLabel
   const DetailValue = getDetailValueOverride(schema, modelName, fieldName) || Field
 
-  const editable = isFieldEditable({ schema, modelName, fieldName, rowData: node, id, ...props })
+  const editable = isFieldEditable({ schema, modelName, fieldName, node, id, ...props })
 
   if (isFieldEditing(editData, modelName, node.id, fieldName) !== false) {
     const fieldType = R.prop('type', getField(schema, modelName, fieldName))
@@ -214,7 +214,7 @@ const DefaultDetailM2MTableTitle = ({
   targetModelName,
   ...props
 }) => {
-  const editable = isFieldEditable({ schema, modelName, fieldName, ...props })
+  const editable = isFieldEditable({ schema, modelName, fieldName, node, ...props })
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, ...props })}</h4>

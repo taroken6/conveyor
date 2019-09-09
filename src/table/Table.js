@@ -111,7 +111,7 @@ export const TableButtonGroup = ({
 }
 
 export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, headerIdx, user }) => {
-  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, rowData: node, user })) {
+  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user })) {
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
     return (
@@ -213,7 +213,7 @@ export const TBody = ({
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (<tbody>
     {data.map((node, idx) => {
-      const editable = isRowEditable({ schema, modelName, rowData: node, user, ...props })
+      const editable = isRowEditable({ schema, modelName, node, user, ...props })
       // do not pass '...props' into below component because contains 'node' from parent object: will conflict with new 'node' from data.map()
       return (
         <tr key={`table-tr-${node.id}`}>
