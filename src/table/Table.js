@@ -276,6 +276,7 @@ export const Table = ({
   const deletable = isDeletable({ schema, modelName, ...props })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
   const editable = isTableEditable({ schema, modelName, data, ...props })
+  const sortable = R.path([modelName, 'sortable'], schema)
 
   return (
     <table className='table table-striped table-bordered table-hover'>
@@ -287,6 +288,7 @@ export const Table = ({
         deletable,
         editable,
         detailField,
+        sortable,
         ...props
       }} />
       <Body {...{

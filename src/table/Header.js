@@ -15,6 +15,7 @@ export const THead = ({
   detailField,
   data,
   tableOptions,
+  sortable,
   ...props
 }) => {
   const actions = getActions(schema, modelName)
@@ -35,7 +36,7 @@ export const THead = ({
                     schema, modelName, fieldName, data:R.prop(fieldName, data)
                   }),
                   onSort,
-                  showSort: tableOptions ? !isRelField : false,
+                  showSort: (tableOptions && sortable) ? !isRelField : false,
                   sortKeyObj,
                 }}
               />
