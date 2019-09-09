@@ -40,3 +40,6 @@ export const relInputTypes = {
   ONE_TO_ONE_TYPE: 'OneToOne',
   MANY_TO_MANY_TYPE: 'ManyToMany'
 }
+
+export const ASC = 'asc'
+export const DESC = 'desc'
