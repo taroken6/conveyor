@@ -1,7 +1,7 @@
 import React from 'react'
 import Field from './Field'
 import { THead } from './Header'
-import { getCellOverride, isDeletable, isFieldEditable, isTableEditable, isRowEditable } from '../Utils'
+import { getCellOverride, isTableDeletable, isFieldEditable, isTableEditable, isRowEditable } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
@@ -273,7 +273,7 @@ export const Table = ({
 
   if (data.length === 0) { return <div>N/A</div> }
 
-  const deletable = isDeletable({ schema, modelName, ...props })
+  const deletable = isTableDeletable({ schema, modelName, data, ...props })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
   const editable = isTableEditable({ schema, modelName, data, ...props })
 
