@@ -4,5 +4,6 @@
 
 -   Add Sort Button #30
 -   Add props to displayName override function #37
+-   Standardize isDeletable, isCreatable, isEditable & others #35
 
 ### Unreleased
