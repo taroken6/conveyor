@@ -115,6 +115,7 @@ export const InputCore = ({
   selectOptions,
   customLabel,
   onMenuOpen,
+  customProps,
   ...props
 }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
@@ -131,7 +132,8 @@ export const InputCore = ({
     labelStr: inline ? null : fieldLabel,
     value,
     error,
-    required: R.prop('required', getField(schema, modelName, fieldName))
+    required: R.prop('required', getField(schema, modelName, fieldName)),
+    customProps
   }
   const enumChoices = getEnumChoices(schema, modelName, fieldName)
   const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)
