@@ -81,7 +81,7 @@ export const DefaultDetailAttribute = ({
   const DetailLabel = getDetailLabelOverride(schema, modelName, fieldName) || DefaultDetailLabel
   const DetailValue = getDetailValueOverride(schema, modelName, fieldName) || Field
 
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, id, ...props })
+  const editable = isFieldEditable({ schema, modelName, fieldName, rowData: node, id, ...props })
 
   if (isFieldEditing(editData, modelName, node.id, fieldName) !== false) {
     const fieldType = R.prop('type', getField(schema, modelName, fieldName))
@@ -90,7 +90,7 @@ export const DefaultDetailAttribute = ({
     const onFileSubmit = R.path(['edit', 'onFileSubmit'], actions)
 
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
-    const creatable = isCreatable({ schema, modelName, node, ...props })
+    const creatable = isCreatable({ schema, modelName, ...props })
     const targetInverseFieldName = R.prop('backref', fieldType)
     const targetModelName = R.prop('target', fieldType)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
@@ -214,7 +214,7 @@ const DefaultDetailM2MTableTitle = ({
   targetModelName,
   ...props
 }) => {
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, ...props })
+  const editable = isFieldEditable({ schema, modelName, fieldName, ...props })
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, ...props })}</h4>
