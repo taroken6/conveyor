@@ -40,15 +40,15 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
 }
 
 export const isTableEditable = ({ schema, modelName, data, ...props }) => (
-  !R.isEmpty(data.filter(node => isRowEditable({ schema, modelName, node, ...props })))
+  !R.isEmpty(data.filter(rowData => isRowEditable({ schema, modelName, rowData, ...props })))
 )
 
-export const isRowEditable = ({ schema, modelName, node, ...props }) => (
+export const isRowEditable = ({ schema, modelName, rowData, ...props }) => (
   R.pipe(
-    R.mapObjIndexed((_value, fieldName) => isFieldEditable({ schema, modelName, fieldName, node, ...props })),
+    R.mapObjIndexed((_value, fieldName) => isFieldEditable({ schema, modelName, fieldName, rowData, ...props })),
     R.filter(identity),
     filteredNode => !R.isEmpty(filteredNode)
-  )(node)
+  )(rowData)
 )
 
 export const isFieldEditable = ({ schema, modelName, fieldName, ...props }) => {
@@ -63,7 +63,7 @@ export const isFieldEditable = ({ schema, modelName, fieldName, ...props }) => {
 }
 
 export const isTableDeletable = ({ schema, modelName, data, ...props }) => (
-  !R.isEmpty(data.filter(node => isDeletable({ schema, modelName, node, ...props })))
+  !R.isEmpty(data.filter(rowData => isDeletable({ schema, modelName, rowData, ...props })))
 )
 
 export const isDeletable = ({ schema, modelName, ...props }) => {
