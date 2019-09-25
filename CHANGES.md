@@ -2,6 +2,8 @@
 
 ## Version 1.2.0
 
+-   Standardize how Create button logic shows up everywhere
+
 ### Unreleased
 
 ## Version 1.1.0

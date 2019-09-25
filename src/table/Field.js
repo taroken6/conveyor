@@ -12,7 +12,7 @@ import { getFieldLabel } from '../Detail'
 import Tooltip from '../Tooltip'
 
 // gets the schema of the relationship model, based on field meta
-const getRelSchemaEntry = ({ schema, modelName, fieldName }) => {
+export const getRelSchemaEntry = ({ schema, modelName, fieldName }) => {
   const fieldTargetModel = R.path(
     [modelName, 'fields', fieldName, 'type', 'target'],
     schema
