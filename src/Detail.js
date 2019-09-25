@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 import { Table, DeleteButton } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
-import Field from './table/Field'
+import Field, { getRelSchemaEntry } from './table/Field'
 import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable } from './Utils'
 import {
   getActions, getModelAttribute, getField,
@@ -84,13 +84,16 @@ export const DefaultDetailAttribute = ({
   const editable = isFieldEditable({ schema, modelName, fieldName, rowData: node, id, ...props })
 
   if (isFieldEditing(editData, modelName, node.id, fieldName) !== false) {
+    const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
+    const relModelName = R.prop('modelName', relSchemaEntry)
+
     const fieldType = R.prop('type', getField(schema, modelName, fieldName))
     const onEditCancelClick = R.path(['edit', 'onAttributeEditCancel'], actions)
     const onEditSubmitClick = R.path(['edit', 'onDetailAttributeSubmit'], actions)
     const onFileSubmit = R.path(['edit', 'onFileSubmit'], actions)
 
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
-    const creatable = isCreatable({ schema, modelName, ...props })
+    const creatable = isCreatable({ schema, modelName: relModelName, ...props })
     const targetInverseFieldName = R.prop('backref', fieldType)
     const targetModelName = R.prop('target', fieldType)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
