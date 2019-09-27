@@ -3,6 +3,7 @@
 ## Version 1.2.0
 
 -   Standardize how Create button logic shows up everywhere
+-   Implement new babelrc presets and plugins
 
 ### Unreleased
 
