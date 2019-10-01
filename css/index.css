@@ -47,7 +47,7 @@ body {
   display: inline-block;
   width: 16px;
   margin-left: 5px;
-  fill: rgba(255, 0, 0, 1);
+  fill: rgba(255, 64, 88, 1);
 }
 .text-area {
     white-space: pre-wrap;
