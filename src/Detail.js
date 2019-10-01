@@ -19,7 +19,7 @@ import {
   isFieldEditing,
   getFieldEditData,
   InlineEditButton,
-  FileDeleteIcon,
+  FileDelete,
   TableEditButton,
   getFieldErrorEdit
 } from './Edit'
@@ -167,8 +167,10 @@ export const DefaultDetailAttribute = ({
             }} />
           }
           {(editable && isFileType && hasValue) &&
-            <FileDeleteIcon {...{
-              onClick: () => onFileDelete({ modelName, fieldName, id })
+            <FileDelete {...{
+              id,
+              fieldName,
+              onFileDelete: () => onFileDelete({ modelName, fieldName, id })
             }}/>
           }
         </dd>

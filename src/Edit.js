@@ -3,6 +3,7 @@ import * as R from 'ramda'
 import { getActions } from './utils/schemaGetters'
 import Input from './form/Input'
 import ReactSVG from 'react-svg'
+import { Modal } from './Modal'
 
 export const InlineEditButton = ({ onEditClick }) =>
   <ReactSVG
@@ -12,12 +13,38 @@ export const InlineEditButton = ({ onEditClick }) =>
     onClick={onEditClick}
   />
 
-export const FileDeleteIcon = ({ onClick }) =>
+export const FileDeleteIcon = ({ modalId }) =>
   <ReactSVG
     src='/static/img/trash-alt.svg'
     className='trash-icon'
-    onClick={onClick}
+    data-toggle='modal'
+    data-target={'#' + modalId}
   />
+
+export const FileDelete = ({ id, fieldName, onFileDelete }) => {
+  // do not begin modalId with number
+  const modalId = `${fieldName}-${id}-file-delete-modal`
+  return (
+    <React.Fragment>
+      <FileDeleteIcon {...{ modalId }}/>
+      <Modal {...{ id: modalId, title: 'Are you sure you want to delete this file?' }}>
+        <div className='text-center'>
+          <div className='btn-group'>
+            <button
+              className='btn btn-small btn-outline-secondary'
+              data-dismiss='modal'
+            >Cancel</button>
+            <button
+              className='btn btn-sm btn-outline-danger'
+              data-dismiss='modal'
+              onClick={onFileDelete}
+            >Confirm Delete</button>
+          </div>
+        </div>
+      </Modal>
+    </React.Fragment>
+  )
+}
 
 export const getFieldEditData = (editData, modelName, fieldName, id) => (
   R.path([modelName, id, fieldName, 'currentValue'], editData)
