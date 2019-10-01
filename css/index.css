@@ -43,6 +43,12 @@ body {
   fill: lightgreen;
   cursor: pointer;
 }
+.trash-icon {
+  display: inline-block;
+  width: 16px;
+  margin-left: 5px;
+  fill: rgba(255, 0, 0, 1);
+}
 .text-area {
     white-space: pre-wrap;
 }

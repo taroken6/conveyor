@@ -19,6 +19,7 @@ import {
   isFieldEditing,
   getFieldEditData,
   InlineEditButton,
+  FileDeleteIcon,
   TableEditButton,
   getFieldErrorEdit
 } from './Edit'
@@ -27,6 +28,7 @@ import getDisplayValue from './utils/getDisplayValue'
 import Input, { relationshipLabelFactory } from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
+import { inputTypes } from './consts'
 
 export const getFieldLabel = ({ schema, modelName, fieldName, data = {} }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)
@@ -82,12 +84,12 @@ export const DefaultDetailAttribute = ({
   const DetailValue = getDetailValueOverride(schema, modelName, fieldName) || Field
 
   const editable = isFieldEditable({ schema, modelName, fieldName, rowData: node, id, ...props })
+  const fieldType = R.prop('type', getField(schema, modelName, fieldName))
 
   if (isFieldEditing(editData, modelName, node.id, fieldName) !== false) {
     const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
     const relModelName = R.prop('modelName', relSchemaEntry)
 
-    const fieldType = R.prop('type', getField(schema, modelName, fieldName))
     const onEditCancelClick = R.path(['edit', 'onAttributeEditCancel'], actions)
     const onEditSubmitClick = R.path(['edit', 'onDetailAttributeSubmit'], actions)
     const onFileSubmit = R.path(['edit', 'onFileSubmit'], actions)
@@ -141,6 +143,10 @@ export const DefaultDetailAttribute = ({
     )
   } else {
     const onEdit = R.path(['edit', 'onAttributeEdit'], actions)
+    const onFileDelete = R.path(['delete', 'onFileDelete'], actions)
+    const isFileType = fieldType === inputTypes.FILE_TYPE
+    const hasValue = R.propOr(false, fieldName, node)
+
     return (
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
@@ -159,6 +165,11 @@ export const DefaultDetailAttribute = ({
                 value: R.prop(fieldName, node)
               })
             }} />
+          }
+          {(editable && isFileType && hasValue) &&
+            <FileDeleteIcon {...{
+              onClick: () => onFileDelete({ modelName, fieldName, id })
+            }}/>
           }
         </dd>
       </React.Fragment>

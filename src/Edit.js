@@ -12,6 +12,13 @@ export const InlineEditButton = ({ onEditClick }) =>
     onClick={onEditClick}
   />
 
+export const FileDeleteIcon = ({ onClick }) =>
+  <ReactSVG
+    src='/static/img/trash-alt.svg'
+    className='trash-icon'
+    onClick={onClick}
+  />
+
 export const getFieldEditData = (editData, modelName, fieldName, id) => (
   R.path([modelName, id, fieldName, 'currentValue'], editData)
 )
