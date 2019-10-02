@@ -1,12 +1,16 @@
 # Conveyor Changelog
 
+## Version 1.3.0
+
+### Unreleased
+
 ## Version 1.2.0
+
+### Released 10/2/19
 
 -   Standardize how Create button logic shows up everywhere
 -   Implement new babelrc presets and plugins
 -   Add delete button to files #49
-
-### Unreleased
 
 ## Version 1.1.0
 
