@@ -4,7 +4,7 @@
 
 -   Standardize how Create button logic shows up everywhere
 -   Implement new babelrc presets and plugins
--   Add delete button to files #45
+-   Add delete button to files #49
 
 ### Unreleased
 
