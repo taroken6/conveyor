@@ -48,8 +48,7 @@ const Index = ({
 
   return (<div className='container'>
     <Title {...{ schema, modelName, path, ...props }} />
-    {
-      !R.isEmpty(data) && <Table {...{
+      <Table {...{
         schema,
         modelName,
         data,
@@ -62,7 +61,7 @@ const Index = ({
         modalData,
         ...props
       }} />
-    }</div>)
+    </div>)
 }
 
 export default Index

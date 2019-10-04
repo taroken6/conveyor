@@ -4,7 +4,8 @@ import { showButtonColumn } from './Table'
 import * as R from 'ramda'
 import { getActions, getField } from '../utils/schemaGetters'
 import { isRel } from '../utils/isType'
-import { SortButton } from './Sort'
+import { FilterComp, isColFilterable } from './Filter'
+import { SortButton, isSortable } from './Sort'
 
 export const THead = ({
   schema,
@@ -16,28 +17,49 @@ export const THead = ({
   data,
   tableOptions,
   sortable,
-  ...props
+  filterable,
+  selectOptions
 }) => {
   const actions = getActions(schema, modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
+  const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
+  const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
+  const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
+  const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return(
     <thead>
       <tr>
         {fieldOrder.map((fieldName, idx) => {
           const isRelField = isRel(getField(schema, modelName, fieldName))
+          const filterInput = R.path(['filter', modelName, fieldName], tableOptions)
           const sortKeyObj = R.path(['sort', modelName], tableOptions)
           return (
             <th key={idx} style={{ minWidth: '130px' }}>
               <Header
                 {...{
+                  schema,
                   modelName,
                   fieldName,
                   title: getFieldLabel({
                     schema, modelName, fieldName, data:R.prop(fieldName, data)
                   }),
+                  onFilterChange: (evt) => onFilterChange({
+                    modelName,
+                    ...evt
+                  }),
+                  onFilterSubmit,
+                  onFilterRadio,
                   onSort,
-                  showSort: (tableOptions && sortable) ? !isRelField : false,
+                  onMenuOpen,
+                  showSort: (
+                    tableOptions &&
+                    sortable &&
+                    isSortable({schema, modelName, fieldName})
+                  ) ? !isRelField : false,
+                  showFilter: isColFilterable({schema, modelName, fieldName, tableOptions, filterable}),
                   sortKeyObj,
+                  filterInput,
+                  selectOptions,
                 }}
               />
             </th>
@@ -47,7 +69,22 @@ export const THead = ({
     </thead>
 )}
 
-export const Header = ({ modelName, fieldName, title, onSort, showSort, sortKeyObj }) => (
+export const Header = ({
+  schema,
+  modelName,
+  fieldName,
+  title,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
+  onSort,
+  onMenuOpen,
+  showSort,
+  showFilter,
+  sortKeyObj,
+  filterInput,
+  selectOptions
+}) => (
   <div className='header'>
     <div className='title' >
       <a style={{ float: 'left', fontSize: '.9em' }}
@@ -55,6 +92,7 @@ export const Header = ({ modelName, fieldName, title, onSort, showSort, sortKeyO
         {title}
       </a>
       { showSort && <SortButton {...{ modelName, fieldName, onSort, sortKeyObj }} /> }
+      { showFilter && <FilterComp {... { fieldName, modelName, schema, onFilterChange, onFilterSubmit, onFilterRadio, onMenuOpen, filterInput, selectOptions }} /> }
     </div>
   </div>
 )
