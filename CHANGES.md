@@ -7,9 +7,10 @@
 ## Version 1.2.0
 
 ### Released 10/2/19
-
 -   Standardize how Create button logic shows up everywhere
 -   Implement new babelrc presets and plugins
+-   Add Filter Feature #32
+
 
 ## Version 1.1.0
 

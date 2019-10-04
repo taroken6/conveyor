@@ -7,6 +7,7 @@ import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
 import { getModel, getActions } from '../utils/schemaGetters'
 import { DeleteDetail } from '../delete/DeleteDetail'
+import { isTableFilterable } from './Filter'
 
 import {
   RowEditButton,
@@ -265,13 +266,16 @@ export const Table = ({
   parentModelName,
   parentFieldName,
   tooltipData,
+  tableOptions,
   Head = THead,
   Body = TBody,
   ...props
 }) => {
-  if (!data) { return <div>...Loading</div> }
+  const filterable = R.path([modelName, 'filterable'], schema)
+  const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
+  if (!allColFilterable && !data) { return <div>...Loading</div> }
 
-  if (data.length === 0) { return <div>N/A</div> }
+  if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
 
   const deletable = isDeletable({ schema, modelName, ...props })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
@@ -288,7 +292,10 @@ export const Table = ({
         deletable,
         editable,
         detailField,
+        selectOptions,
         sortable,
+        filterable,
+        tableOptions,
         ...props
       }} />
       <Body {...{
@@ -308,6 +315,7 @@ export const Table = ({
         editData,
         deletable,
         tableEditable: editable,
+        tableOptions,
         ...props
       }} />
     </table>
