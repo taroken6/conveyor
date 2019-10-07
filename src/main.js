@@ -50,6 +50,7 @@ import { DefaultDetailO2MTableTitle } from './Detail'
 import { toggleState } from './TreeTable'
 import { formatCSS } from './TreeTable'
 import { getRows } from './TreeTable'
+import { isEditing } from './Edit'
 
 export { Index }
 export { Create }
@@ -103,3 +104,4 @@ export { DefaultDetailO2MTableTitle }
 export { toggleState }
 export { formatCSS }
 export { getRows }
+export { isEditing }
