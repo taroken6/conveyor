@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+-   Autofocus on first element in create form; autofocus on edit element
+
 ## Version 1.2.0
 
 ### Released 10/2/19

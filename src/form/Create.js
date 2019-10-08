@@ -86,7 +86,7 @@ const Create = ({
       <h1>Create {getModelLabel({ schema, modelName, form })}</h1>
       <div>* Indicates a Required Field</div>
       <br />
-      <div>{fieldOrder.map(fieldName => {
+      <div>{fieldOrder.map((fieldName, idx) => {
         const disabled = isFieldDisabled({ schema, modelName, fieldName, form })
         const value = disabled
           ? getDisabledValue({ schema, modelName, fieldName, form })
@@ -105,6 +105,7 @@ const Create = ({
           disabled,
           formStack,
           customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
+          autoFocus: (idx === 0),
           ...props
         }} />
       })}</div>
