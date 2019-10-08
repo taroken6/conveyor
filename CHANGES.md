@@ -9,6 +9,7 @@
 ### Released 10/2/19
 -   Standardize how Create button logic shows up everywhere
 -   Implement new babelrc presets and plugins
+-   Add delete button to files #49
 -   Add Filter Feature #32
 
 
