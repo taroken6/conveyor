@@ -1,7 +1,8 @@
 #!  /bin/bash
 # Build Conveyor Tarball Files
 
+rm -R lib
 npm run lib
 rm conveyor-1.3.0.tgz
-npm pack
+npm pack --quiet
 echo "!!! conveyor tar files ready !!!"
