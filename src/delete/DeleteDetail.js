@@ -5,16 +5,32 @@ import { isEnum } from '../utils/isType'
 import { getEnumLabel } from '../Utils'
 import { getFields as getFieldDefinitions, getActions } from '../utils/schemaGetters'
 
-const getFields = (schema, modelName, node) => {
+const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
+
+const getHeaders = (schema, modelName, node) => {
+  console.log('---getHeaders', modelName, node)
+  const headers = Object.entries(node).map(([ key, value ]) => {
+    if (exclusionCondition(key)) {
+      return key
+    }
+  })
+  return R.pipe(
+    R.flatten,
+    R.reject(val => val === undefined)
+  )(headers)
+}
+
+
+const getRowFields = (schema, modelName, node) => {
   const fieldDefinitions = getFieldDefinitions(schema, modelName)
 
   const fields = Object.entries(node).map(([ key, value ]) => {
     if (value === Object(value)) {
       const targetModel = R.path([key, 'type', 'target'], fieldDefinitions)
-      return getFields(schema, targetModel, value)
+      return getRowFields(schema, targetModel, value)
     }
 
-    if (!R.includes(key, ['__typename', 'id'])) {
+    if (exclusionCondition(key)) {
       const fieldDefinition = R.prop(key, fieldDefinitions)
       if (isEnum(fieldDefinition)) {
         return getEnumLabel({ schema, modelName, fieldName: key, value })
@@ -30,8 +46,8 @@ const getFields = (schema, modelName, node) => {
   )(fields)
 }
 
-const Row = ({ schema, model, node }) => {
-  const fields = getFields(schema, model, node)
+const Row = ({ schema, nodeModelName, node }) => {
+  const fields = getRowFields(schema, nodeModelName, node)
   return (
     <tr>
       {fields.map((field, index) => (
@@ -43,22 +59,51 @@ const Row = ({ schema, model, node }) => {
   )
 }
 
-const ReviewTable = ({ schema, table }) => (
-  <div className='mt-2'>
-    <h5 className='d-inline'>{table[0].__typename}</h5>
-    <table className='table table-striped table-bordered'>
-      <tbody>
-        {table && table.map((node, index) => (
-          <Row key={`${index}-${node.id}`} {...{
-            schema,
-            model: R.prop('__typename', node),
-            node
+const HeaderRow = ({ headers }) => {
+  console.log('---headers', headers)
+  return (
+    <tr>
+      {headers.map((head, index) => (
+        <th key={index}>
+          {head}
+        </th>
+      ))}
+    </tr>
+  )
+}
+
+
+const ReviewTable = ({ schema, table }) => {
+  let headers = []
+  if (!R.isEmpty(table)) {
+    const node = table[0]
+    const nodeModelName = R.prop('__typename', node)
+    headers = getHeaders(schema, nodeModelName, node).map(fieldName =>
+      R.path([nodeModelName, 'fields', fieldName, 'displayName'], schema)
+    )
+  }
+  console.log('---table', table)
+  return (
+    <div className='mt-2'>
+      <h5 className='d-inline'>{table[0].__typename}</h5>
+      <table className='table table-striped table-bordered'>
+        <tbody>
+          <HeaderRow {...{
+            headers
           }} />
-        ))}
-      </tbody>
-    </table>
-  </div>
-)
+          {table && table.map((node, index) => (
+            <Row key={`${index}-${node.id}`} {...{
+              schema,
+              nodeModelName: R.prop('__typename', node),
+              node
+            }} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 
 export const DeleteDetail = ({
   schema,
