@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+-   Cleanup delete review tables #54
+
 ## Version 1.2.0
 
 ### Released 10/2/19
