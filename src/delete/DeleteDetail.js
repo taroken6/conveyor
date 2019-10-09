@@ -3,7 +3,10 @@ import * as R from 'ramda'
 import { Modal } from '../Modal'
 import { isEnum } from '../utils/isType'
 import { getEnumLabel } from '../Utils'
-import { getFields as getFieldDefinitions, getActions } from '../utils/schemaGetters'
+import {
+  getFields as getFieldDefinitions, getActions,
+  getModel
+} from '../utils/schemaGetters'
 import { getModelLabel, getFieldLabel } from '../Detail'
 
 const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
@@ -17,10 +20,13 @@ const getHeaders = (schema, modelName, node) => {
 }
 
 
-const getRowFields = (schema, modelName, node) => {
+const getRowFields = (schema, modelName, node, nodeOrder) => {
   const fieldDefinitions = getFieldDefinitions(schema, modelName)
-
-  const fields = Object.entries(node).map(([ key, value ]) => {
+  if (!nodeOrder) {
+    nodeOrder = Object.keys(node)
+  }
+  const fields = nodeOrder.map((key) => {
+    const value = R.prop(key, node)
     if (value === Object(value)) {
       const targetModel = R.path([key, 'type', 'target'], fieldDefinitions)
       return getRowFields(schema, targetModel, value)
@@ -42,8 +48,8 @@ const getRowFields = (schema, modelName, node) => {
   )(fields)
 }
 
-const Row = ({ schema, nodeModelName, node }) => {
-  const fields = getRowFields(schema, nodeModelName, node)
+const Row = ({ schema, nodeModelName, node, editedHeaderFields }) => {
+  const fields = getRowFields(schema, nodeModelName, node, editedHeaderFields)
   return (
     <tr>
       {fields.map((field, index) => (
@@ -70,10 +76,18 @@ const HeaderRow = ({ headers }) => {
 
 const ReviewTable = ({ schema, table }) => {
   let headers = []
+  let editedHeaderFields
   if (!R.isEmpty(table)) {
     const node = table[0]
     const nodeModelName = R.prop('__typename', node)
-    headers = getHeaders(schema, nodeModelName, node).map(fieldName =>
+    const headerFields = getHeaders(schema, nodeModelName, node)
+    const fieldOrder = R.prop('fieldOrder', getModel(schema, nodeModelName))
+
+    editedHeaderFields = R.filter(
+      R.identity,
+      fieldOrder.map(field => R.includes(field, headerFields) ? field : undefined)
+    )
+    headers = editedHeaderFields.map(fieldName =>
       getFieldLabel({schema, modelName: nodeModelName, fieldName})
     )
   }
@@ -92,7 +106,8 @@ const ReviewTable = ({ schema, table }) => {
             <Row key={`${index}-${node.id}`} {...{
               schema,
               nodeModelName: R.prop('__typename', node),
-              node
+              node,
+              editedHeaderFields
             }} />
           ))}
         </tbody>
