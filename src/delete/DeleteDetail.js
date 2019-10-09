@@ -4,16 +4,12 @@ import { Modal } from '../Modal'
 import { isEnum } from '../utils/isType'
 import { getEnumLabel } from '../Utils'
 import { getFields as getFieldDefinitions, getActions } from '../utils/schemaGetters'
+import { getModelLabel, getFieldLabel } from '../Detail'
 
 const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
 
 const getHeaders = (schema, modelName, node) => {
-  console.log('---getHeaders', modelName, node)
-  const headers = Object.entries(node).map(([ key, value ]) => {
-    if (exclusionCondition(key)) {
-      return key
-    }
-  })
+  const headers = Object.keys(node).map(key => exclusionCondition(key) ? key : undefined)
   return R.pipe(
     R.flatten,
     R.reject(val => val === undefined)
@@ -60,7 +56,6 @@ const Row = ({ schema, nodeModelName, node }) => {
 }
 
 const HeaderRow = ({ headers }) => {
-  console.log('---headers', headers)
   return (
     <tr>
       {headers.map((head, index) => (
@@ -79,13 +74,15 @@ const ReviewTable = ({ schema, table }) => {
     const node = table[0]
     const nodeModelName = R.prop('__typename', node)
     headers = getHeaders(schema, nodeModelName, node).map(fieldName =>
-      R.path([nodeModelName, 'fields', fieldName, 'displayName'], schema)
+      getFieldLabel({schema, modelName: nodeModelName, fieldName})
     )
   }
-  console.log('---table', table)
+  const tableDisplayName = getModelLabel({
+    schema, modelName: table[0].__typename, data: {}
+  })
   return (
     <div className='mt-2'>
-      <h5 className='d-inline'>{table[0].__typename}</h5>
+      <h5 className='d-inline'>{tableDisplayName}</h5>
       <table className='table table-striped table-bordered'>
         <tbody>
           <HeaderRow {...{
