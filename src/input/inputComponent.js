@@ -122,7 +122,7 @@ const inputStringTypeMap = {
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
- * @property { boolean } autoFocus
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
 export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
@@ -155,7 +155,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
- * @property { boolean } autoFocus
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
 export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
@@ -189,7 +189,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
- * @property { boolean } autoFocus
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
 export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
@@ -255,7 +255,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
- * @property { boolean } autoFocus
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
 export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (

@@ -6,6 +6,8 @@ import { getModel, getFields, getActions, getField, getCreateFields } from '../u
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
 import { getModelLabel } from '../Detail'
+import { isAutoFocusInput } from '../input/index'
+import { getInputType } from '../form/InputType'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
@@ -79,6 +81,7 @@ const Create = ({
   const onCancel = R.path(['create', 'onCancel'], actions)
   const onSave = R.path(['create', 'onSave'], actions)
   const disableButtons = stackIndex !== stack.length - 1
+  let autoFocusAdded = false
 
   return (
     <div className='container'>
@@ -86,13 +89,18 @@ const Create = ({
       <h1>Create {getModelLabel({ schema, modelName, form })}</h1>
       <div>* Indicates a Required Field</div>
       <br />
-      <div>{fieldOrder.map((fieldName, idx) => {
+      <div>{fieldOrder.map(fieldName => {
         const disabled = isFieldDisabled({ schema, modelName, fieldName, form })
         const value = disabled
           ? getDisabledValue({ schema, modelName, fieldName, form })
           : R.path(['fields', fieldName], form)
         const error = getFieldErrorCreate({ formStack, stackIndex, fieldName })
-
+        let autoFocus = false
+        if (!autoFocusAdded &&
+            isAutoFocusInput(getInputType({ schema, modelName, fieldName }))) {
+          autoFocus = true
+          autoFocusAdded = true
+        }
         return <Input key={fieldName} {...{
           schema,
           modelName,
@@ -105,7 +113,7 @@ const Create = ({
           disabled,
           formStack,
           customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
-          autoFocus: (idx === 0),
+          autoFocus,
           ...props
         }} />
       })}</div>

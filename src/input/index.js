@@ -37,6 +37,22 @@ const includeProps = [
   'autoFocus'
 ]
 
+export const isAutoFocusInput = (type) => {
+  switch(type) {
+    case inputTypes.STRING_TYPE:
+    case inputTypes.TEXTAREA_TYPE:
+    case inputTypes.EMAIL_TYPE:
+    case inputTypes.URL_TYPE:
+    case inputTypes.PHONE_TYPE:
+    case inputTypes.PASSWORD_TYPE:
+    case inputTypes.INT_TYPE:
+    case inputTypes.CURRENCY_TYPE:
+      return true
+    default:
+      return false
+  }
+}
+
 const defaultTypeMap = {
   [inputTypes.STRING_TYPE]: InputString,
   [inputTypes.EMAIL_TYPE]: InputString,
@@ -235,6 +251,8 @@ class FlexibleInput extends React.Component {
  *      'error' and 'id' and returns an html component in to be displayed below the field
  * @param { object } [customLabel] - custom label to be displayed above the filed
  *      not available for 'Checkbox' type
+ * @param { boolean } [autoFocus] refers to specific fields (see isAutoFocusInput()) that have
+ *      autofocus input feature
  *
  * @returns { object } - Single input component
 */
