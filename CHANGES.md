@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+-   Add error to Int field overflow #57
+
 ## Version 1.2.0
 
 ### Released 10/2/19

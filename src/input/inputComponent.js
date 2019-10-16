@@ -187,28 +187,33 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { function } customLabel
  */
 
-export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
-    customError={R.defaultTo(null, customError)}
-    customLabel={customLabel}>
-    <input
-      type='number'
-      step={1}
-      onChange={evt => {
-        if (evt.target.value === '') {
-          return onChange(null)
-        }
-        return (
-          onChange(Number(evt.target.value))
-        )
-      }}
-      className={`${className}${error ? ' is-invalid' : ''}`}
-      id={id}
-      value={value.toString()}
-      {...customProps}
-    />
-  </FormGroup>
-)
+export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => {
+  if (value > (Math.pow(2, 31) -1)) {
+    error = R.append('Number too large.', error)
+  }
+  return (
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+      customError={R.defaultTo(null, customError)}
+      customLabel={customLabel}>
+      <input
+        type='number'
+        step={1}
+        onChange={evt => {
+          if (evt.target.value === '') {
+            return onChange(null)
+          }
+          return (
+            onChange(Number(evt.target.value))
+          )
+        }}
+        className={`${className}${error ? ' is-invalid' : ''}`}
+        id={id}
+        value={value.toString()}
+        {...customProps}
+      />
+    </FormGroup>
+  )
+}
 
 export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
