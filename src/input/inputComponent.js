@@ -187,8 +187,12 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { function } customLabel
  */
 
+const MAX_SQL_INT_SIZE = Math.pow(2, 31) -1
+
+const MIN_SQL_INT_SIZE = - Math.pow(2, 31)
+
 export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => {
-  if (value > (Math.pow(2, 31) -1)) {
+  if (value > MAX_SQL_INT_SIZE || value < MIN_SQL_INT_SIZE) {
     error = R.append('Number too large.', error)
   }
   return (
