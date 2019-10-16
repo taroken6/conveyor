@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+-   Add onKeyDown function to Input component #58
+
 ## Version 1.2.0
 
 ### Released 10/2/19
