@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
-import { getModel, getFields, getActions, getField, getCreateFields } from '../utils/schemaGetters'
+import { getActions, getField, getCreateFields } from '../utils/schemaGetters'
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
 import { getModelLabel } from '../Detail'
@@ -83,6 +83,12 @@ const Create = ({
   const disableButtons = stackIndex !== stack.length - 1
   let autoFocusAdded = false
 
+  const onKeyDown = (evt) => {
+    if (evt.key === 'Enter') {
+      return onSave({ modelName })
+    }
+  }
+
   return (
     <div className='container'>
       <Breadcrumbs schema={schema} formStack={formStack} />
@@ -114,6 +120,7 @@ const Create = ({
           formStack,
           customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
           autoFocus,
+          onKeyDown,
           ...props
         }} />
       })}</div>

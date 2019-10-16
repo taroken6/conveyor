@@ -46,6 +46,8 @@ const CustomErrorComponent = ({ error, id }) =>
  * Singular component for Date Type.
  *
  * See React DatePicker for details on: dateFormat, isClearable
+ *
+ * should NOT have onKeyDown because the 'enter' key should be reserved for DatePicker operations
 
  * @property { function } onChange - returns evt:
  *      evt => onChange(evt)
@@ -125,7 +127,7 @@ const inputStringTypeMap = {
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
+export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -136,6 +138,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
       className={`${className}${error ? ' is-invalid' : ''}`}
       id={id}
       value={value}
+      onKeyDown={onKeyDown}
       {...customProps}
     />
   </FormGroup>
@@ -158,7 +161,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
+export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -169,6 +172,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
       className={`${className}${error ? ' is-invalid' : ''}`}
       id={id}
       value={value}
+      onKeyDown={onKeyDown}
       {...customProps}
     />
   </FormGroup>
@@ -192,31 +196,41 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
-    customError={R.defaultTo(null, customError)}
-    customLabel={customLabel}>
-    <input
-      autoFocus={autoFocus}
-      type='number'
-      step={1}
-      onChange={evt => {
-        if (evt.target.value === '') {
-          return onChange(null)
-        }
-        return (
-          onChange(Number(evt.target.value))
-        )
-      }}
-      className={`${className}${error ? ' is-invalid' : ''}`}
-      id={id}
-      value={value.toString()}
-      {...customProps}
-    />
-  </FormGroup>
-)
+const MAX_SQL_INT_SIZE = Math.pow(2, 31) -1
 
-export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
+const MIN_SQL_INT_SIZE = - Math.pow(2, 31)
+
+export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => {
+  if (value > MAX_SQL_INT_SIZE || value < MIN_SQL_INT_SIZE) {
+    error = R.append('Number too large.', error)
+  }
+  return (
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+      customError={R.defaultTo(null, customError)}
+      customLabel={customLabel}>
+      <input
+        autoFocus={autoFocus}
+        type='number'
+        step={1}
+        onChange={evt => {
+          if (evt.target.value === '') {
+            return onChange(null)
+          }
+          return (
+            onChange(Number(evt.target.value))
+          )
+        }}
+        className={`${className}${error ? ' is-invalid' : ''}`}
+        id={id}
+        onKeyDown={onKeyDown}
+        value={value.toString()}
+        {...customProps}
+      />
+    </FormGroup>
+  )
+}
+
+export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -229,6 +243,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
         className={`${className}${error ? ' is-invalid' : ''}`}
         placeholder={'0.00'}
         value={value}
+        onKeyDown={onKeyDown}
         onChange={evt => {
           if (evt === '' || evt === undefined || evt === null) {
             return (onChange(null))
@@ -243,6 +258,8 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
 
 /**
  * Singular component for TextArea Type.
+ *
+ * should NOT have onKeyDown because 'enter' should be reserved for textarea operations
  *
  * @property { function } onChange - returns evt.target.value:
  *     evt => onChange(evt.target.value)
@@ -423,6 +440,8 @@ export const InputCheckbox = ({ onChange, value, id, className, labelStr, error,
  *
  * See React Select docs for more details on: isClearable, isMulti, options, noOptionsMessage,
  * onMenuOpen
+ *
+* should NOT have onKeyDown because the 'enter' key should be reserved for Select operations
  *
  * @property { function } onChange
  * @property { string } id

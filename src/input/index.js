@@ -34,7 +34,8 @@ const includeProps = [
   'customProps',
   'customError',
   'customLabel',
-  'autoFocus'
+  'autoFocus',
+  'onKeyDown',
 ]
 
 export const isAutoFocusInput = (type) => {
