@@ -191,29 +191,38 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { function } customLabel
  */
 
-export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
-    customError={R.defaultTo(null, customError)}
-    customLabel={customLabel}>
-    <input
-      type='number'
-      step={1}
-      onChange={evt => {
-        if (evt.target.value === '') {
-          return onChange(null)
-        }
-        return (
-          onChange(Number(evt.target.value))
-        )
-      }}
-      className={`${className}${error ? ' is-invalid' : ''}`}
-      id={id}
-      onKeyDown={onKeyDown}
-      value={value.toString()}
-      {...customProps}
-    />
-  </FormGroup>
-)
+const MAX_SQL_INT_SIZE = Math.pow(2, 31) -1
+
+const MIN_SQL_INT_SIZE = - Math.pow(2, 31)
+
+export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => {
+  if (value > MAX_SQL_INT_SIZE || value < MIN_SQL_INT_SIZE) {
+    error = R.append('Number too large.', error)
+  }
+  return (
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+      customError={R.defaultTo(null, customError)}
+      customLabel={customLabel}>
+      <input
+        type='number'
+        step={1}
+        onChange={evt => {
+          if (evt.target.value === '') {
+            return onChange(null)
+          }
+          return (
+            onChange(Number(evt.target.value))
+          )
+        }}
+        className={`${className}${error ? ' is-invalid' : ''}`}
+        id={id}
+        onKeyDown={onKeyDown}
+        value={value.toString()}
+        {...customProps}
+      />
+    </FormGroup>
+  )
+}
 
 export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
