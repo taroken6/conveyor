@@ -81,8 +81,8 @@ const Create = ({
   const disableButtons = stackIndex !== stack.length - 1
 
   const onKeyDown = (evt) => {
-    if (evt.keyCode === 13) {
-      return(onSave({ modelName }))
+    if (evt.key === 'Enter') {
+      return onSave({ modelName })
     }
   }
 
