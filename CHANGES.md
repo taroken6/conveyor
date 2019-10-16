@@ -4,6 +4,7 @@
 
 ### Unreleased
 
+-   Add onKeyDown function to Input component #58
 -   Add error to Int field overflow #57
 
 ## Version 1.2.0

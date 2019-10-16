@@ -80,6 +80,12 @@ const Create = ({
   const onSave = R.path(['create', 'onSave'], actions)
   const disableButtons = stackIndex !== stack.length - 1
 
+  const onKeyDown = (evt) => {
+    if (evt.key === 'Enter') {
+      return onSave({ modelName })
+    }
+  }
+
   return (
     <div className='container'>
       <Breadcrumbs schema={schema} formStack={formStack} />
@@ -105,6 +111,7 @@ const Create = ({
           disabled,
           formStack,
           customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
+          onKeyDown,
           ...props
         }} />
       })}</div>
