@@ -46,6 +46,8 @@ const CustomErrorComponent = ({ error, id }) =>
  * Singular component for Date Type.
  *
  * See React DatePicker for details on: dateFormat, isClearable
+ *
+ * should NOT have onKeyDown because the 'enter' key should be reserved for DatePicker operations
 
  * @property { function } onChange - returns evt:
  *      evt => onChange(evt)
@@ -124,7 +126,7 @@ const inputStringTypeMap = {
  * @property { function } customLabel
  */
 
-export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
+export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -134,6 +136,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
       className={`${className}${error ? ' is-invalid' : ''}`}
       id={id}
       value={value}
+      onKeyDown={onKeyDown}
       {...customProps}
     />
   </FormGroup>
@@ -155,7 +158,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
  * @property { function } customLabel
  */
 
-export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
+export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -165,6 +168,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
       className={`${className}${error ? ' is-invalid' : ''}`}
       id={id}
       value={value}
+      onKeyDown={onKeyDown}
       {...customProps}
     />
   </FormGroup>
@@ -187,7 +191,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { function } customLabel
  */
 
-export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
+export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -204,13 +208,14 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
       }}
       className={`${className}${error ? ' is-invalid' : ''}`}
       id={id}
+      onKeyDown={onKeyDown}
       value={value.toString()}
       {...customProps}
     />
   </FormGroup>
 )
 
-export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
+export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -222,6 +227,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
         className={`${className}${error ? ' is-invalid' : ''}`}
         placeholder={'0.00'}
         value={value}
+        onKeyDown={onKeyDown}
         onChange={evt => {
           if (evt === '' || evt === undefined || evt === null) {
             return (onChange(null))
@@ -236,6 +242,8 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
 
 /**
  * Singular component for TextArea Type.
+ *
+ * should NOT have onKeyDown because 'enter' should be reserved for textarea operations
  *
  * @property { function } onChange - returns evt.target.value:
  *     evt => onChange(evt.target.value)
@@ -414,6 +422,8 @@ export const InputCheckbox = ({ onChange, value, id, className, labelStr, error,
  *
  * See React Select docs for more details on: isClearable, isMulti, options, noOptionsMessage,
  * onMenuOpen
+ *
+* should NOT have onKeyDown because the 'enter' key should be reserved for Select operations
  *
  * @property { function } onChange
  * @property { string } id

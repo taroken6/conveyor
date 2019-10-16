@@ -33,7 +33,9 @@ const includeProps = [
   'required',
   'customProps',
   'customError',
-  'customLabel' ]
+  'customLabel',
+  'onKeyDown',
+]
 
 const defaultTypeMap = {
   [inputTypes.STRING_TYPE]: InputString,
