@@ -2,10 +2,12 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
-import { getModel, getFields, getActions, getField, getCreateFields } from '../utils/schemaGetters'
+import { getActions, getField, getCreateFields } from '../utils/schemaGetters'
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
 import { getModelLabel } from '../Detail'
+import { isAutoFocusInput } from '../input/index'
+import { getInputType } from '../form/InputType'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
@@ -79,6 +81,7 @@ const Create = ({
   const onCancel = R.path(['create', 'onCancel'], actions)
   const onSave = R.path(['create', 'onSave'], actions)
   const disableButtons = stackIndex !== stack.length - 1
+  let autoFocusAdded = false
 
   const onKeyDown = (evt) => {
     if (evt.key === 'Enter') {
@@ -98,7 +101,12 @@ const Create = ({
           ? getDisabledValue({ schema, modelName, fieldName, form })
           : R.path(['fields', fieldName], form)
         const error = getFieldErrorCreate({ formStack, stackIndex, fieldName })
-
+        let autoFocus = false
+        if (!autoFocusAdded &&
+            isAutoFocusInput(getInputType({ schema, modelName, fieldName }))) {
+          autoFocus = true
+          autoFocusAdded = true
+        }
         return <Input key={fieldName} {...{
           schema,
           modelName,
@@ -111,6 +119,7 @@ const Create = ({
           disabled,
           formStack,
           customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
+          autoFocus,
           onKeyDown,
           ...props
         }} />

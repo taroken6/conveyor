@@ -120,6 +120,7 @@ export const InputCore = ({
   customLabel,
   onMenuOpen,
   customProps,
+  autoFocus,
   onKeyDown,
   ...props
 }) => {
@@ -139,7 +140,8 @@ export const InputCore = ({
     error,
     required: R.prop('required', getField(schema, modelName, fieldName)),
     customProps,
-    onKeyDown,
+    autoFocus,
+    onKeyDown
   }
   const enumChoices = getEnumChoices(schema, modelName, fieldName)
   const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)

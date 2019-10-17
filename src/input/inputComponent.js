@@ -124,13 +124,15 @@ const inputStringTypeMap = {
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
+export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <input
+      autoFocus={autoFocus}
       type={inputStringTypeMap[type]}
       onChange={evt => onChange(evt.target.value)}
       className={`${className}${error ? ' is-invalid' : ''}`}
@@ -156,13 +158,15 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
+export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <input
+      autoFocus={autoFocus}
       type='password'
       onChange={evt => onChange(evt.target.value)}
       className={`${className}${error ? ' is-invalid' : ''}`}
@@ -189,13 +193,14 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
 const MAX_SQL_INT_SIZE = Math.pow(2, 31) -1
 
 const MIN_SQL_INT_SIZE = - Math.pow(2, 31)
 
-export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => {
+export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => {
   if (value > MAX_SQL_INT_SIZE || value < MIN_SQL_INT_SIZE) {
     error = R.append('Number too large.', error)
   }
@@ -204,6 +209,7 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
       customError={R.defaultTo(null, customError)}
       customLabel={customLabel}>
       <input
+        autoFocus={autoFocus}
         type='number'
         step={1}
         onChange={evt => {
@@ -224,7 +230,7 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
   )
 }
 
-export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, onKeyDown }) => (
+export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -233,6 +239,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
         <span className='input-group-text'>$</span>
       </div>
       <CurrencyInput
+        autoFocus={autoFocus}
         className={`${className}${error ? ' is-invalid' : ''}`}
         placeholder={'0.00'}
         value={value}
@@ -265,13 +272,15 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
+ * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel }) => (
+export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <textarea
+      autoFocus={autoFocus}
       className={`${className}${error ? ' is-invalid' : ''}`}
       value={value}
       onChange={evt => onChange(evt.target.value)}
