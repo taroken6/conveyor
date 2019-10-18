@@ -27,6 +27,10 @@ const getRowFields = (schema, modelName, node, nodeOrder) => {
   }
   const fields = nodeOrder.map((key) => {
     const value = R.prop(key, node)
+    const override = R.path([modelName, 'deleteModal', 'rows', key], schema)
+    if (override) {
+      return override({ schema, modelName, node, fieldName: key })
+    }
     if (value === Object(value)) {
       const targetModel = R.path([key, 'type', 'target'], fieldDefinitions)
       return getRowFields(schema, targetModel, value)
