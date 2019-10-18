@@ -39,6 +39,18 @@ body {
   width: 25px;
   margin-left: 10px;
 }
+
+.header-icon {
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.header-overflow {
+  width: max-content;
+  overflow: hidden;
+  float: right;
+}
+
 .edit-icon:hover {
   fill: lightgreen;
   cursor: pointer;
