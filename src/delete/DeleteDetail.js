@@ -84,13 +84,23 @@ const ReviewTable = ({ schema, table }) => {
   if (!R.isEmpty(table)) {
     const node = table[0]
     const nodeModelName = R.prop('__typename', node)
-    const headerFields = getHeaders(schema, nodeModelName, node)
-    const fieldOrder = R.prop('fieldOrder', getModel(schema, nodeModelName))
+    // get custom headers from schema
+    const customHeaders = R.path([nodeModelName, 'deleteModal', 'headers'], schema)
 
-    editedHeaderFields = R.filter(
-      R.identity,
-      fieldOrder.map(field => R.includes(field, headerFields) ? field : undefined)
-    )
+    if (!customHeaders) {
+      // pick fields that 'node' contains & order them by 'fieldOrder'
+      const headerFields = getHeaders(schema, nodeModelName, node)
+      const fieldOrder = R.prop('fieldOrder', getModel(schema, nodeModelName))
+
+      editedHeaderFields = R.filter(
+        R.identity,
+        fieldOrder.map(field => R.includes(field, headerFields) ? field : undefined)
+      )
+    } else {
+      editedHeaderFields = customHeaders
+    }
+
+    // turn fieldNames in to labels
     headers = editedHeaderFields.map(fieldName =>
       getFieldLabel({schema, modelName: nodeModelName, fieldName})
     )
