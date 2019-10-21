@@ -11,13 +11,11 @@ import { getModelLabel, getFieldLabel } from '../Detail'
 
 const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
 
-const getHeaders = (schema, modelName, node) => {
-  const headers = Object.keys(node).map(key => exclusionCondition(key) ? key : undefined)
-  return R.pipe(
-    R.flatten,
-    R.reject(val => val === undefined)
-  )(headers)
-}
+const getHeaders = (schema, modelName, node) =>
+  R.pipe(
+    R.pickBy((_, key) => exclusionCondition(key)),
+    R.keys()
+  )(node)
 
 
 const getRowFields = (schema, modelName, node, nodeOrder) => {
