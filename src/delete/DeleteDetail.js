@@ -3,18 +3,38 @@ import * as R from 'ramda'
 import { Modal } from '../Modal'
 import { isEnum } from '../utils/isType'
 import { getEnumLabel } from '../Utils'
-import { getFields as getFieldDefinitions, getActions } from '../utils/schemaGetters'
+import {
+  getFields as getFieldDefinitions, getActions,
+  getModel
+} from '../utils/schemaGetters'
+import { getModelLabel, getFieldLabel } from '../Detail'
 
-const getFields = (schema, modelName, node) => {
+const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
+
+const getHeaders = (schema, modelName, node) =>
+  R.pipe(
+    R.pickBy((_, key) => exclusionCondition(key)),
+    R.keys()
+  )(node)
+
+
+const getRowFields = (schema, modelName, node, nodeOrder) => {
   const fieldDefinitions = getFieldDefinitions(schema, modelName)
-
-  const fields = Object.entries(node).map(([ key, value ]) => {
+  if (!nodeOrder) {
+    nodeOrder = Object.keys(node)
+  }
+  const fields = nodeOrder.map((key) => {
+    const value = R.prop(key, node)
+    const override = R.path([modelName, 'deleteModal', 'rows', key], schema)
+    if (override) {
+      return override({ schema, modelName, node, fieldName: key })
+    }
     if (value === Object(value)) {
       const targetModel = R.path([key, 'type', 'target'], fieldDefinitions)
-      return getFields(schema, targetModel, value)
+      return getRowFields(schema, targetModel, value)
     }
 
-    if (!R.includes(key, ['__typename', 'id'])) {
+    if (exclusionCondition(key)) {
       const fieldDefinition = R.prop(key, fieldDefinitions)
       if (isEnum(fieldDefinition)) {
         return getEnumLabel({ schema, modelName, fieldName: key, value })
@@ -30,8 +50,8 @@ const getFields = (schema, modelName, node) => {
   )(fields)
 }
 
-const Row = ({ schema, model, node }) => {
-  const fields = getFields(schema, model, node)
+const Row = ({ schema, nodeModelName, node, editedHeaderFields }) => {
+  const fields = getRowFields(schema, nodeModelName, node, editedHeaderFields)
   return (
     <tr>
       {fields.map((field, index) => (
@@ -43,22 +63,71 @@ const Row = ({ schema, model, node }) => {
   )
 }
 
-const ReviewTable = ({ schema, table }) => (
-  <div className='mt-2'>
-    <h5 className='d-inline'>{table[0].__typename}</h5>
-    <table className='table table-striped table-bordered'>
-      <tbody>
-        {table && table.map((node, index) => (
-          <Row key={`${index}-${node.id}`} {...{
-            schema,
-            model: R.prop('__typename', node),
-            node
+const HeaderRow = ({ headers }) => {
+  return (
+    <tr>
+      {headers.map((head, index) => (
+        <th key={index}>
+          {head}
+        </th>
+      ))}
+    </tr>
+  )
+}
+
+
+const ReviewTable = ({ schema, table }) => {
+  let headers = []
+  let editedHeaderFields
+  if (!R.isEmpty(table)) {
+    const node = table[0]
+    const nodeModelName = R.prop('__typename', node)
+    // get custom headers from schema
+    const customHeaders = R.path([nodeModelName, 'deleteModal', 'headers'], schema)
+
+    if (!customHeaders) {
+      // pick fields that 'node' contains & order them by 'fieldOrder'
+      const headerFields = getHeaders(schema, nodeModelName, node)
+      const fieldOrder = R.prop('fieldOrder', getModel(schema, nodeModelName))
+
+      editedHeaderFields = R.filter(
+        R.identity,
+        fieldOrder.map(field => R.includes(field, headerFields) ? field : undefined)
+      )
+    } else {
+      editedHeaderFields = customHeaders
+    }
+
+    // turn fieldNames in to labels
+    headers = editedHeaderFields.map(fieldName =>
+      getFieldLabel({schema, modelName: nodeModelName, fieldName})
+    )
+  }
+  const tableDisplayName = getModelLabel({
+    schema, modelName: table[0].__typename, data: {}
+  })
+  return (
+    <div className='mt-2'>
+      <h5 className='d-inline'>{tableDisplayName}</h5>
+      <table className='table table-striped table-bordered'>
+        <tbody>
+          <HeaderRow {...{
+            headers
           }} />
-        ))}
-      </tbody>
-    </table>
-  </div>
-)
+          {table && table.map((node, index) => (
+            <Row key={`${index}-${node.id}`} {...{
+              schema,
+              nodeModelName: R.prop('__typename', node),
+              node,
+              editedHeaderFields
+            }} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 
 export const DeleteDetail = ({
   schema,
