@@ -2,6 +2,8 @@
 
 ## Version 1.3.0
 
+-   Add ability to add displayNamePlural function #60
+
 ### Unreleased
 
 -   Cleanup delete review tables #54
