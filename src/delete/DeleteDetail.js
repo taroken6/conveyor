@@ -7,7 +7,7 @@ import {
   getFields as getFieldDefinitions, getActions,
   getModel
 } from '../utils/schemaGetters'
-import { getModelLabel, getFieldLabel } from '../Detail'
+import { getModelLabel, getFieldLabel } from '../utils/schemaGetters'
 
 const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
 

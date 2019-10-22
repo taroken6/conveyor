@@ -1,5 +1,5 @@
 import React from 'react'
-import { getFieldLabel } from '../Detail'
+import { getFieldLabel } from '../utils/schemaGetters'
 import { showButtonColumn } from './Table'
 import * as R from 'ramda'
 import { getActions, getField } from '../utils/schemaGetters'

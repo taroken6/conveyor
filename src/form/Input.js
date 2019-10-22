@@ -8,7 +8,7 @@ import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable } from '../Utils'
 import { getActions, getEnumChoices, getEnumChoiceOrder, getField } from '../utils/schemaGetters'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
-import { getFieldLabel } from '../Detail'
+import { getFieldLabel } from '../utils/schemaGetters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
 

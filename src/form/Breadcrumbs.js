@@ -1,7 +1,7 @@
 import React from 'react'
 import * as R from 'ramda'
 import { getActions } from '../utils/schemaGetters'
-import { getModelLabel } from '../Detail'
+import { getModelLabel } from '../utils/schemaGetters'
 
 export const Breadcrumbs = ({ schema, formStack }) => {
   const stack = R.prop('stack', formStack)
