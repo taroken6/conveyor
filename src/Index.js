@@ -6,15 +6,15 @@ import { getModel, getFields, getActions, getHasIndex, getIndexFields, getModelL
 import { Redirect } from 'react-router-dom'
 import { isCreatable } from './Utils'
 
-export const DefaultIndexTitle = ({ schema, modelName, path, ...props }) => {
+export const DefaultIndexTitle = ({ schema, modelName, path, data, ...props }) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
-  const creatable = isCreatable({ schema, modelName, ...props })
+  const creatable = isCreatable({ schema, modelName, data, ...props })
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {getModelLabelPlural({schema, modelName, ...props})}
+        {getModelLabelPlural({schema, modelName, data, ...props})}
       </h3>
       {creatable && <div className='float-right'>
         <CreateButton {...{ onClick }} />
@@ -47,7 +47,7 @@ const Index = ({
   const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)
 
   return (<div className='container'>
-    <Title {...{ schema, modelName, path, ...props }} />
+    <Title {...{ schema, modelName, path, data, ...props }} />
       <Table {...{
         schema,
         modelName,
