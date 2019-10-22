@@ -161,7 +161,7 @@ export const FilterComp = ({
       >
         <ReactSVG
           src={`/static/img/filter.svg`}
-          className='edit-icon'
+          className='header-icon'
           svgStyle={{width: '12px', height: '12px', fill: fillColor}}
         />
       </Tooltip>

@@ -47,7 +47,7 @@ export const SortButton = ({ modelName, fieldName, onSort, sortKeyObj }) => {
   return (
     <ReactSVG
       src={`/static/img/${getSortIcon(sortKey)}.svg`}
-      className='edit-icon'
+      className='header-icon'
       svgStyle={{width: '20px', height: '20px', fill: fillColor}}
       onClick={() => onSort({
         modelName,

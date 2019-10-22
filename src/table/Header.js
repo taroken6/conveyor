@@ -91,8 +91,10 @@ export const Header = ({
         href={'#'}>
         {title}
       </a>
-      { showSort && <SortButton {...{ modelName, fieldName, onSort, sortKeyObj }} /> }
-      { showFilter && <FilterComp {... { fieldName, modelName, schema, onFilterChange, onFilterSubmit, onFilterRadio, onMenuOpen, filterInput, selectOptions }} /> }
+      <div className={'header-overflow'}>
+        { showSort && <SortButton {...{ modelName, fieldName, onSort, sortKeyObj }} /> }
+        { showFilter && <FilterComp {... { fieldName, modelName, schema, onFilterChange, onFilterSubmit, onFilterRadio, onMenuOpen, filterInput, selectOptions }} /> }
+      </div>
     </div>
   </div>
 )
