@@ -5,7 +5,7 @@ import Input, { relationshipLabelFactory } from './Input'
 import { getActions, getField, getCreateFields } from '../utils/schemaGetters'
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
-import { getModelLabel } from '../Detail'
+import { getModelLabel } from '../utils/schemaGetters'
 import { isAutoFocusInput } from '../input/index'
 import { getInputType } from '../form/InputType'
 

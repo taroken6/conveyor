@@ -1,5 +1,29 @@
 import * as R from 'ramda'
 
+export const getFieldLabel = ({ schema, modelName, fieldName, data = {} }) => {
+  const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)
+  if (R.type(displayName) === 'Function') {
+    return displayName({ schema, modelName, data })
+  }
+  return displayName
+}
+
+export const getModelLabel = ({ schema, modelName, data, ...props }) => {
+  const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
+  if (R.type(displayName) === 'Function') {
+    return displayName({ schema, modelName, data, ...props })
+  }
+  return displayName
+}
+
+export const getModelLabelPlural = ({ schema, modelName, data, ...props }) => {
+  const displayName = R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)
+  if (R.type(displayName) === 'Function') {
+    return displayName({ schema, modelName, data, ...props })
+  }
+  return displayName
+}
+
 export const getModel = (schema, modelName) => (
   R.prop(modelName, schema)
 )

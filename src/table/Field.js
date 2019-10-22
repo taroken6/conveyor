@@ -8,7 +8,7 @@ import { getEnumLabel } from '../Utils'
 import { getModel, getTooltipFields } from '../utils/schemaGetters'
 import getDisplayValue from '../utils/getDisplayValue'
 import { ImageLinkModal } from '../Modal'
-import { getFieldLabel } from '../Detail'
+import { getFieldLabel } from '../utils/schemaGetters'
 import Tooltip from '../Tooltip'
 
 // gets the schema of the relationship model, based on field meta

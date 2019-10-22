@@ -2,7 +2,7 @@ import React from 'react'
 import { Table as DefaultTable } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
-import { getModel, getFields, getActions, getHasIndex, getIndexFields } from './utils/schemaGetters'
+import { getModel, getFields, getActions, getHasIndex, getIndexFields, getModelLabelPlural } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
 import { isCreatable } from './Utils'
 
@@ -14,7 +14,7 @@ export const DefaultIndexTitle = ({ schema, modelName, path, ...props }) => {
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)}
+        {getModelLabelPlural({schema, modelName, ...props})}
       </h3>
       {creatable && <div className='float-right'>
         <CreateButton {...{ onClick }} />

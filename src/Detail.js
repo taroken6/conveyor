@@ -6,7 +6,7 @@ import Field, { getRelSchemaEntry } from './table/Field'
 import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable } from './Utils'
 import {
   getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex
+  getDetailFields, getHasIndex, getModelLabel, getFieldLabel
 } from './utils/schemaGetters'
 
 import Tabs from './Tabs'
@@ -29,22 +29,6 @@ import Input, { relationshipLabelFactory } from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
-
-export const getFieldLabel = ({ schema, modelName, fieldName, data = {} }) => {
-  const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)
-  if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data })
-  }
-  return displayName
-}
-
-export const getModelLabel = ({ schema, modelName, data, ...props }) => {
-  const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
-  if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, ...props })
-  }
-  return displayName
-}
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
