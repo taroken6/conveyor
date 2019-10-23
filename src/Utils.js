@@ -39,16 +39,36 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
   return R.pathOr('Value Not Found', ['choices', value], field)
 }
 
-export const isTableEditable = ({ schema, modelName, data, ...props }) => (
-  !R.isEmpty(data.filter(rowData => isRowEditable({ schema, modelName, rowData, ...props })))
-)
+/**
+ * IMPORTANT:
+ *
+ * For isTableEditable, isRowEditable, isFieldEditable, is TableDeletable,
+ * isDeletable, & isCreatable
+ *
+ * modelName must match any 'node' (or data[n]) __typename
+ * parent 'node' must be labeled 'parentNode'
+ */
 
-export const isRowEditable = ({ schema, modelName, rowData, ...props }) => (
+export const isTableEditable = ({ schema, modelName, data, user, ...props }) => {
+  // no parent node passed down to row below
+  props = R.dissoc('node', props)
+  return (
+    !R.isEmpty(data.filter(node => isRowEditable({
+      schema,
+      modelName,
+      user,
+      node,
+      props
+    })))
+  )
+}
+
+export const isRowEditable = ({ schema, modelName, node, ...props }) => (
   R.pipe(
-    R.mapObjIndexed((_value, fieldName) => isFieldEditable({ schema, modelName, fieldName, rowData, ...props })),
+    R.mapObjIndexed((_value, fieldName) => isFieldEditable({ schema, modelName, fieldName, node, ...props })),
     R.filter(identity),
     filteredNode => !R.isEmpty(filteredNode)
-  )(rowData)
+  )(node)
 )
 
 export const isFieldEditable = ({ schema, modelName, fieldName, ...props }) => {
@@ -62,9 +82,17 @@ export const isFieldEditable = ({ schema, modelName, fieldName, ...props }) => {
   }
 }
 
-export const isTableDeletable = ({ schema, modelName, data, ...props }) => (
-  !R.isEmpty(data.filter(rowData => isDeletable({ schema, modelName, rowData, ...props })))
-)
+export const isTableDeletable = ({ schema, modelName, data, ...props }) => {
+  // no parent node passed down to row below
+  props = R.dissoc('node', props)
+  return (
+    !R.isEmpty(data.filter(node => isDeletable({
+      schema,
+      modelName,
+      node, ...props
+    })))
+  )
+}
 
 export const isDeletable = ({ schema, modelName, ...props }) => {
   const deletable = R.prop('deletable', getModel(schema, modelName))
