@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import FlexibleInput from '../input/index'
 import { getInputType } from './InputType'
 import { inputTypes } from '../consts'
-import { getInputOverride, isCreatable } from '../Utils'
+import { getInputOverride, isCreatable, skipOverride } from '../Utils'
 import { getActions, getEnumChoices, getEnumChoiceOrder, getField } from '../utils/schemaGetters'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import { getFieldLabel } from '../utils/schemaGetters'
@@ -63,6 +63,10 @@ const Input = ({
 
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
+
+  if (skipOverride(InputOverride)) {
+    return null
+  }
 
   if (InputOverride) {
     return <InputOverride

@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import { Table, DeleteButton } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
 import Field, { getRelSchemaEntry } from './table/Field'
-import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable } from './Utils'
+import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable, skipOverride } from './Utils'
 import {
   getActions, getModelAttribute, getField,
   getDetailFields, getHasIndex, getModelLabel, getFieldLabel
@@ -25,7 +25,7 @@ import {
 } from './Edit'
 import { Popover, PopoverContent } from './Popover'
 import getDisplayValue from './utils/getDisplayValue'
-import Input, { relationshipLabelFactory } from './form/Input'
+import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
@@ -43,6 +43,9 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
 
 export const DefaultDetailLabel = ({ schema, modelName, fieldName, data }) => {
   const LabelInfoComponent = R.path(['components', 'labelInfo'], getField(schema, modelName, fieldName))
+  if (skipOverride(LabelInfoComponent)) {
+    return null
+  }
   const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data })
   if (LabelInfoComponent) {
     return <LabelInfoPopover {...{ LabelInfoComponent, fieldLabel }} />
@@ -64,11 +67,18 @@ export const DefaultDetailAttribute = ({
 }) => {
   const actions = getActions(schema, modelName)
 
-  const DetailLabel = getDetailLabelOverride(schema, modelName, fieldName) || DefaultDetailLabel
-  const DetailValue = getDetailValueOverride(schema, modelName, fieldName) || Field
+  const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+  const ValueOverride = getDetailValueOverride(schema, modelName, fieldName)
+
+  const DetailLabel = LabelOverride || DefaultDetailLabel
+  const DetailValue = ValueOverride || Field
 
   const editable = isFieldEditable({ schema, modelName, fieldName, node, id, ...props })
   const fieldType = R.prop('type', getField(schema, modelName, fieldName))
+
+  if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
+    return null
+  }
 
   if (isFieldEditing(editData, modelName, node.id, fieldName) !== false) {
     const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
@@ -87,7 +97,9 @@ export const DefaultDetailAttribute = ({
     return (
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
-          <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
+          {
+            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
+          }
         </dt>
         <dd className='col-sm-9'>
           <InlineInput {...{
@@ -134,12 +146,14 @@ export const DefaultDetailAttribute = ({
     return (
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
-          <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
+          {
+            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
+          }
         </dt>
         <dd className='col-sm-9'>
-          <DetailValue {...{
-            schema, modelName, fieldName, node, id, tooltipData
-          }} />
+          {
+            skipOverride(ValueOverride) ? null : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData }} />
+          }
           {editable &&
             <InlineEditButton {...{
               onEditClick: (evt) => onEdit({
@@ -234,6 +248,36 @@ const DefaultDetailM2MTableTitle = ({
   )
 }
 
+const DefaultDetailM2MFieldLabel = ({
+  schema,
+  modelName,
+  fieldName,
+  node,
+  targetInverseFieldName,
+  path,
+  targetModelName,
+  ...props
+}) => {
+  const creatable = isCreatable({ schema, modelName: targetModelName, ...props })
+  const required = R.prop('required', getField(schema, modelName, fieldName))
+
+  const Label = () => (
+    <div style={{ marginBottom: '10px' }}>
+      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, ...props })}</h4>
+      { required && ' *'}
+      { creatable && <DetailCreateButton {...{
+        schema,
+        modelName,
+        targetModelName,
+        path,
+        targetInverseFieldName,
+        node
+      }} /> }
+    </div>
+  )
+  return Label
+}
+
 export const DefaultDetailTable = ({
   schema,
   modelName,
@@ -258,12 +302,15 @@ export const DefaultDetailTable = ({
 
   if (!data) { return <div className='container'>Loading...</div> }
 
-  const DetailValue = getDetailValueOverride(schema, modelName, fieldName) || Table
+  const ValueOverride = getDetailValueOverride(schema, modelName, fieldName)
+  const DetailValue = ValueOverride || Table
+
   if (type.includes('OneToMany')) {
-    const DetailLabel = getDetailLabelOverride(schema, modelName, fieldName) || DefaultDetailO2MTableTitle
+    const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+    const DetailLabel = LabelOverride || DefaultDetailO2MTableTitle
     return (
       <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
-        <DetailLabel {...{
+        { skipOverride(LabelOverride) ? null : <DetailLabel {...{
           schema,
           modelName,
           fieldName,
@@ -273,8 +320,10 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           ...props
-        }}>{getFieldLabel({ schema, modelName, fieldName, data: node })}</DetailLabel>
-        <DetailValue
+        }}>{getFieldLabel({schema, modelName, fieldName, data: node})}
+        </DetailLabel>
+        }
+        { skipOverride(ValueOverride) ? null : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -296,7 +345,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             ...props
           }}
-        />
+        /> }
       </React.Fragment>
     )
   } else if (type === 'ManyToMany') {
@@ -305,19 +354,16 @@ export const DefaultDetailTable = ({
       const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
       const onSaveClick = R.path(['edit', 'onDetailAttributeSubmit'], actions)
       const onCancelClick = R.path(['edit', 'onAttributeEditCancel'], actions)
-      const onDetailCreate = R.path(['create', 'onDetailCreate'], actions)
 
-      const onClick = () => onDetailCreate({
-        modelName: targetModelName,
-        path,
-        targetInverseFieldName,
-        node
-      })
-      const DetailRelLabel = relationshipLabelFactory({
+      const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+      const DetailLabel = LabelOverride || DefaultDetailM2MFieldLabel({
         schema,
         modelName,
         fieldName,
-        onClick,
+        node,
+        targetInverseFieldName,
+        path,
+        targetModelName,
         ...props
       })
 
@@ -330,7 +376,7 @@ export const DefaultDetailTable = ({
             value: getFieldEditData(editData, modelName, fieldName, id),
             error: getFieldErrorEdit(editData, modelName, fieldName, id),
             selectOptions,
-            customLabel: DetailRelLabel,
+            customLabel: DetailLabel,
             onChange: ({ ...props }) => onEditInputChange({
               id,
               modelName,
@@ -358,10 +404,16 @@ export const DefaultDetailTable = ({
       )
     }
 
-    const DetailLabel = getDetailLabelOverride(schema, modelName, fieldName) || DefaultDetailM2MTableTitle
+    const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+    const DetailLabel = LabelOverride || DefaultDetailM2MTableTitle
+
+    if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
+      return null
+    }
+
     return (
       <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
-        <DetailLabel {...{ schema,
+        { skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema,
           modelName,
           id,
           fieldName,
@@ -370,8 +422,8 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           ...props
-        }} />
-        <DetailValue
+        }} /> }
+        { skipOverride(ValueOverride) ? null : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -391,7 +443,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             ...props
           }}
-        />
+        /> }
       </React.Fragment>
     )
   }
@@ -461,7 +513,11 @@ export const DetailFields = ({
     <React.Fragment>
       <dl className='row'>
         {descriptionList.map(fieldName => {
-          const DetailAttribute = getDetailOverride(schema, modelName, fieldName) || DefaultDetailAttribute
+          const override = getDetailOverride(schema, modelName, fieldName)
+          if (skipOverride(override)) {
+            return null
+          }
+          const DetailAttribute = override || DefaultDetailAttribute
           return (
             <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
               {...{
@@ -481,7 +537,11 @@ export const DetailFields = ({
         })}
       </dl>
       {tableFields.map(fieldName => {
-        const DetailTable = getDetailOverride(schema, modelName, fieldName) || DefaultDetailTable
+        const override = getDetailOverride(schema, modelName, fieldName)
+        if (skipOverride(override)) {
+          return null
+        }
+        const DetailTable = override || DefaultDetailTable
         return (
           <DetailTable
             key={`DetailTable-${id}-${modelName}-${fieldName}`}

@@ -1,7 +1,7 @@
 import React from 'react'
 import Field from './Field'
 import { THead } from './Header'
-import { getCellOverride, isTableDeletable, isFieldEditable, isTableEditable, isRowEditable } from '../Utils'
+import { getCellOverride, isTableDeletable, isFieldEditable, isTableEditable, isRowEditable, skipOverride } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
@@ -128,6 +128,9 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
     )
   }
   const Override = getCellOverride(schema, modelName, fieldName)
+  if (skipOverride(Override)) {
+    return null
+  }
   if (Override) {
     return (
       <Override
