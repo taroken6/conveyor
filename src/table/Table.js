@@ -1,7 +1,7 @@
 import React from 'react'
 import Field from './Field'
 import { THead } from './Header'
-import { getCellOverride, isDeletable, isFieldEditable, isTableEditable, isRowEditable, skipOverride } from '../Utils'
+import { getCellOverride, isTableDeletable, isFieldEditable, isTableEditable, isRowEditable, skipOverride } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
@@ -112,7 +112,7 @@ export const TableButtonGroup = ({
 }
 
 export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, headerIdx, user }) => {
-  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, rowData: node, user })) {
+  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user })) {
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
     return (
@@ -212,12 +212,11 @@ export const TBody = ({
   user,
   ...props
 }) => {
-  // todo: fixed 'props' passing down 'node' as a value and overriding 'node' later on
   const actions = getActions(schema, modelName)
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (<tbody>
     {data.map((node, idx) => {
-      const editable = isRowEditable({ schema, modelName, rowData: node, user, ...props })
+      const editable = isRowEditable({ schema, modelName, node, user, ...props })
       // do not pass '...props' into below component because contains 'node' from parent object: will conflict with new 'node' from data.map()
       return (
         <tr key={`table-tr-${node.id}`}>
@@ -258,6 +257,7 @@ export const calcDetailField = ({schema, modelName, fieldOrder}) => {
 export const Table = ({
   schema,
   modelName,
+  node,
   data, // ordered list
   fieldOrder,
   onDelete,
@@ -274,15 +274,19 @@ export const Table = ({
   Body = TBody,
   ...props
 }) => {
+  // do not pass 'node' along to components below
+  const parentNode = node
+
   const filterable = R.path([modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
+
   if (!allColFilterable && !data) { return <div>...Loading</div> }
 
   if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
 
-  const deletable = isDeletable({ schema, modelName, ...props })
+  const deletable = isTableDeletable({ schema, modelName, data, parentNode, ...props })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
-  const editable = isTableEditable({ schema, modelName, data, ...props })
+  const editable = isTableEditable({ schema, modelName, data, parentNode, ...props })
   const sortable = R.path([modelName, 'sortable'], schema)
 
   return (
