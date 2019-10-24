@@ -3,6 +3,7 @@
 ## Version 1.3.0
 
 -   Add ability to add displayNamePlural function #60
+-   Add override skips & fix m2m rel label #16
 
 ### Unreleased
 
