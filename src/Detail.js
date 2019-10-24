@@ -25,7 +25,7 @@ import {
 } from './Edit'
 import { Popover, PopoverContent } from './Popover'
 import getDisplayValue from './utils/getDisplayValue'
-import Input, { relationshipLabelFactory } from './form/Input'
+import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
@@ -248,6 +248,36 @@ const DefaultDetailM2MTableTitle = ({
   )
 }
 
+const DefaultDetailM2MFieldLabel = ({
+  schema,
+  modelName,
+  fieldName,
+  node,
+  targetInverseFieldName,
+  path,
+  targetModelName,
+  ...props
+}) => {
+  const creatable = isCreatable({ schema, modelName: targetModelName, ...props })
+  const required = R.prop('required', getField(schema, modelName, fieldName))
+
+  const Label = () => (
+    <div style={{ marginBottom: '10px' }}>
+      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, ...props })}</h4>
+      { required && ' *'}
+      { creatable && <DetailCreateButton {...{
+        schema,
+        modelName,
+        targetModelName,
+        path,
+        targetInverseFieldName,
+        node
+      }} /> }
+    </div>
+  )
+  return Label
+}
+
 export const DefaultDetailTable = ({
   schema,
   modelName,
@@ -324,20 +354,16 @@ export const DefaultDetailTable = ({
       const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
       const onSaveClick = R.path(['edit', 'onDetailAttributeSubmit'], actions)
       const onCancelClick = R.path(['edit', 'onAttributeEditCancel'], actions)
-      const onDetailCreate = R.path(['create', 'onDetailCreate'], actions)
 
-      const onClick = () => onDetailCreate({
-        modelName: targetModelName,
-        path,
-        targetInverseFieldName,
-        node
-      })
-      // todo: fix this implement. shouldn't use func to get label. use existing framework
-      const DetailRelLabel = relationshipLabelFactory({
+      const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+      const DetailLabel = LabelOverride || DefaultDetailM2MFieldLabel({
         schema,
         modelName,
         fieldName,
-        onClick,
+        node,
+        targetInverseFieldName,
+        path,
+        targetModelName,
         ...props
       })
 
@@ -350,7 +376,7 @@ export const DefaultDetailTable = ({
             value: getFieldEditData(editData, modelName, fieldName, id),
             error: getFieldErrorEdit(editData, modelName, fieldName, id),
             selectOptions,
-            customLabel: DetailRelLabel,
+            customLabel: DetailLabel,
             onChange: ({ ...props }) => onEditInputChange({
               id,
               modelName,
