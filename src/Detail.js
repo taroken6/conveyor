@@ -67,16 +67,16 @@ export const DefaultDetailAttribute = ({
 }) => {
   const actions = getActions(schema, modelName)
 
-  const labelOverride = getDetailLabelOverride(schema, modelName, fieldName)
-  const valueOverride = getDetailValueOverride(schema, modelName, fieldName)
+  const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+  const ValueOverride = getDetailValueOverride(schema, modelName, fieldName)
 
-  const DetailLabel = labelOverride || DefaultDetailLabel
-  const DetailValue = valueOverride || Field
+  const DetailLabel = LabelOverride || DefaultDetailLabel
+  const DetailValue = ValueOverride || Field
 
   const editable = isFieldEditable({ schema, modelName, fieldName, rowData: node, id, ...props })
   const fieldType = R.prop('type', getField(schema, modelName, fieldName))
 
-  if (skipOverride(labelOverride) && skipOverride(valueOverride)) {
+  if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
     return ''
   }
 
@@ -98,7 +98,7 @@ export const DefaultDetailAttribute = ({
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
           {
-            skipOverride(labelOverride) ? '' : <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
+            skipOverride(LabelOverride) ? '' : <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
           }
         </dt>
         <dd className='col-sm-9'>
@@ -147,12 +147,12 @@ export const DefaultDetailAttribute = ({
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
           {
-            skipOverride(labelOverride) ? '' : <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
+            skipOverride(LabelOverride) ? '' : <DetailLabel {...{ schema, modelName, fieldName, data: node }} />
           }
         </dt>
         <dd className='col-sm-9'>
           {
-            skipOverride(valueOverride) ? '' : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData }} />
+            skipOverride(ValueOverride) ? '' : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData }} />
           }
           {editable &&
             <InlineEditButton {...{
@@ -272,15 +272,15 @@ export const DefaultDetailTable = ({
 
   if (!data) { return <div className='container'>Loading...</div> }
 
-  const valueOverride = getDetailValueOverride(schema, modelName, fieldName)
-  const DetailValue = valueOverride || Table
+  const ValueOverride = getDetailValueOverride(schema, modelName, fieldName)
+  const DetailValue = ValueOverride || Table
 
   if (type.includes('OneToMany')) {
-    const labelOverride = getDetailLabelOverride(schema, modelName, fieldName)
-    const DetailLabel = labelOverride || DefaultDetailO2MTableTitle
+    const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+    const DetailLabel = LabelOverride || DefaultDetailO2MTableTitle
     return (
       <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
-        { skipOverride(labelOverride) ? '' : <DetailLabel {...{
+        { skipOverride(LabelOverride) ? '' : <DetailLabel {...{
           schema,
           modelName,
           fieldName,
@@ -293,7 +293,7 @@ export const DefaultDetailTable = ({
         }}>{getFieldLabel({schema, modelName, fieldName, data: node})}
         </DetailLabel>
         }
-        { skipOverride(valueOverride) ? '' : <DetailValue
+        { skipOverride(ValueOverride) ? '' : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -378,16 +378,16 @@ export const DefaultDetailTable = ({
       )
     }
 
-    const labelOverride = getDetailLabelOverride(schema, modelName, fieldName)
-    const DetailLabel = labelOverride || DefaultDetailM2MTableTitle
+    const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+    const DetailLabel = LabelOverride || DefaultDetailM2MTableTitle
 
-    if (skipOverride(labelOverride) && skipOverride(valueOverride)) {
+    if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
       return ''
     }
 
     return (
       <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
-        { skipOverride(labelOverride) ? '' : <DetailLabel {...{ schema,
+        { skipOverride(LabelOverride) ? '' : <DetailLabel {...{ schema,
           modelName,
           id,
           fieldName,
@@ -397,7 +397,7 @@ export const DefaultDetailTable = ({
           targetModelName,
           ...props
         }} /> }
-        { skipOverride(valueOverride) ? '' : <DetailValue
+        { skipOverride(ValueOverride) ? '' : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
