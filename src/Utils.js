@@ -31,6 +31,9 @@ export const getInputOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'input'], schema)
 )
 
+// override component skipped only if 'null' (undefined by default)
+export const skipOverride = (component) => component === null
+
 export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
   if (value === null) {
     return 'N/A'
