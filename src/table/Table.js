@@ -129,7 +129,7 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
   }
   const Override = getCellOverride(schema, modelName, fieldName)
   if (skipOverride(Override)) {
-    return ''
+    return null
   }
   if (Override) {
     return (

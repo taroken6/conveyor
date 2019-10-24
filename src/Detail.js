@@ -44,7 +44,7 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
 export const DefaultDetailLabel = ({ schema, modelName, fieldName, data }) => {
   const LabelInfoComponent = R.path(['components', 'labelInfo'], getField(schema, modelName, fieldName))
   if (skipOverride(LabelInfoComponent)) {
-    return ''
+    return null
   }
   const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data })
   if (LabelInfoComponent) {
@@ -77,7 +77,7 @@ export const DefaultDetailAttribute = ({
   const fieldType = R.prop('type', getField(schema, modelName, fieldName))
 
   if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
-    return ''
+    return null
   }
 
   if (isFieldEditing(editData, modelName, node.id, fieldName) !== false) {
@@ -408,7 +408,7 @@ export const DefaultDetailTable = ({
     const DetailLabel = LabelOverride || DefaultDetailM2MTableTitle
 
     if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
-      return ''
+      return null
     }
 
     return (
@@ -515,7 +515,7 @@ export const DetailFields = ({
         {descriptionList.map(fieldName => {
           const override = getDetailOverride(schema, modelName, fieldName)
           if (skipOverride(override)) {
-            return ''
+            return null
           }
           const DetailAttribute = override || DefaultDetailAttribute
           return (
@@ -539,7 +539,7 @@ export const DetailFields = ({
       {tableFields.map(fieldName => {
         const override = getDetailOverride(schema, modelName, fieldName)
         if (skipOverride(override)) {
-          return ''
+          return null
         }
         const DetailTable = override || DefaultDetailTable
         return (

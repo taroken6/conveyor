@@ -65,7 +65,7 @@ const Input = ({
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
 
   if (skipOverride(InputOverride)) {
-    return ''
+    return null
   }
 
   if (InputOverride) {
