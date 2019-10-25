@@ -1,6 +1,8 @@
 Schema Overview
 ---------------
 
+*All schema information is determined by the back end unless otherwise noted
+
 The schema utilized by the framework will be different than the existing schema and will look like::
 
   {
