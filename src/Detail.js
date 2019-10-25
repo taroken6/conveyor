@@ -433,6 +433,8 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
+            tooltipData,
+            node,
             data,
             onDelete,
             onEditSubmit: ({ ...props }) => onEditSubmit({
@@ -471,7 +473,7 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null 
 
 const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, ...props }) => {
   const model = getModelLabel({ schema, modelName, data: node })
-  const label = getDisplayValue({ schema, modelName, data: node })
+  const label = getDisplayValue({ schema, modelName, node })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
   const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model

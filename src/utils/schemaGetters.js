@@ -16,10 +16,10 @@ export const getModelLabel = ({ schema, modelName, data, ...props }) => {
   return displayName
 }
 
-export const getModelLabelPlural = ({ schema, modelName, data, ...props }) => {
+export const getModelLabelPlural = ({ schema, modelName, data, user, ...props }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, ...props })
+    return displayName({ schema, modelName, data, user, ...props })
   }
   return displayName
 }
@@ -92,10 +92,10 @@ export const getDetailFields = ({ schema, modelName, node, ...props }) => {
   }  return getShownFields({ schema, modelName, type: 'showDetail', node })
 }
 
-export const getIndexFields = ({ schema, modelName, ...props }) => {
+export const getIndexFields = ({ schema, modelName, data, user, ...props }) => {
   const indexFieldOrder = R.prop('indexFieldOrder', getModel(schema, modelName))
   if (R.type(indexFieldOrder) === 'Function') {
-    return indexFieldOrder({ schema, modelName, ...props })
+    return indexFieldOrder({ schema, modelName, data, user, ...props })
   }
   else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder

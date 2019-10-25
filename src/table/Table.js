@@ -111,8 +111,8 @@ export const TableButtonGroup = ({
   </div>)
 }
 
-export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, headerIdx, user }) => {
-  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user })) {
+export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, ...props }) => {
+  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user, parentNode, ...props })) {
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
     return (
@@ -133,14 +133,12 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
   }
   if (Override) {
     return (
-      <Override
-        {...{ schema, modelName, fieldName, parentModelName, data: node, id: node.id }}
-      />
+      <Override {...{ schema, modelName, fieldName, parentModelName, node, tooltipData, id: node.id, ...props }} />
     )
   }
   // Add DetailLink to the field that is marked as the displayField
   if (detailField === fieldName) {
-    const displayString = getDisplayValue({ schema, modelName, data: node })
+    const displayString = getDisplayValue({ schema, modelName, parentModelName, node, ...props })
     return (
       <DetailLink {...{ modelName, id: node.id }} >
         {displayString}
@@ -191,7 +189,7 @@ export const TableButtonCell = ({ modelName, parentModelName, node, schema, deta
   )
 }
 
-export const TBody = ({
+const TBody = ({
   schema,
   modelName,
   data, // ordered list
@@ -202,7 +200,6 @@ export const TBody = ({
   parentModelName,
   parentFieldName,
   detailField,
-  getModalStore,
   tooltipData,
   modalData,
   editData,
@@ -210,6 +207,7 @@ export const TBody = ({
   deletable,
   selectOptions,
   user,
+  parentNode,
   ...props
 }) => {
   const actions = getActions(schema, modelName)
@@ -217,13 +215,12 @@ export const TBody = ({
   return (<tbody>
     {data.map((node, idx) => {
       const editable = isRowEditable({ schema, modelName, node, user, ...props })
-      // do not pass '...props' into below component because contains 'node' from parent object: will conflict with new 'node' from data.map()
       return (
         <tr key={`table-tr-${node.id}`}>
           {fieldOrder.map((fieldName, headerIdx) => (
             <td key={`${node.id}-${headerIdx}`}>
               <TableRowWithEdit key={`table-td-${node.id}-${headerIdx}`} {...{
-                modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, headerIdx, user
+                modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, ...props
               }} />
             </td>
           ))}
@@ -272,10 +269,12 @@ export const Table = ({
   tableOptions,
   Head = THead,
   Body = TBody,
+  user,
   ...props
 }) => {
-  // do not pass 'node' along to components below
+  // parent node passed down as 'parentNode'
   const parentNode = node
+  props = R.dissoc('node', props)
 
   const filterable = R.path([modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
@@ -284,9 +283,9 @@ export const Table = ({
 
   if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
 
-  const deletable = isTableDeletable({ schema, modelName, data, parentNode, ...props })
+  const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, ...props })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
-  const editable = isTableEditable({ schema, modelName, data, parentNode, ...props })
+  const editable = isTableEditable({ schema, modelName, data, parentNode, user, ...props })
   const sortable = R.path([modelName, 'sortable'], schema)
 
   return (
@@ -302,8 +301,7 @@ export const Table = ({
         selectOptions,
         sortable,
         filterable,
-        tableOptions,
-        ...props
+        tableOptions
       }} />
       <Body {...{
         schema,
@@ -322,7 +320,8 @@ export const Table = ({
         editData,
         deletable,
         tableEditable: editable,
-        tableOptions,
+        user,
+        parentNode,
         ...props
       }} />
     </table>

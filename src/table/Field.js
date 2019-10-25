@@ -86,7 +86,7 @@ export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node
 
   const relModelName = R.prop('modelName', relSchemaEntry)
 
-  const displayString = getDisplayValue({ schema, modelName: relModelName, parentModelName, data: node })
+  const displayString = getDisplayValue({ schema, modelName: relModelName, parentModelName, node })
   const relId = R.prop('id', node)
 
   if (!displayString) { return <span>N/A</span> }
