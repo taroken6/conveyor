@@ -6,15 +6,16 @@ import { getActions, getHasIndex, getIndexFields, getModelLabelPlural } from './
 import { Redirect } from 'react-router-dom'
 import { isCreatable } from './Utils'
 
-export const DefaultIndexTitle = ({ schema, modelName, path, data, user, ...props }) => {
+export const DefaultIndexTitle = ({ schema, modelName, path, data, user }) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
-  const creatable = isCreatable({ schema, modelName, data, user, ...props })
+  const creatable = isCreatable({ schema, modelName, data, user }) // todo: custom
+  //todo: custom: getModelLabelPlural()
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {getModelLabelPlural({schema, modelName, data, user, ...props})}
+        {getModelLabelPlural({schema, modelName, data, user})}
       </h3>
       {creatable && <div className='float-right'>
         <CreateButton {...{ onClick }} />
@@ -35,20 +36,19 @@ const Index = ({
   Title = DefaultIndexTitle,
   Table = DefaultTable,
   user,
-  tableOptions,
-  ...props
+  tableOptions
 }) => {
   if (!(getHasIndex(schema, modelName))) {
     return <Redirect to='/' />
   }
 
-  const fieldOrder = getIndexFields({ schema, modelName, data, user, ...props })
+  const fieldOrder = getIndexFields({ schema, modelName, data, user }) // todo: custom
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onIndexDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)
 
   return (<div className='container'>
-    <Title {...{ schema, modelName, path, data, user, ...props }} />
+    <Title {...{ schema, modelName, path, data, user }} />
       <Table {...{
         schema,
         modelName,
@@ -61,8 +61,7 @@ const Index = ({
         editData,
         modalData,
         user,
-        tableOptions,
-        ...props
+        tableOptions
       }} />
     </div>)
 }

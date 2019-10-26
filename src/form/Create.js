@@ -13,7 +13,7 @@ const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
 )
 
-export const makeCreateLabel = ({ schema, modelName, fieldName, ...props }) => {
+export const makeCreateLabel = ({ schema, modelName, fieldName, user }) => {
   const type = R.prop('type', getField(schema, modelName, fieldName))
   if (R.type(type) !== 'Object') {
     return null
@@ -24,7 +24,7 @@ export const makeCreateLabel = ({ schema, modelName, fieldName, ...props }) => {
 
   const onClick = () => onStackCreate({ modelName: targetModel })
 
-  const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, ...props })
+  const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, user })
   return CreateLabel
 }
 
@@ -57,8 +57,7 @@ const Create = ({
   modelName,
   formStack,
   selectOptions,
-  getEnumOptions,
-  ...props
+  user
 }) => {
   const stackIndex = R.prop('index', formStack)
   const originFieldName = R.prop('originFieldName', formStack)
@@ -68,7 +67,7 @@ const Create = ({
   }
   const origin = R.prop('originModelName', formStack)
 
-  const fieldOrder = getCreateFields({ schema, modelName, ...props })
+  const fieldOrder = getCreateFields({ schema, modelName, user }) // todo: custom
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) { fieldOrder.splice(index, 1) }
@@ -114,14 +113,12 @@ const Create = ({
           value,
           error,
           selectOptions,
-          getEnumOptions,
           onChange,
           disabled,
           formStack,
-          customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
+          customLabel: makeCreateLabel({ schema, modelName, fieldName, user }),
           autoFocus,
-          onKeyDown,
-          ...props
+          onKeyDown
         }} />
       })}</div>
       {disableButtons && <p className='text-danger'>Cannot save or cancel until all subsequent creates are resolved.</p>}

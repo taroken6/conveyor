@@ -63,7 +63,7 @@ export const DefaultDetailAttribute = ({
   selectOptions,
   id,
   path,
-  ...props
+  user
 }) => {
   const actions = getActions(schema, modelName)
 
@@ -73,7 +73,7 @@ export const DefaultDetailAttribute = ({
   const DetailLabel = LabelOverride || DefaultDetailLabel
   const DetailValue = ValueOverride || Field
 
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, id, ...props })
+  const editable = isFieldEditable({ schema, modelName, fieldName, node, user }) //todo: custom
   const fieldType = R.prop('type', getField(schema, modelName, fieldName))
 
   if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
@@ -89,7 +89,7 @@ export const DefaultDetailAttribute = ({
     const onFileSubmit = R.path(['edit', 'onFileSubmit'], actions)
 
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
-    const creatable = isCreatable({ schema, modelName: relModelName, parentNode: node, ...props })
+    const creatable = isCreatable({ schema, modelName: relModelName, parentNode: node, user }) //todo: custom
     const targetInverseFieldName = R.prop('backref', fieldType)
     const targetModelName = R.prop('target', fieldType)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
@@ -199,8 +199,8 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targetInverseFieldName, targetModelName, path, node, ...props }) => {
-  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, ...props })
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targetInverseFieldName, targetModelName, path, node, user }) => {
+  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user }) // todo: custom
 
   return (
     <DefaultDetailTableTitleWrapper>
@@ -226,12 +226,12 @@ const DefaultDetailM2MTableTitle = ({
   targetInverseFieldName,
   path,
   targetModelName,
-  ...props
+  user,
 }) => {
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, ...props })
-  return (
+  const editable = isFieldEditable({ schema, modelName, fieldName, node, user }) // todo: custom
+  return ( // todo: getFieldLabel needs user & other custom props?
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, ...props })}</h4>
+      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node })}</h4>
       {editable && <div className='pl-2 d-inline'>
         <TableEditButton {...{
           schema,
@@ -256,14 +256,14 @@ const DefaultDetailM2MFieldLabel = ({
   targetInverseFieldName,
   path,
   targetModelName,
-  ...props
+  user,
 }) => {
-  const creatable = isCreatable({ schema, modelName: targetModelName, ...props })
+  const creatable = isCreatable({ schema, modelName: targetModelName, user }) // todo: custom && pass 'node' as 'parentNode'? look at props
   const required = R.prop('required', getField(schema, modelName, fieldName))
-
+  // todo: getFieldLabel custom?
   const Label = () => (
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, ...props })}</h4>
+      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node })}</h4>
       { required && ' *'}
       { creatable && <DetailCreateButton {...{
         schema,
@@ -288,7 +288,8 @@ export const DefaultDetailTable = ({
   editData,
   selectOptions,
   tooltipData,
-  ...props
+  user,
+  modalData
 }) => {
   const fieldType = R.path([modelName, 'fields', fieldName, 'type'], schema)
   const targetInverseFieldName = R.prop('backref', fieldType)
@@ -316,10 +317,9 @@ export const DefaultDetailTable = ({
           fieldName,
           targetInverseFieldName,
           node,
-          id,
           path,
           targetModelName,
-          ...props
+          user,
         }}>{getFieldLabel({schema, modelName, fieldName, data: node})}
         </DetailLabel>
         }
@@ -343,7 +343,8 @@ export const DefaultDetailTable = ({
               ...props
             }),
             fieldOrder,
-            ...props
+            user,
+            modalData,
           }}
         /> }
       </React.Fragment>
@@ -364,7 +365,7 @@ export const DefaultDetailTable = ({
         targetInverseFieldName,
         path,
         targetModelName,
-        ...props
+        user
       })
 
       return (
@@ -381,8 +382,7 @@ export const DefaultDetailTable = ({
               id,
               modelName,
               ...props
-            }),
-            node
+            })
           }} />
           <div className='table-btn-padding'>
             <EditSaveButton {...{
@@ -421,7 +421,7 @@ export const DefaultDetailTable = ({
           targetInverseFieldName,
           path,
           targetModelName,
-          ...props
+          user
         }} /> }
         { skipOverride(ValueOverride) ? null : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
@@ -443,7 +443,8 @@ export const DefaultDetailTable = ({
               ...props
             }),
             fieldOrder,
-            ...props
+            user,
+            modalData,
           }}
         /> }
       </React.Fragment>
@@ -471,15 +472,15 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null 
   )
 }
 
-const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, ...props }) => {
-  const model = getModelLabel({ schema, modelName, data: node })
+const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user }) => {
+  const model = getModelLabel({ schema, modelName, data: node, user }) // todo: custom: props
   const label = getDisplayValue({ schema, modelName, node })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
   const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
-  return (
+  return ( // todo: custom (isDeletable)
     <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
-      { isDeletable({ schema, modelName, node, ...props}) &&
+      { isDeletable({ schema, modelName, node, user }) &&
         <div className='float-right'>
           <DeleteButton {...{
             schema,
@@ -499,13 +500,14 @@ export const DetailFields = ({
   modelName,
   id,
   node,
+  modalData,
   tableFields,
   descriptionList,
   editData,
   tooltipData,
   selectOptions,
   path,
-  ...props
+  user
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
 
@@ -532,7 +534,7 @@ export const DetailFields = ({
                 path,
                 tooltipData,
                 id,
-                ...props
+                user
               }}
             />
           )
@@ -554,10 +556,11 @@ export const DetailFields = ({
               selectOptions,
               tooltipData,
               node,
+              modalData,
               editData,
               path,
               id,
-              ...props
+              user
             }}
           />
         )
@@ -587,7 +590,8 @@ const Detail = ({
   match,
   tooltipData,
   Title = DefaultDetailPageTitle,
-  ...props
+  user,
+  selectOptions
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
 
@@ -600,7 +604,7 @@ const Detail = ({
   if (tabs && tabs.length > 0) {
     return (
       <Wrapper>
-        <Title {...{ schema, modelName, node, modalData, ...props }} />
+        <Title {...{ schema, modelName, node, modalData, user }} />
         <Tabs {...{
           schema,
           modelName,
@@ -613,7 +617,8 @@ const Detail = ({
           tabs,
           path,
           fields: [],
-          ...props
+          user,
+          selectOptions
         }}
         />
       </Wrapper>
@@ -622,8 +627,8 @@ const Detail = ({
 
   return (
     <Wrapper>
-      <Title {...{ schema, modelName, node, modalData, ...props }} />
-      <DetailFields {...{ schema, modelName, id, node, modalData, editData, tooltipData, path, ...props }} />
+      <Title {...{ schema, modelName, node, modalData, user }} />
+      <DetailFields {...{ schema, modelName, id, node, modalData, editData, tooltipData, path, user, selectOptions }} />
     </Wrapper>
   )
 }

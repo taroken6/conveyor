@@ -111,8 +111,9 @@ export const TableButtonGroup = ({
   </div>)
 }
 
-export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, ...props }) => {
-  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user, parentNode, ...props })) {
+export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode }) => {
+  // todo: custom: isFieldEditable()
+  if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user, parentNode })) {
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
     return (
@@ -132,13 +133,13 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
     return null
   }
   if (Override) {
-    return (
-      <Override {...{ schema, modelName, fieldName, parentModelName, node, tooltipData, id: node.id, ...props }} />
+    return ( // todo: custom: override
+      <Override {...{ schema, modelName, fieldName, parentModelName, node, tooltipData, id: node.id }} />
     )
   }
   // Add DetailLink to the field that is marked as the displayField
   if (detailField === fieldName) {
-    const displayString = getDisplayValue({ schema, modelName, parentModelName, node, ...props })
+    const displayString = getDisplayValue({ schema, modelName, parentModelName, node })
     return (
       <DetailLink {...{ modelName, id: node.id }} >
         {displayString}
@@ -207,20 +208,19 @@ const TBody = ({
   deletable,
   selectOptions,
   user,
-  parentNode,
-  ...props
+  parentNode
 }) => {
   const actions = getActions(schema, modelName)
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (<tbody>
     {data.map((node, idx) => {
-      const editable = isRowEditable({ schema, modelName, node, user, ...props })
+      const editable = isRowEditable({ schema, modelName, node, user }) // todo: custom
       return (
         <tr key={`table-tr-${node.id}`}>
           {fieldOrder.map((fieldName, headerIdx) => (
             <td key={`${node.id}-${headerIdx}`}>
               <TableRowWithEdit key={`table-td-${node.id}-${headerIdx}`} {...{
-                modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, ...props
+                modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode
               }} />
             </td>
           ))}
@@ -269,12 +269,10 @@ export const Table = ({
   tableOptions,
   Head = THead,
   Body = TBody,
-  user,
-  ...props
+  user
 }) => {
   // parent node passed down as 'parentNode'
   const parentNode = node
-  props = R.dissoc('node', props)
 
   const filterable = R.path([modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
@@ -283,9 +281,9 @@ export const Table = ({
 
   if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
 
-  const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, ...props })
+  const deletable = isTableDeletable({ schema, modelName, data, parentNode, user }) // todo: custom
   const detailField = calcDetailField({schema, modelName, fieldOrder})
-  const editable = isTableEditable({ schema, modelName, data, parentNode, user, ...props })
+  const editable = isTableEditable({ schema, modelName, data, parentNode, user }) // todo: custom
   const sortable = R.path([modelName, 'sortable'], schema)
 
   return (
@@ -321,8 +319,7 @@ export const Table = ({
         deletable,
         tableEditable: editable,
         user,
-        parentNode,
-        ...props
+        parentNode
       }} />
     </table>
   )

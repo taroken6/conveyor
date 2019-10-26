@@ -363,7 +363,7 @@ export const InputFile = ({ onChange, error, id, labelStr, className, required, 
 /**
  * Singular component for Switch Type.
  *
- * See React Switch documentation for details on which custom props to override
+ * See React Switch documentation for details on which custom attributes to override
  *
  * @property { function } onChange
  * @property { string } id

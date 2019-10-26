@@ -12,12 +12,12 @@ import { getFieldLabel } from '../utils/schemaGetters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
 
-export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, ...props }) => {
+export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, user }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
   const relModelName = R.prop('modelName', relSchemaEntry)
   const id = `input-${modelName}-${fieldName}`
   const required = R.prop('required', getField(schema, modelName, fieldName))
-  const creatable = isCreatable({ schema, modelName: relModelName, ...props })
+  const creatable = isCreatable({ schema, modelName: relModelName, user }) // todo: custom
 
   const Label = ({ labelStr }) => (
     <label htmlFor={id}>
@@ -57,7 +57,9 @@ const Input = ({
   selectOptions,
   disabled,
   customLabel,
-  ...props
+  formStack,
+  autoFocus,
+  onKeyDown
 }) => {
   const InputOverride = getInputOverride(schema, modelName, fieldName)
 
@@ -82,7 +84,9 @@ const Input = ({
         selectOptions,
         disabled,
         onMenuOpen,
-        ...props
+        formStack,
+        autoFocus,
+        onKeyDown
       }} />
   }
 
@@ -91,7 +95,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      data: R.path(['formStack', 'originData'], props)
+      data: R.path(['originData'], formStack)
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -108,7 +112,8 @@ const Input = ({
     disabled,
     customLabel,
     onMenuOpen,
-    ...props
+    autoFocus,
+    onKeyDown,
   }} />
 }
 
@@ -126,7 +131,6 @@ export const InputCore = ({
   customProps,
   autoFocus,
   onKeyDown,
-  ...props
 }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
 

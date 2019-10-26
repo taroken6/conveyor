@@ -174,9 +174,9 @@ const defaultTypeMap = {
  *
  *  @example
  *
- *  Example 6: Create Custom class that extends FlexibleInput
+ *  Example 6: Make Custom class that extends FlexibleInput
  *
- * // Create custom components (newUseMap) and add them to your custom class.
+ * // make custom components (newUseMap) and add them to your custom class.
  *
  * const newUseMap = {
  *     'input1': input1,

@@ -114,8 +114,7 @@ export const EditInput = ({ schema, modelName, fieldName, node, editData, error,
     modelName,
     value: editData,
     error,
-    inline: true,
-    node
+    inline: true
   }} />
 }
 

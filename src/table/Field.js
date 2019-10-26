@@ -120,7 +120,7 @@ export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node
   }
 }
 
-export const FieldToMany = ({ schema, modelName, fieldName, parentModelName, tooltipData, node, ...props }) => {
+export const FieldToMany = ({ schema, modelName, fieldName, parentModelName, tooltipData, node }) => {
   const multiRelField = R.prop(fieldName, node)
 
   const relListWithLink = (field, idx, obj) => (

@@ -67,10 +67,10 @@ export const getRequiredFields = (schema, modelName) => {
   return getShownFields({ schema, modelName, type: 'required' })
 }
 
-export const getCreateFields = ({ schema, modelName, ...props }) => {
+export const getCreateFields = ({ schema, modelName, user, ...props }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName, ...props })
+    return createFieldOrder({ schema, modelName, user, ...props })
   }
   else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
