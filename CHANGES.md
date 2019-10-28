@@ -4,6 +4,7 @@
 
 -   Add ability to add displayNamePlural function #60
 -   Add override skips & fix m2m rel label #16
+-   Refactor customProps passed into override functions #64
 
 ### Unreleased
 
