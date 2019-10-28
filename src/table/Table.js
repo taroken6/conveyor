@@ -300,7 +300,8 @@ export const Table = ({
         selectOptions,
         sortable,
         filterable,
-        tableOptions, customProps
+        tableOptions,
+        customProps
       }} />
       <Body {...{
         schema,

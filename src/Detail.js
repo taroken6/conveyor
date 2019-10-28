@@ -370,7 +370,8 @@ export const DefaultDetailTable = ({
         targetInverseFieldName,
         path,
         targetModelName,
-        user, customProps
+        user,
+        customProps
       })
 
       return (
