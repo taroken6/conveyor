@@ -13,7 +13,7 @@ const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
 )
 
-export const makeCreateLabel = ({ schema, modelName, fieldName, user }) => {
+export const makeCreateLabel = ({ schema, modelName, fieldName, user, customProps }) => {
   const type = R.prop('type', getField(schema, modelName, fieldName))
   if (R.type(type) !== 'Object') {
     return null
@@ -24,7 +24,7 @@ export const makeCreateLabel = ({ schema, modelName, fieldName, user }) => {
 
   const onClick = () => onStackCreate({ modelName: targetModel })
 
-  const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, user })
+  const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, user, customProps })
   return CreateLabel
 }
 
@@ -57,7 +57,8 @@ const Create = ({
   modelName,
   formStack,
   selectOptions,
-  user
+  user,
+  customProps
 }) => {
   const stackIndex = R.prop('index', formStack)
   const originFieldName = R.prop('originFieldName', formStack)
@@ -67,7 +68,7 @@ const Create = ({
   }
   const origin = R.prop('originModelName', formStack)
 
-  const fieldOrder = getCreateFields({ schema, modelName, user }) // todo: custom
+  const fieldOrder = getCreateFields({ schema, modelName, user })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) { fieldOrder.splice(index, 1) }
@@ -116,7 +117,7 @@ const Create = ({
           onChange,
           disabled,
           formStack,
-          customLabel: makeCreateLabel({ schema, modelName, fieldName, user }),
+          customLabel: makeCreateLabel({ schema, modelName, fieldName, user, customProps }),
           autoFocus,
           onKeyDown
         }} />

@@ -12,12 +12,12 @@ import { getFieldLabel } from '../utils/schemaGetters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
 
-export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, user }) => {
+export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, user, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
   const relModelName = R.prop('modelName', relSchemaEntry)
   const id = `input-${modelName}-${fieldName}`
   const required = R.prop('required', getField(schema, modelName, fieldName))
-  const creatable = isCreatable({ schema, modelName: relModelName, user }) // todo: custom
+  const creatable = isCreatable({ schema, modelName: relModelName, user, customProps })
 
   const Label = ({ labelStr }) => (
     <label htmlFor={id}>
