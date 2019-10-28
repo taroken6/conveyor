@@ -31,7 +31,7 @@ const includeProps = [
   'onMenuOpen',
   'error',
   'required',
-  'customProps',
+  'customInput',
   'customError',
   'customLabel',
   'autoFocus',
@@ -130,13 +130,13 @@ const defaultTypeMap = {
  *
  * @example
  *
- * Example 4: Override label and error component with custom logic
+ * Example 4: Override label and error component
  *
  * // You can override the package's error and label components entirely
  * // by passing in your own function. The customError component must take an
  * // 'error' and 'id' prop, and the customLabel must take 'labelStr' and 'required' attributes.
  *
- *  const CustomError = ({error, id}) => <div style={{'fontSize': '80%', 'color': '#dc3545'}}>{`${ makeThisListAString(error) } custom`}</div>
+ *  const CustomError = ({error, id}) => <div style={{'fontSize': '80%', 'color': '#dc3545'}}>{`${ makeThisListAString(error) } foo`}</div>
  *  //
  *  const CustomLabel = ({labelStr, required}) =>
  *      <label htmlFor={id}>{`Custom ${labelStr} ${required ? ' **' : ''}`}</label>
@@ -176,7 +176,7 @@ const defaultTypeMap = {
  *
  *  Example 6: Make Custom class that extends FlexibleInput
  *
- * // make custom components (newUseMap) and add them to your custom class.
+ * // make your own components (newUseMap) and add them to the class.
  *
  * const newUseMap = {
  *     'input1': input1,
@@ -194,14 +194,14 @@ const defaultTypeMap = {
  *     }
  * }
  *
- * // then use your custom component:
+ * // then use your component:
  *
  * return <MyFlex {...props} />
  *
  * // or create a reusable component:
  *
- * const custom = new MyFlex({...props})
- * return custom.render()
+ * const c = new MyFlex({...props})
+ * return c.render()
 */
 
 class FlexibleInput extends React.Component {
@@ -244,13 +244,13 @@ class FlexibleInput extends React.Component {
  *      "Password", "String", "Boolean", "Checkbox", "Select", "Date", "Radio".
  * @param { boolean } [required] - appends  '*' to the end of a label to indicate
  *      that the field is required. Not available for "Boolean" type
- * @param { object } [customProps] - Overrides any props passed into the component,
+ * @param { object } [customInput] - Overrides any props passed into the component,
  *      or those set by default in this library. For example, to override default
  *      settings for a "Date" component structure the data like so:
  *      {placeholderText:'Click here', fixedHeight:false}
- * @param { object } [customError] - custom component that takes in an argument
+ * @param { object } [customError] - component that takes in an argument
  *      'error' and 'id' and returns an html component in to be displayed below the field
- * @param { object } [customLabel] - custom label to be displayed above the filed
+ * @param { object } [customLabel] - label component to be displayed above the filed
  *      not available for 'Checkbox' type
  * @param { boolean } [autoFocus] refers to specific fields (see isAutoFocusInput()) that have
  *      autofocus input feature

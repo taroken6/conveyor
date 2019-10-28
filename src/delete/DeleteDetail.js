@@ -82,7 +82,7 @@ const ReviewTable = ({ schema, table }) => {
   if (!R.isEmpty(table)) {
     const node = table[0]
     const nodeModelName = R.prop('__typename', node)
-    // get custom headers from schema
+    // get headers from schema
     const customHeaders = R.path([nodeModelName, 'deleteModal', 'headers'], schema)
 
     if (!customHeaders) {

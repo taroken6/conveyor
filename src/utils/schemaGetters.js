@@ -8,18 +8,18 @@ export const getFieldLabel = ({ schema, modelName, fieldName, data = {} }) => {
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, data, ...props }) => {
+export const getModelLabel = ({ schema, modelName, data }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, ...props })
+    return displayName({ schema, modelName, data })
   }
   return displayName
 }
 
-export const getModelLabelPlural = ({ schema, modelName, data, user, ...props }) => {
+export const getModelLabelPlural = ({ schema, modelName, data, user }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, user, ...props })
+    return displayName({ schema, modelName, data, user })
   }
   return displayName
 }
@@ -67,10 +67,10 @@ export const getRequiredFields = (schema, modelName) => {
   return getShownFields({ schema, modelName, type: 'required' })
 }
 
-export const getCreateFields = ({ schema, modelName, user, ...props }) => {
+export const getCreateFields = ({ schema, modelName, user }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName, user, ...props })
+    return createFieldOrder({ schema, modelName, user })
   }
   else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
@@ -82,20 +82,20 @@ export const getHasIndex = (schema, modelName) => {
   return R.prop('hasIndex', getModel(schema, modelName))
 }
 
-export const getDetailFields = ({ schema, modelName, node, ...props }) => {
+export const getDetailFields = ({ schema, modelName, node }) => {
   const detailFieldOrder = R.prop('detailFieldOrder', getModel(schema, modelName))
   if (R.type(detailFieldOrder) === 'Function') {
-    return detailFieldOrder({ schema, modelName, node, ...props })
+    return detailFieldOrder({ schema, modelName, node })
   }
   else if (R.type(detailFieldOrder) === 'Array') {
     return detailFieldOrder
   }  return getShownFields({ schema, modelName, type: 'showDetail', node })
 }
 
-export const getIndexFields = ({ schema, modelName, data, user, ...props }) => {
+export const getIndexFields = ({ schema, modelName, data, user }) => {
   const indexFieldOrder = R.prop('indexFieldOrder', getModel(schema, modelName))
   if (R.type(indexFieldOrder) === 'Function') {
-    return indexFieldOrder({ schema, modelName, data, user, ...props })
+    return indexFieldOrder({ schema, modelName, data, user })
   }
   else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder

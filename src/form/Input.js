@@ -128,7 +128,7 @@ export const InputCore = ({
   selectOptions,
   customLabel,
   onMenuOpen,
-  customProps,
+  customInput,
   autoFocus,
   onKeyDown,
 }) => {
@@ -147,7 +147,7 @@ export const InputCore = ({
     value,
     error,
     required: R.prop('required', getField(schema, modelName, fieldName)),
-    customProps,
+    customInput,
     autoFocus,
     onKeyDown
   }
@@ -197,7 +197,7 @@ export const InputCore = ({
       return <FlexibleInput {...{
         ...defaultProps,
         type: inputTypes.INT_TYPE,
-        customProps: { step: 'any' }
+        customInput: { step: 'any' }
       }} />
     case inputTypes.ENUM_TYPE:
       return <FlexibleInput {...{
@@ -206,7 +206,7 @@ export const InputCore = ({
         options: enumChoiceOrder.map(choice => (
           { label: enumChoices[choice], value: choice }
         )),
-        customProps: { step: 'any' }
+        customInput: { step: 'any' }
       }} />
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:

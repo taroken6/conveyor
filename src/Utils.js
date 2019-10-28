@@ -52,9 +52,7 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
  * parent 'node' must be labeled 'parentNode'
  */
 
-export const isTableEditable = ({ schema, modelName, data, user, parentNode, ...props }) => {
-  // no parent node passed down to row below
-  props = R.dissoc('node', props)
+export const isTableEditable = ({ schema, modelName, data, user, parentNode, customProps }) => {
   return (
     !R.isEmpty(data.filter(node => isRowEditable({
       schema,
@@ -62,12 +60,12 @@ export const isTableEditable = ({ schema, modelName, data, user, parentNode, ...
       user,
       node,
       parentNode,
-      ...props
+      customProps
     })))
   )
 }
 
-export const isRowEditable = ({ schema, modelName, node, parentNode, user, ...props }) => (
+export const isRowEditable = ({ schema, modelName, node, parentNode, user, customProps }) => (
   R.pipe(
     R.mapObjIndexed((_value, fieldName) => isFieldEditable({
       schema,
@@ -76,27 +74,25 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, user, ...pr
       node,
       parentNode,
       user,
-      ...props
+      customProps
     })),
     R.filter(identity),
     filteredNode => !R.isEmpty(filteredNode)
   )(node)
 )
 
-export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, user, ...props }) => {
+export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, user, customProps }) => {
   const editable = R.prop('editable', getField(schema, modelName, fieldName))
   if (R.type(editable) === 'Boolean') {
     return editable
   } else if (R.type(editable) === 'Function') {
-    return editable({ schema, modelName, fieldName, node, parentNode, user, ...props })
+    return editable({ schema, modelName, fieldName, node, parentNode, user, customProps })
   } else {
     return false
   }
 }
 
-export const isTableDeletable = ({ schema, modelName, data, parentNode, user, ...props }) => {
-  // no parent node passed down to row below
-  props = R.dissoc('node', props)
+export const isTableDeletable = ({ schema, modelName, data, parentNode, user, customProps }) => {
   return (
     !R.isEmpty(data.filter(node => isDeletable({
       schema,
@@ -104,28 +100,28 @@ export const isTableDeletable = ({ schema, modelName, data, parentNode, user, ..
       node,
       parentNode,
       user,
-      ...props
+      customProps
     })))
   )
 }
 
-export const isDeletable = ({ schema, modelName, node, parentNode, user, ...props }) => {
+export const isDeletable = ({ schema, modelName, node, parentNode, user, customProps }) => {
   const deletable = R.prop('deletable', getModel(schema, modelName))
   if (R.type(deletable) === 'Boolean') {
     return deletable
   } else if (R.type(deletable) === 'Function') {
-    return deletable({ schema, modelName, node, parentNode, user, ...props })
+    return deletable({ schema, modelName, node, parentNode, user, customProps })
   } else {
     return false
   }
 }
 
-export const isCreatable = ({ schema, modelName, user, parentNode, data, ...props }) => {
+export const isCreatable = ({ schema, modelName, user, parentNode, data, customProps }) => {
   const creatable = R.prop('creatable', getModel(schema, modelName))
   if (R.type(creatable) === 'Boolean') {
     return creatable
   } else if (R.type(creatable) === 'Function') {
-    return creatable({ schema, modelName, user, parentNode, data, ...props })
+    return creatable({ schema, modelName, user, parentNode, data, customProps })
   } else {
     return false
   }
