@@ -81,12 +81,12 @@ const FieldImageModal = ({ schema, modelName, fieldName, id, node }) => {
   return <ImageLinkModal {...{ id: modalId, title: label, url }} />
 }
 
-export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node, tooltipData }) => {
+export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node, tooltipData, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
 
   const relModelName = R.prop('modelName', relSchemaEntry)
 
-  const displayString = getDisplayValue({ schema, modelName: relModelName, parentModelName, node })
+  const displayString = getDisplayValue({ schema, modelName: relModelName, parentModelName, node, customProps })
   const relId = R.prop('id', node)
 
   if (!displayString) { return <span>N/A</span> }
@@ -140,7 +140,7 @@ export const FieldToMany = ({ schema, modelName, fieldName, parentModelName, too
   )
 }
 
-export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipData, node, id }) => {
+export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipData, node, id, customProps }) => {
   const props = {
     schema,
     modelName,
@@ -181,7 +181,8 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
         schema,
         modelName,
         fieldName,
-        tooltipData
+        tooltipData,
+        customProps
       }} />
     case consts.relInputTypes.MANY_TO_MANY_TYPE:
     case consts.relInputTypes.ONE_TO_MANY_TYPE:

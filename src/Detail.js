@@ -153,7 +153,7 @@ export const DefaultDetailAttribute = ({
         </dt>
         <dd className='col-sm-9'>
           {
-            skipOverride(ValueOverride) ? null : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData }} />
+            skipOverride(ValueOverride) ? null : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData, customProps }} />
           }
           {editable &&
             <InlineEditButton {...{
@@ -481,7 +481,7 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null 
 
 const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, customProps }) => {
   const model = getModelLabel({ schema, modelName, data: node, user, customProps })
-  const label = getDisplayValue({ schema, modelName, node })
+  const label = getDisplayValue({ schema, modelName, node, customProps })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
   const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model

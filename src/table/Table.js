@@ -138,7 +138,7 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
   }
   // Add DetailLink to the field that is marked as the displayField
   if (detailField === fieldName) {
-    const displayString = getDisplayValue({ schema, modelName, parentModelName, node })
+    const displayString = getDisplayValue({ schema, modelName, parentModelName, node, customProps })
     return (
       <DetailLink {...{ modelName, id: node.id }} >
         {displayString}
@@ -154,7 +154,7 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
         parentModelName,
         node,
         tooltipData,
-        id: node.id
+        id: node.id, customProps
       }}
     />
   )
