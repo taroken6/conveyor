@@ -68,7 +68,7 @@ const Create = ({
   }
   const origin = R.prop('originModelName', formStack)
 
-  const fieldOrder = getCreateFields({ schema, modelName, user })
+  const fieldOrder = getCreateFields({ schema, modelName, user, customProps })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) { fieldOrder.splice(index, 1) }

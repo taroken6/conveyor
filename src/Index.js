@@ -42,7 +42,7 @@ const Index = ({
     return <Redirect to='/' />
   }
 
-  const fieldOrder = getIndexFields({ schema, modelName, data, user })
+  const fieldOrder = getIndexFields({ schema, modelName, data, user, customProps })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onIndexDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)

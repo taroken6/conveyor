@@ -460,8 +460,8 @@ export const DefaultDetailTable = ({
   }
 }
 
-export const partitionDetailFields = ({ schema, modelName, node, include = null }) => {
-  let detailFields = getDetailFields({ schema, modelName, node })
+export const partitionDetailFields = ({ schema, modelName, node, include = null, customProps }) => {
+  let detailFields = getDetailFields({ schema, modelName, node, customProps })
 
   if (include) {
     detailFields = detailFields.filter(fieldName => R.includes(fieldName, include))
@@ -521,7 +521,7 @@ export const DetailFields = ({
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
 
-  if (!tableFields && !descriptionList) { [tableFields, descriptionList] = partitionDetailFields({ schema, modelName, node }) }
+  if (!tableFields && !descriptionList) { [tableFields, descriptionList] = partitionDetailFields({ schema, modelName, node, customProps }) }
 
   return (
     <React.Fragment>
