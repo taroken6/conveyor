@@ -289,7 +289,8 @@ export const DefaultDetailTable = ({
   selectOptions,
   tooltipData,
   user,
-  modalData
+  modalData,
+  customProps
 }) => {
   const fieldType = R.path([modelName, 'fields', fieldName, 'type'], schema)
   const targetInverseFieldName = R.prop('backref', fieldType)
@@ -345,6 +346,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             modalData,
+            customProps
           }}
         /> }
       </React.Fragment>
@@ -507,7 +509,8 @@ export const DetailFields = ({
   tooltipData,
   selectOptions,
   path,
-  user
+  user,
+  customProps
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
 
@@ -560,7 +563,8 @@ export const DetailFields = ({
               editData,
               path,
               id,
-              user
+              user,
+              customProps
             }}
           />
         )
@@ -591,7 +595,8 @@ const Detail = ({
   tooltipData,
   Title = DefaultDetailPageTitle,
   user,
-  selectOptions
+  selectOptions,
+  customProps
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
 
@@ -618,7 +623,8 @@ const Detail = ({
           path,
           fields: [],
           user,
-          selectOptions
+          selectOptions,
+          customProps
         }}
         />
       </Wrapper>
@@ -628,7 +634,7 @@ const Detail = ({
   return (
     <Wrapper>
       <Title {...{ schema, modelName, node, modalData, user }} />
-      <DetailFields {...{ schema, modelName, id, node, modalData, editData, tooltipData, path, user, selectOptions }} />
+      <DetailFields {...{ schema, modelName, id, node, modalData, editData, tooltipData, path, user, selectOptions, customProps }} />
     </Wrapper>
   )
 }

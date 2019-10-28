@@ -20,6 +20,7 @@ export const TabFields = ({
   modalData,
   selectOptions,
   user,
+  customProps
 }) => {
   if (Component) {
     return <Component {...{
@@ -36,6 +37,7 @@ export const TabFields = ({
       modalData,
       selectOptions,
       user,
+      customProps
     }} />
   }
 
@@ -59,7 +61,8 @@ export const TabFields = ({
       editData,
       descriptionList,
       selectOptions,
-      user
+      user,
+      customProps
     }} />
   )
 }
@@ -78,7 +81,8 @@ const RecursiveTab = ({
   tooltipData,
   path,
   selectOptions,
-  user
+  user,
+  customProps
 }) => {
   if (tabs.length === 1) {
     return (
@@ -96,7 +100,8 @@ const RecursiveTab = ({
         modalData,
         tooltipData,
         selectOptions,
-        user
+        user,
+        customProps
       }} />
     )
   }
@@ -118,6 +123,7 @@ const RecursiveTab = ({
         modalData,
         selectOptions,
         user,
+        customProps
       }} />
       <ul className='nav nav-pills'>
         {tabs.map(tab => (
@@ -160,6 +166,7 @@ const RecursiveTab = ({
                   path,
                   selectOptions,
                   user,
+                  customProps,
                   ...renderProps
                 }} />
               )}

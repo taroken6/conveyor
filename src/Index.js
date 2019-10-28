@@ -36,7 +36,8 @@ const Index = ({
   Title = DefaultIndexTitle,
   Table = DefaultTable,
   user,
-  tableOptions
+  tableOptions,
+  customProps
 }) => {
   if (!(getHasIndex(schema, modelName))) {
     return <Redirect to='/' />
@@ -61,7 +62,8 @@ const Index = ({
         editData,
         modalData,
         user,
-        tableOptions
+        tableOptions,
+        customProps
       }} />
     </div>)
 }
