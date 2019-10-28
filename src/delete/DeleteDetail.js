@@ -76,7 +76,7 @@ const HeaderRow = ({ headers }) => {
 }
 
 
-const ReviewTable = ({ schema, table }) => {
+const ReviewTable = ({ schema, table, customProps }) => {
   let headers = []
   let editedHeaderFields
   if (!R.isEmpty(table)) {
@@ -100,11 +100,11 @@ const ReviewTable = ({ schema, table }) => {
 
     // turn fieldNames in to labels
     headers = editedHeaderFields.map(fieldName =>
-      getFieldLabel({schema, modelName: nodeModelName, fieldName})
+      getFieldLabel({schema, modelName: nodeModelName, fieldName, customProps})
     )
   }
   const tableDisplayName = getModelLabel({
-    schema, modelName: table[0].__typename, data: {}
+    schema, modelName: table[0].__typename, data: {}, customProps
   })
   return (
     <div className='mt-2'>
@@ -138,7 +138,8 @@ export const DeleteDetail = ({
   onDelete,
   modalStore,
   parentModelName,
-  parentId
+  parentId,
+  customProps
 }) => {
   const actions = getActions(schema, modelName)
   const onCancelDelete = R.path(['delete', 'onCancelDelete'], actions)
@@ -147,7 +148,7 @@ export const DeleteDetail = ({
       <span><strong>The following entries will be deleted:</strong></span>
       {!modalStore && <div className={'text-center'}>...loading</div>}
       {modalStore && modalStore.map((table, index) => (
-        <ReviewTable key={`${index}-${table[0].__typename}`} {...{ schema, table }} />
+        <ReviewTable key={`${index}-${table[0].__typename}`} {...{ schema, table, customProps }} />
       ))}
       <div className='modal-footer justify-content-center mt-3'>
         <div className='btn-group'>

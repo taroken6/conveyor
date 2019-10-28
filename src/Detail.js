@@ -495,7 +495,8 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, cust
             id: node.id,
             onDelete,
             modalId: 'confirm-delete-' + modelName,
-            modalData }} />
+            modalData,
+            customProps }} />
         </div>
       }
     </div>

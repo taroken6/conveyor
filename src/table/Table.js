@@ -35,7 +35,8 @@ export const DeleteButton = ({
   modalId,
   parentId,
   parentModelName,
-  modalData
+  modalData,
+  customProps
 }) => {
   const actions = getActions(schema, modelName)
   const onDeleteWarning = R.path(['delete', 'onDeleteWarning'], actions)
@@ -57,8 +58,8 @@ export const DeleteButton = ({
         onDelete,
         parentId,
         parentModelName,
-        modalStore: R.prop('Delete', modalData)
-
+        modalStore: R.prop('Delete', modalData),
+        customProps
       }} />
     </div>
   )
@@ -81,7 +82,8 @@ export const TableButtonGroup = ({
   parentModelName,
   parentFieldName,
   deletable,
-  onDelete
+  onDelete,
+  customProps
 }) => {
   return (<div className='btn-group'>
     {
@@ -105,7 +107,8 @@ export const TableButtonGroup = ({
         parentModelName,
         id: node.id,
         modalId: 'confirm-delete-' + modelName + parentFieldName + idx,
-        modalData
+        modalData,
+        customProps
       }} />
     }
   </div>)
@@ -154,13 +157,14 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
         parentModelName,
         node,
         tooltipData,
-        id: node.id, customProps
+        id: node.id,
+        customProps
       }}
     />
   )
 }
 
-export const TableButtonCell = ({ modelName, parentModelName, node, schema, detailField, editData, onEditSubmit, onEditCancel, deletable, editable, parentId, modalData, parentFieldName, onDelete, idx }) => {
+export const TableButtonCell = ({ modelName, parentModelName, node, schema, detailField, editData, onEditSubmit, onEditCancel, deletable, editable, parentId, modalData, parentFieldName, onDelete, idx, customProps }) => {
   return (
     isEditing(editData, modelName, node.id)
     ? <div className='table-btn-group'>
@@ -184,7 +188,8 @@ export const TableButtonCell = ({ modelName, parentModelName, node, schema, deta
       modalData,
       parentModelName,
       parentFieldName,
-      onDelete
+      onDelete,
+      customProps
     }} />
   )
 }
@@ -227,7 +232,7 @@ const TBody = ({
           { showButtonColumn({ deletable, editable: tableEditable, detailField }) &&
           <td key={`${node.id}-edit-delete`}>
             { <TableButtonCell {...{
-              modelName, parentModelName, node, schema, detailField, editData, onEditSubmit, onEditCancel, deletable, editable, parentId, modalData, parentFieldName, onDelete, idx
+              modelName, parentModelName, node, schema, detailField, editData, onEditSubmit, onEditCancel, deletable, editable, parentId, modalData, parentFieldName, onDelete, idx, customProps
             }} /> }
           </td>
           }
