@@ -59,7 +59,8 @@ const Input = ({
   customLabel,
   formStack,
   autoFocus,
-  onKeyDown
+  onKeyDown,
+  customProps
 }) => {
   const InputOverride = getInputOverride(schema, modelName, fieldName)
 
@@ -86,7 +87,8 @@ const Input = ({
         onMenuOpen,
         formStack,
         autoFocus,
-        onKeyDown
+        onKeyDown,
+        customProps
       }} />
   }
 
@@ -95,7 +97,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      data: R.path(['originData'], formStack)
+      data: R.path(['originData'], formStack), customProps
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -114,6 +116,7 @@ const Input = ({
     onMenuOpen,
     autoFocus,
     onKeyDown,
+    customProps,
   }} />
 }
 
@@ -131,6 +134,7 @@ export const InputCore = ({
   customInput,
   autoFocus,
   onKeyDown,
+  customProps
 }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
 
@@ -138,7 +142,7 @@ export const InputCore = ({
     fieldName,
     value: val
   })
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data: {} })
+  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data: {}, customProps })
   const defaultProps = {
     id: `input-${modelName}-${fieldName}`,
     type: inputType,

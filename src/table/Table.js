@@ -126,7 +126,8 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
         node,
         editData: fieldEditData,
         error,
-        selectOptions
+        selectOptions,
+        customProps
       }} />
     )
   }

@@ -119,7 +119,8 @@ const Create = ({
           formStack,
           customLabel: makeCreateLabel({ schema, modelName, fieldName, user, customProps }),
           autoFocus,
-          onKeyDown
+          onKeyDown,
+          customProps
         }} />
       })}</div>
       {disableButtons && <p className='text-danger'>Cannot save or cancel until all subsequent creates are resolved.</p>}

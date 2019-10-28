@@ -73,9 +73,9 @@ const FieldEnum = ({ schema, modelName, fieldName, node }) => {
   return <span>{ 'N/A' }</span>
 }
 
-const FieldImageModal = ({ schema, modelName, fieldName, id, node }) => {
+const FieldImageModal = ({ schema, modelName, fieldName, id, node, customProps }) => {
   const url = R.prop(fieldName, node)
-  const label = getFieldLabel({ schema, modelName, fieldName, data: node })
+  const label = getFieldLabel({ schema, modelName, fieldName, data: node, customProps })
   const modalId = `img-modal-${fieldName}`
 
   return <ImageLinkModal {...{ id: modalId, title: label, url }} />
@@ -148,7 +148,8 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
     tooltipData,
     parentModelName,
     node,
-    id
+    id,
+    customProps
   }
 
   const type = getType({ schema, modelName, fieldName })
@@ -181,8 +182,7 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
         schema,
         modelName,
         fieldName,
-        tooltipData,
-        customProps
+        tooltipData
       }} />
     case consts.relInputTypes.MANY_TO_MANY_TYPE:
     case consts.relInputTypes.ONE_TO_MANY_TYPE:
