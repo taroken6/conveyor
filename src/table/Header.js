@@ -18,7 +18,8 @@ export const THead = ({
   tableOptions,
   sortable,
   filterable,
-  selectOptions
+  selectOptions,
+  customProps
 }) => {
   const actions = getActions(schema, modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
@@ -41,7 +42,7 @@ export const THead = ({
                   modelName,
                   fieldName,
                   title: getFieldLabel({
-                    schema, modelName, fieldName, data:R.prop(fieldName, data)
+                    schema, modelName, fieldName, data:R.prop(fieldName, data), customProps
                   }),
                   onFilterChange: (evt) => onFilterChange({
                     modelName,

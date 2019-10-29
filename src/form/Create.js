@@ -13,7 +13,7 @@ const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
 )
 
-export const makeCreateLabel = ({ schema, modelName, fieldName, ...props }) => {
+export const makeCreateLabel = ({ schema, modelName, fieldName, user, customProps }) => {
   const type = R.prop('type', getField(schema, modelName, fieldName))
   if (R.type(type) !== 'Object') {
     return null
@@ -24,7 +24,7 @@ export const makeCreateLabel = ({ schema, modelName, fieldName, ...props }) => {
 
   const onClick = () => onStackCreate({ modelName: targetModel })
 
-  const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, ...props })
+  const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, user, customProps })
   return CreateLabel
 }
 
@@ -57,8 +57,8 @@ const Create = ({
   modelName,
   formStack,
   selectOptions,
-  getEnumOptions,
-  ...props
+  user,
+  customProps
 }) => {
   const stackIndex = R.prop('index', formStack)
   const originFieldName = R.prop('originFieldName', formStack)
@@ -68,7 +68,7 @@ const Create = ({
   }
   const origin = R.prop('originModelName', formStack)
 
-  const fieldOrder = getCreateFields({ schema, modelName, ...props })
+  const fieldOrder = getCreateFields({ schema, modelName, user, customProps })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) { fieldOrder.splice(index, 1) }
@@ -91,8 +91,8 @@ const Create = ({
 
   return (
     <div className='container'>
-      <Breadcrumbs schema={schema} formStack={formStack} />
-      <h1>Create {getModelLabel({ schema, modelName, form })}</h1>
+      <Breadcrumbs schema={schema} formStack={formStack} customProps={customProps} />
+      <h1>Create {getModelLabel({ schema, modelName, form, customProps })}</h1>
       <div>* Indicates a Required Field</div>
       <br />
       <div>{fieldOrder.map(fieldName => {
@@ -114,14 +114,13 @@ const Create = ({
           value,
           error,
           selectOptions,
-          getEnumOptions,
           onChange,
           disabled,
           formStack,
-          customLabel: makeCreateLabel({ schema, modelName, fieldName, ...props }),
+          customLabel: makeCreateLabel({ schema, modelName, fieldName, user, customProps }),
           autoFocus,
           onKeyDown,
-          ...props
+          customProps
         }} />
       })}</div>
       {disableButtons && <p className='text-danger'>Cannot save or cancel until all subsequent creates are resolved.</p>}
