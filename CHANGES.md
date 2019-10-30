@@ -13,6 +13,7 @@
 -   Add onKeyDown function to Input component #58
 -   Add error to Int field overflow #57
 -   Fix filter and sort button header position #52
+-   Expose onFileChange method for custom File inputs #43
 
 ## Version 1.2.0
 
@@ -21,6 +22,7 @@
 -   Implement new babelrc presets and plugins
 -   Add delete button to files #49
 -   Add Filter Feature #32
+
 
 
 ## Version 1.1.0
