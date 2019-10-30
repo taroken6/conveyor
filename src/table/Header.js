@@ -42,8 +42,8 @@ export const THead = ({
                   modelName,
                   fieldName,
                   title: getFieldLabel({
-                    schema, modelName, fieldName, data:R.prop(fieldName, data), customProps
-                  }),
+                    schema, modelName, fieldName, data, customProps
+                  }), // this is the actual 'data' list, not 'node'
                   onFilterChange: (evt) => onFilterChange({
                     modelName,
                     ...evt

@@ -1,25 +1,27 @@
 import * as R from 'ramda'
 
-export const getFieldLabel = ({ schema, modelName, fieldName, data = {}, customProps }) => {
+export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
 
+// todo: data is a list??
 export const getModelLabel = ({ schema, modelName, data, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
+    return displayName({ schema, modelName, node: data, customProps })
   }
   return displayName
 }
 
+// todo: data is a list??
 export const getModelLabelPlural = ({ schema, modelName, data, user, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, user, customProps })
+    return displayName({ schema, modelName, node: data, user, customProps })
   }
   return displayName
 }
