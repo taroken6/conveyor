@@ -16,12 +16,12 @@ const setupFlexibleInput = props => {
 
 // Tests
 describe('FlexibleInput component', () => {
-  it('should render InputDate component with defaulted props when type is date', () => {
+  it('InputDate w/ type=DATE_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.DATE_TYPE })
     expect(wrapper.find('DatePicker')).toHaveLength(1)
     expect(wrapper.find('DatePicker').prop('isClearable')).toBe(true)
   })
-  it('should render InputString component with defaulted props when type is string', () => {
+  it('InputString w/ type=STRING_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.STRING_TYPE })
     expect(wrapper.find('input')).toHaveLength(1)
     expect(wrapper.find('input').prop('type')).toBe('text')
@@ -30,7 +30,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('input').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputString component with defaulted props when type is email', () => {
+  it('InputString w/ type=EMAIL_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.EMAIL_TYPE })
     expect(wrapper.find('input')).toHaveLength(1)
     expect(wrapper.find('input').prop('type')).toBe('email')
@@ -39,7 +39,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('input').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputString component with defaulted props when type is phone', () => {
+  it('InputString w/ type=PHONE_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.PHONE_TYPE })
     expect(wrapper.find('input')).toHaveLength(1)
     expect(wrapper.find('input').prop('type')).toBe('tel')
@@ -48,7 +48,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('input').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputString component with defaulted props when type is url', () => {
+  it('InputString w/ type=URL_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.URL_TYPE })
     expect(wrapper.find('input')).toHaveLength(1)
     expect(wrapper.find('input').prop('type')).toBe('url')
@@ -57,7 +57,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('input').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputPassword component with defaulted props when type is password', () => {
+  it('InputPassword w/ type=PASSWORD_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.PASSWORD_TYPE })
     expect(wrapper.find('input')).toHaveLength(1)
     expect(wrapper.find('input').prop('type')).toBe('password')
@@ -66,7 +66,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('input').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputInt component with defaulted props when type is int', () => {
+  it('InputInt w/ type=INT_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.INT_TYPE })
     expect(wrapper.find('input')).toHaveLength(1)
     expect(wrapper.find('input').prop('type')).toBe('number')
@@ -75,7 +75,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('input').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputCurrency component with defaulted props when type is currency', () => {
+  it('InputCurrency w/ type=CURRENCY_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.CURRENCY_TYPE })
     expect(wrapper.find('CurrencyInput')).toHaveLength(1)
     expect(
@@ -83,7 +83,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('CurrencyInput').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputTextArea component with defaulted props when type is text', () => {
+  it('InputTextArea w/ type=TEXTAREA_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({ type: inputTypes.TEXTAREA_TYPE })
     expect(wrapper.find('textarea')).toHaveLength(1)
     expect(
@@ -91,7 +91,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('textarea').prop('className') === 'form-control'
     ).toBe(true)
   })
-  it('should render InputRadio component with defaulted props when type is radio', () => {
+  it('InputRadio w/ type=RADIO_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.RADIO_TYPE,
       options: [{ label: 'test', value: 'false' }]
@@ -109,7 +109,7 @@ describe('FlexibleInput component', () => {
           .hasClass('form-check')
     ).toBe(true)
   })
-  it('should render InputFile component with defaulted props when type is file', () => {
+  it('InputFile w/ type=FILE_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.FILE_TYPE
     })
@@ -117,7 +117,7 @@ describe('FlexibleInput component', () => {
     expect(wrapper.find('input').prop('type')).toBe('file')
     expect(wrapper.find('input').hasClass('form-control-file')).toBe(true)
   })
-  it('should render InputSwitch component with defaulted props when type is boolean', () => {
+  it('InputSwitch w/ type=BOOLEAN_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.BOOLEAN_TYPE
     })
@@ -134,7 +134,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('Switch').prop('checked') === false
     ).toBe(true)
   })
-  it('should render InputCheckbox component with defaulted props when type is checkbox', () => {
+  it('InputCheckbox w/ type=CHECKBOX_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.CHECKBOX_TYPE
     })
@@ -145,7 +145,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('div').hasClass('form-group form-check')
     ).toBe(true)
   })
-  it('should render InputSelect component with defaulted props when type is select', () => {
+  it('InputSelect w/ type=SELECT_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.SELECT_TYPE
     })
@@ -157,19 +157,7 @@ describe('FlexibleInput component', () => {
         wrapper.find('Select').hasClass('basic-single')
     ).toBe(true)
   })
-  it('should render InputSelect component with defaulted props when type is select', () => {
-    const { wrapper } = setupFlexibleInput({
-      type: inputTypes.SELECT_TYPE
-    })
-    expect(wrapper.find('Select')).toHaveLength(1)
-    expect(
-      wrapper.find('Select').prop('isClearable') === true &&
-        wrapper.find('Select').prop('isMulti') === false &&
-        wrapper.find('Select').prop('noOptionsMessage')() === 'No Options' &&
-        wrapper.find('Select').hasClass('basic-single')
-    ).toBe(true)
-  })
-  it('should render InputString component with error when error is supplied with type string', () => {
+  it('InputString w/ type=STRING_TYPE error=\'Example Error\'', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.STRING_TYPE,
       error: 'Example Error'
@@ -184,7 +172,7 @@ describe('FlexibleInput component', () => {
 })
 
 describe('isAutoFocusInput function', () => {
-  it('should return true if type is string, textarea, email, url, phone, password, int, or currency', () => {
+  it('return true w/ type=STRING_TYPE, TEXTAREA_TYPE, EMAIL_TYPE, URL_TYPE, PHONE_TYPE, PASSWORD_TYPE, INT_TYPE, CURRENCY_TYPE', () => {
     expect(isAutoFocusInput(inputTypes.STRING_TYPE)).toBe(true)
     expect(isAutoFocusInput(inputTypes.TEXTAREA_TYPE)).toBe(true)
     expect(isAutoFocusInput(inputTypes.EMAIL_TYPE)).toBe(true)
@@ -194,7 +182,7 @@ describe('isAutoFocusInput function', () => {
     expect(isAutoFocusInput(inputTypes.INT_TYPE)).toBe(true)
     expect(isAutoFocusInput(inputTypes.CURRENCY_TYPE)).toBe(true)
   })
-  it('should return false if any other type', () => {
+  it('return false w/ any other type', () => {
     expect(isAutoFocusInput(inputTypes.DATE_TYPE)).toBe(false)
     expect(isAutoFocusInput(inputTypes.FILE_TYPE)).toBe(false)
     expect(isAutoFocusInput(inputTypes.RADIO_TYPE)).toBe(false)
