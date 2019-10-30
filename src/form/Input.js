@@ -12,12 +12,12 @@ import { getFieldLabel } from '../utils/schemaGetters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
 
-export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, ...props }) => {
+export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, user, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
   const relModelName = R.prop('modelName', relSchemaEntry)
   const id = `input-${modelName}-${fieldName}`
   const required = R.prop('required', getField(schema, modelName, fieldName))
-  const creatable = isCreatable({ schema, modelName: relModelName, ...props })
+  const creatable = isCreatable({ schema, modelName: relModelName, user, customProps })
 
   const Label = ({ labelStr }) => (
     <label htmlFor={id}>
@@ -57,7 +57,10 @@ const Input = ({
   selectOptions,
   disabled,
   customLabel,
-  ...props
+  formStack,
+  autoFocus,
+  onKeyDown,
+  customProps
 }) => {
   const InputOverride = getInputOverride(schema, modelName, fieldName)
 
@@ -82,7 +85,10 @@ const Input = ({
         selectOptions,
         disabled,
         onMenuOpen,
-        ...props
+        formStack,
+        autoFocus,
+        onKeyDown,
+        customProps
       }} />
   }
 
@@ -91,7 +97,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      data: R.path(['formStack', 'originData'], props)
+      data: R.path(['originData'], formStack), customProps
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -108,7 +114,9 @@ const Input = ({
     disabled,
     customLabel,
     onMenuOpen,
-    ...props
+    autoFocus,
+    onKeyDown,
+    customProps,
   }} />
 }
 
@@ -123,10 +131,10 @@ export const InputCore = ({
   selectOptions,
   customLabel,
   onMenuOpen,
-  customProps,
+  customInput,
   autoFocus,
   onKeyDown,
-  ...props
+  customProps
 }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
 
@@ -134,7 +142,7 @@ export const InputCore = ({
     fieldName,
     value: val
   })
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data: {} })
+  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data: {}, customProps })
   const defaultProps = {
     id: `input-${modelName}-${fieldName}`,
     type: inputType,
@@ -143,7 +151,7 @@ export const InputCore = ({
     value,
     error,
     required: R.prop('required', getField(schema, modelName, fieldName)),
-    customProps,
+    customInput,
     autoFocus,
     onKeyDown
   }
@@ -193,7 +201,7 @@ export const InputCore = ({
       return <FlexibleInput {...{
         ...defaultProps,
         type: inputTypes.INT_TYPE,
-        customProps: { step: 'any' }
+        customInput: { step: 'any' }
       }} />
     case inputTypes.ENUM_TYPE:
       return <FlexibleInput {...{
@@ -202,7 +210,7 @@ export const InputCore = ({
         options: enumChoiceOrder.map(choice => (
           { label: enumChoices[choice], value: choice }
         )),
-        customProps: { step: 'any' }
+        customInput: { step: 'any' }
       }} />
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:

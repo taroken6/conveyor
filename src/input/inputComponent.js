@@ -34,7 +34,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
 
 /**
  * Some components (such as InputDate, InputSwitch, ect.) do not work well with
- * invalid-feedback, so a custom component was created to show the error message.
+ * invalid-feedback, so a special component was created to show the error message.
  *
  * @property: { list } error - list of strings containing error messages
  */
@@ -58,7 +58,7 @@ const CustomErrorComponent = ({ error, id }) =>
  * @property { string } dateFormat
  * @property { string } className - FlexibleInput component sets default to: 'form-control'
  * @property { boolean } isClearable - FlexibleInput component sets default to: true
- * @property { object } [customProps] - Can override the following default
+ * @property { object } [customInput] - Can override the following default
  *      settings : { placeholderText: "Click to select a date", fixedHeight: true,
  *          dateFormat: 'YYYY-MM-DD'}. See React DatePicker docs for full list.
  * @property { boolean } required
@@ -67,7 +67,7 @@ const CustomErrorComponent = ({ error, id }) =>
  */
 
 // TODO: get classname for invalid from new react-datepicker
-export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customProps, customError, customLabel }) => {
+export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customInput, customError, customLabel }) => {
   let date
   if (value) {
     date = new Date(value)
@@ -96,7 +96,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
           )
         }}
         isClearable={isClearable}
-        {...customProps}
+        {...customInput}
       />
     </div>
   </FormGroup>
@@ -120,14 +120,14 @@ const inputStringTypeMap = {
  * @property { string } [error]
  * @property { any } value - FlexibleInput component sets default to: ''
  * @property { string } className - FlexibleInput component sets default to: 'form-control'
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
+export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -139,7 +139,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
       id={id}
       value={value}
       onKeyDown={onKeyDown}
-      {...customProps}
+      {...customInput}
     />
   </FormGroup>
 )
@@ -154,14 +154,14 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
  * @property { string } [error]
  * @property { any } value - FlexibleInput component sets default to: ''
  * @property { string } className - FlexibleInput component sets default to: 'form-control'
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
+export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -173,7 +173,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
       id={id}
       value={value}
       onKeyDown={onKeyDown}
-      {...customProps}
+      {...customInput}
     />
   </FormGroup>
 )
@@ -188,7 +188,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { string } [error]
  * @property { any } value - FlexibleInput component sets default to: ''
  * @property { string } className - FlexibleInput component sets default to: 'form-control'
- * @property { object } [customProps] - Can change step increment (default
+ * @property { object } [customInput] - Can change step increment (default
  *      integer value is 1). For example: {step: 3}
  * @property { boolean } required
  * @property { function } customError
@@ -200,7 +200,7 @@ const MAX_SQL_INT_SIZE = Math.pow(2, 31) -1
 
 const MIN_SQL_INT_SIZE = - Math.pow(2, 31)
 
-export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => {
+export const InputInt = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => {
   if (value > MAX_SQL_INT_SIZE || value < MIN_SQL_INT_SIZE) {
     error = R.append('Number too large.', error)
   }
@@ -224,13 +224,13 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
         id={id}
         onKeyDown={onKeyDown}
         value={value.toString()}
-        {...customProps}
+        {...customInput}
       />
     </FormGroup>
   )
 }
 
-export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus, onKeyDown }) => (
+export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -250,7 +250,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
           }
           return onChange((evt).replace(/,/g, ''))
         }}
-        {...customProps}
+        {...customInput}
       />
     </div>
   </FormGroup>
@@ -268,14 +268,14 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
  * @property { string } [error]
  * @property { any } value - FlexibleInput component sets default to: ''
  * @property { string } className - FlexibleInput component sets default to: 'form-control'
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customProps, customError, customLabel, autoFocus }) => (
+export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -285,7 +285,7 @@ export const InputTextArea = ({ onChange, id, labelStr, error, value, className,
       value={value}
       onChange={evt => onChange(evt.target.value)}
       id={id}
-      {...customProps}
+      {...customInput}
     />
   </FormGroup>
 )
@@ -302,13 +302,13 @@ export const InputTextArea = ({ onChange, id, labelStr, error, value, className,
  * @property { string } className - FlexibleInput component sets default to: 'form-check'
  * @property { any } options
  * @property { boolean } inline - FlexibleInput component sets default to: false
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  */
 
-export const InputRadio = ({ onChange, id, labelStr, error, value, className, options, inline, required, customProps, customError, customLabel }) => (
+export const InputRadio = ({ onChange, id, labelStr, error, value, className, options, inline, required, customInput, customError, customLabel }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
@@ -321,7 +321,7 @@ export const InputRadio = ({ onChange, id, labelStr, error, value, className, op
           value={option.value}
           checked={option.value === value}
           onChange={evt => onChange(evt.target.value)}
-          {...customProps}
+          {...customInput}
         />
         <label className='form-check-label' htmlFor={option.value}>{option.label}</label>
       </div>
@@ -337,13 +337,13 @@ export const InputRadio = ({ onChange, id, labelStr, error, value, className, op
  * @property { string } [labelStr]
  * @property { string } [error]
  * @property { string } className - FlexibleInput component sets default to: 'form-control-file'
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  */
 
-export const InputFile = ({ onChange, error, id, labelStr, className, required, customProps, customError, customLabel }) => {
+export const InputFile = ({ onChange, error, id, labelStr, className, required, customInput, customError, customLabel }) => {
   return (
     <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
       customError={R.defaultTo(null, customError)}
@@ -354,7 +354,7 @@ export const InputFile = ({ onChange, error, id, labelStr, className, required, 
         onChange={onChange}
         className={`${className}${error ? ' is-invalid' : ''}`}
         id={id}
-        {...customProps}
+        {...customInput}
       />
     </FormGroup>
   )
@@ -363,7 +363,7 @@ export const InputFile = ({ onChange, error, id, labelStr, className, required, 
 /**
  * Singular component for Switch Type.
  *
- * See React Switch documentation for details on which custom props to override
+ * See React Switch documentation for details on which attributes to override
  *
  * @property { function } onChange
  * @property { string } id
@@ -372,13 +372,13 @@ export const InputFile = ({ onChange, error, id, labelStr, className, required, 
  * @property { boolean } inline
  * @property { any } value - FlexibleInput component sets default to: false
  * @property { string } className - FlexibleInput component sets default to: 'form-check'
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  */
 
-export const InputSwitch = ({ onChange, value, inline, id, className, labelStr, error, required, customProps, customError, customLabel }) => (
+export const InputSwitch = ({ onChange, value, inline, id, className, labelStr, error, required, customInput, customError, customLabel }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
@@ -389,7 +389,7 @@ export const InputSwitch = ({ onChange, value, inline, id, className, labelStr, 
           return onChange(val)
         }}
         checked={value}
-        {...customProps}
+        {...customInput}
       />
     </div>
   </FormGroup>
@@ -407,12 +407,12 @@ export const InputSwitch = ({ onChange, value, inline, id, className, labelStr, 
  * @property { string } [error]
  * @property { any } value - FlexibleInput component sets default to: false
  * @property { string } className - FlexibleInput component sets default to: 'form-group form-check'
- * @property { object } [customProps]
+ * @property { object } [customInput]
  * @property { boolean } required
  * @property { function } customError
  */
 
-export const InputCheckbox = ({ onChange, value, id, className, labelStr, error, required, customProps, customError }) => {
+export const InputCheckbox = ({ onChange, value, id, className, labelStr, error, required, customInput, customError }) => {
   customError = R.defaultTo(CustomErrorComponent, customError)
   return (
     <div key={`checkbox-${id}`} className={className}>
@@ -427,7 +427,7 @@ export const InputCheckbox = ({ onChange, value, id, className, labelStr, error,
             const val = (typeof (evt.target.checked) === typeof (false)) ? evt.target.checked : false
             return onChange(val)
           }}
-          {...customProps}
+          {...customInput}
         />{`${labelStr} ${required ? ' *' : ''}`}
       </label>
       {error && customError({ error, id })}
@@ -454,13 +454,13 @@ export const InputCheckbox = ({ onChange, value, id, className, labelStr, error,
  * @property { any } options
  * @property { function } noOptionsMessage - FlexibleInput component sets default to: () => 'No Options'
  * @property { function } onMenuOpen - See React Select for more details
- * @property { object } [customProps] - See React Select docs for full list of attributes
+ * @property { object } [customInput] - See React Select docs for full list of attributes
  * @property { boolean } required
  * @property { function } customError
  * @property { function } customLabel
  */
 
-export const InputSelect = ({ labelStr, id, error, className, isClearable, isMulti, value, options, onChange, noOptionsMessage, onMenuOpen, required, customProps, customError, customLabel }) => (
+export const InputSelect = ({ labelStr, id, error, className, isClearable, isMulti, value, options, onChange, noOptionsMessage, onMenuOpen, required, customInput, customError, customLabel }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
@@ -475,7 +475,7 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
       id={id}
       onMenuOpen={onMenuOpen}
       noOptionsMessage={noOptionsMessage}
-      {...customProps}
+      {...customInput}
     />
   </FormGroup>
 )

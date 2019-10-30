@@ -19,7 +19,8 @@ export const TabFields = ({
   tooltipData,
   modalData,
   selectOptions,
-  ...props
+  user,
+  customProps
 }) => {
   if (Component) {
     return <Component {...{
@@ -35,7 +36,8 @@ export const TabFields = ({
       path,
       modalData,
       selectOptions,
-      ...props
+      user,
+      customProps
     }} />
   }
 
@@ -43,7 +45,8 @@ export const TabFields = ({
         partitionDetailFields({
           schema,
           modelName,
-          include: fields
+          include: fields,
+          customProps
         })
 
   return (
@@ -59,7 +62,8 @@ export const TabFields = ({
       editData,
       descriptionList,
       selectOptions,
-      ...props
+      user,
+      customProps
     }} />
   )
 }
@@ -78,7 +82,8 @@ const RecursiveTab = ({
   tooltipData,
   path,
   selectOptions,
-  ...props
+  user,
+  customProps
 }) => {
   if (tabs.length === 1) {
     return (
@@ -96,7 +101,8 @@ const RecursiveTab = ({
         modalData,
         tooltipData,
         selectOptions,
-        ...props
+        user,
+        customProps
       }} />
     )
   }
@@ -117,7 +123,8 @@ const RecursiveTab = ({
         path,
         modalData,
         selectOptions,
-        ...props
+        user,
+        customProps
       }} />
       <ul className='nav nav-pills'>
         {tabs.map(tab => (
@@ -159,7 +166,8 @@ const RecursiveTab = ({
                   tooltipData,
                   path,
                   selectOptions,
-                  ...props,
+                  user,
+                  customProps,
                   ...renderProps
                 }} />
               )}
