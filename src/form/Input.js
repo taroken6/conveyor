@@ -120,45 +120,16 @@ const Input = ({
   }} />
 }
 
-export const InputCore = ({
-  schema,
-  modelName,
-  fieldName,
-  value,
-  error,
-  inline,
-  onChange,
-  selectOptions,
-  customLabel,
-  onMenuOpen,
-  customInput,
-  autoFocus,
-  onKeyDown,
-  customProps
-}) => {
-  const inputType = getInputType({ schema, modelName, fieldName })
-
+export const getOnChange = ({ inputType, onChange, fieldName }) => {
   const defaultHandleOnChange = val => onChange({
     fieldName,
     value: val
   })
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
-  const defaultProps = {
-    id: `input-${modelName}-${fieldName}`,
-    type: inputType,
-    onChange: defaultHandleOnChange,
-    labelStr: inline ? null : fieldLabel,
-    value,
-    error,
-    required: R.prop('required', getField(schema, modelName, fieldName)),
-    customInput,
-    autoFocus,
-    onKeyDown
+  if (inputType !== inputTypes.FILE_TYPE) {
+    return defaultHandleOnChange
   }
-  const enumChoices = getEnumChoices(schema, modelName, fieldName)
-  const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)
 
-  const onChangeFile = evt => {
+  return (evt => {
     const fileReader = new FileReader()
 
     const onloadend = () => {
@@ -178,7 +149,43 @@ export const InputCore = ({
       fileReader.onloadend = onloadend
       fileReader.readAsArrayBuffer(evt.target.files[0])
     }
+  })
+}
+
+export const InputCore = ({
+  schema,
+  modelName,
+  fieldName,
+  value,
+  error,
+  inline,
+  onChange,
+  selectOptions,
+  customLabel,
+  onMenuOpen,
+  customInput,
+  autoFocus,
+  onKeyDown,
+  customProps
+}) => {
+  const inputType = getInputType({ schema, modelName, fieldName })
+
+  const defaultHandleOnChange = getOnChange({ inputType, onChange, fieldName })
+  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
+  const defaultProps = {
+    id: `input-${modelName}-${fieldName}`,
+    type: inputType,
+    onChange: defaultHandleOnChange,
+    labelStr: inline ? null : fieldLabel,
+    value,
+    error,
+    required: R.prop('required', getField(schema, modelName, fieldName)),
+    customInput,
+    autoFocus,
+    onKeyDown
   }
+  const enumChoices = getEnumChoices(schema, modelName, fieldName)
+  const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)
 
   switch (inputType) {
     case inputTypes.STRING_TYPE:
@@ -191,12 +198,8 @@ export const InputCore = ({
     case inputTypes.BOOLEAN_TYPE:
     case inputTypes.CURRENCY_TYPE:
     case inputTypes.PASSWORD_TYPE:
-      return <FlexibleInput {...defaultProps} />
     case inputTypes.FILE_TYPE:
-      return <FlexibleInput {...{
-        ...defaultProps,
-        onChange: onChangeFile
-      }} />
+      return <FlexibleInput {...defaultProps} />
     case inputTypes.FLOAT_TYPE:
       return <FlexibleInput {...{
         ...defaultProps,
