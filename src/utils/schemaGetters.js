@@ -16,11 +16,10 @@ export const getModelLabel = ({ schema, modelName, node, data, customProps }) =>
   return displayName
 }
 
-// todo: data is a list??
 export const getModelLabelPlural = ({ schema, modelName, data, user, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, node: data, user, customProps })
+    return displayName({ schema, modelName, data, user, customProps })
   }
   return displayName
 }
