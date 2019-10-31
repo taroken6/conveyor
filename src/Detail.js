@@ -480,7 +480,7 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null,
 }
 
 const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, customProps }) => {
-  const model = getModelLabel({ schema, modelName, data: node, user, customProps })
+  const model = getModelLabel({ schema, modelName, node, user, customProps })
   const label = getDisplayValue({ schema, modelName, node, customProps })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)

@@ -8,11 +8,10 @@ export const getFieldLabel = ({ schema, modelName, fieldName, node, data, custom
   return displayName
 }
 
-// todo: data is a list??
-export const getModelLabel = ({ schema, modelName, data, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, node: data, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
