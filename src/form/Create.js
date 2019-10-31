@@ -92,7 +92,11 @@ const Create = ({
   return (
     <div className='container'>
       <Breadcrumbs schema={schema} formStack={formStack} customProps={customProps} />
-      <h1>Create {getModelLabel({ schema, modelName, customProps })}</h1>
+      <h1>Create {getModelLabel({
+        schema,
+        modelName,
+        customProps: R.assoc('form', form, customProps)
+      })}</h1>
       <div>* Indicates a Required Field</div>
       <br />
       <div>{fieldOrder.map(fieldName => {
