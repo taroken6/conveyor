@@ -18,6 +18,14 @@ export const humanize = str => R.pipe(
   R.trim
 )(str)
 
+export const titleize = title => {
+  let strArr = title.split(' ')
+  strArr = strArr.map(str => {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  })
+  return strArr.join(' ')
+}
+
 export const getCellOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'cell'], schema)
 )
@@ -132,12 +140,4 @@ export const isCreatable = ({ schema, modelName, user, parentNode, data, customP
   } else {
     return false
   }
-}
-
-export const titleize = title => {
-  let strArr = title.split(' ')
-  strArr = strArr.map(str => {
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  })
-  return strArr.join(' ')
 }
