@@ -9,7 +9,7 @@ const DefaultsTest = {
       type: 'string',
     }
   },
-  modelName: 'DefaultsTest',
+  modelName: 'Defaults_Test',
   tableLinkField: 'name',
   fieldOrder: ['name']
 }

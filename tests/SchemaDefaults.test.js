@@ -227,13 +227,13 @@ describe('getFieldLabel function', () => {
 })
 
 describe('getModelLabel function', () => {
-  it('Return titleized modelName w/ displayName=UNDEFINED', () => {
+  it('Return titleized and humanized modelName w/ displayName=UNDEFINED', () => {
     expect(
       getModelLabel({
         schema: schema,
         modelName: 'DefaultsTest'
       })
-    ).toBe('DefaultsTest')
+    ).toBe('Defaults Test')
     expect(
       getModelLabel({
         schema: R.assocPath(

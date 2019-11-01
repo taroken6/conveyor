@@ -6,9 +6,16 @@ export const capitalizeFirstChar = (str) => str.replace(/^./, str => str.toUpper
 
 export const spaceOnCapitalLetter = (str) => str.replace(/([A-Z])/g, ' $1')
 
+export const underscoreToSpace = (str) => str.replace(/_/g, ' ')
+
+export const trimWhitespaceBetweenWords = (str) => str.replace(/\s\s+/g, ' ')
+
 export const humanize = str => R.pipe(
   spaceOnCapitalLetter,
-  capitalizeFirstChar
+  capitalizeFirstChar,
+  underscoreToSpace,
+  trimWhitespaceBetweenWords,
+  R.trim
 )(str)
 
 export const getCellOverride = (schema, modelName, fieldName) => (
