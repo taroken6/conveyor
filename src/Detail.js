@@ -634,6 +634,10 @@ const DefaultDetail = ({
     return <Redirect to={`/${modelName}`} />
   }
 
+  if (skipOverride(DetailTitleOverride) && skipOverride(DetailPageOverride)) {
+    return null
+  }
+
   return (
     <Wrapper>
       {skipOverride(DetailTitleOverride) ? null : (

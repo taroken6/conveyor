@@ -1,10 +1,21 @@
 import React from 'react'
-import { Table as DefaultTable } from './table/Table'
+import { Table } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
-import { getActions, getHasIndex, getIndexFields, getModelLabelPlural } from './utils/schemaGetters'
+import {
+  getActions,
+  getHasIndex,
+  getIndexFields,
+  getModelLabelPlural
+} from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
-import { isCreatable } from './Utils'
+import {
+  isCreatable,
+  getIndexOverride,
+  getIndexTitleOverride,
+  getIndexPageOverride,
+  skipOverride
+} from './Utils'
 
 export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customProps }) => {
   const actions = getActions(schema, modelName)
@@ -23,6 +34,87 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customP
   )
 }
 
+const DefaultIndex = ({
+  schema,
+  modelName,
+  data,
+  modalData,
+  editData,
+  selectOptions,
+  path,
+  tooltipData,
+  user,
+  tableOptions,
+  customProps
+}) => {
+  if (!getHasIndex(schema, modelName)) {
+    return <Redirect to="/" />
+  }
+
+  const IndexTitleOverride = getIndexTitleOverride(schema, modelName)
+  const IndexPageOverride = getIndexPageOverride(schema, modelName)
+
+  const IndexTitle = IndexTitleOverride || DefaultIndexTitle
+  const IndexPage = IndexPageOverride || Table
+
+  const fieldOrder = getIndexFields({
+    schema,
+    modelName,
+    data,
+    user,
+    customProps
+  })
+  const actions = getActions(schema, modelName)
+  const onDelete = R.path(['delete', 'onIndexDelete'], actions)
+  const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)
+
+  if (skipOverride(IndexTitleOverride) && skipOverride(IndexPageOverride)) {
+    return null
+  }
+
+  return (
+    <div className="container">
+      {skipOverride(IndexTitleOverride) ? null : (
+        <IndexTitle
+          {...{
+            schema,
+            modelName,
+            data,
+            modalData,
+            editData,
+            selectOptions,
+            path,
+            tooltipData,
+            user,
+            tableOptions,
+            customProps
+          }}
+        />
+      )}
+      {skipOverride(IndexPageOverride) ? null : (
+        <IndexPage
+          {...{
+            schema,
+            modelName,
+            data,
+            modalData,
+            editData,
+            selectOptions,
+            path,
+            tooltipData,
+            user,
+            tableOptions,
+            customProps,
+            fieldOrder,
+            onDelete,
+            onEditSubmit
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
 const Index = ({
   schema,
   modelName,
@@ -32,39 +124,31 @@ const Index = ({
   selectOptions,
   path,
   tooltipData,
-  Title = DefaultIndexTitle,
-  Table = DefaultTable,
   user,
   tableOptions,
   customProps
 }) => {
-  if (!(getHasIndex(schema, modelName))) {
-    return <Redirect to='/' />
-  }
+  const IndexOverride = getIndexOverride(schema, modelName)
 
-  const fieldOrder = getIndexFields({ schema, modelName, data, user, customProps })
-  const actions = getActions(schema, modelName)
-  const onDelete = R.path(['delete', 'onIndexDelete'], actions)
-  const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)
+  const IndexComponent = IndexOverride || DefaultIndex
 
-  return (<div className='container'>
-    <Title {...{ schema, modelName, path, data, user, customProps }} />
-      <Table {...{
+  return skipOverride(IndexOverride) ? null : (
+    <IndexComponent
+      {...{
         schema,
         modelName,
         data,
-        onDelete,
-        onEditSubmit,
-        tooltipData,
-        fieldOrder,
-        selectOptions,
-        editData,
         modalData,
+        editData,
+        selectOptions,
+        path,
+        tooltipData,
         user,
         tableOptions,
         customProps
-      }} />
-    </div>)
+      }}
+    />
+  )
 }
 
 export default Index

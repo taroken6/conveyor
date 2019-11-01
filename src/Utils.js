@@ -47,12 +47,24 @@ export const getDetailOverride = (schema, modelName) => (
   R.path([modelName, 'components', 'detail'], schema)
 )
 
+export const getDetailTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detailTitle'], schema)
+)
+
 export const getDetailPageOverride = (schema, modelName) => (
   R.path([modelName, 'components', 'detailPage'], schema)
 )
 
-export const getDetailTitleOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'detailTitle'], schema)
+export const getIndexOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'index'], schema)
+)
+
+export const getIndexTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'indexTitle'], schema)
+)
+
+export const getIndexPageOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'indexPage'], schema)
 )
 
 // override component skipped only if 'null' (undefined by default)
