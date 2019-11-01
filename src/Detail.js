@@ -3,7 +3,18 @@ import * as R from 'ramda'
 import { Table, DeleteButton } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
 import Field, { getRelSchemaEntry } from './table/Field'
-import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable, skipOverride } from './Utils'
+import {
+  getDetailFieldOverride,
+  getDetailLabelOverride,
+  getDetailValueOverride,
+  isFieldEditable,
+  isCreatable,
+  isDeletable,
+  skipOverride,
+  getDetailOverride,
+  getDetailTitleOverride,
+  getDetailPageOverride
+} from './Utils'
 import {
   getActions, getModelAttribute, getField,
   getDetailFields, getHasIndex, getModelLabel, getFieldLabel
@@ -527,7 +538,7 @@ export const DetailFields = ({
     <React.Fragment>
       <dl className='row'>
         {descriptionList.map(fieldName => {
-          const override = getDetailOverride(schema, modelName, fieldName)
+          const override = getDetailFieldOverride(schema, modelName, fieldName)
           if (skipOverride(override)) {
             return null
           }
@@ -552,7 +563,7 @@ export const DetailFields = ({
         })}
       </dl>
       {tableFields.map(fieldName => {
-        const override = getDetailOverride(schema, modelName, fieldName)
+        const override = getDetailFieldOverride(schema, modelName, fieldName)
         if (skipOverride(override)) {
           return null
         }
@@ -591,6 +602,82 @@ const Wrapper = ({ children }) => (
   </div>
 )
 
+const DefaultDetail = ({
+  schema,
+  modelName,
+  id,
+  node,
+  modalData,
+  editData,
+  path,
+  match,
+  tooltipData,
+  user,
+  selectOptions,
+  customProps
+}) => {
+  const DetailTitleOverride = getDetailTitleOverride(schema, modelName)
+  const DetailPageOverride = getDetailPageOverride(schema, modelName)
+
+  const tabs = getModelAttribute(schema, modelName, 'tabs')
+
+  const DefaultDetailPage = tabs && tabs.length > 0 ? Tabs : DetailFields
+
+  const DetailTitle = DetailTitleOverride || DefaultDetailPageTitle
+  const DetailPage = DetailPageOverride || DefaultDetailPage
+
+  if (!node) {
+    return <div className="container">Loading...</div>
+  }
+
+  if (R.prop('result', node) === null) {
+    return <Redirect to={`/${modelName}`} />
+  }
+
+  return (
+    <Wrapper>
+      {skipOverride(DetailTitleOverride) ? null : (
+        <DetailTitle
+          {...{
+            schema,
+            modelName,
+            id,
+            node,
+            modalData,
+            editData,
+            path,
+            match,
+            tooltipData,
+            user,
+            selectOptions,
+            customProps
+          }}
+        />
+      )}
+      {skipOverride(DetailPageOverride) ? null : (
+        <DetailPage
+          {...{
+            schema,
+            modelName,
+            id,
+            node,
+            modalData,
+            editData,
+            tooltipData,
+            match,
+            tabs,
+            path,
+            fields: [],
+            user,
+            selectOptions,
+            customProps
+          }}
+        />
+      )}
+    </Wrapper>
+  )
+}
+
 const Detail = ({
   schema,
   modelName,
@@ -601,49 +688,31 @@ const Detail = ({
   path,
   match,
   tooltipData,
-  Title = DefaultDetailPageTitle,
   user,
   selectOptions,
   customProps
 }) => {
-  if (!node) { return <div className='container'>Loading...</div> }
+  const DetailOverride = getDetailOverride(schema, modelName)
 
-  if (R.prop('result', node) === null) {
-    return <Redirect to={`/${modelName}`} />
-  }
+  const DetailComponent = DetailOverride || DefaultDetail
 
-  const tabs = getModelAttribute(schema, modelName, 'tabs')
-
-  if (tabs && tabs.length > 0) {
-    return (
-      <Wrapper>
-        <Title {...{ schema, modelName, node, modalData, user, customProps }} />
-        <Tabs {...{
-          schema,
-          modelName,
-          id,
-          node,
-          modalData,
-          editData,
-          tooltipData,
-          match,
-          tabs,
-          path,
-          fields: [],
-          user,
-          selectOptions,
-          customProps
-        }}
-        />
-      </Wrapper>
-    )
-  }
-
-  return (
-    <Wrapper>
-      <Title {...{ schema, modelName, node, modalData, user, customProps }} />
-      <DetailFields {...{ schema, modelName, id, node, modalData, editData, tooltipData, path, user, selectOptions, customProps }} />
-    </Wrapper>
+  return skipOverride(DetailOverride) ? null : (
+    <DetailComponent
+      {...{
+        schema,
+        modelName,
+        id,
+        node,
+        modalData,
+        editData,
+        path,
+        match,
+        tooltipData,
+        user,
+        selectOptions,
+        customProps
+      }}
+    />
   )
 }
 

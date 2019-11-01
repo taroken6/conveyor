@@ -15,7 +15,7 @@ export const getCellOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'cell'], schema)
 )
 
-export const getDetailOverride = (schema, modelName, fieldName) => (
+export const getDetailFieldOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'detail'], schema)
 )
 
@@ -41,6 +41,18 @@ export const getCreateTitleOverride = (schema, modelName) => (
 
 export const getCreatePageOverride = (schema, modelName) => (
   R.path([modelName, 'components', 'createPage'], schema)
+)
+
+export const getDetailOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detail'], schema)
+)
+
+export const getDetailPageOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detailPage'], schema)
+)
+
+export const getDetailTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detailTitle'], schema)
 )
 
 // override component skipped only if 'null' (undefined by default)
