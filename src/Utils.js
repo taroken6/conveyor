@@ -31,6 +31,18 @@ export const getInputOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'input'], schema)
 )
 
+export const getCreateOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'create'], schema)
+)
+
+export const getCreateTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'createTitle'], schema)
+)
+
+export const getCreatePageOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'createPage'], schema)
+)
+
 // override component skipped only if 'null' (undefined by default)
 export const skipOverride = (component) => component === null
 
