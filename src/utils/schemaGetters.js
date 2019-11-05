@@ -112,3 +112,7 @@ export const getEnumChoices = (schema, modelName, fieldName) => {
 export const getEnumChoiceOrder = (schema, modelName, fieldName) => {
   return R.prop('choiceOrder', getField(schema, modelName, fieldName))
 }
+
+export const getFieldCondition = (schema, modelName, fieldName) => {
+  return R.prop('condition', getField(schema, modelName, fieldName))
+}

@@ -6,7 +6,7 @@ import Field, { getRelSchemaEntry } from './table/Field'
 import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable, skipOverride } from './Utils'
 import {
   getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex, getModelLabel, getFieldLabel
+  getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldCondition
 } from './utils/schemaGetters'
 
 import Tabs from './Tabs'
@@ -527,7 +527,14 @@ export const DetailFields = ({
     <React.Fragment>
       <dl className='row'>
         {descriptionList.map(fieldName => {
+          const condition = getFieldCondition(schema, modelName, fieldName)
+          if (
+            R.type(condition) === 'Function' && 
+            !condition(schema, modelName, id, fieldName, node, customProps)) {
+              return null
+          }
           const override = getDetailOverride(schema, modelName, fieldName)
+
           if (skipOverride(override)) {
             return null
           }
