@@ -47,6 +47,7 @@ The schema utilized by the framework will be different than the existing schema 
               'choice_value' : 'choice_label'
           }
           choiceOrder: [] #Order of 'choices' appearing in Enum field
+          condition: () => #A function that evaluate to true or false that determines if the field will display on a detail page
           sortable: boolean #Whether the given field should be sortable on tables
           filterable: boolean #Whether the given field should be filterable on tables
           editable: boolean or function #Whether the given field should be editable
