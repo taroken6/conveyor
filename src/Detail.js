@@ -530,7 +530,7 @@ export const DetailFields = ({
           const condition = getFieldCondition(schema, modelName, fieldName)
           if (
             R.type(condition) === 'Function' && 
-            !condition(schema, modelName, id, fieldName, node, customProps)) {
+            !condition({schema, modelName, id, fieldName, node, customProps})) {
               return null
           }
           const override = getDetailOverride(schema, modelName, fieldName)
