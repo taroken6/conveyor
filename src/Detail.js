@@ -528,9 +528,7 @@ export const DetailFields = ({
       <dl className='row'>
         {descriptionList.map(fieldName => {
           const condition = getFieldCondition(schema, modelName, fieldName)
-          if (
-            R.type(condition) === 'Function' && 
-            !condition({schema, modelName, id, fieldName, node, customProps})) {
+          if (condition({schema, modelName, id, fieldName, node, customProps}) === false) {
               return null
           }
           const override = getDetailOverride(schema, modelName, fieldName)
