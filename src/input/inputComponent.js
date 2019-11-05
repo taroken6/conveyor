@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import CreatableSelect from "react-select/lib/Creatable"
 import DatePicker from 'react-datepicker'
 import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
@@ -475,6 +476,73 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
       id={id}
       onMenuOpen={onMenuOpen}
       noOptionsMessage={noOptionsMessage}
+      {...customInput}
+    />
+  </FormGroup>
+)
+
+/**
+ * Singular component for CreatableSelect Type.
+ *
+ * See React Select docs for more details on: isClearable, isMulti, options, noOptionsMessage,
+ * onMenuOpen
+ *
+* should NOT have onKeyDown because the 'enter' key should be reserved for Select operations
+ *
+ * @property { function } onChange
+ * @property { string } id
+ * @property { string } [labelStr]
+ * @property { string } [error]
+ * @property { any } value - no default set
+ * @property { string } className - FlexibleInput component sets default to: 'basic-single'
+ * @property { boolean } isClearable - FlexibleInput component sets default to: true
+ * @property { boolean } isMulti - FlexibleInput component sets default to: false
+ * @property { any } options
+ * @property { function } noOptionsMessage - FlexibleInput component sets default to: () => 'No Options'
+ * @property { function } onMenuOpen - See React Select for more details
+ * @property { object } [customInput] - See React Select docs for full list of attributes
+ * @property { boolean } required
+ * @property { function } customError
+ * @property { function } customLabel
+ */
+
+export const InputCreatableSelect = ({
+  labelStr,
+  id,
+  error,
+  className,
+  isClearable,
+  isMulti,
+  value,
+  options,
+  onChange,
+  noOptionsMessage,
+  onMenuOpen,
+  required,
+  customInput,
+  customError,
+  customLabel
+}) => (
+  <FormGroup
+    labelStr={labelStr}
+    htmlFor={id}
+    error={error}
+    required={required}
+    customError={R.defaultTo(CustomErrorComponent, customError)}
+    customLabel={customLabel}
+  >
+    <CreatableSelect
+      className={className}
+      classNamePrefix="select"
+      isClearable={isClearable}
+      isMulti={isMulti}
+      value={value}
+      options={options}
+      onChange={onChange}
+      id={id}
+      onMenuOpen={onMenuOpen}
+      noOptionsMessage={noOptionsMessage}
+      createOptionPosition={'first'}
       {...customInput}
     />
   </FormGroup>

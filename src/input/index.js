@@ -12,7 +12,8 @@ import {
   InputFile,
   InputSwitch,
   InputCheckbox,
-  InputSelect
+  InputSelect,
+  InputCreatableSelect
 } from './inputComponent'
 
 export const isAutoFocusInput = (type) => {
@@ -44,6 +45,7 @@ const defaultTypeMap = {
   [inputTypes.FILE_TYPE]: InputFile,
   [inputTypes.RADIO_TYPE]: InputRadio,
   [inputTypes.SELECT_TYPE]: InputSelect,
+  [inputTypes.CREATABLE_SELECT_TYPE]: InputCreatableSelect,
   [inputTypes.CHECKBOX_TYPE]: InputCheckbox,
   [inputTypes.BOOLEAN_TYPE]: InputSwitch
 }
@@ -196,6 +198,16 @@ const FlexibleInput = props => {
       break
 
     case inputTypes.SELECT_TYPE:
+      params['className'] = R.defaultTo('basic-single', params['className'])
+      params['isClearable'] = R.defaultTo(true, params['isClearable'])
+      params['isMulti'] = R.defaultTo(false, params['isMulti'])
+      params['noOptionsMessage'] = R.defaultTo(
+        () => 'No Options',
+        params['noOptionsMessage']
+      )
+      break
+
+    case inputTypes.CREATABLE_SELECT_TYPE:
       params['className'] = R.defaultTo('basic-single', params['className'])
       params['isClearable'] = R.defaultTo(true, params['isClearable'])
       params['isMulti'] = R.defaultTo(false, params['isMulti'])
