@@ -141,3 +141,14 @@ export const isCreatable = ({ schema, modelName, user, parentNode, data, customP
     return false
   }
 }
+
+
+export const shouldDisplay = ({schema, modelName, id, fieldName, node, displayCondition, customProps}) => {
+  if (R.type(displayCondition) === 'Boolean') {
+    return displayCondition
+  } else if (R.type(displayCondition) === 'Function') {
+    return displayCondition({schema, modelName, id, fieldName, node, customProps})
+  } else {
+    return true 
+  }
+}
