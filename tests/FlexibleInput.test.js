@@ -157,6 +157,15 @@ describe('FlexibleInput component', () => {
         wrapper.find('Select').hasClass('basic-single')
     ).toBe(true)
   })
+  it('InputCreatableSelect w/ type=EXISTING_FIELD_SELECT_TYPE w/ defaulted props', () => {
+    const { wrapper } = setupFlexibleInput({
+      type: inputTypes.EXISTING_FIELD_SELECT_TYPE
+    })
+    expect(wrapper.find('Select')).toHaveLength(1)
+    expect(
+        wrapper.find('Select').prop('createOptionPosition') === 'first'
+    ).toBe(true)
+  })
   it('InputString w/ type=STRING_TYPE error=\'Example Error\'', () => {
     const { wrapper } = setupFlexibleInput({
       type: inputTypes.STRING_TYPE,
@@ -187,6 +196,7 @@ describe('isAutoFocusInput function', () => {
     expect(isAutoFocusInput(inputTypes.FILE_TYPE)).toBe(false)
     expect(isAutoFocusInput(inputTypes.RADIO_TYPE)).toBe(false)
     expect(isAutoFocusInput(inputTypes.SELECT_TYPE)).toBe(false)
+    expect(isAutoFocusInput(inputTypes.CREATABLE_SELECT_TYPE)).toBe(false)
     expect(isAutoFocusInput(inputTypes.CHECKBOX_TYPE)).toBe(false)
     expect(isAutoFocusInput(inputTypes.BOOLEAN_TYPE)).toBe(false)
   })

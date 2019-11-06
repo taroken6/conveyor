@@ -9,7 +9,7 @@ const DATE_TYPE = 'date'
 const FILE_TYPE = 'file'
 const RADIO_TYPE = 'radio'
 const SELECT_TYPE = 'select'
-const CREATABLE_SELECT_TYPE = 'creatable_select'
+const EXISTING_FIELD_SELECT_TYPE = 'existingFieldSelect'
 const CHECKBOX_TYPE = 'checkbox'
 const BOOLEAN_TYPE = 'boolean'
 const CURRENCY_TYPE = 'currency'
@@ -28,9 +28,9 @@ export const inputTypes = {
   CURRENCY_TYPE,
   FILE_TYPE,
   SELECT_TYPE,
-  CREATABLE_SELECT_TYPE,
   RELATIONSHIP_SINGLE: 'relSingle',
   RELATIONSHIP_MULTIPLE: 'relMultiple',
+  EXISTING_FIELD_SELECT_TYPE,
   PASSWORD_TYPE,
   RADIO_TYPE,
   CHECKBOX_TYPE // not used
