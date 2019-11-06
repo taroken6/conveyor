@@ -50,7 +50,7 @@ export const getField = (schema, modelName, fieldName) => (
   )(schema, modelName)
 )
 
-const getShownFields = ({ schema, modelName, type, node = {}, data, user, customProps }) => {
+const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   return R.filter(fieldName => {
     let show = R.prop(type, getField(schema, modelName, fieldName))
