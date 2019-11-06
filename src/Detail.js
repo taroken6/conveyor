@@ -3,12 +3,12 @@ import * as R from 'ramda'
 import { Table, DeleteButton } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
 import Field, { getRelSchemaEntry } from './table/Field'
-import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable, skipOverride } from './Utils'
+import { getDetailOverride, getDetailLabelOverride, getDetailValueOverride, isFieldEditable, isCreatable, isDeletable, skipOverride, evaluateCondition } from './Utils'
 import {
   getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldCondition
+  getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldConditions
 } from './utils/schemaGetters'
-
+import { shouldDisplay } from './Utils'
 import Tabs from './Tabs'
 import { getType } from './utils/getType'
 import CreateButton from './CreateButton'
@@ -527,8 +527,8 @@ export const DetailFields = ({
     <React.Fragment>
       <dl className='row'>
         {descriptionList.map(fieldName => {
-          const condition = getFieldCondition(schema, modelName, fieldName)
-          if (condition({schema, modelName, id, fieldName, node, customProps}) === false) {
+          const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
+          if (shouldDisplay({schema, modelName, id, fieldName, node, displayCondition, customProps}) === false) {
               return null
           }
           const override = getDetailOverride(schema, modelName, fieldName)
