@@ -2,12 +2,11 @@
 
 ## Version 1.3.0
 
+### Unreleased
 -   Add ability to add displayNamePlural function #60
 -   Add override skips & fix m2m rel label #16
 -   Refactor customProps passed into override functions #64
-
-### Unreleased
-
+-   Add conditional components #75
 -   Cleanup delete review tables #54
 -   Autofocus on first element in create form; autofocus on edit element
 -   Add onKeyDown function to Input component #58
