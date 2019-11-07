@@ -15,13 +15,13 @@ import CreateButton from './CreateButton'
 import {
   EditSaveButton,
   EditCancelButton,
-  InlineInput,
   isFieldEditing,
   getFieldEditData,
   InlineEditButton,
   FileDelete,
   TableEditButton,
-  getFieldErrorEdit
+  getFieldErrorEdit,
+  EditInput
 } from './Edit'
 import { Popover, PopoverContent } from './Popover'
 import getDisplayValue from './utils/getDisplayValue'
@@ -103,15 +103,17 @@ export const DefaultDetailAttribute = ({
           }
         </dt>
         <dd className='col-sm-9'>
-          <InlineInput {...{
-            schema,
-            modelName,
-            fieldName,
-            node,
-            editData: fieldEditData,
-            error,
-            selectOptions
-          }} />
+          <div className='detail-edit d-inline-block pull-left'>
+            <EditInput {...{
+              schema,
+              modelName,
+              fieldName,
+              node,
+              editData: fieldEditData,
+              error,
+              selectOptions
+            }} />
+          </div>
           <div className='inline-btn-group'>
             <EditSaveButton {...{
               onClick: (fieldType === 'file')
