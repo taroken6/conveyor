@@ -118,9 +118,3 @@ export const EditInput = ({ schema, modelName, fieldName, node, editData, error,
     customProps
   }} />
 }
-
-export const InlineInput = ({ ...props }) => {
-  return <div className='detail-edit d-inline-block pull-left'>
-    <EditInput {...{ ...props }} />
-  </div>
-}
