@@ -13,6 +13,7 @@
 -   Add error to Int field overflow #57
 -   Fix filter and sort button header position #52
 -   Expose onFileChange method for custom File inputs #43
+-   Fix node and data props #70
 
 ## Version 1.2.0
 
