@@ -62,6 +62,9 @@ const Create = ({
 }) => {
   const stackIndex = R.prop('index', formStack)
   const originFieldName = R.prop('originFieldName', formStack)
+  const stack = R.prop('stack', formStack)
+  const form = R.prop(stackIndex, stack)
+  customProps = R.assoc('form', form, customProps)
 
   if (stackIndex === -1) {
     return <Redirect to={R.propOr('/', 'originPath', formStack)} />
@@ -74,8 +77,7 @@ const Create = ({
     if (index !== -1) { fieldOrder.splice(index, 1) }
     fieldOrder.splice(0, 0, originFieldName)
   }
-  const stack = R.prop('stack', formStack)
-  const form = R.prop(stackIndex, stack)
+
   const actions = getActions(schema, modelName)
   const onChange = R.path(['create', 'onInputChange'], actions)
   const onCancel = R.path(['create', 'onCancel'], actions)
@@ -92,7 +94,11 @@ const Create = ({
   return (
     <div className='container'>
       <Breadcrumbs schema={schema} formStack={formStack} customProps={customProps} />
-      <h1>Create {getModelLabel({ schema, modelName, form, customProps })}</h1>
+      <h1>Create {getModelLabel({
+        schema,
+        modelName,
+        customProps
+      })}</h1>
       <div>* Indicates a Required Field</div>
       <br />
       <div>{fieldOrder.map(fieldName => {

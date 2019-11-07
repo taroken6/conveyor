@@ -104,7 +104,7 @@ const ReviewTable = ({ schema, table, customProps }) => {
     )
   }
   const tableDisplayName = getModelLabel({
-    schema, modelName: table[0].__typename, data: {}, customProps
+    schema, modelName: table[0].__typename, customProps
   })
   return (
     <div className='mt-2'>

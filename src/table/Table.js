@@ -260,7 +260,7 @@ export const calcDetailField = ({schema, modelName, fieldOrder}) => {
 export const Table = ({
   schema,
   modelName,
-  node,
+  node: parentNode,
   data, // ordered list
   fieldOrder,
   onDelete,
@@ -278,8 +278,6 @@ export const Table = ({
   user,
   customProps
 }) => {
-  // parent node passed down as 'parentNode'
-  const parentNode = node
 
   const filterable = R.path([modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
