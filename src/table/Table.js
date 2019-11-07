@@ -281,7 +281,7 @@ export const Table = ({
   // parent node passed down as 'parentNode'
   const parentNode = node
 
-  const filterable = R.path([modelName, 'filterable'], schema)
+  const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
 
   if (!allColFilterable && !data) { return <div>...Loading</div> }
@@ -291,7 +291,7 @@ export const Table = ({
   const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, customProps })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
   const editable = isTableEditable({ schema, modelName, data, parentNode, user, customProps })
-  const sortable = R.path([modelName, 'sortable'], schema)
+  const sortable = R.pathOr(true, [modelName, 'sortable'], schema)
 
   return (
     <table className='table table-striped table-bordered table-hover'>
