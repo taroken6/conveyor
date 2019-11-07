@@ -13,6 +13,7 @@
 -   Add error to Int field overflow #57
 -   Fix filter and sort button header position #52
 -   Expose onFileChange method for custom File inputs #43
+-   Add ExistingFieldSelect to conveyor's FlexibleInput choices #72
 
 ## Version 1.2.0
 
