@@ -6,25 +6,10 @@ export const capitalizeFirstChar = (str) => str.replace(/^./, str => str.toUpper
 
 export const spaceOnCapitalLetter = (str) => str.replace(/([A-Z])/g, ' $1')
 
-export const underscoreToSpace = (str) => str.replace(/_/g, ' ')
-
-export const trimWhitespaceBetweenWords = (str) => str.replace(/\s\s+/g, ' ')
-
 export const humanize = str => R.pipe(
   spaceOnCapitalLetter,
-  capitalizeFirstChar,
-  underscoreToSpace,
-  trimWhitespaceBetweenWords,
-  R.trim
+  capitalizeFirstChar
 )(str)
-
-export const titleize = title => {
-  let strArr = title.split(' ')
-  strArr = strArr.map(str => {
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  })
-  return strArr.join(' ')
-}
 
 export const getCellOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'cell'], schema)
@@ -97,7 +82,7 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, user, custo
 )
 
 export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, user, customProps }) => {
-  const editable = R.propOr(!R.equals('id', fieldName), 'editable', getField(schema, modelName, fieldName))
+  const editable = R.prop('editable', getField(schema, modelName, fieldName))
   if (R.type(editable) === 'Boolean') {
     return editable
   } else if (R.type(editable) === 'Function') {
@@ -121,7 +106,7 @@ export const isTableDeletable = ({ schema, modelName, data, parentNode, user, cu
 }
 
 export const isDeletable = ({ schema, modelName, node, parentNode, user, customProps }) => {
-  const deletable = R.propOr(true, 'deletable', getModel(schema, modelName))
+  const deletable = R.prop('deletable', getModel(schema, modelName))
   if (R.type(deletable) === 'Boolean') {
     return deletable
   } else if (R.type(deletable) === 'Function') {
@@ -132,7 +117,7 @@ export const isDeletable = ({ schema, modelName, node, parentNode, user, customP
 }
 
 export const isCreatable = ({ schema, modelName, user, parentNode, data, customProps }) => {
-  const creatable = R.propOr(true, 'creatable', getModel(schema, modelName))
+  const creatable = R.prop('creatable', getModel(schema, modelName))
   if (R.type(creatable) === 'Boolean') {
     return creatable
   } else if (R.type(creatable) === 'Function') {
