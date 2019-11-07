@@ -1,17 +1,17 @@
 import * as R from 'ramda'
 
-export const getFieldLabel = ({ schema, modelName, fieldName, data = {}, customProps }) => {
+export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, data, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, customProps }) => {
   const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
@@ -50,7 +50,7 @@ export const getField = (schema, modelName, fieldName) => (
   )(schema, modelName)
 )
 
-const getShownFields = ({ schema, modelName, type, node = {}, data, user, customProps }) => {
+const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   return R.filter(fieldName => {
     let show = R.prop(type, getField(schema, modelName, fieldName))

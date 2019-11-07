@@ -75,7 +75,7 @@ const FieldEnum = ({ schema, modelName, fieldName, node }) => {
 
 const FieldImageModal = ({ schema, modelName, fieldName, id, node, customProps }) => {
   const url = R.prop(fieldName, node)
-  const label = getFieldLabel({ schema, modelName, fieldName, data: node, customProps })
+  const label = getFieldLabel({ schema, modelName, fieldName, node, customProps })
   const modalId = `img-modal-${fieldName}`
 
   return <ImageLinkModal {...{ id: modalId, title: label, url }} />
