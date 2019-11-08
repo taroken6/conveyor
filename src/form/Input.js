@@ -97,7 +97,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      data: R.path(['originData'], formStack), customProps
+      node: R.path(['originData'], formStack), customProps
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -171,8 +171,7 @@ export const InputCore = ({
   const inputType = getInputType({ schema, modelName, fieldName })
 
   const defaultHandleOnChange = getOnChange({ inputType, onChange, fieldName })
-
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data: {}, customProps })
+  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
   const defaultProps = {
     id: `input-${modelName}-${fieldName}`,
     type: inputType,

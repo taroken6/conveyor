@@ -45,6 +45,7 @@ export const TabFields = ({
         partitionDetailFields({
           schema,
           modelName,
+          node,
           include: fields,
           customProps
         })

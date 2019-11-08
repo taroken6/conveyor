@@ -2,23 +2,24 @@ import * as R from 'ramda'
 import { titleize, humanize } from '../Utils'
 import pluralize from "pluralize"
 
-export const getFieldLabel = ({ schema, modelName, fieldName, data = {}, customProps }) => {
+// This is an example of our naming issue, node and data should not both be passed here
+export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
   const displayName = R.pathOr(
     humanize(fieldName),
     [modelName, 'fields', fieldName, 'displayName'],
     schema
   )
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, data, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, customProps }) => {
   const defaultValue = titleize(humanize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
@@ -58,7 +59,7 @@ export const getField = (schema, modelName, fieldName) => (
   )(schema, modelName)
 )
 
-const getShownFields = ({ schema, modelName, type, node = {}, data, user, customProps }) => {
+const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   return R.filter(fieldName => {
     let show
