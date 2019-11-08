@@ -220,7 +220,7 @@ const TBody = ({
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (<tbody>
     {data.map((node, idx) => {
-      const editable = isRowEditable({ schema, modelName, node, user, customProps })
+      const editable = isRowEditable({ schema, modelName, node, user, fieldOrder, customProps })
       return (
         <tr key={`table-tr-${node.id}`}>
           {fieldOrder.map((fieldName, headerIdx) => (
@@ -288,7 +288,7 @@ export const Table = ({
 
   const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, customProps })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
-  const editable = isTableEditable({ schema, modelName, data, parentNode, user, customProps })
+  const editable = isTableEditable({ schema, modelName, data, parentNode, user, fieldOrder, customProps })
   const sortable = R.pathOr(true, [modelName, 'sortable'], schema)
 
   return (
