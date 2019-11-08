@@ -52,7 +52,7 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
  * parent 'node' must be labeled 'parentNode'
  */
 
-export const isTableEditable = ({ schema, modelName, data, user, parentNode, customProps }) => {
+export const isTableEditable = ({ schema, modelName, data, user, parentNode, fieldOrder, customProps }) => {
   return (
     !R.isEmpty(data.filter(node => isRowEditable({
       schema,
@@ -60,14 +60,17 @@ export const isTableEditable = ({ schema, modelName, data, user, parentNode, cus
       user,
       node,
       parentNode,
+      fieldOrder,
       customProps
     })))
   )
 }
 
-export const isRowEditable = ({ schema, modelName, node, parentNode, user, customProps }) => (
-  R.pipe(
-    R.mapObjIndexed((_value, fieldName) => isFieldEditable({
+//isRowEditable loops over all displayed fields to determine if the row is editable
+export const isRowEditable = ({ schema, modelName, node, parentNode, user, fieldOrder, customProps }) => {
+  for (const index in fieldOrder) {
+    const fieldName = R.prop(index, fieldOrder)
+    if (isFieldEditable({
       schema,
       modelName,
       fieldName,
@@ -75,11 +78,12 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, user, custo
       parentNode,
       user,
       customProps
-    })),
-    R.filter(identity),
-    filteredNode => !R.isEmpty(filteredNode)
-  )(node)
-)
+    })) {
+      return true
+    }
+  }
+  return false
+}
 
 export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, user, customProps }) => {
   const editable = R.prop('editable', getField(schema, modelName, fieldName))
