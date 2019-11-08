@@ -67,7 +67,7 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
  * parent 'node' must be labeled 'parentNode'
  */
 
-export const isTableEditable = ({ schema, modelName, data, user, parentNode, fieldOrder, customProps }) => {
+export const isTableEditable = ({ schema, modelName, data, user, parentNode, customProps }) => {
   return (
     !R.isEmpty(data.filter(node => isRowEditable({
       schema,
@@ -75,14 +75,14 @@ export const isTableEditable = ({ schema, modelName, data, user, parentNode, fie
       user,
       node,
       parentNode,
-      fieldOrder,
       customProps
     })))
   )
 }
 
 //isRowEditable loops over all displayed fields to determine if the row is editable
-export const isRowEditable = ({ schema, modelName, node, parentNode, user, fieldOrder, customProps }) => {
+export const isRowEditable = ({ schema, modelName, node, parentNode, user, customProps }) => {
+  const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   for (const index in fieldOrder) {
     const fieldName = R.prop(index, fieldOrder)
     if (isFieldEditable({
