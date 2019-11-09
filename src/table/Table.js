@@ -288,7 +288,7 @@ export const Table = ({
 
   const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, customProps })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
-  const editable = isTableEditable({ schema, modelName, data, parentNode, user, customProps })
+  const editable = isTableEditable({ schema, modelName, data, parentNode, user, fieldOrder, customProps })
   const sortable = R.pathOr(true, [modelName, 'sortable'], schema)
 
   return (
