@@ -2,12 +2,12 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
-import { getActions, getField, getCreateFields } from '../utils/schemaGetters'
+import { getActions, getField, getCreateFields, getModelLabel } from '../utils/schemaGetters'
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
-import { getModelLabel } from '../utils/schemaGetters'
 import { isAutoFocusInput } from '../input/index'
 import { getInputType } from '../form/InputType'
+import { getCreateOverride, skipOverride, getCreateTitleOverride, getCreatePageOverride } from '../Utils'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
@@ -52,7 +52,16 @@ const getDisabledValue = ({ schema, modelName, fieldName, form }) => {
   }
 }
 
-const Create = ({
+const DefaultCreateTitle = ({ schema, modelName, formStack, customProps }) => {
+  const stackIndex = R.prop('index', formStack)
+  const stack = R.prop('stack', formStack)
+  const form = R.prop(stackIndex, stack)
+  return (
+    <h1>Create {getModelLabel({ schema, modelName, form, customProps })}</h1>
+  )
+}
+
+const DefaultCreatePage = ({
   schema,
   modelName,
   formStack,
@@ -62,6 +71,9 @@ const Create = ({
 }) => {
   const stackIndex = R.prop('index', formStack)
   const originFieldName = R.prop('originFieldName', formStack)
+  const stack = R.prop('stack', formStack)
+  const form = R.prop(stackIndex, stack)
+  customProps = R.assoc('form', form, customProps)
 
   if (stackIndex === -1) {
     return <Redirect to={R.propOr('/', 'originPath', formStack)} />
@@ -71,11 +83,12 @@ const Create = ({
   const fieldOrder = getCreateFields({ schema, modelName, user, customProps })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
-    if (index !== -1) { fieldOrder.splice(index, 1) }
+    if (index !== -1) {
+      fieldOrder.splice(index, 1)
+    }
     fieldOrder.splice(0, 0, originFieldName)
   }
-  const stack = R.prop('stack', formStack)
-  const form = R.prop(stackIndex, stack)
+
   const actions = getActions(schema, modelName)
   const onChange = R.path(['create', 'onInputChange'], actions)
   const onCancel = R.path(['create', 'onCancel'], actions)
@@ -83,62 +96,163 @@ const Create = ({
   const disableButtons = stackIndex !== stack.length - 1
   let autoFocusAdded = false
 
-  const onKeyDown = (evt) => {
+  const onKeyDown = evt => {
     if (evt.key === 'Enter') {
       return onSave({ modelName })
     }
   }
-
   return (
-    <div className='container'>
-      <Breadcrumbs schema={schema} formStack={formStack} customProps={customProps} />
-      <h1>Create {getModelLabel({ schema, modelName, form, customProps })}</h1>
+    <React.Fragment>
       <div>* Indicates a Required Field</div>
       <br />
-      <div>{fieldOrder.map(fieldName => {
-        const disabled = isFieldDisabled({ schema, modelName, fieldName, form })
-        const value = disabled
-          ? getDisabledValue({ schema, modelName, fieldName, form })
-          : R.path(['fields', fieldName], form)
-        const error = getFieldErrorCreate({ formStack, stackIndex, fieldName })
-        let autoFocus = false
-        if (!autoFocusAdded &&
-            isAutoFocusInput(getInputType({ schema, modelName, fieldName }))) {
-          autoFocus = true
-          autoFocusAdded = true
-        }
-        return <Input key={fieldName} {...{
-          schema,
-          modelName,
-          fieldName,
-          value,
-          error,
-          selectOptions,
-          onChange,
-          disabled,
-          formStack,
-          customLabel: makeCreateLabel({ schema, modelName, fieldName, user, customProps }),
-          autoFocus,
-          onKeyDown,
-          customProps
-        }} />
-      })}</div>
-      {disableButtons && <p className='text-danger'>Cannot save or cancel until all subsequent creates are resolved.</p>}
+      <div>
+        {fieldOrder.map(fieldName => {
+          const disabled = isFieldDisabled({
+            schema,
+            modelName,
+            fieldName,
+            form
+          })
+          const value = disabled
+            ? getDisabledValue({ schema, modelName, fieldName, form })
+            : R.path(['fields', fieldName], form)
+          const error = getFieldErrorCreate({
+            formStack,
+            stackIndex,
+            fieldName
+          })
+          let autoFocus = false
+          if (
+            !autoFocusAdded &&
+            isAutoFocusInput(getInputType({ schema, modelName, fieldName }))
+          ) {
+            autoFocus = true
+            autoFocusAdded = true
+          }
+          return (
+            <Input
+              key={fieldName}
+              {...{
+                schema,
+                modelName,
+                fieldName,
+                value,
+                error,
+                selectOptions,
+                onChange,
+                disabled,
+                formStack,
+                customLabel: makeCreateLabel({
+                  schema,
+                  modelName,
+                  fieldName,
+                  user,
+                  customProps
+                }),
+                autoFocus,
+                onKeyDown,
+                customProps
+              }}
+            />
+          )
+        })}
+      </div>
+      {disableButtons && (
+        <p className='text-danger'>
+          Cannot save or cancel until all subsequent creates are resolved.
+        </p>
+      )}
       <div className='btn-group'>
         <button
           className='btn btn-success'
           role='button'
           onClick={() => onSave({ modelName })}
           disabled={disableButtons}
-        >Submit</button>
+        >
+          Submit
+        </button>
         <button
           className='btn'
           role='button'
           onClick={() => onCancel()}
           disabled={disableButtons}
-        >Cancel</button>
+        >
+          Cancel
+        </button>
       </div>
+    </React.Fragment>
+  )
+}
+
+const DefaultCreate = ({
+  schema,
+  modelName,
+  formStack,
+  selectOptions,
+  user,
+  customProps
+}) => {
+  const CreateTitleOverride = getCreateTitleOverride(schema, modelName)
+  const CreatePageOverride = getCreatePageOverride(schema, modelName)
+
+  const CreateTitle = CreateTitleOverride || DefaultCreateTitle
+  const CreatePage = CreatePageOverride || DefaultCreatePage
+
+  if (skipOverride(CreateTitleOverride) && skipOverride(CreatePageOverride)) {
+    return null
+  }
+
+  return (
+    <div className='container'>
+      <Breadcrumbs
+        schema={schema}
+        formStack={formStack}
+        customProps={customProps}
+      />
+      {skipOverride(CreateTitleOverride) ? null : (
+        <CreateTitle
+          {...{
+            schema,
+            modelName,
+            formStack,
+            selectOptions,
+            user,
+            customProps
+          }}
+        />
+      )}
+      {skipOverride(CreatePageOverride) ? null : (
+        <CreatePage
+          {...{
+            schema,
+            modelName,
+            formStack,
+            selectOptions,
+            user,
+            customProps
+          }}
+        />
+      )}
     </div>
+  )
+}
+
+const Create = ({
+  schema,
+  modelName,
+  formStack,
+  selectOptions,
+  user,
+  customProps
+}) => {
+  const CreateOverride = getCreateOverride(schema, modelName)
+
+  const CreateComponent = CreateOverride || DefaultCreate
+
+  return skipOverride(CreateOverride) ? null : (
+    <CreateComponent
+      {...{ schema, modelName, formStack, selectOptions, user, customProps }}
+    />
   )
 }
 
