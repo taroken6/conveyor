@@ -24,7 +24,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
   }
 
   return (
-    <div className='form-group' style={{ "flexGrow": 1 }}>
+    <div className='form-group' style={{ flexGrow: 1 }}>
       {labelComp}
       {children}
       {errorComp}
@@ -59,7 +59,7 @@ const CustomErrorComponent = ({ error, id }) =>
  * @property { string } className - FlexibleInput component sets default to: 'form-control'
  * @property { boolean } isClearable - FlexibleInput component sets default to: true
  * @property { object } [customInput] - Can override the following default
- *      settings : { placeholderText: "Click to select a date", fixedHeight: true,
+ *      settings : { placeholderText: 'Click to select a date', fixedHeight: true,
  *          dateFormat: 'YYYY-MM-DD'}. See React DatePicker docs for full list.
  * @property { boolean } required
  * @property { function } customError

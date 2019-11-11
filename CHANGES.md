@@ -15,6 +15,7 @@
 -   Expose onFileChange method for custom File inputs #43
 -   Del InlineInput component #81
 -   Fix node and data props #70
+-   Add model level overrides #62
 
 ## Version 1.2.0
 

@@ -79,12 +79,15 @@ The schema utilized by the framework will be different than the existing schema 
       },
       //model level components
       components: {
-        detail: () => {} // Detail page override components
-        detailTitle: () => {} // Detail Title override component (Not yet implemented)
-        create: () => {} // Create page override component
-        createTitle: () => {} // Create Title override component (Not yet implemented)
-        index: () => {} // Index page override component
-        indexTitle: () => {} Index title override component (Not yet implemented)
+        detail: () => {} // Detail override components (both title and page)
+        detailTitle: () => {} // Detail Title override component
+        detailPage: () => {} // Detail Page override components
+        create: () => {} // Create override components (both title and page)
+        createTitle: () => {} // Create Title override component
+        createPage: () => {} // Create page override component
+        index: () => {} // Index page override components (both title and page)
+        indexTitle: () => {} Index title override component
+        indexPage: () => {} // Index page override component
       }
     }
   }

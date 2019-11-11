@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import { getField, getModel } from './utils/schemaGetters'
-import { identity } from 'rxjs'
 
 export const capitalizeFirstChar = (str) => str.replace(/^./, str => str.toUpperCase())
 
@@ -30,7 +29,7 @@ export const getCellOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'cell'], schema)
 )
 
-export const getDetailOverride = (schema, modelName, fieldName) => (
+export const getDetailFieldOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'detail'], schema)
 )
 
@@ -44,6 +43,42 @@ export const getDetailValueOverride = (schema, modelName, fieldName) => (
 
 export const getInputOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'input'], schema)
+)
+
+export const getCreateOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'create'], schema)
+)
+
+export const getCreateTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'createTitle'], schema)
+)
+
+export const getCreatePageOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'createPage'], schema)
+)
+
+export const getDetailOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detail'], schema)
+)
+
+export const getDetailTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detailTitle'], schema)
+)
+
+export const getDetailPageOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'detailPage'], schema)
+)
+
+export const getIndexOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'index'], schema)
+)
+
+export const getIndexTitleOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'indexTitle'], schema)
+)
+
+export const getIndexPageOverride = (schema, modelName) => (
+  R.path([modelName, 'components', 'indexPage'], schema)
 )
 
 // override component skipped only if 'null' (undefined by default)
@@ -147,13 +182,12 @@ export const isCreatable = ({ schema, modelName, user, parentNode, data, customP
   }
 }
 
-
 export const shouldDisplay = ({schema, modelName, id, fieldName, node, displayCondition, customProps}) => {
   if (R.type(displayCondition) === 'Boolean') {
     return displayCondition
   } else if (R.type(displayCondition) === 'Function') {
     return displayCondition({schema, modelName, id, fieldName, node, customProps})
   } else {
-    return true 
+    return true
   }
 }
