@@ -1,12 +1,14 @@
+import React from 'react'
+
 const DefaultsTest = {
   fields: {
     id: {
       fieldName: 'id',
-      type: 'ID',
+      type: 'ID'
     },
     name: {
       fieldName: 'name',
-      type: 'string',
+      type: 'string'
     }
   },
   modelName: 'Defaults_Test',

@@ -158,22 +158,22 @@ const DefaultCreatePage = ({
         })}
       </div>
       {disableButtons && (
-        <p className="text-danger">
+        <p className='text-danger'>
           Cannot save or cancel until all subsequent creates are resolved.
         </p>
       )}
-      <div className="btn-group">
+      <div className='btn-group'>
         <button
-          className="btn btn-success"
-          role="button"
+          className='btn btn-success'
+          role='button'
           onClick={() => onSave({ modelName })}
           disabled={disableButtons}
         >
           Submit
         </button>
         <button
-          className="btn"
-          role="button"
+          className='btn'
+          role='button'
           onClick={() => onCancel()}
           disabled={disableButtons}
         >
@@ -203,7 +203,7 @@ const DefaultCreate = ({
   }
 
   return (
-    <div className="container">
+    <div className='container'>
       <Breadcrumbs
         schema={schema}
         formStack={formStack}

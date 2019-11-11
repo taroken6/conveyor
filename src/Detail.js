@@ -145,7 +145,8 @@ export const DefaultDetailAttribute = ({
                 targetModelName,
                 path,
                 node
-              }} />
+              }}
+              />
             }
           </div>
         </dd>
@@ -634,7 +635,7 @@ const DefaultDetail = ({
   const DetailPage = DetailPageOverride || DefaultDetailPage
 
   if (!node) {
-    return <div className="container">Loading...</div>
+    return <div className='container'>Loading...</div>
   }
 
   if (R.prop('result', node) === null) {

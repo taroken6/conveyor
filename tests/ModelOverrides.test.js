@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import { schema } from '../tests/__mocks__/mock_data/schema'
 import {
   getIndexOverride,

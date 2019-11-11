@@ -48,7 +48,7 @@ const DefaultIndex = ({
   customProps
 }) => {
   if (!getHasIndex(schema, modelName)) {
-    return <Redirect to="/" />
+    return <Redirect to='/' />
   }
 
   const IndexTitleOverride = getIndexTitleOverride(schema, modelName)
@@ -73,7 +73,7 @@ const DefaultIndex = ({
   }
 
   return (
-    <div className="container">
+    <div className='container'>
       {skipOverride(IndexTitleOverride) ? null : (
         <IndexTitle
           {...{
