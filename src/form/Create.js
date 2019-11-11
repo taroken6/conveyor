@@ -75,9 +75,6 @@ const DefaultCreatePage = ({
   const form = R.prop(stackIndex, stack)
   customProps = R.assoc('form', form, customProps)
 
-  if (stackIndex === -1) {
-    return <Redirect to={R.propOr('/', 'originPath', formStack)} />
-  }
   const origin = R.prop('originModelName', formStack)
 
   const fieldOrder = getCreateFields({ schema, modelName, user, customProps })
@@ -248,6 +245,10 @@ const Create = ({
   const CreateOverride = getCreateOverride(schema, modelName)
 
   const CreateComponent = CreateOverride || DefaultCreate
+
+  if (R.prop('index', formStack) === -1) {
+    return <Redirect to={R.propOr('/', 'originPath', formStack)} />
+  }
 
   return skipOverride(CreateOverride) ? null : (
     <CreateComponent
