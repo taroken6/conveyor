@@ -1,7 +1,14 @@
 import * as R from 'ramda'
+import { titleize, humanize } from '../Utils'
+import pluralize from "pluralize"
 
+// This is an example of our naming issue, node and data should not both be passed here
 export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
-  const displayName = R.pathOr('No Name Found', [modelName, 'fields', fieldName, 'displayName'], schema)
+  const displayName = R.pathOr(
+    humanize(fieldName),
+    [modelName, 'fields', fieldName, 'displayName'],
+    schema
+  )
   if (R.type(displayName) === 'Function') {
     return displayName({ schema, modelName, node, data, customProps })
   }
@@ -9,7 +16,8 @@ export const getFieldLabel = ({ schema, modelName, fieldName, node, data, custom
 }
 
 export const getModelLabel = ({ schema, modelName, node, data, customProps }) => {
-  const displayName = R.pathOr('No Name Found', [modelName, 'displayName'], schema)
+  const defaultValue = titleize(humanize(modelName))
+  const displayName = R.pathOr(defaultValue, [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
     return displayName({ schema, modelName, node, data, customProps })
   }
@@ -17,7 +25,8 @@ export const getModelLabel = ({ schema, modelName, node, data, customProps }) =>
 }
 
 export const getModelLabelPlural = ({ schema, modelName, data, user, customProps }) => {
-  const displayName = R.pathOr('No Name Found', [modelName, 'displayNamePlural'], schema)
+  const defaultValue = pluralize(titleize(modelName))
+  const displayName = R.pathOr(defaultValue, [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
     return displayName({ schema, modelName, data, user, customProps })
   }
@@ -53,7 +62,23 @@ export const getField = (schema, modelName, fieldName) => (
 const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   return R.filter(fieldName => {
-    let show = R.prop(type, getField(schema, modelName, fieldName))
+    let show
+    switch (type) {
+      case 'showCreate':
+      case 'showDetail':
+        show = R.propOr(
+          !R.equals('id', fieldName),
+          type,
+          getField(schema, modelName, fieldName)
+        )
+        break
+      case 'showIndex':
+      case 'showTooltip':
+        show = R.propOr(false, type, getField(schema, modelName, fieldName))
+        break
+      default:
+        show = R.prop(type, getField(schema, modelName, fieldName))
+    }
     if (R.type(show) === 'Function') {
       show = show({
         schema, modelName, fieldName, node, data, user, customProps
@@ -79,7 +104,7 @@ export const getCreateFields = ({ schema, modelName, user, customProps }) => {
 }
 
 export const getHasIndex = (schema, modelName) => {
-  return R.prop('hasIndex', getModel(schema, modelName))
+  return R.propOr(true, 'hasIndex', getModel(schema, modelName))
 }
 
 export const getDetailFields = ({ schema, modelName, node, customProps }) => {

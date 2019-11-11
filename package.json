@@ -32,6 +32,7 @@
     "react-router-dom": "^4.3.1"
   },
   "dependencies": {
+    "pluralize": "^8.0.0",
     "ramda": "^0.26.1",
     "rc-switch": "^1.9.0",
     "react": "^16.8.6",
