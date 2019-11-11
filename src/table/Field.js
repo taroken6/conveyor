@@ -160,7 +160,7 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
     case consts.inputTypes.INT_TYPE:
     case consts.inputTypes.DATE_TYPE:
     case consts.inputTypes.TEXTAREA_TYPE:
-    case consts.inputTypes.EXISTING_FIELD_SELECT_TYPE:
+    case consts.inputTypes.CREATABLE_STRING_SELECT_TYPE:
       return <FieldString {...props} />
     case consts.inputTypes.ENUM_TYPE:
       return <FieldEnum {...props} />

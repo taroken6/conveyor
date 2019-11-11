@@ -159,7 +159,7 @@ describe('FlexibleInput component', () => {
   })
   it('InputCreatableSelect w/ type=EXISTING_FIELD_SELECT_TYPE w/ defaulted props', () => {
     const { wrapper } = setupFlexibleInput({
-      type: inputTypes.EXISTING_FIELD_SELECT_TYPE
+      type: inputTypes.CREATABLE_STRING_SELECT_TYPE
     })
     expect(wrapper.find('Select')).toHaveLength(1)
     expect(

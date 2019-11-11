@@ -482,7 +482,7 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
 )
 
 /**
- * Singular component for ExistingFieldSelect Type.
+ * Singular component for CreatableStringSelect Type.
  *
  * See React Select docs for more details on: isClearable, isMulti, options, noOptionsMessage,
  * onMenuOpen
@@ -502,7 +502,7 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
  * @property { function } customLabel
  */
 
-export const InputExistingFieldSelect = ({
+export const InputCreatableStringSelect = ({
   labelStr,
   id,
   error,

@@ -241,7 +241,7 @@ export const InputCore = ({
           }}
         />
       )
-    case inputTypes.EXISTING_FIELD_SELECT_TYPE:
+    case inputTypes.CREATABLE_STRING_SELECT_TYPE:
       return (
         <FlexibleInput
           {...{
