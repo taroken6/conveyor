@@ -57,7 +57,7 @@ const DefaultCreateTitle = ({ schema, modelName, formStack, customProps }) => {
   const stack = R.prop('stack', formStack)
   const form = R.prop(stackIndex, stack)
   return (
-    <h1>Create {getModelLabel({ schema, modelName, form, customProps })}</h1>
+    <h1>Create {getModelLabel({ schema, modelName, form, formStack, customProps })}</h1>
   )
 }
 
