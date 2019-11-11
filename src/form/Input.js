@@ -6,9 +6,8 @@ import FlexibleInput from '../input/index'
 import { getInputType } from './InputType'
 import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable, skipOverride } from '../Utils'
-import { getActions, getEnumChoices, getEnumChoiceOrder, getField } from '../utils/schemaGetters'
+import { getActions, getEnumChoices, getEnumChoiceOrder, getField, getFieldLabel } from '../utils/schemaGetters'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
-import { getFieldLabel } from '../utils/schemaGetters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
 
@@ -97,7 +96,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      data: R.path(['originData'], formStack), customProps
+      node: R.path(['originData'], formStack), customProps
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -171,8 +170,7 @@ export const InputCore = ({
   const inputType = getInputType({ schema, modelName, fieldName })
 
   const defaultHandleOnChange = getOnChange({ inputType, onChange, fieldName })
-
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data: {}, customProps })
+  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
   const defaultProps = {
     id: `input-${modelName}-${fieldName}`,
     type: inputType,

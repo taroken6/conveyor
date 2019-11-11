@@ -2,18 +2,19 @@
 
 ## Version 1.3.0
 
+### Unreleased
 -   Add ability to add displayNamePlural function #60
 -   Add override skips & fix m2m rel label #16
 -   Refactor customProps passed into override functions #64
-
-### Unreleased
-
+-   Add conditional components #75
 -   Cleanup delete review tables #54
 -   Autofocus on first element in create form; autofocus on edit element
 -   Add onKeyDown function to Input component #58
 -   Add error to Int field overflow #57
 -   Fix filter and sort button header position #52
 -   Expose onFileChange method for custom File inputs #43
+-   Del InlineInput component #81
+-   Fix node and data props #70
 
 ## Version 1.2.0
 

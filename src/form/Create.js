@@ -2,10 +2,9 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
-import { getActions, getField, getCreateFields } from '../utils/schemaGetters'
+import { getActions, getField, getCreateFields, getModelLabel } from '../utils/schemaGetters'
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
-import { getModelLabel } from '../utils/schemaGetters'
 import { isAutoFocusInput } from '../input/index'
 import { getInputType } from '../form/InputType'
 import { getCreateOverride, skipOverride, getCreateTitleOverride, getCreatePageOverride } from '../Utils'
@@ -72,6 +71,9 @@ const DefaultCreatePage = ({
 }) => {
   const stackIndex = R.prop('index', formStack)
   const originFieldName = R.prop('originFieldName', formStack)
+  const stack = R.prop('stack', formStack)
+  const form = R.prop(stackIndex, stack)
+  customProps = R.assoc('form', form, customProps)
 
   if (stackIndex === -1) {
     return <Redirect to={R.propOr('/', 'originPath', formStack)} />
@@ -86,8 +88,7 @@ const DefaultCreatePage = ({
     }
     fieldOrder.splice(0, 0, originFieldName)
   }
-  const stack = R.prop('stack', formStack)
-  const form = R.prop(stackIndex, stack)
+
   const actions = getActions(schema, modelName)
   const onChange = R.path(['create', 'onInputChange'], actions)
   const onCancel = R.path(['create', 'onCancel'], actions)

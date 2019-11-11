@@ -13,26 +13,26 @@ import {
   skipOverride,
   getDetailOverride,
   getDetailTitleOverride,
-  getDetailPageOverride
+  getDetailPageOverride,
+  shouldDisplay
 } from './Utils'
 import {
   getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex, getModelLabel, getFieldLabel
+  getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldConditions
 } from './utils/schemaGetters'
-
 import Tabs from './Tabs'
 import { getType } from './utils/getType'
 import CreateButton from './CreateButton'
 import {
   EditSaveButton,
   EditCancelButton,
-  InlineInput,
   isFieldEditing,
   getFieldEditData,
   InlineEditButton,
   FileDelete,
   TableEditButton,
-  getFieldErrorEdit
+  getFieldErrorEdit,
+  EditInput
 } from './Edit'
 import { Popover, PopoverContent } from './Popover'
 import getDisplayValue from './utils/getDisplayValue'
@@ -52,12 +52,12 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-export const DefaultDetailLabel = ({ schema, modelName, fieldName, data, customProps }) => {
+export const DefaultDetailLabel = ({ schema, modelName, fieldName, node, customProps }) => {
   const LabelInfoComponent = R.path(['components', 'labelInfo'], getField(schema, modelName, fieldName))
   if (skipOverride(LabelInfoComponent)) {
     return null
   }
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, data, customProps })
+  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, node, customProps })
   if (LabelInfoComponent) {
     return <LabelInfoPopover {...{ LabelInfoComponent, fieldLabel }} />
   }
@@ -110,19 +110,21 @@ export const DefaultDetailAttribute = ({
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
           {
-            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, data: node, customProps }} />
+            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
           }
         </dt>
         <dd className='col-sm-9'>
-          <InlineInput {...{
-            schema,
-            modelName,
-            fieldName,
-            node,
-            editData: fieldEditData,
-            error,
-            selectOptions
-          }} />
+          <div className='detail-edit d-inline-block pull-left'>
+            <EditInput {...{
+              schema,
+              modelName,
+              fieldName,
+              node,
+              editData: fieldEditData,
+              error,
+              selectOptions
+            }} />
+          </div>
           <div className='inline-btn-group'>
             <EditSaveButton {...{
               onClick: (fieldType === 'file')
@@ -159,7 +161,7 @@ export const DefaultDetailAttribute = ({
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
           {
-            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, data: node, customProps }} />
+            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
           }
         </dt>
         <dd className='col-sm-9'>
@@ -216,7 +218,7 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targe
 
   return (
     <DefaultDetailTableTitleWrapper>
-      <DefaultDetailLabel {...{ schema, modelName, fieldName, data: node, customProps }} />
+      <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
         schema,
         modelName,
@@ -244,7 +246,7 @@ const DefaultDetailM2MTableTitle = ({
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
   return (
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, customProps })}</h4>
+      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
       {editable && <div className='pl-2 d-inline'>
         <TableEditButton {...{
           schema,
@@ -276,7 +278,7 @@ const DefaultDetailM2MFieldLabel = ({
   const required = R.prop('required', getField(schema, modelName, fieldName))
   const Label = () => (
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, data: node, customProps })}</h4>
+      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
       { required && ' *'}
       { creatable && <DetailCreateButton {...{
         schema,
@@ -335,8 +337,7 @@ export const DefaultDetailTable = ({
           targetModelName,
           user,
           customProps
-        }}>{getFieldLabel({schema, modelName, fieldName, data: node, customProps})}
-        </DetailLabel>
+        }} />
         }
         { skipOverride(ValueOverride) ? null : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
@@ -463,7 +464,7 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
-            modalData,
+            modalData
           }}
         /> }
       </React.Fragment>
@@ -492,7 +493,7 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null,
 }
 
 const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, customProps }) => {
-  const model = getModelLabel({ schema, modelName, data: node, user, customProps })
+  const model = getModelLabel({ schema, modelName, node, user, customProps })
   const label = getDisplayValue({ schema, modelName, node, customProps })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
@@ -508,7 +509,8 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, cust
             onDelete,
             modalId: 'confirm-delete-' + modelName,
             modalData,
-            customProps }} />
+            customProps }} 
+          />
         </div>
       }
     </div>
@@ -538,7 +540,12 @@ export const DetailFields = ({
     <React.Fragment>
       <dl className='row'>
         {descriptionList.map(fieldName => {
+          const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
+          if (shouldDisplay({schema, modelName, id, fieldName, node, displayCondition, customProps}) === false) {
+              return null
+          }
           const override = getDetailFieldOverride(schema, modelName, fieldName)
+
           if (skipOverride(override)) {
             return null
           }
@@ -721,4 +728,3 @@ const Detail = ({
 }
 
 export default Detail
-

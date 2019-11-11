@@ -1,15 +1,29 @@
 import * as R from 'ramda'
 import { getField, getModel } from './utils/schemaGetters'
-import { identity } from 'rxjs'
 
 export const capitalizeFirstChar = (str) => str.replace(/^./, str => str.toUpperCase())
 
 export const spaceOnCapitalLetter = (str) => str.replace(/([A-Z])/g, ' $1')
 
+export const underscoreToSpace = (str) => str.replace(/_/g, ' ')
+
+export const trimWhitespaceBetweenWords = (str) => str.replace(/\s\s+/g, ' ')
+
 export const humanize = str => R.pipe(
   spaceOnCapitalLetter,
-  capitalizeFirstChar
+  capitalizeFirstChar,
+  underscoreToSpace,
+  trimWhitespaceBetweenWords,
+  R.trim
 )(str)
+
+export const titleize = title => {
+  let strArr = title.split(' ')
+  strArr = strArr.map(str => {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  })
+  return strArr.join(' ')
+}
 
 export const getCellOverride = (schema, modelName, fieldName) => (
   R.path([modelName, 'fields', fieldName, 'components', 'cell'], schema)
@@ -88,7 +102,7 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
  * parent 'node' must be labeled 'parentNode'
  */
 
-export const isTableEditable = ({ schema, modelName, data, user, parentNode, customProps }) => {
+export const isTableEditable = ({ schema, modelName, data, user, parentNode, fieldOrder, customProps }) => {
   return (
     !R.isEmpty(data.filter(node => isRowEditable({
       schema,
@@ -96,29 +110,34 @@ export const isTableEditable = ({ schema, modelName, data, user, parentNode, cus
       user,
       node,
       parentNode,
+      fieldOrder,
       customProps
     })))
   )
 }
 
-export const isRowEditable = ({ schema, modelName, node, parentNode, user, customProps }) => (
-  R.pipe(
-    R.mapObjIndexed((_value, fieldName) => isFieldEditable({
+//isRowEditable loops over all displayed fields to determine if the row is editable
+export const isRowEditable = ({ schema, modelName, node, parentNode, user, fieldOrder, customProps }) => {
+  for (const index in fieldOrder) {
+    const fieldName = R.prop(index, fieldOrder)
+    if (isFieldEditable({
       schema,
       modelName,
       fieldName,
       node,
       parentNode,
       user,
+      fieldOrder,
       customProps
-    })),
-    R.filter(identity),
-    filteredNode => !R.isEmpty(filteredNode)
-  )(node)
-)
+    })) {
+      return true
+    }
+  }
+  return false
+}
 
 export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, user, customProps }) => {
-  const editable = R.prop('editable', getField(schema, modelName, fieldName))
+  const editable = R.propOr(!R.equals('id', fieldName), 'editable', getField(schema, modelName, fieldName))
   if (R.type(editable) === 'Boolean') {
     return editable
   } else if (R.type(editable) === 'Function') {
@@ -142,7 +161,7 @@ export const isTableDeletable = ({ schema, modelName, data, parentNode, user, cu
 }
 
 export const isDeletable = ({ schema, modelName, node, parentNode, user, customProps }) => {
-  const deletable = R.prop('deletable', getModel(schema, modelName))
+  const deletable = R.propOr(true, 'deletable', getModel(schema, modelName))
   if (R.type(deletable) === 'Boolean') {
     return deletable
   } else if (R.type(deletable) === 'Function') {
@@ -153,12 +172,22 @@ export const isDeletable = ({ schema, modelName, node, parentNode, user, customP
 }
 
 export const isCreatable = ({ schema, modelName, user, parentNode, data, customProps }) => {
-  const creatable = R.prop('creatable', getModel(schema, modelName))
+  const creatable = R.propOr(true, 'creatable', getModel(schema, modelName))
   if (R.type(creatable) === 'Boolean') {
     return creatable
   } else if (R.type(creatable) === 'Function') {
     return creatable({ schema, modelName, user, parentNode, data, customProps })
   } else {
     return false
+  }
+}
+
+export const shouldDisplay = ({schema, modelName, id, fieldName, node, displayCondition, customProps}) => {
+  if (R.type(displayCondition) === 'Boolean') {
+    return displayCondition
+  } else if (R.type(displayCondition) === 'Function') {
+    return displayCondition({schema, modelName, id, fieldName, node, customProps})
+  } else {
+    return true
   }
 }
