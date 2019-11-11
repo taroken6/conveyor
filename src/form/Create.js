@@ -97,6 +97,7 @@ const Create = ({
       <h1>Create {getModelLabel({
         schema,
         modelName,
+        formStack,
         customProps
       })}</h1>
       <div>* Indicates a Required Field</div>

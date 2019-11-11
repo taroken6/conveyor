@@ -15,11 +15,11 @@ export const getFieldLabel = ({ schema, modelName, fieldName, node, data, custom
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, node, data, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, formStack, customProps }) => {
   const defaultValue = titleize(humanize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, node, data, customProps })
+    return displayName({ schema, modelName, node, data, formStack, customProps })
   }
   return displayName
 }
