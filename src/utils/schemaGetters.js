@@ -141,3 +141,8 @@ export const getEnumChoiceOrder = (schema, modelName, fieldName) => {
 export const getFieldConditions = (schema, modelName, fieldName) => {
   return R.prop('displayConditions', getField(schema, modelName, fieldName))
 }
+
+// return null if no condition exists, to differentiate from boolean
+export const getFieldDisableCondition = (schema, modelName, fieldName) => {
+  return R.propOr(null, 'disableCondition', getField(schema, modelName, fieldName))
+}

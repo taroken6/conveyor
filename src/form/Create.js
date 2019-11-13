@@ -7,7 +7,7 @@ import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
 import { isAutoFocusInput } from '../input/index'
 import { getInputType } from '../form/InputType'
-import { getCreateOverride, skipOverride, getCreateTitleOverride, getCreatePageOverride, shouldDisplay } from '../Utils'
+import { getCreateOverride, skipOverride, getCreateTitleOverride, getCreatePageOverride, shouldDisplay, isFieldDisabled } from '../Utils'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
@@ -26,20 +26,6 @@ export const makeCreateLabel = ({ schema, modelName, fieldName, user, customProp
 
   const CreateLabel = relationshipLabelFactory({ schema, modelName, fieldName, onClick, user, customProps })
   return CreateLabel
-}
-
-// TODO: improve the way the disabled fields are handled, instead of directly
-// holding value at ['stack', index, 'fields', 'fieldName'], hold an object
-// with disabled and value key. This will also allow for other metadata to
-// be held there if necessary
-const isFieldDisabled = ({ schema, modelName, fieldName, form }) => {
-  const type = getType({ schema, modelName, fieldName })
-
-  if (type.includes('ToMany')) {
-    return R.path(['fields', fieldName, 0, 'disabled'], form)
-  } else {
-    return R.path(['fields', fieldName, 'disabled'], form)
-  }
 }
 
 const getDisabledValue = ({ schema, modelName, fieldName, form }) => {
@@ -113,7 +99,8 @@ const DefaultCreatePage = ({
             schema,
             modelName,
             fieldName,
-            form
+            form,
+            customProps
           })
           const value = disabled
             ? getDisabledValue({ schema, modelName, fieldName, form })

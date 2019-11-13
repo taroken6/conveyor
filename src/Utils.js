@@ -1,5 +1,9 @@
 import * as R from 'ramda'
-import { getField, getModel } from './utils/schemaGetters'
+import {
+  getField, getFieldDisableCondition,
+  getModel
+} from './utils/schemaGetters'
+import {getType} from "./utils/getType";
 
 export const capitalizeFirstChar = (str) => str.replace(/^./, str => str.toUpperCase())
 
@@ -189,5 +193,36 @@ export const shouldDisplay = ({schema, modelName, id, fieldName, node, displayCo
     return displayCondition({schema, modelName, id, fieldName, node, customProps})
   } else {
     return true
+  }
+}
+
+// TODO: improve the way the disabled fields are handled, instead of directly
+// holding value at ['stack', index, 'fields', 'fieldName'], hold an object
+// with disabled and value key. This will also allow for other metadata to
+// be held there if necessary
+export const isFieldDisabled = ({ schema, modelName, fieldName, form, customProps }) => {
+  console.log('-------', schema[modelName])
+  console.log('#', modelName, fieldName)
+  console.log('f:', form)
+
+  const type = getType({ schema, modelName, fieldName })
+
+  // boolean, function, or null
+  const disableCondition = getFieldDisableCondition(schema, modelName, fieldName)
+
+  if (R.type(disableCondition) === 'Function') {
+    console.log('func', disableCondition)
+    return disableCondition({schema, modelName, fieldName, form, customProps})
+  }
+  if (R.type(disableCondition) === 'Boolean') {
+    console.log('bool', disableCondition)
+    return disableCondition
+  }
+
+  // else, check the form to see if 'disabled' flag set true
+  if (type.includes('ToMany')) {
+    return R.path(['fields', fieldName, 0, 'disabled'], form)
+  } else {
+    return R.path(['fields', fieldName, 'disabled'], form)
   }
 }
