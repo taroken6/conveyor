@@ -25,7 +25,7 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customP
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {getModelLabelPlural({schema, modelName, data, user, customProps})}
+        {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
       {creatable && <div className='float-right'>
         <CreateButton {...{ onClick }} />
@@ -106,6 +106,7 @@ const DefaultIndex = ({
             tableOptions,
             customProps,
             fieldOrder,
+            fromIndex: true,
             onDelete,
             onEditSubmit
           }}
