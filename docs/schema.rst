@@ -49,8 +49,8 @@ The schema utilized by the framework will be different than the existing schema 
           choiceOrder: [] #Order of 'choices' appearing in Enum field
           displayConditions: {
             detail: () => #A function that evaluates to true or false to determines if the field will display on a detail page
-            index: () => #A function that evaluates to true or false to determines if the field will display in an index table, needs to be implemented
-            create: () => #A function that evaluates to true or false to determine if the field will display on a create page, needs to be implemented
+            index: () => #A function that evaluates to true or false to determines if the field will display in an index table
+            create: () => #A function that evaluates to true or false to determine if the field will display on a create page
           },
           sortable: boolean #Whether the given field should be sortable on tables
           filterable: boolean #Whether the given field should be filterable on tables

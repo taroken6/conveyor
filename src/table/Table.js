@@ -1,11 +1,19 @@
 import React from 'react'
 import Field from './Field'
 import { THead } from './Header'
-import { getCellOverride, isTableDeletable, isFieldEditable, isTableEditable, isRowEditable, skipOverride } from '../Utils'
+import {
+  getCellOverride,
+  isTableDeletable,
+  isFieldEditable,
+  isTableEditable,
+  isRowEditable,
+  skipOverride,
+  shouldDisplay
+} from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
-import { getModel, getActions } from '../utils/schemaGetters'
+import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
 import { DeleteDetail } from '../delete/DeleteDetail'
 import { isTableFilterable } from './Filter'
 
@@ -214,6 +222,7 @@ const TBody = ({
   selectOptions,
   user,
   parentNode,
+  fromIndex,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -223,13 +232,33 @@ const TBody = ({
       const editable = isRowEditable({ schema, modelName, node, user, fieldOrder, customProps })
       return (
         <tr key={`table-tr-${node.id}`}>
-          {fieldOrder.map((fieldName, headerIdx) => (
-            <td key={`${node.id}-${headerIdx}`}>
-              <TableRowWithEdit key={`table-td-${node.id}-${headerIdx}`} {...{
-                modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, customProps
-              }} />
-            </td>
-          ))}
+          {fieldOrder.map((fieldName, headerIdx) => {
+            if (fromIndex === true) {
+              const displayCondition = R.prop(
+                'index',
+                getFieldConditions(schema, modelName, fieldName)
+              )
+              if (
+                shouldDisplay({
+                  schema,
+                  modelName,
+                  fieldName,
+                  displayCondition,
+                  customProps
+                }) === false
+              ) {
+                return null
+              }
+            }
+
+            return (
+              <td key={`${node.id}-${headerIdx}`}>
+                <TableRowWithEdit key={`table-td-${node.id}-${headerIdx}`} {...{
+                  modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, customProps
+                }} />
+              </td>
+            )
+          })}
           { showButtonColumn({ deletable, editable: tableEditable, detailField }) &&
           <td key={`${node.id}-edit-delete`}>
             { <TableButtonCell {...{
@@ -276,6 +305,7 @@ export const Table = ({
   Head = THead,
   Body = TBody,
   user,
+  fromIndex,
   customProps
 }) => {
 
@@ -305,6 +335,7 @@ export const Table = ({
         sortable,
         filterable,
         tableOptions,
+        fromIndex,
         customProps
       }} />
       <Body {...{
@@ -326,6 +357,7 @@ export const Table = ({
         tableEditable: editable,
         user,
         parentNode,
+        fromIndex,
         customProps
       }} />
     </table>
