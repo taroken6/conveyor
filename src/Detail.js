@@ -571,7 +571,12 @@ export const DetailFields = ({
         })}
       </dl>
       {tableFields.map(fieldName => {
+        const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
+        if (shouldDisplay({schema, modelName, id, fieldName, node, displayCondition, customProps}) === false) {
+            return null
+        }
         const override = getDetailFieldOverride(schema, modelName, fieldName)
+        
         if (skipOverride(override)) {
           return null
         }
