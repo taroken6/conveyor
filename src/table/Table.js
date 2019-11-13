@@ -229,7 +229,7 @@ const TBody = ({
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (<tbody>
     {data.map((node, idx) => {
-      const editable = isRowEditable({ schema, modelName, node, user, fieldOrder, customProps })
+      const editable = isRowEditable({ schema, modelName, node, parentNode, user, fieldOrder, customProps })
       return (
         <tr key={`table-tr-${node.id}`}>
           {fieldOrder.map((fieldName, headerIdx) => {
