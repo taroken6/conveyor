@@ -16,6 +16,7 @@
 -   Del InlineInput component #81
 -   Fix node and data props #70
 -   Add model level overrides #62
+-   Add CreatableStringSelect to conveyor's FlexibleInput choices #72
 
 ## Version 1.2.0
 

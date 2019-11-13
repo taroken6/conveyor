@@ -65,6 +65,7 @@ const Input = ({
 
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
+  const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
 
   if (skipOverride(InputOverride)) {
     return null
@@ -84,6 +85,7 @@ const Input = ({
         selectOptions,
         disabled,
         onMenuOpen,
+        onCreatableMenuOpen,
         formStack,
         autoFocus,
         onKeyDown,
@@ -113,6 +115,7 @@ const Input = ({
     disabled,
     customLabel,
     onMenuOpen,
+    onCreatableMenuOpen,
     autoFocus,
     onKeyDown,
     customProps,
@@ -162,6 +165,7 @@ export const InputCore = ({
   selectOptions,
   customLabel,
   onMenuOpen,
+  onCreatableMenuOpen,
   customInput,
   autoFocus,
   onKeyDown,
@@ -200,30 +204,54 @@ export const InputCore = ({
     case inputTypes.FILE_TYPE:
       return <FlexibleInput {...defaultProps} />
     case inputTypes.FLOAT_TYPE:
-      return <FlexibleInput {...{
-        ...defaultProps,
-        type: inputTypes.INT_TYPE,
-        customInput: { step: 'any' }
-      }} />
+      return (
+        <FlexibleInput
+          {...{
+            ...defaultProps,
+            type: inputTypes.INT_TYPE,
+            customInput: { step: 'any' }
+          }}
+        />
+      )
     case inputTypes.ENUM_TYPE:
-      return <FlexibleInput {...{
-        ...defaultProps,
-        type: inputTypes.SELECT_TYPE,
-        options: enumChoiceOrder.map(choice => (
-          { label: enumChoices[choice], value: choice }
-        )),
-        customInput: { step: 'any' }
-      }} />
+      return (
+        <FlexibleInput
+          {...{
+            ...defaultProps,
+            type: inputTypes.SELECT_TYPE,
+            options: enumChoiceOrder.map(choice => ({
+              label: enumChoices[choice],
+              value: choice
+            })),
+            customInput: { step: 'any' }
+          }}
+        />
+      )
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
-      return <FlexibleInput {...{
-        ...R.dissoc('type', defaultProps),
-        type: inputTypes.SELECT_TYPE,
-        isMulti: inputType === inputTypes.RELATIONSHIP_MULTIPLE,
-        customLabel,
-        onMenuOpen: (evt) => onMenuOpen({ modelName, fieldName }),
-        options: R.path([modelName, fieldName], selectOptions)
-      }} />
+      return (
+        <FlexibleInput
+          {...{
+            ...R.dissoc('type', defaultProps),
+            type: inputTypes.SELECT_TYPE,
+            isMulti: inputType === inputTypes.RELATIONSHIP_MULTIPLE,
+            customLabel,
+            onMenuOpen: evt => onMenuOpen({ modelName, fieldName }),
+            options: R.path([modelName, fieldName], selectOptions)
+          }}
+        />
+      )
+    case inputTypes.CREATABLE_STRING_SELECT_TYPE:
+      return (
+        <FlexibleInput
+          {...{
+            ...defaultProps,
+            customLabel,
+            onMenuOpen: () => onCreatableMenuOpen({ modelName, fieldName }),
+            options: R.path([modelName, fieldName], selectOptions)
+          }}
+        />
+      )
     default:
       return <p>{fieldName} default input</p>
   }

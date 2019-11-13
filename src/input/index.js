@@ -12,11 +12,12 @@ import {
   InputFile,
   InputSwitch,
   InputCheckbox,
-  InputSelect
+  InputSelect,
+  InputCreatableStringSelect
 } from './inputComponent'
 
 export const isAutoFocusInput = (type) => {
-  switch(type) {
+  switch (type) {
     case inputTypes.STRING_TYPE:
     case inputTypes.TEXTAREA_TYPE:
     case inputTypes.EMAIL_TYPE:
@@ -44,6 +45,7 @@ const defaultTypeMap = {
   [inputTypes.FILE_TYPE]: InputFile,
   [inputTypes.RADIO_TYPE]: InputRadio,
   [inputTypes.SELECT_TYPE]: InputSelect,
+  [inputTypes.CREATABLE_STRING_SELECT_TYPE]: InputCreatableStringSelect,
   [inputTypes.CHECKBOX_TYPE]: InputCheckbox,
   [inputTypes.BOOLEAN_TYPE]: InputSwitch
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import CreatableSelect from "react-select/creatable"
 import DatePicker from 'react-datepicker'
 import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
@@ -475,6 +476,60 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
       id={id}
       onMenuOpen={onMenuOpen}
       noOptionsMessage={noOptionsMessage}
+      {...customInput}
+    />
+  </FormGroup>
+)
+
+/**
+ * Singular component for CreatableStringSelect Type.
+ *
+ * See React Select docs for more details on: isClearable, isMulti, options, noOptionsMessage,
+ * onMenuOpen
+ *
+* should NOT have onKeyDown because the 'enter' key should be reserved for Select operations
+ *
+ * @property { function } onChange
+ * @property { string } id
+ * @property { string } [labelStr]
+ * @property { string } [error]
+ * @property { any } value - no default set
+ * @property { any } options
+ * @property { function } onMenuOpen - See React Select for more details
+ * @property { object } [customInput] - See React Select docs for full list of attributes
+ * @property { boolean } required
+ * @property { function } customError
+ * @property { function } customLabel
+ */
+
+export const InputCreatableStringSelect = ({
+  labelStr,
+  id,
+  error,
+  value,
+  options,
+  onChange,
+  onMenuOpen,
+  required,
+  customInput,
+  customError,
+  customLabel
+}) => (
+  <FormGroup
+    labelStr={labelStr}
+    htmlFor={id}
+    error={error}
+    required={required}
+    customError={R.defaultTo(CustomErrorComponent, customError)}
+    customLabel={customLabel}
+  >
+    <CreatableSelect
+      id={id}
+      options={options}
+      onChange={(selectedOption) => onChange(selectedOption.value)}
+      value={{label: value, value}}
+      onMenuOpen={onMenuOpen}
+      createOptionPosition={'first'}
       {...customInput}
     />
   </FormGroup>
