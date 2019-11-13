@@ -1,11 +1,11 @@
 import React from 'react'
-import { getFieldLabel } from '../utils/schemaGetters'
+import { getFieldLabel, getActions, getField, getFieldConditions } from '../utils/schemaGetters'
 import { showButtonColumn } from './Table'
 import * as R from 'ramda'
-import { getActions, getField } from '../utils/schemaGetters'
 import { isRel } from '../utils/isType'
 import { FilterComp, isColFilterable } from './Filter'
 import { SortButton, isSortable } from './Sort'
+import { shouldDisplay } from '../Utils'
 
 export const THead = ({
   schema,
@@ -19,6 +19,7 @@ export const THead = ({
   sortable,
   filterable,
   selectOptions,
+  fromIndex,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -31,6 +32,24 @@ export const THead = ({
     <thead>
       <tr>
         {fieldOrder.map((fieldName, idx) => {
+          if (fromIndex === true) {
+            const displayCondition = R.prop(
+              'index',
+              getFieldConditions(schema, modelName, fieldName)
+            )
+            if (
+              shouldDisplay({
+                schema,
+                modelName,
+                fieldName,
+                displayCondition,
+                customProps
+              }) === false
+            ) {
+              return null
+            }
+          }
+
           const isRelField = isRel(getField(schema, modelName, fieldName))
           const filterInput = R.path(['filter', modelName, fieldName], tableOptions)
           const sortKeyObj = R.path(['sort', modelName], tableOptions)
