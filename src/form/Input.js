@@ -38,7 +38,7 @@ export const DisabledInput = ({ value, label }) => (
       // TODO: Move into css files
     }
     <div style={{ paddingBottom: '10px', paddingTop: '10px' }} >
-      <div style={{ padding: '7px 7px 7px 12px', backgroundColor: '#E0E0E0' }} className='border rounded primary'>
+      <div style={{ padding: '7px 7px 7px 12px', backgroundColor: '#E0E0E0', minHeight: '40px' }} className='border rounded primary'>
         {value}
       </div>
     </div>
