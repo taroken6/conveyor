@@ -62,8 +62,7 @@ const DefaultCreatePage = ({
   customProps = R.assoc('form', form, customProps)
 
   const origin = R.prop('originModelName', formStack)
-
-  const fieldOrder = getCreateFields({ schema, modelName, user, customProps })
+  const fieldOrder = getCreateFields({ schema, modelName, formStack, user, customProps })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) {
@@ -99,7 +98,7 @@ const DefaultCreatePage = ({
             schema,
             modelName,
             fieldName,
-            form,
+            formStack,
             customProps
           })
           const value = disabled

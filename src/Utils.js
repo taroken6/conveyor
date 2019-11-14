@@ -200,29 +200,30 @@ export const shouldDisplay = ({schema, modelName, id, fieldName, node, displayCo
 // holding value at ['stack', index, 'fields', 'fieldName'], hold an object
 // with disabled and value key. This will also allow for other metadata to
 // be held there if necessary
-export const isFieldDisabled = ({ schema, modelName, fieldName, form, customProps }) => {
-  console.log('-------', schema[modelName])
-  console.log('#', modelName, fieldName)
-  console.log('f:', form)
+export const isFieldDisabled = ({ schema, modelName, fieldName, formStack, customProps }) => {
+  const stackIndex = R.prop('index', formStack)
+  const stack = R.prop('stack', formStack)
+  const form = R.prop(stackIndex, stack)
 
   const type = getType({ schema, modelName, fieldName })
+
+  // check the form to see if 'disabled' flag set true
+  let defaultDisable = false
+  if (type.includes('ToMany')) {
+    defaultDisable = R.path(['fields', fieldName, 0, 'disabled'], form)
+  } else {
+    defaultDisable = R.path(['fields', fieldName, 'disabled'], form)
+  }
 
   // boolean, function, or null
   const disableCondition = getFieldDisableCondition(schema, modelName, fieldName)
 
   if (R.type(disableCondition) === 'Function') {
-    console.log('func', disableCondition)
-    return disableCondition({schema, modelName, fieldName, form, customProps})
+    return disableCondition({schema, modelName, fieldName, formStack, defaultDisable, customProps})
   }
   if (R.type(disableCondition) === 'Boolean') {
-    console.log('bool', disableCondition)
     return disableCondition
   }
 
-  // else, check the form to see if 'disabled' flag set true
-  if (type.includes('ToMany')) {
-    return R.path(['fields', fieldName, 0, 'disabled'], form)
-  } else {
-    return R.path(['fields', fieldName, 'disabled'], form)
-  }
+  return defaultDisable
 }

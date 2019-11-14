@@ -92,15 +92,16 @@ export const getRequiredFields = (schema, modelName, customProps = null) => {
   return getShownFields({ schema, modelName, type: 'required', customProps })
 }
 
-export const getCreateFields = ({ schema, modelName, user, customProps }) => {
+export const getCreateFields = ({ schema, modelName, formStack, user, customProps }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', user, customProps })
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName, user, customProps })
+    return createFieldOrder({ schema, modelName, formStack, user, defaultOrder, customProps })
   }
   else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
   }
-  return getShownFields({ schema, modelName, type: 'showCreate', user, customProps })
+  return defaultOrder
 }
 
 export const getHasIndex = (schema, modelName) => {
