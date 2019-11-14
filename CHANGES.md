@@ -1,8 +1,13 @@
 # Conveyor Changelog
 
-## Version 1.3.0
+## Version 1.4.0
 
 ### Unreleased
+-   
+
+## Version 1.3.0
+
+### Released 11/14/19
 -   Add ability to add displayNamePlural function #60
 -   Add override skips & fix m2m rel label #16
 -   Refactor customProps passed into override functions #64
