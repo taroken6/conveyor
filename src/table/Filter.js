@@ -28,7 +28,6 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
 
 export const isColFilterable = ({schema, modelName, fieldName, tableOptions, filterable}) => !!tableOptions && filterable && isFilterable({schema, modelName, fieldName})
 
-
 export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, filterable}) => {
   const boolList = R.map(fieldName =>
     isColFilterable({ schema, modelName, fieldName, tableOptions, filterable }),
