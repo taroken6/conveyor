@@ -33,8 +33,8 @@ export const RelTooltipContent = ({ data }) => {
   )
 }
 
-/** @type { React.StatelessComponent<{ fieldName: string, schema: any, id: string, modelName: string, html: any, data: {name: string, value: {text: string, url?: string}}[], interactive: boolean, tooltipOpened: function> } */
-const RelTooltip = ({ schema, modelName, id, data, children, html }) => {
+/** @type { React.StatelessComponent<{ fieldName: string, schema: any, id: string, modelName: string, data: {name: string, value: {text: string, url?: string}}[], interactive: boolean, tooltipOpened: function> } */
+const RelTooltip = ({ schema, modelName, id, data, children }) => {
   const actions = getActions(schema, modelName)
   const tooltipOpened = R.path(['tooltip', 'onTooltipOpen'], actions)
   // const formattedData =
