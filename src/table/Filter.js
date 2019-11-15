@@ -6,6 +6,7 @@ import { Tooltip } from 'react-tippy'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
+import { Modal } from '../Modal'
 
 // todo: fix this
 // band-aid solution for filter types that are still broken;
@@ -35,6 +36,15 @@ export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, 
   )
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
+
+export const FilterModal = ({modelName}) => (
+  <Modal
+    id={'filter-' + modelName}
+    title={'Filter ' + modelName}
+  >
+    {null}
+  </Modal>
+)
 
 const FilterRadio = ({modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options}) => {
   return (
