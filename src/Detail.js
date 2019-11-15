@@ -393,6 +393,7 @@ export const DefaultDetailTable = ({
             schema,
             modelName,
             fieldName,
+            node,
             value: getFieldEditData(editData, modelName, fieldName, id),
             error: getFieldErrorEdit(editData, modelName, fieldName, id),
             selectOptions,
@@ -510,7 +511,7 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, cust
             onDelete,
             modalId: 'confirm-delete-' + modelName,
             modalData,
-            customProps }} 
+            customProps }}
           />
         </div>
       }
@@ -576,7 +577,7 @@ export const DetailFields = ({
             return null
         }
         const override = getDetailFieldOverride(schema, modelName, fieldName)
-        
+
         if (skipOverride(override)) {
           return null
         }
