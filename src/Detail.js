@@ -140,7 +140,6 @@ export const DefaultDetailAttribute = ({
               R.type(fieldType) === 'Object' && creatable &&
               <DetailCreateButton {...{
                 schema,
-                modelName,
                 targetInverseFieldName,
                 targetModelName,
                 path,
@@ -192,7 +191,7 @@ export const DefaultDetailAttribute = ({
   }
 }
 
-export const DetailCreateButton = ({ schema, modelName, targetModelName, path, targetInverseFieldName, node }) => {
+export const DetailCreateButton = ({ schema, targetModelName, path, targetInverseFieldName, node }) => {
   const onCreateClick = R.path(['create', 'onDetailCreate'], getActions(schema, targetModelName))
 
   const onClick = () => onCreateClick({
@@ -222,7 +221,6 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targe
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
         schema,
-        modelName,
         targetModelName,
         path,
         targetInverseFieldName,
@@ -283,7 +281,6 @@ const DefaultDetailM2MFieldLabel = ({
       { required && ' *'}
       { creatable && <DetailCreateButton {...{
         schema,
-        modelName,
         targetModelName,
         path,
         targetInverseFieldName,
