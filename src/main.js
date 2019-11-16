@@ -8,7 +8,6 @@ import { DefaultIndexTitle } from './Index'
 import { DeleteButton } from './table/Table'
 import Detail from './Detail'
 import { DetailCreateButton } from './Detail'
-import { DetailFields } from './Detail'
 import DetailLink from './DetailLink'
 import { DisabledInput } from './form/Input'
 import { Field } from './table/Field'
@@ -38,7 +37,6 @@ import { isRel } from './utils/isType'
 import { Modal } from './Modal'
 import RelTooltip from './Tooltip'
 import { storeValueToArrayBuffer } from './utils/fileConverters'
-import { TabFields } from './Tabs'
 import { TableButtonGroup } from './table/Table'
 import Tooltip from './Tooltip'
 import { isManyToMany } from './utils/isType'
@@ -63,7 +61,6 @@ export { DefaultIndexTitle }
 export { DeleteButton }
 export { Detail }
 export { DetailCreateButton }
-export { DetailFields }
 export { DetailLink }
 export { DisabledInput }
 export { Field }
@@ -93,7 +90,6 @@ export { isRel }
 export { Modal }
 export { RelTooltip }
 export { storeValueToArrayBuffer }
-export { TabFields }
 export { TableButtonGroup }
 export { Tooltip }
 export { isManyToMany }
