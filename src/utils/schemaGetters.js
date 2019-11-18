@@ -110,22 +110,26 @@ export const getHasIndex = (schema, modelName) => {
 
 export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   const detailFieldOrder = R.prop('detailFieldOrder', getModel(schema, modelName))
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showDetail', node, customProps })
   if (R.type(detailFieldOrder) === 'Function') {
-    return detailFieldOrder({ schema, modelName, node, customProps })
+    return detailFieldOrder({ schema, modelName, node, defaultOrder, customProps })
   }
   else if (R.type(detailFieldOrder) === 'Array') {
     return detailFieldOrder
-  }  return getShownFields({ schema, modelName, type: 'showDetail', node, customProps })
+  }
+  return defaultOrder
 }
 
 export const getIndexFields = ({ schema, modelName, data, user, customProps }) => {
   const indexFieldOrder = R.prop('indexFieldOrder', getModel(schema, modelName))
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, user, customProps })
   if (R.type(indexFieldOrder) === 'Function') {
-    return indexFieldOrder({ schema, modelName, data, user, customProps })
+    return indexFieldOrder({ schema, modelName, data, user, defaultOrder, customProps })
   }
   else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
-  }  return getShownFields({ schema, modelName, type: 'showIndex', data, user, customProps })
+  }
+  return defaultOrder
 }
 
 export const getTooltipFields = (schema, modelName, customProps = null) => {
