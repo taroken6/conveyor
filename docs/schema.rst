@@ -9,6 +9,8 @@ The schema utilized by the framework will be different than the existing schema 
     <modelName>: {
       tabs: {} #See tab documentation, determined by Front end
       hasIndex: boolean #Whether the model should be included in an index page
+      deletable: boolean or function #Whether the given field should be deletable
+      creatable: boolean or function #Whether the given field should be creatable
       createFieldOrder: #List or a function that returns a list of the order that the create fields display
       indexFieldOrder: #List or a function that returns a list of the order that the index fields display
       detailFieldOrder: #List or a function that returns a list of the order that the detail fields display
@@ -57,9 +59,9 @@ The schema utilized by the framework will be different than the existing schema 
           filterable: boolean #Whether the given field should be filterable on tables
           editable: boolean or function #Whether the given field should be editable
           showDetail: boolean or function #Whether the given field should be displayed on the detail page
-          showIndex: boolean #Whether the given field should be displayed on the index page
-          showCreate: boolean #Whether the given field should be displayed on the create page
-          showTooltip: boolean #Whether the given field should be displayed on the tooltip
+          showIndex: boolean or function #Whether the given field should be displayed on the index page
+          showCreate: boolean or function #Whether the given field should be displayed on the create page
+          showTooltip: boolean or function #Whether the given field should be displayed on the tooltip
           queryIndex: boolean #Whether should be queried while fetching index page; by default the query will look at 'showIndex' prop but, if showIndex is false and queryIndex is true, will still query the field; used if you wish to have a field be available but NOT displaying for index
           queryDetail: boolean #Whether should be queried while fetching detail page; by default the query will look at 'showDetail' prop but, if showDetail is false and queryDetail is true, will still query the field; used if you wish to have a field be available but NOT displaying for detail
         }
