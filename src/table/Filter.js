@@ -36,11 +36,21 @@ export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, 
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
-export const FilterModal = ({modelName, children}) => (
+
+
+const activeFilters = ({modelName}) => {
+  []
+}
+
+export const FilterModal = ({modelName}) => (
   <Modal
     id={'filter-' + modelName}
     title={'Filters - ' + modelName}
-    children={children}
+    children={
+      <div id={'active-filters-' + modelName}>
+        Active Filters
+      </div>
+    }
   />
 )
 
@@ -52,8 +62,8 @@ export const FilterModalButton = ({modelName}) => (
   >Filter
     <ReactSVG
       src={`/static/img/filter.svg`}
-      className='header-icon ml-1'
-      svgStyle={{width: '12px', height: '12px', fill: '#000000'}}
+      className='header-icon ml-2'
+      svgStyle={{width: '12px', height: '12px', fill: 'black'}}
     />
   </button>
 )
