@@ -36,13 +36,26 @@ export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, 
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
-export const FilterModal = ({modelName}) => (
+export const FilterModal = ({modelName, children}) => (
   <Modal
     id={'filter-' + modelName}
-    title={'Filter ' + modelName}
-  >
-    {null}
-  </Modal>
+    title={'Filters - ' + modelName}
+    children={children}
+  />
+)
+
+export const FilterModalButton = ({modelName}) => (
+  <button
+    className='btn btn-sm btn-outline-primary'
+    data-toggle='modal'
+    data-target={'#filter-' + modelName}
+  >Filter
+    <ReactSVG
+      src={`/static/img/filter.svg`}
+      className='header-icon ml-1'
+      svgStyle={{width: '12px', height: '12px', fill: '#000000'}}
+    />
+  </button>
 )
 
 const FilterRadio = ({modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options}) => {

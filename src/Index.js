@@ -2,7 +2,7 @@ import React from 'react'
 import { Table } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
-import { FilterModal } from './table/Filter'
+import { FilterModal, FilterModalButton } from './table/Filter'
 import {
   getActions,
   getHasIndex,
@@ -28,8 +28,9 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customP
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
+      <FilterModal {...{ modelName }}>This is a modal</FilterModal>
       <div className='float-right'>
-        <button className='btn btn-sm btn-outline-primary'>Filters</button>
+        <FilterModalButton {...{ modelName }} />
         {creatable && <CreateButton {...{ onClick }} />}
       </div>
     </div>
