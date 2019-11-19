@@ -28,7 +28,7 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customP
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
-      <FilterModal {...{ modelName }} />
+      <FilterModal {...{ modelName, schema }} />
       <div className='float-right'>
         <FilterModalButton {...{ modelName }} />
         {creatable && <CreateButton {...{ onClick }} />}

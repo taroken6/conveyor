@@ -26,7 +26,8 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
   )
 }
 
-export const isColFilterable = ({schema, modelName, fieldName, tableOptions, filterable}) => !!tableOptions && filterable && isFilterable({schema, modelName, fieldName})
+export const isColFilterable = ({schema, modelName, fieldName, tableOptions, filterable}) =>
+  !!tableOptions && filterable && isFilterable({schema, modelName, fieldName})
 
 export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, filterable}) => {
   const boolList = R.map(fieldName =>
@@ -36,25 +37,60 @@ export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, 
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
+const isStringOrInt = ({ schema, modelName, fieldName }) => {
+  const fieldType = R.pathOr(null, [modelName, 'fields', fieldName, 'type'], schema)
+  return fieldType === 'int' || fieldType === 'string'
+}
 
+const getFilterableFields = ({ modelName, schema }) => {
+  const fields = R.pathOr([], [modelName, 'fieldOrder'], schema)
+  const filterables = fields.filter(
+    fieldName => isFilterable({ schema, modelName, fieldName })
+      && isStringOrInt({ schema, modelName, fieldName }) // for now, filter only strings/ints
+  )
+  return filterables
+}
 
-const activeFilters = ({modelName}) => {
+const AddFilter = ({ modelName, schema }) => {
+  console.log('schema', schema)
+  const filterables = getFilterableFields({ modelName, schema })
+  const fieldOptions = filterables.map(fieldName => ({
+    label: fieldName,
+    value: getInputType({ schema, modelName, fieldName })
+  }))
+  return (
+    <div id='filter-dropdown'>
+      <FlexibleInput
+        type={inputTypes.SELECT_TYPE}
+        onChange={evt => {console.log('evt', evt)}}
+        value={filterables}
+        options={fieldOptions}
+        id={`${modelName}-filter-dropdown`}
+      />
+    </div>
+  )
+}
+
+const activeFilters = ({ modelName }) => {
   []
 }
 
-export const FilterModal = ({modelName}) => (
+export const FilterModal = ({ modelName, schema }) => (
   <Modal
     id={'filter-' + modelName}
     title={'Filters - ' + modelName}
     children={
       <div id={'active-filters-' + modelName}>
-        Active Filters
+        <p>Active Filters</p>
+        [Coming soon]
+        <p>Add...</p>
+        <AddFilter {...{ modelName, schema }} />
       </div>
     }
   />
 )
 
-export const FilterModalButton = ({modelName}) => (
+export const FilterModalButton = ({ modelName }) => (
   <button
     className='btn btn-sm btn-outline-primary'
     data-toggle='modal'
@@ -68,7 +104,7 @@ export const FilterModalButton = ({modelName}) => (
   </button>
 )
 
-const FilterRadio = ({modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options}) => {
+const FilterRadio = ({ modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options }) => {
   return (
     <React.Fragment>
       <FlexibleInput
