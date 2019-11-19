@@ -63,16 +63,20 @@ const AddFilter = ({ modelName, schema }) => {
       <FlexibleInput
         type={inputTypes.SELECT_TYPE}
         onChange={evt => {console.log('evt', evt)}}
-        value={filterables}
+        value={fieldOptions}
         options={fieldOptions}
         id={`${modelName}-filter-dropdown`}
+        noOptionsMessage='(no filterable fields)'
       />
     </div>
   )
 }
 
-const activeFilters = ({ modelName }) => {
-  []
+const ActiveFilters = ({ modelName }) => {
+  const filters = []
+  return (
+    <div className='border rounded mb-4 p-2'>{R.isEmpty(filters) ? 'N/A' : filters}</div>
+  )
 }
 
 export const FilterModal = ({ modelName, schema }) => (
@@ -82,7 +86,7 @@ export const FilterModal = ({ modelName, schema }) => (
     children={
       <div id={'active-filters-' + modelName}>
         <p>Active Filters</p>
-        [Coming soon]
+          <ActiveFilters {...{ modelName }} />
         <p>Add...</p>
         <AddFilter {...{ modelName, schema }} />
       </div>
