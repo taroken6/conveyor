@@ -23,6 +23,8 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customP
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
+  const filterModal = <FilterModal {...{ modelName, schema }} />
+  console.log('modal', filterModal)
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>

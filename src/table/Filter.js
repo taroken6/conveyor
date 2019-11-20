@@ -68,14 +68,25 @@ const AddFilter = ({ modelName, schema }) => {
         id={`${modelName}-filter-dropdown`}
         noOptionsMessage='(no filterable fields)'
       />
+      <div className='text-right'>
+        <button className='btn btn-primary btn-sm'>Apply</button>
+      </div>
     </div>
   )
 }
 
 const ActiveFilters = ({ modelName }) => {
-  const filters = []
+  const filters = ['foo', 'bar']
   return (
-    <div className='border rounded mb-4 p-2'>{R.isEmpty(filters) ? 'N/A' : filters}</div>
+    <div id={'active-filters-' + modelName} className='mb-2'>
+      <ul className="list-group">
+        {R.isEmpty(filters) ?
+          'N/A' : filters.map((filter, index) => <li key={index} className='list-group-item'>{filter}</li>)}
+      </ul>
+      <div className='text-right mt-3'>
+        <button className='btn btn-secondary btn-sm'>Clear All</button>
+      </div>
+    </div>
   )
 }
 
@@ -84,10 +95,10 @@ export const FilterModal = ({ modelName, schema }) => (
     id={'filter-' + modelName}
     title={'Filters - ' + modelName}
     children={
-      <div id={'active-filters-' + modelName}>
-        <p>Active Filters</p>
-          <ActiveFilters {...{ modelName }} />
-        <p>Add...</p>
+      <div>
+        <p className='font-weight-bold'>Active Filters</p>
+        <ActiveFilters {...{ modelName }} />
+        <p className='font-weight-bold'>Add Filter</p>
         <AddFilter {...{ modelName, schema }} />
       </div>
     }
