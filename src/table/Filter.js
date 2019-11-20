@@ -59,17 +59,22 @@ const AddFilter = ({ modelName, schema }) => {
     value: getInputType({ schema, modelName, fieldName })
   }))
   return (
-    <div id='filter-dropdown'>
-      <FlexibleInput
-        type={inputTypes.SELECT_TYPE}
-        onChange={evt => {console.log('evt', evt)}}
-        value={fieldOptions}
-        options={fieldOptions}
-        id={`${modelName}-filter-dropdown`}
-        noOptionsMessage='(no filterable fields)'
-      />
-      <div className='text-right'>
-        <button className='btn btn-primary btn-sm'>Apply</button>
+    <div id='add-filter'>
+      <div id='filter-dropdown' className='d-inline-block mr-2 w-75'>
+        <FlexibleInput
+          type={inputTypes.SELECT_TYPE}
+          onChange={evt => {console.log('evt', evt)}}
+          // value={fieldOptions}
+          options={fieldOptions}
+          id={`${modelName}-filter-dropdown`}
+          noOptionsMessage='(no filterable fields)'
+          customInput={{
+            placeholder: 'Select field...'
+          }}
+        />
+      </div>
+      <div className='text-right d-inline-block'>
+        <button className='btn btn-primary btn-sm'>Add</button>
       </div>
     </div>
   )
@@ -84,7 +89,8 @@ const ActiveFilters = ({ modelName }) => {
           'N/A' : filters.map((filter, index) => <li key={index} className='list-group-item'>{filter}</li>)}
       </ul>
       <div className='text-right mt-3'>
-        <button className='btn btn-secondary btn-sm'>Clear All</button>
+        <button className='btn btn-success btn-sm mr-2'>Apply All</button>
+        <button className='btn btn-outline-danger btn-sm'>Reset</button>
       </div>
     </div>
   )
@@ -96,10 +102,10 @@ export const FilterModal = ({ modelName, schema }) => (
     title={'Filters - ' + modelName}
     children={
       <div>
-        <p className='font-weight-bold'>Active Filters</p>
-        <ActiveFilters {...{ modelName }} />
         <p className='font-weight-bold'>Add Filter</p>
         <AddFilter {...{ modelName, schema }} />
+        <p className='font-weight-bold'>Selected Filters</p>
+        <ActiveFilters {...{ modelName }} />
       </div>
     }
   />
