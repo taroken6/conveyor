@@ -132,7 +132,7 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
   return defaultOrder
 }
 
-export const getTooltipFields = ({ schema, modelName, customProps = null }) => {
+export const getTooltipFields = (schema, modelName, customProps = null) => {
   return getShownFields({ schema, modelName, type: 'showTooltip', customProps })
 }
 export const getEnumChoices = (schema, modelName, fieldName) => {

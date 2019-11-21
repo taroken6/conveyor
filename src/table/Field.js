@@ -91,7 +91,7 @@ export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node
 
   if (!displayString) { return <span>N/A</span> }
 
-  const displayTooltip = (getTooltipFields({ schema, modelName: relModelName }).length !== 0)
+  const displayTooltip = (getTooltipFields(schema, relModelName).length !== 0)
   if (displayTooltip) {
     return (
       <Tooltip
