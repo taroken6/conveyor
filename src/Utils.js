@@ -122,6 +122,9 @@ export const isTableEditable = ({ schema, modelName, data, user, parentNode, fie
 
 //isRowEditable loops over all displayed fields to determine if the row is editable
 export const isRowEditable = ({ schema, modelName, node, parentNode, user, fieldOrder, customProps }) => {
+  if (!fieldOrder) {
+    fieldOrder = Object.keys(node)
+  }
   for (const index in fieldOrder) {
     const fieldName = R.prop(index, fieldOrder)
     if (isFieldEditable({
