@@ -9,16 +9,18 @@ The schema utilized by the framework will be different than the existing schema 
     <modelName>: {
       tabs: {} #See tab documentation, determined by Front end
       hasIndex: boolean #Whether the model should be included in an index page
+      deletable: boolean or function #Whether the given field should be deletable
+      creatable: boolean or function #Whether the given field should be creatable
       createFieldOrder: #List or a function that returns a list of the order that the create fields display
       indexFieldOrder: #List or a function that returns a list of the order that the index fields display
       detailFieldOrder: #List or a function that returns a list of the order that the detail fields display
-      queryName: #Name of gql query that will return a single instance of the model 
+      queryName: #Name of gql query that will return a single instance of the model
       queryAllName: #Name of gqlquery that will return all instances of the model
       queryRequired: #List of fields that must be present on the query
       modelName: #Name of model
       displayName: "" #Singular display name of model or function that calculates displayName, used on detail page
       displayNamePlural: "" #Plural display name of Model or function that calculates displayNamePlural, used on index page
-      tableLinkField: "" #name of the field/column in a table that links to the detail page, a value of null means no link to the model should be displayed on a table 
+      tableLinkField: "" #name of the field/column in a table that links to the detail page, a value of null means no link to the model should be displayed on a table
       displayField: "" #name of field that holds the data used to represent the instance when it is being displayed or referenced, defaults to "name" if left undefined, can also be a function that determines the value for any instance of the model
       fieldOrder: "" #List of ALL fields on a model in the order that they should be displayed on its own Detail and Index pages, also serves as a fall back if a different model is displaying this model without having specified the order in which the fields should be displayed.
       fields: {
@@ -31,7 +33,7 @@ The schema utilized by the framework will be different than the existing schema 
             input: () => {} #Override the input component of model.field when editing, determined by Front end
             labelInfo: () => {} #the content to display in the popover when the label is clicked on
           }
-          
+
           fieldName: "" #Name of the field, used as the key in fields dictionary
           displayName: "" #Provides how the field should be displayed or function that calculates displayName
           detailAttribute: boolean #Determines whether or not a field should display in the attribute or table section of a detail page
@@ -52,13 +54,14 @@ The schema utilized by the framework will be different than the existing schema 
             index: () => #A function that evaluates to true or false to determines if the field will display in an index table
             create: () => #A function that evaluates to true or false to determine if the field will display on a create page
           },
+          disabled: () => {} #bool or function #Whether field should be disabled or not,
           sortable: boolean #Whether the given field should be sortable on tables
           filterable: boolean #Whether the given field should be filterable on tables
           editable: boolean or function #Whether the given field should be editable
           showDetail: boolean or function #Whether the given field should be displayed on the detail page
-          showIndex: boolean #Whether the given field should be displayed on the index page
-          showCreate: boolean #Whether the given field should be displayed on the create page
-          showTooltip: boolean #Whether the given field should be displayed on the tooltip
+          showIndex: boolean or function #Whether the given field should be displayed on the index page
+          showCreate: boolean or function #Whether the given field should be displayed on the create page
+          showTooltip: boolean or function #Whether the given field should be displayed on the tooltip
           queryIndex: boolean #Whether should be queried while fetching index page; by default the query will look at 'showIndex' prop but, if showIndex is false and queryIndex is true, will still query the field; used if you wish to have a field be available but NOT displaying for index
           queryDetail: boolean #Whether should be queried while fetching detail page; by default the query will look at 'showDetail' prop but, if showDetail is false and queryDetail is true, will still query the field; used if you wish to have a field be available but NOT displaying for detail
         }
