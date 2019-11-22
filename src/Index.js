@@ -18,22 +18,22 @@ import {
   skipOverride
 } from './Utils'
 
-export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customProps }) => {
+export const DefaultIndexTitle = ({ schema, modelName, path, data, user, selectedField, currentFilters, customProps }) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
+  const addFilter = R.path(['tableOptions', 'addFilter'], actions)
+  const changeField = R.path(['tableOptions', 'changeField'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
-  const filterModal = <FilterModal {...{ modelName, schema }} />
-  console.log('modal', filterModal)
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
-      <FilterModal {...{ modelName, schema }} />
+      <FilterModal {...{ modelName, schema, data, addFilter, changeField, currentFilters, selectedField }} />
       <div className='float-right'>
         <FilterModalButton {...{ modelName }} />
-        {creatable && <CreateButton {...{ onClick }} />}
+        {creatable && <CreateButton {...{ onClick, selectedField }} />}
       </div>
     </div>
   )
@@ -49,6 +49,8 @@ const DefaultIndex = ({
   path,
   tooltipData,
   user,
+  selectedField,
+  currentFilters,
   tableOptions,
   customProps
 }) => {
@@ -91,6 +93,8 @@ const DefaultIndex = ({
             path,
             tooltipData,
             user,
+            selectedField,
+            currentFilters,
             tableOptions,
             customProps
           }}
@@ -108,6 +112,8 @@ const DefaultIndex = ({
             path,
             tooltipData,
             user,
+            selectedField,
+            currentFilters,
             tableOptions,
             customProps,
             fieldOrder,
@@ -131,6 +137,8 @@ const Index = ({
   path,
   tooltipData,
   user,
+  selectedField,
+  currentFilters,
   tableOptions,
   customProps
 }) => {
@@ -150,6 +158,8 @@ const Index = ({
         path,
         tooltipData,
         user,
+        selectedField,
+        currentFilters,
         tableOptions,
         customProps
       }}

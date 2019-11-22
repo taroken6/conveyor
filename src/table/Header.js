@@ -113,7 +113,17 @@ export const Header = ({
       </a>
       <div className={'header-overflow'}>
         { showSort && <SortButton {...{ modelName, fieldName, onSort, sortKeyObj }} /> }
-        { showFilter && <FilterComp {... { fieldName, modelName, schema, onFilterChange, onFilterSubmit, onFilterRadio, onMenuOpen, filterInput, selectOptions }} /> }
+        { showFilter && <FilterComp {... {
+          fieldName,
+          modelName,
+          schema,
+          onFilterChange,
+          onFilterSubmit,
+          onFilterRadio,
+          onMenuOpen,
+          filterInput,
+          selectOptions
+        }} /> }
       </div>
     </div>
   </div>

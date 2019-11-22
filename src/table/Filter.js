@@ -7,6 +7,7 @@ import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
 import { Modal } from '../Modal'
+import { getFieldLabel } from '../utils/schemaGetters.js'
 
 // todo: fix this
 // band-aid solution for filter types that are still broken;
@@ -51,11 +52,10 @@ const getFilterableFields = ({ modelName, schema }) => {
   return filterables
 }
 
-const AddFilter = ({ modelName, schema }) => {
-  console.log('schema', schema)
+const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
   const filterables = getFilterableFields({ modelName, schema })
   const fieldOptions = filterables.map(fieldName => ({
-    label: fieldName,
+    label: getFieldLabel({ schema, modelName, fieldName, data }),
     value: getInputType({ schema, modelName, fieldName })
   }))
   return (
@@ -63,8 +63,11 @@ const AddFilter = ({ modelName, schema }) => {
       <div id='filter-dropdown' className='d-inline-block mr-2 w-75'>
         <FlexibleInput
           type={inputTypes.SELECT_TYPE}
-          onChange={evt => {console.log('evt', evt)}}
-          // value={fieldOptions}
+          onChange={evt => onChange({
+            modelName,
+            field: evt
+          })}
+          value={value}
           options={fieldOptions}
           id={`${modelName}-filter-dropdown`}
           noOptionsMessage='(no filterable fields)'
@@ -74,20 +77,24 @@ const AddFilter = ({ modelName, schema }) => {
         />
       </div>
       <div className='text-right d-inline-block'>
-        <button className='btn btn-primary btn-sm'>Add</button>
+        <button
+          className='btn btn-primary btn-sm'
+          disabled={R.isNil(value)}
+          onClick={() => onClick({ modelName, field: value })}
+        >Add</button>
       </div>
     </div>
   )
 }
 
-const ActiveFilters = ({ modelName }) => {
-  const filters = ['foo', 'bar']
+const ActiveFilters = ({ modelName, currentFilters }) => {
   return (
     <div id={'active-filters-' + modelName} className='mb-2'>
-      <ul className="list-group">
-        {R.isEmpty(filters) ?
-          'N/A' : filters.map((filter, index) => <li key={index} className='list-group-item'>{filter}</li>)}
-      </ul>
+      <ul className="list-group">{
+        R.isEmpty(currentFilters) || R.isNil(currentFilters)
+          ? <li key={-1} className='list-group-item'>N/A</li>
+          : currentFilters.map((filter, index) => <li key={index} className='list-group-item'>{filter}</li>)
+      }</ul>
       <div className='text-right mt-3'>
         <button className='btn btn-success btn-sm mr-2'>Apply All</button>
         <button className='btn btn-outline-danger btn-sm'>Reset</button>
@@ -96,16 +103,23 @@ const ActiveFilters = ({ modelName }) => {
   )
 }
 
-export const FilterModal = ({ modelName, schema }) => (
+export const FilterModal = ({ modelName, schema, data, addFilter, changeField, selectedField, currentFilters }) => (
   <Modal
     id={'filter-' + modelName}
     title={'Filters - ' + modelName}
     children={
       <div>
         <p className='font-weight-bold'>Add Filter</p>
-        <AddFilter {...{ modelName, schema }} />
+        <AddFilter {...{
+          modelName,
+          schema,
+          data,
+          onClick: addFilter,
+          onChange: changeField,
+          value: selectedField
+        }}/>
         <p className='font-weight-bold'>Selected Filters</p>
-        <ActiveFilters {...{ modelName }} />
+        <ActiveFilters {...{ modelName, currentFilters }} />
       </div>
     }
   />
@@ -113,7 +127,7 @@ export const FilterModal = ({ modelName, schema }) => (
 
 export const FilterModalButton = ({ modelName }) => (
   <button
-    className='btn btn-sm btn-outline-primary'
+    className={'btn btn-sm btn-outline-primary'}
     data-toggle='modal'
     data-target={'#filter-' + modelName}
   >Filter
@@ -124,6 +138,34 @@ export const FilterModalButton = ({ modelName }) => (
     />
   </button>
 )
+
+
+
+const displayFilter = ({
+  schema,
+  modelName,
+  fieldName,
+  value,
+  operator,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
+  selectOptions,
+  onMenuOpen
+}) => {
+  return <FilterPopover {...{
+    schema,
+    modelName,
+    fieldName,
+    value,
+    operator,
+    onFilterChange,
+    onFilterSubmit,
+    onFilterRadio,
+    selectOptions,
+    onMenuOpen
+  }} />
+}
 
 const FilterRadio = ({ modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options }) => {
   return (
@@ -204,7 +246,18 @@ const FilterApplyButton = ({ schema, modelName, fieldName, operator, onFilterSub
   // case inputTypes.PHONE_TYPE:
   // case inputTypes.BOOLEAN_TYPE:
 
-const FilterPopover = ({ schema, modelName, fieldName, value, operator, onFilterChange, onFilterSubmit, onFilterRadio, selectOptions, onMenuOpen }) => (
+const FilterPopover = ({
+  schema,
+  modelName,
+  fieldName,
+  value,
+  operator,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
+  selectOptions,
+  onMenuOpen
+}) => (
   <div style={{ 'minWidth': '350px', 'textAlign': 'left' }}>
     <InputCore {...{
       schema,
@@ -244,7 +297,16 @@ export const FilterComp = ({
         trigger='click'
         html={(
           FilterPopover({
-            schema, modelName, fieldName, value, operator, onFilterChange, onFilterSubmit, onFilterRadio, selectOptions, onMenuOpen
+            schema,
+            modelName,
+            fieldName,
+            value,
+            operator,
+            onFilterChange,
+            onFilterSubmit,
+            onFilterRadio,
+            selectOptions,
+            onMenuOpen
           })
         )}
       >
