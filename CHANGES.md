@@ -3,7 +3,7 @@
 ## Version 1.4.0
 
 ### Unreleased
--   
+-
 
 ## Version 1.3.0
 
@@ -22,6 +22,7 @@
 -   Fix node and data props #70
 -   Add model level overrides #62
 -   Add CreatableStringSelect to conveyor's FlexibleInput choices #72
+-   Fix bug in modal creation #110
 
 ## Version 1.2.0
 

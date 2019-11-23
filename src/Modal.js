@@ -45,13 +45,11 @@ const ImageModal = ({ id, title, url }) => {
 }
 
 export const ImageLinkModal = ({
-  id,//stays
-  title,//stays
-  url,//stays
-
-  loading = false,
+  id,
+  title,
+  url
 }) => {
-  if ((!url || url === 'None') && !loading) { return <span>No Image</span> }
+  if (!url || url === 'None') { return <span>No Image</span> }
   return (
     <React.Fragment>
       <Link to={`show-${id}`} data-toggle='modal' data-target={'#' + id}>
