@@ -17,13 +17,9 @@ export const Modal = ({ id, title, children }) => (
   </div>
 )
 
-export const ImageModal = ({ id, title, url, errorStatus, errorString }) => {
+const ImageModal = ({ id, title, url }) => {
   let child
-  if (errorStatus) {
-    child = (
-      <div className='text-center'>{errorString}</div>
-    )
-  } else if (!url) {
+  if (!url) {
     child = (
       <div className='text-center'>{'...generating image'}</div>
     )
@@ -48,40 +44,20 @@ export const ImageModal = ({ id, title, url, errorStatus, errorString }) => {
   )
 }
 
-const ImageLink = ({ img, buttonText, customButton }) => {
-  if (customButton) { return customButton }
-  return (
-    <React.Fragment>
-      {img && <img className='rounded' src={img} width='30' height='30' />}
-      {buttonText}
-    </React.Fragment>
-  )
-}
-
 export const ImageLinkModal = ({
-  id,
-  title,
-  url,
-  errorStatus = false,
-  errorString,
-  img,
-  onClick,
+  id,//stays
+  title,//stays
+  url,//stays
+
   loading = false,
-  buttonText = 'Click to view',
-  customButton
 }) => {
   if ((!url || url === 'None') && !loading) { return <span>No Image</span> }
-
   return (
     <React.Fragment>
-      <Link to={`show-${id}`} data-toggle='modal' data-target={'#' + id} onClick={onClick}>
-        <ImageLink
-          img={img}
-          buttonText={buttonText}
-          customButton={customButton}
-        />
+      <Link to={`show-${id}`} data-toggle='modal' data-target={'#' + id}>
+        Click to view*
       </Link>
-      <ImageModal {...{ id, title, url, errorStatus, errorString }} />
+      <ImageModal {...{ id, title, url }} />
     </React.Fragment>
   )
 }
