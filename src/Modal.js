@@ -53,7 +53,7 @@ export const ImageLinkModal = ({
   return (
     <React.Fragment>
       <Link to={`show-${id}`} data-toggle='modal' data-target={'#' + id}>
-        Click to view*
+        Click to view
       </Link>
       <ImageModal {...{ id, title, url }} />
     </React.Fragment>
