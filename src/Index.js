@@ -51,7 +51,7 @@ export const DefaultIndexTitle = ({
         selectedField
       }} />
       <div className='float-right'>
-        <FilterModalButton {...{ modelName }} />
+        <FilterModalButton {...{ modelName, currentFilters }} />
         {creatable && <CreateButton {...{ onClick, selectedField }} />}
       </div>
     </div>

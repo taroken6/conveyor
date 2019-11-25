@@ -87,13 +87,21 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
   )
 }
 
+const formatFilter = (filter, index) => {
+  return (
+    <li key={index} className='list-group-item'>
+      {R.prop('label', filter)}
+    </li>
+  )
+}
+
 const ActiveFilters = ({ modelName, currentFilters, clearFilters }) => {
   return (
     <div id={'active-filters-' + modelName} className='mb-2'>
       <ul className="list-group">{
         R.isEmpty(currentFilters) || R.isNil(currentFilters)
           ? <li key={-1} className='list-group-item'>N/A</li>
-          : currentFilters.map((filter, index) => <li key={index} className='list-group-item'>{R.prop('label', filter)}</li>)
+          : currentFilters.map((filter, index) => formatFilter(filter, index))
       }</ul>
       <div className='text-right mt-3'>
         <button className='btn btn-success btn-sm mr-2'>Apply All</button>
@@ -137,7 +145,7 @@ export const FilterModal = ({
   />
 )
 
-export const FilterModalButton = ({ modelName }) => (
+export const FilterModalButton = ({ modelName, currentFilters }) => (
   <button
     className={'btn btn-sm btn-outline-primary'}
     data-toggle='modal'
@@ -146,7 +154,11 @@ export const FilterModalButton = ({ modelName }) => (
     <ReactSVG
       src={`/static/img/filter.svg`}
       className='header-icon ml-2'
-      svgStyle={{width: '12px', height: '12px', fill: 'black'}}
+      svgStyle={{
+        width: '12px',
+        height: '12px',
+        fill: currentFilters.length !== 0 ? 'lightgreen' : 'black'
+      }}
     />
   </button>
 )
