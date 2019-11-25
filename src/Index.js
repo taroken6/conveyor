@@ -18,7 +18,16 @@ import {
   skipOverride
 } from './Utils'
 
-export const DefaultIndexTitle = ({ schema, modelName, path, data, user, selectedField, currentFilters, customProps }) => {
+export const DefaultIndexTitle = ({
+  schema,
+  modelName,
+  path,
+  data,
+  user,
+  selectedField,
+  currentFilters,
+  customProps
+}) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const addFilter = R.path(['tableOptions', 'addFilter'], actions)
