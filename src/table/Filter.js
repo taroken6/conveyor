@@ -87,23 +87,35 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
   )
 }
 
-const ActiveFilters = ({ modelName, currentFilters }) => {
+const ActiveFilters = ({ modelName, currentFilters, clearFilters }) => {
   return (
     <div id={'active-filters-' + modelName} className='mb-2'>
       <ul className="list-group">{
         R.isEmpty(currentFilters) || R.isNil(currentFilters)
           ? <li key={-1} className='list-group-item'>N/A</li>
-          : currentFilters.map((filter, index) => <li key={index} className='list-group-item'>{filter}</li>)
+          : currentFilters.map((filter, index) => <li key={index} className='list-group-item'>{R.prop('label', filter)}</li>)
       }</ul>
       <div className='text-right mt-3'>
         <button className='btn btn-success btn-sm mr-2'>Apply All</button>
-        <button className='btn btn-outline-danger btn-sm'>Reset</button>
+        <button
+          className='btn btn-outline-danger btn-sm mr-2'
+          onClick={() => clearFilters({ modelName })}
+        >Reset</button>
       </div>
     </div>
   )
 }
 
-export const FilterModal = ({ modelName, schema, data, addFilter, changeField, selectedField, currentFilters }) => (
+export const FilterModal = ({
+  modelName,
+  schema,
+  data,
+  addFilter,
+  clearFilters,
+  changeField,
+  currentFilters,
+  selectedField
+}) => (
   <Modal
     id={'filter-' + modelName}
     title={'Filters - ' + modelName}
@@ -119,7 +131,7 @@ export const FilterModal = ({ modelName, schema, data, addFilter, changeField, s
           value: selectedField
         }}/>
         <p className='font-weight-bold'>Selected Filters</p>
-        <ActiveFilters {...{ modelName, currentFilters }} />
+        <ActiveFilters {...{ modelName, currentFilters, clearFilters }} />
       </div>
     }
   />

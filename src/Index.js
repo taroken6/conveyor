@@ -22,6 +22,7 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, selecte
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const addFilter = R.path(['tableOptions', 'addFilter'], actions)
+  const clearFilters = R.path(['tableOptions', 'clearFilters'], actions)
   const changeField = R.path(['tableOptions', 'changeField'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
@@ -30,7 +31,16 @@ export const DefaultIndexTitle = ({ schema, modelName, path, data, user, selecte
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
-      <FilterModal {...{ modelName, schema, data, addFilter, changeField, currentFilters, selectedField }} />
+      <FilterModal {...{
+        modelName,
+        schema,
+        data,
+        addFilter,
+        clearFilters,
+        changeField,
+        currentFilters,
+        selectedField
+      }} />
       <div className='float-right'>
         <FilterModalButton {...{ modelName }} />
         {creatable && <CreateButton {...{ onClick, selectedField }} />}
