@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 import { DetailFields, partitionDetailFields } from './Detail'
 
-export const TabFields = ({
+const TabFields = ({
   match,
   tabs,
   fields,
@@ -69,7 +69,7 @@ export const TabFields = ({
   )
 }
 
-const RecursiveTab = ({
+export const RecursiveTab = ({
   match,
   tabs,
   fields,
@@ -184,5 +184,3 @@ const RecursiveTab = ({
     </div>
   )
 }
-
-export default RecursiveTab

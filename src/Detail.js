@@ -20,7 +20,7 @@ import {
   getActions, getModelAttribute, getField,
   getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldConditions
 } from './utils/schemaGetters'
-import Tabs from './Tabs'
+import { RecursiveTab } from './Tabs'
 import { getType } from './utils/getType'
 import CreateButton from './CreateButton'
 import {
@@ -632,7 +632,7 @@ const DefaultDetail = ({
 
   const tabs = getModelAttribute(schema, modelName, 'tabs')
 
-  const DefaultDetailPage = tabs && tabs.length > 0 ? Tabs : DetailFields
+  const DefaultDetailPage = tabs && tabs.length > 0 ? RecursiveTab : DetailFields
 
   const DetailTitle = DetailTitleOverride || DefaultDetailPageTitle
   const DetailPage = DetailPageOverride || DefaultDetailPage
@@ -701,7 +701,7 @@ const Detail = ({
   modalData,
   editData,
   path,
-  match,
+  match, // 'match' should be passed in by React by default
   tooltipData,
   user,
   selectOptions,
