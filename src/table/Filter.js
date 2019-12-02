@@ -63,25 +63,28 @@ const AddFilter = ({
   selectOptions,
   onClick,
   onChange,
-  value
+  value,
+  onMenuOpen
 }) => {
+  console.log('onFilterChange', onFilterChange)
   const filterables = getFilterableFields({ modelName, schema })
   const fieldOptions = filterables.map(fieldName => ({
     label: getFieldLabel({ schema, modelName, fieldName, data }),
-    value: getInputType({ schema, modelName, fieldName })
+    value: {
+      modelName,
+      fieldName,
+      type: getInputType({ schema, modelName, fieldName })
+    }
   }))
+  const fieldName = R.pathOr('', ['value', 'fieldName'], value)
+  const filterInput = R.prop(fieldName, filterInputs)
+  console.log('value', value)
+  // console.log('filterInputs', filterInputs)
+  console.log('fieldName', fieldName)
+  console.log('filterInput', filterInput)
   return (
     <div id='add-filter'>
-      <div className='text-center d-inline-block w-100 mb-3'>
-        <button
-          className='btn btn-primary btn-sm'
-          data-toggle='collapse'
-          data-target='#filter-input'
-          // disabled={R.isNil(value)}
-          // onClick={() => onClick({ modelName, field: value })}
-        >+ Add Rule</button>
-      </div>
-      <div id='filter-input' className='mb-2 collapse'>
+      <div id='filter-input' className='mb-2'>
         <FlexibleInput
           type={inputTypes.SELECT_TYPE}
           onChange={evt => onChange({
@@ -96,6 +99,19 @@ const AddFilter = ({
             placeholder: 'Select field...'
           }}
         />
+      </div>
+      <div>
+        <FilterComp {...{
+          fieldName,
+          modelName,
+          schema,
+          onFilterChange,
+          onFilterSubmit,
+          onFilterRadio,
+          onMenuOpen,
+          filterInput,
+          selectOptions
+        }} />
       </div>
       {/* <div className='text-right d-inline-block'>
         <button
@@ -128,12 +144,14 @@ const ActiveFilters = ({ schema, data, modelName, currentFilters, clearFilters }
           : Object.entries(currentFilters).map(([key, value], index) =>
             formatFilter([key, value], index, modelName, schema, data))
       }</ul>
-      <div className='text-right mt-3'>
-        <button className='btn btn-success btn-sm mr-2'>Apply All</button>
-        <button
-          className='btn btn-outline-danger btn-sm mr-2'
-          onClick={() => clearFilters({ modelName })}
-        >Reset</button>
+      <div className='text-right'>
+        <div className='btn-group mt-3'>
+          <button className='btn btn-success btn-sm'>Apply All</button>
+          <button
+            className='btn btn-outline-danger btn-sm'
+            onClick={() => clearFilters({ modelName })}
+          >Reset</button>
+        </div>
       </div>
     </div>
   )
@@ -152,7 +170,8 @@ export const FilterModal = ({
   clearFilters,
   changeField,
   currentFilters,
-  selectedField
+  selectedField,
+  onMenuOpen
 }) => (
   <Modal
     id={'filter-' + modelName}
@@ -170,7 +189,8 @@ export const FilterModal = ({
           selectOptions,
           onClick: addFilter,
           onChange: changeField,
-          value: selectedField
+          value: selectedField,
+          onMenuOpen
         }}/>
         <p className='font-weight-bold'>Selected Filters</p>
         <ActiveFilters {...{
@@ -214,7 +234,7 @@ const FilterDropdown = ({
   return (
     <React.Fragment>
       <FlexibleInput
-        type={inputTypes.RADIO_TYPE}
+        type={inputTypes.SELECT_TYPE}
         onChange={(val) => onFilterRadio({
           modelName,
           fieldName,
@@ -259,7 +279,7 @@ const FilterRadio = ({
         options={options}
         id={`${modelName}-${fieldName}-filter-radio`}
       />
-      <div className='btn-group'>
+      {/* <div className='btn-group'>
         <button
           className='btn btn-sm btn-outline-primary'
           onClick={() => onFilterSubmit({ modelName, fieldName, operator })}
@@ -268,7 +288,7 @@ const FilterRadio = ({
           className='btn btn-sm btn-outline-secondary'
           onClick={() => onFilterSubmit({ modelName, fieldName, operator: null })}
         >Reset</button>
-      </div>
+      </div> */}
     </React.Fragment>
   )
 }
@@ -387,34 +407,50 @@ export const FilterComp = ({
   const operator = R.prop('operator', filterInput)
   // 'black' for undefined/null/emtpy str
   const fillColor = (R.isEmpty(value) || R.isNil(value)) ? 'black': 'lightgreen'
+  console.log('fieldName_f', fieldName)
+  console.log(filterInput)
   return (
     <React.Fragment>
-      <Tooltip
-        theme='light'
-        interactive='true'
-        position='bottom'
-        trigger='click'
-        html={(
-          FilterPopover({
-            schema,
-            modelName,
-            fieldName,
-            value,
-            operator,
-            onFilterChange,
-            onFilterSubmit,
-            onFilterRadio,
-            selectOptions,
-            onMenuOpen
-          })
-        )}
-      >
-        <ReactSVG
-          src={`/static/img/filter.svg`}
-          className='header-icon'
-          svgStyle={{width: '12px', height: '12px', fill: fillColor}}
-        />
-      </Tooltip>
+      <FilterPopover {...{
+        schema,
+        modelName,
+        fieldName,
+        value,
+        operator,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterRadio,
+        selectOptions,
+        onMenuOpen
+      }}/>
+      <div className='text-right d-inline-block w-100 mb-3'>
+        <button
+          className='btn btn-primary btn-sm'
+          // data-target='#filter-input'
+          // disabled={R.isNil(value)}
+          // onClick={() => onClick({ modelName, field: value })}
+          onClick={() => onFilterSubmit({ modelName, fieldName, operator })}
+        >+ Add Rule</button>
+      </div>
     </React.Fragment>
   )
+  // console.log(R.isNil)
+  /*
+  return R.isNil(fieldName) ? null : (
+    <React.Fragment>
+      <FilterPopover {...{
+        schema,
+        modelName,
+        fieldName,
+        value,
+        operator,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterRadio,
+        selectOptions,
+        onMenuOpen
+      }}/>
+    </React.Fragment>
+  )
+  */
 }

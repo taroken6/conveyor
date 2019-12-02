@@ -52,6 +52,7 @@ export const THead = ({
 
           const isRelField = isRel(getField(schema, modelName, fieldName))
           const filterInput = R.path(['filter', modelName, fieldName], tableOptions)
+          console.log('header_filterInput', filterInput)
           const sortKeyObj = R.path(['sort', modelName], tableOptions)
           return (
             <th key={idx} style={{ minWidth: '130px' }}>
