@@ -52,7 +52,19 @@ const getFilterableFields = ({ modelName, schema }) => {
   return filterables
 }
 
-const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
+const AddFilter = ({
+  modelName,
+  schema,
+  data,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
+  filterInputs,
+  selectOptions,
+  onClick,
+  onChange,
+  value
+}) => {
   const filterables = getFilterableFields({ modelName, schema })
   const fieldOptions = filterables.map(fieldName => ({
     label: getFieldLabel({ schema, modelName, fieldName, data }),
@@ -60,7 +72,16 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
   }))
   return (
     <div id='add-filter'>
-      <div id='filter-dropdown' className='d-inline-block mr-2 w-75'>
+      <div className='text-center d-inline-block w-100 mb-3'>
+        <button
+          className='btn btn-primary btn-sm'
+          data-toggle='collapse'
+          data-target='#filter-input'
+          // disabled={R.isNil(value)}
+          // onClick={() => onClick({ modelName, field: value })}
+        >+ Add Rule</button>
+      </div>
+      <div id='filter-input' className='mb-2 collapse'>
         <FlexibleInput
           type={inputTypes.SELECT_TYPE}
           onChange={evt => onChange({
@@ -76,32 +97,36 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
           }}
         />
       </div>
-      <div className='text-right d-inline-block'>
+      {/* <div className='text-right d-inline-block'>
         <button
           className='btn btn-primary btn-sm'
           disabled={R.isNil(value)}
           onClick={() => onClick({ modelName, field: value })}
         >Add</button>
-      </div>
+      </div> */}
     </div>
   )
 }
 
-const formatFilter = (filter, index) => {
+const formatFilter = ([key, value], index, modelName, schema, data) => {
+  console.log('filter', [key, value])
   return (
     <li key={index} className='list-group-item'>
-      {R.prop('label', filter)}
+      {getFieldLabel({ schema, modelName, fieldName: key, data })}
     </li>
   )
 }
 
-const ActiveFilters = ({ modelName, currentFilters, clearFilters }) => {
+const ActiveFilters = ({ schema, data, modelName, currentFilters, clearFilters }) => {
+  console.log('currentFilters', currentFilters)
+  console.log('entries', Object.entries(currentFilters))
   return (
     <div id={'active-filters-' + modelName} className='mb-2'>
       <ul className="list-group">{
         R.isEmpty(currentFilters) || R.isNil(currentFilters)
           ? <li key={-1} className='list-group-item'>N/A</li>
-          : currentFilters.map((filter, index) => formatFilter(filter, index))
+          : Object.entries(currentFilters).map(([key, value], index) =>
+            formatFilter([key, value], index, modelName, schema, data))
       }</ul>
       <div className='text-right mt-3'>
         <button className='btn btn-success btn-sm mr-2'>Apply All</button>
@@ -117,6 +142,11 @@ const ActiveFilters = ({ modelName, currentFilters, clearFilters }) => {
 export const FilterModal = ({
   modelName,
   schema,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
+  filterInputs,
+  selectOptions,
   data,
   addFilter,
   clearFilters,
@@ -129,17 +159,27 @@ export const FilterModal = ({
     title={'Filters - ' + modelName}
     children={
       <div>
-        <p className='font-weight-bold'>Add Filter</p>
         <AddFilter {...{
           modelName,
           schema,
           data,
+          onFilterChange,
+          onFilterSubmit,
+          onFilterRadio,
+          filterInputs,
+          selectOptions,
           onClick: addFilter,
           onChange: changeField,
           value: selectedField
         }}/>
         <p className='font-weight-bold'>Selected Filters</p>
-        <ActiveFilters {...{ modelName, currentFilters, clearFilters }} />
+        <ActiveFilters {...{
+          schema,
+          data,
+          modelName,
+          currentFilters,
+          clearFilters
+        }} />
       </div>
     }
   />
@@ -163,35 +203,49 @@ export const FilterModalButton = ({ modelName, currentFilters }) => (
   </button>
 )
 
-
-
-const displayFilter = ({
-  schema,
+const FilterDropdown = ({
   modelName,
   fieldName,
-  value,
   operator,
-  onFilterChange,
   onFilterSubmit,
   onFilterRadio,
-  selectOptions,
-  onMenuOpen
+  options
 }) => {
-  return <FilterPopover {...{
-    schema,
-    modelName,
-    fieldName,
-    value,
-    operator,
-    onFilterChange,
-    onFilterSubmit,
-    onFilterRadio,
-    selectOptions,
-    onMenuOpen
-  }} />
+  return (
+    <React.Fragment>
+      <FlexibleInput
+        type={inputTypes.RADIO_TYPE}
+        onChange={(val) => onFilterRadio({
+          modelName,
+          fieldName,
+          operator: val
+        })}
+        value={operator}
+        options={options}
+        id={`${modelName}-${fieldName}-filter-radio`}
+      />
+      <div className='btn-group'>
+        <button
+          className='btn btn-sm btn-outline-primary'
+          onClick={() => onFilterSubmit({ modelName, fieldName, operator })}
+        >Apply</button>
+        <button
+          className='btn btn-sm btn-outline-secondary'
+          onClick={() => onFilterSubmit({ modelName, fieldName, operator: null })}
+        >Reset</button>
+      </div>
+    </React.Fragment>
+  )
 }
 
-const FilterRadio = ({ modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options }) => {
+const FilterRadio = ({
+  modelName,
+  fieldName,
+  operator,
+  onFilterSubmit,
+  onFilterRadio,
+  options
+}) => {
   return (
     <React.Fragment>
       <FlexibleInput
@@ -242,7 +296,14 @@ const enumOptions = [
   { label: 'Excludes', value: 'EXCLUDES' }
 ]
 
-const FilterApplyButton = ({ schema, modelName, fieldName, operator, onFilterSubmit, onFilterRadio }) => {
+const FilterApplyButton = ({
+  schema,
+  modelName,
+  fieldName,
+  operator,
+  onFilterSubmit,
+  onFilterRadio
+}) => {
   const inputType = getInputType({ schema, modelName, fieldName })
 
   let options
@@ -262,7 +323,14 @@ const FilterApplyButton = ({ schema, modelName, fieldName, operator, onFilterSub
     default:
       options = stringOptions
   }
-  return <FilterRadio {...{ modelName, fieldName, operator, onFilterSubmit, onFilterRadio, options }} />
+  return <FilterRadio {...{
+    modelName,
+    fieldName,
+    operator,
+    onFilterSubmit,
+    onFilterRadio,
+    options }}
+  />
 }
 
 // todo: finish
@@ -293,7 +361,14 @@ const FilterPopover = ({
       selectOptions,
       onMenuOpen,
     }} />
-    <FilterApplyButton {...{schema, modelName, fieldName, operator, onFilterSubmit, onFilterRadio}} />
+    <FilterApplyButton {...{
+      schema,
+      modelName,
+      fieldName,
+      operator,
+      onFilterSubmit,
+      onFilterRadio
+    }} />
   </div>
 )
 

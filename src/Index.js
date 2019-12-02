@@ -26,6 +26,8 @@ export const DefaultIndexTitle = ({
   user,
   selectedField,
   currentFilters,
+  tableOptions,
+  selectOptions,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -33,6 +35,11 @@ export const DefaultIndexTitle = ({
   const addFilter = R.path(['tableOptions', 'addFilter'], actions)
   const clearFilters = R.path(['tableOptions', 'clearFilters'], actions)
   const changeField = R.path(['tableOptions', 'changeField'], actions)
+  const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
+  const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
+  const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
+  const filterInputs = R.path(['filter', modelName], tableOptions)
+  // const filterInput = R.path(['filter', modelName, fieldName], tableOptions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   return (
@@ -43,6 +50,11 @@ export const DefaultIndexTitle = ({
       <FilterModal {...{
         modelName,
         schema,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterRadio,
+        filterInputs,
+        selectOptions,
         data,
         addFilter,
         clearFilters,
