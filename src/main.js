@@ -23,6 +23,7 @@ import { getHasIndex } from './utils/schemaGetters'
 import { getIndexFields } from './utils/schemaGetters'
 import { getModel } from './utils/schemaGetters'
 import { getModelLabel } from './utils/schemaGetters'
+import { getModelLabelPlural } from './utils/schemaGetters'
 import { getRequiredFields } from './utils/schemaGetters'
 import { getTooltipFields } from './utils/schemaGetters'
 import { getType } from './utils/getType'
@@ -76,6 +77,7 @@ export { getHasIndex }
 export { getIndexFields }
 export { getModel }
 export { getModelLabel }
+export { getModelLabelPlural }
 export { getRequiredFields }
 export { getTooltipFields }
 export { getType }
