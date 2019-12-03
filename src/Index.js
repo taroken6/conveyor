@@ -21,13 +21,13 @@ import {
 export const DefaultIndexTitle = ({
   schema,
   modelName,
+  selectOptions,
   path,
   data,
   user,
   selectedField,
   currentFilters,
-  tableOptions,
-  selectOptions,
+  filterOrder,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -37,12 +37,8 @@ export const DefaultIndexTitle = ({
   const changeField = R.path(['tableOptions', 'changeField'], actions)
   const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
   const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
-  // const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
-  const onFilterRadio = () => {}
-  const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
-  const filterInputs = R.path(['filter', modelName], tableOptions)
-  console.log('filterInputs', filterInputs)
-  // const filterInput = R.path(['filter', modelName, fieldName], tableOptions)
+  const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
+  const filterInputs = R.path(['tableOptions', 'filter', modelName], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   return (
@@ -53,18 +49,18 @@ export const DefaultIndexTitle = ({
       <FilterModal {...{
         modelName,
         schema,
-        onFilterChange,
-        onFilterSubmit,
-        onFilterRadio,
-        filterInputs,
         selectOptions,
         data,
         addFilter,
         clearFilters,
         changeField,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterRadio,
         currentFilters,
+        filterOrder,
         selectedField,
-        onMenuOpen
+        filterInputs
       }} />
       <div className='float-right'>
         <FilterModalButton {...{ modelName, currentFilters }} />
@@ -86,6 +82,7 @@ const DefaultIndex = ({
   user,
   selectedField,
   currentFilters,
+  filterOrder,
   tableOptions,
   customProps
 }) => {
@@ -130,6 +127,7 @@ const DefaultIndex = ({
             user,
             selectedField,
             currentFilters,
+            filterOrder,
             tableOptions,
             customProps
           }}
@@ -149,6 +147,7 @@ const DefaultIndex = ({
             user,
             selectedField,
             currentFilters,
+            filterOrder,
             tableOptions,
             customProps,
             fieldOrder,
@@ -174,6 +173,7 @@ const Index = ({
   user,
   selectedField,
   currentFilters,
+  filterOrder,
   tableOptions,
   customProps
 }) => {
@@ -195,6 +195,7 @@ const Index = ({
         user,
         selectedField,
         currentFilters,
+        filterOrder,
         tableOptions,
         customProps
       }}
