@@ -56,16 +56,24 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
   const filterables = getFilterableFields({ modelName, schema })
   const fieldOptions = filterables.map(fieldName => ({
     label: getFieldLabel({ schema, modelName, fieldName, data }),
-    value: getInputType({ schema, modelName, fieldName })
+    value: {
+      fieldName,
+      type: getInputType({ schema, modelName, fieldName })
+    }
   }))
   return (
-    <div id='add-filter'>
-      <div id='filter-dropdown' className='d-inline-block mr-2 w-75'>
+    <div id='add-filter' className='text-center mb-4'>
+      <button
+          className='btn btn-primary btn-sm'
+          // disabled={R.isNil(value)}
+          onClick={() => onClick({ modelName })}
+        >+ Add Rule</button>
+      {/* <div id='filter-dropdown' className='d-inline-block mr-2 w-75'>
         <FlexibleInput
           type={inputTypes.SELECT_TYPE}
           onChange={evt => onChange({
             modelName,
-            field: evt
+            field: R.path(['value', 'fieldName'], evt)
           })}
           value={value}
           options={fieldOptions}
@@ -75,14 +83,14 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
             placeholder: 'Select field...'
           }}
         />
-      </div>
-      <div className='text-right d-inline-block'>
+      </div> */}
+      {/* <div className='text-right d-inline-block'>
         <button
           className='btn btn-primary btn-sm'
           disabled={R.isNil(value)}
           onClick={() => onClick({ modelName, field: value })}
         >+ Add Rule</button>
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -90,25 +98,39 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
 const formatFilter = (filter, index) => {
   return (
     <li key={index} className='list-group-item'>
-      {R.prop('label', filter)}
+      {R.prop('modelName', filter)}
     </li>
   )
 }
 
-const ActiveFilters = ({ modelName, currentFilters, clearFilters }) => {
+const ActiveFilters = ({
+  modelName,
+  currentFilters,
+  filterOrder,
+  clearFilters,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
+}) => {
+  console.log('currentFilters', currentFilters)
   return (
     <div id={'active-filters-' + modelName} className='mb-2'>
       <ul className="list-group">{
-        R.isEmpty(currentFilters) || R.isNil(currentFilters)
+        R.isEmpty(filterOrder) || R.isNil(filterOrder)
           ? <li key={-1} className='list-group-item'>N/A</li>
-          : currentFilters.map((filter, index) => formatFilter(filter, index))
+          : filterOrder.map((filter, index) => formatFilter(filter, index))
       }</ul>
       <div className='text-right mt-3'>
-        <button className='btn btn-success btn-sm mr-2'>Apply All</button>
-        <button
-          className='btn btn-outline-danger btn-sm mr-2'
-          onClick={() => clearFilters({ modelName })}
-        >Reset</button>
+        <div className='btn-group'>
+          <button
+            className='btn btn-success btn-sm'
+            onClick={() => onFilterSubmit({ modelName })}
+          >Apply All</button>
+          <button
+            className='btn btn-outline-danger btn-sm'
+            onClick={() => clearFilters({ modelName })}
+          >Reset</button>
+        </div>
       </div>
     </div>
   )
@@ -121,7 +143,11 @@ export const FilterModal = ({
   addFilter,
   clearFilters,
   changeField,
+  onFilterChange,
+  onFilterSubmit,
+  onFilterRadio,
   currentFilters,
+  filterOrder,
   selectedField
 }) => (
   <Modal
@@ -129,7 +155,6 @@ export const FilterModal = ({
     title={'Filters - ' + modelName}
     children={
       <div>
-        <p className='font-weight-bold'>Add Filter</p>
         <AddFilter {...{
           modelName,
           schema,
@@ -138,8 +163,15 @@ export const FilterModal = ({
           onChange: changeField,
           value: selectedField
         }}/>
-        <p className='font-weight-bold'>Selected Filters</p>
-        <ActiveFilters {...{ modelName, currentFilters, clearFilters }} />
+        <ActiveFilters {...{
+          modelName,
+          currentFilters,
+          filterOrder,
+          clearFilters,
+          onFilterChange,
+          onFilterSubmit,
+          onFilterRadio
+        }} />
       </div>
     }
   />
@@ -157,7 +189,7 @@ export const FilterModalButton = ({ modelName, currentFilters }) => (
       svgStyle={{
         width: '12px',
         height: '12px',
-        fill: currentFilters.length !== 0 ? 'lightgreen' : 'black'
+        fill: R.isEmpty(currentFilters) ? 'black' : 'lightgreen'
       }}
     />
   </button>
@@ -293,7 +325,13 @@ const FilterPopover = ({
       selectOptions,
       onMenuOpen,
     }} />
-    <FilterApplyButton {...{schema, modelName, fieldName, operator, onFilterSubmit, onFilterRadio}} />
+    <FilterApplyButton {...{
+      schema,
+      modelName,
+      fieldName,
+      operator,
+      onFilterSubmit,
+      onFilterRadio}} />
   </div>
 )
 
@@ -311,10 +349,22 @@ export const FilterComp = ({
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
   // 'black' for undefined/null/emtpy str
-  const fillColor = (R.isEmpty(value) || R.isNil(value)) ? 'black': 'lightgreen'
+  // const fillColor = (R.isEmpty(value) || R.isNil(value)) ? 'black': 'lightgreen'
   return (
     <React.Fragment>
-      <Tooltip
+      <FilterPopover {...{
+        schema,
+        modelName,
+        fieldName,
+        value,
+        operator,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterRadio,
+        selectOptions,
+        onMenuOpen
+      }} />
+      {/* <Tooltip
         theme='light'
         interactive='true'
         position='bottom'
@@ -339,7 +389,7 @@ export const FilterComp = ({
           className='header-icon'
           svgStyle={{width: '12px', height: '12px', fill: fillColor}}
         />
-      </Tooltip>
+      </Tooltip> */}
     </React.Fragment>
   )
 }

@@ -26,6 +26,7 @@ export const DefaultIndexTitle = ({
   user,
   selectedField,
   currentFilters,
+  filterOrder,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -33,6 +34,9 @@ export const DefaultIndexTitle = ({
   const addFilter = R.path(['tableOptions', 'addFilter'], actions)
   const clearFilters = R.path(['tableOptions', 'clearFilters'], actions)
   const changeField = R.path(['tableOptions', 'changeField'], actions)
+  const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
+  const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
+  const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   return (
@@ -47,7 +51,11 @@ export const DefaultIndexTitle = ({
         addFilter,
         clearFilters,
         changeField,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterRadio,
         currentFilters,
+        filterOrder,
         selectedField
       }} />
       <div className='float-right'>
@@ -70,6 +78,7 @@ const DefaultIndex = ({
   user,
   selectedField,
   currentFilters,
+  filterOrder,
   tableOptions,
   customProps
 }) => {
@@ -114,6 +123,7 @@ const DefaultIndex = ({
             user,
             selectedField,
             currentFilters,
+            filterOrder,
             tableOptions,
             customProps
           }}
@@ -133,6 +143,7 @@ const DefaultIndex = ({
             user,
             selectedField,
             currentFilters,
+            filterOrder,
             tableOptions,
             customProps,
             fieldOrder,
@@ -158,6 +169,7 @@ const Index = ({
   user,
   selectedField,
   currentFilters,
+  filterOrder,
   tableOptions,
   customProps
 }) => {
@@ -179,6 +191,7 @@ const Index = ({
         user,
         selectedField,
         currentFilters,
+        filterOrder,
         tableOptions,
         customProps
       }}
