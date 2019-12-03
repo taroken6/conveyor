@@ -38,7 +38,6 @@ export const DefaultIndexTitle = ({
   const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
   const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
   const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
-  const filterInputs = R.path(['tableOptions', 'filter', modelName], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   return (
@@ -60,11 +59,11 @@ export const DefaultIndexTitle = ({
         currentFilters,
         filterOrder,
         selectedField,
-        filterInputs
+        filterInputs: currentFilters
       }} />
       <div className='float-right'>
         <FilterModalButton {...{ modelName, currentFilters }} />
-        {creatable && <CreateButton {...{ onClick, selectedField }} />}
+        {creatable && <CreateButton {...{ onClick, filterOrder }} />}
       </div>
     </div>
   )

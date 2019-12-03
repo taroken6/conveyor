@@ -77,17 +77,17 @@ const formatFilter = ({
   onFilterRadio,
   filterInputs
 }) => {
-  console.log('fieldName', fieldName)
   const filterInput = R.prop(fieldName, filterInputs)
   const filterables = getFilterableFields({ modelName, schema })
-  const fieldOptions = filterables.map(fieldName => ({
+  const toOptions = fieldName => ({
     label: getFieldLabel({ schema, modelName, fieldName, data }),
     value: {
       fieldName,
       type: getInputType({ schema, modelName, fieldName })
     }
-  }))
-  const value = filterOrder[index]
+  })
+  const fieldOptions = filterables.map(fieldName => toOptions(fieldName))
+  const value = toOptions(filterOrder[index])
   return (
     <li key={index} className='list-group-item'>
       <FlexibleInput
@@ -106,10 +106,13 @@ const formatFilter = ({
         }}
       />
       <FilterComp {...{
-        fieldName: value,
+        fieldName,
         modelName,
         schema,
-        onFilterChange,
+        onFilterChange: evt => onFilterChange({
+          modelName,
+          ...evt
+        }),
         onFilterSubmit,
         onFilterRadio,
         filterInput,
@@ -134,7 +137,6 @@ const ActiveFilters = ({
   onFilterRadio,
   filterInputs
 }) => {
-  console.log('currentFilters', currentFilters)
   return (
     <div id={'active-filters-' + modelName} className='mb-2'>
       <ul className="list-group">{
@@ -165,7 +167,10 @@ const ActiveFilters = ({
           >Apply All</button>
           <button
             className='btn btn-outline-danger btn-sm'
-            onClick={() => clearFilters({ modelName })}
+            onClick={() => {
+              clearFilters({ modelName })
+              onFilterSubmit({ modelName })
+            }}
           >Reset</button>
         </div>
       </div>
