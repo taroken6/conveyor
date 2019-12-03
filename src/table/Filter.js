@@ -81,7 +81,7 @@ const AddFilter = ({ modelName, schema, data, onClick, onChange, value }) => {
           className='btn btn-primary btn-sm'
           disabled={R.isNil(value)}
           onClick={() => onClick({ modelName, field: value })}
-        >Add</button>
+        >+ Add Rule</button>
       </div>
     </div>
   )
