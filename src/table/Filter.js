@@ -56,33 +56,9 @@ const AddFilter = ({ modelName, onClick }) => {
   return (
     <div id='add-filter' className='text-center mb-4'>
       <button
-          className='btn btn-primary btn-sm'
-          // disabled={R.isNil(value)}
-          onClick={() => onClick({ modelName })}
-        >+ Add Rule</button>
-      {/* <div id='filter-dropdown' className='d-inline-block mr-2 w-75'>
-        <FlexibleInput
-          type={inputTypes.SELECT_TYPE}
-          onChange={evt => onChange({
-            modelName,
-            field: R.path(['value', 'fieldName'], evt)
-          })}
-          value={value}
-          options={fieldOptions}
-          id={`${modelName}-filter-dropdown`}
-          noOptionsMessage='(no filterable fields)'
-          customInput={{
-            placeholder: 'Select field...'
-          }}
-        />
-      </div> */}
-      {/* <div className='text-right d-inline-block'>
-        <button
-          className='btn btn-primary btn-sm'
-          disabled={R.isNil(value)}
-          onClick={() => onClick({ modelName, field: value })}
-        >+ Add Rule</button>
-      </div> */}
+        className='btn btn-primary btn-sm'
+        onClick={() => onClick({ modelName })}
+      >+ Add Rule</button>
     </div>
   )
 }
@@ -141,9 +117,6 @@ const formatFilter = ({
       }}
       />
     </li>
-    // <li key={index} className='list-group-item'>
-    //   {R.prop('modelName', fieldName)}
-    // </li>
   )
 }
 
@@ -258,46 +231,10 @@ export const FilterModalButton = ({ modelName, currentFilters }) => (
   </button>
 )
 
-const FilterDropdown = ({
-  modelName,
-  fieldName,
-  operator,
-  onFilterSubmit,
-  onFilterRadio,
-  options
-}) => {
-  return (
-    <React.Fragment>
-      <FlexibleInput
-        type={inputTypes.SELECT_TYPE}
-        onChange={(val) => onFilterRadio({
-          modelName,
-          fieldName,
-          operator: val
-        })}
-        value={operator}
-        options={options}
-        id={`${modelName}-${fieldName}-filter-radio`}
-      />
-      <div className='btn-group'>
-        <button
-          className='btn btn-sm btn-outline-primary'
-          onClick={() => onFilterSubmit({ modelName, fieldName, operator })}
-        >Apply</button>
-        <button
-          className='btn btn-sm btn-outline-secondary'
-          onClick={() => onFilterSubmit({ modelName, fieldName, operator: null })}
-        >Reset</button>
-      </div>
-    </React.Fragment>
-  )
-}
-
 const FilterRadio = ({
   modelName,
   fieldName,
   operator,
-  onFilterSubmit,
   onFilterRadio,
   options
 }) => {
@@ -314,16 +251,6 @@ const FilterRadio = ({
         options={options}
         id={`${modelName}-${fieldName}-filter-radio`}
       />
-      {/* <div className='btn-group'>
-        <button
-          className='btn btn-sm btn-outline-primary'
-          onClick={() => onFilterSubmit({ modelName, fieldName, operator })}
-        >Apply</button>
-        <button
-          className='btn btn-sm btn-outline-secondary'
-          onClick={() => onFilterSubmit({ modelName, fieldName, operator: null })}
-        >Reset</button>
-      </div> */}
     </React.Fragment>
   )
 }
@@ -402,8 +329,7 @@ const FilterPopover = ({
   onFilterChange,
   onFilterSubmit,
   onFilterRadio,
-  selectOptions,
-  // onMenuOpen
+  selectOptions
 }) => (
   <div style={{ 'minWidth': '350px', 'textAlign': 'left' }}>
     <InputCore {...{
@@ -413,8 +339,7 @@ const FilterPopover = ({
       value,
       onChange: onFilterChange,
       inline: true,
-      selectOptions,
-      // onMenuOpen,
+      selectOptions
     }} />
     <FilterApplyButton {...{
       schema,
@@ -433,14 +358,11 @@ export const FilterComp = ({
   onFilterChange,
   onFilterSubmit,
   onFilterRadio,
-  // onMenuOpen,
   filterInput,
   selectOptions
 }) => {
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
-  // 'black' for undefined/null/emtpy str
-  // const fillColor = (R.isEmpty(value) || R.isNil(value)) ? 'black': 'lightgreen'
   return (
     <React.Fragment>
       <FilterPopover {...{
@@ -452,35 +374,8 @@ export const FilterComp = ({
         onFilterChange,
         onFilterSubmit,
         onFilterRadio,
-        selectOptions,
-        // onMenuOpen
+        selectOptions
       }} />
-      {/* <Tooltip
-        theme='light'
-        interactive='true'
-        position='bottom'
-        trigger='click'
-        html={(
-          FilterPopover({
-            schema,
-            modelName,
-            fieldName,
-            value,
-            operator,
-            onFilterChange,
-            onFilterSubmit,
-            onFilterRadio,
-            selectOptions,
-            onMenuOpen
-          })
-        )}
-      >
-        <ReactSVG
-          src={`/static/img/filter.svg`}
-          className='header-icon'
-          svgStyle={{width: '12px', height: '12px', fill: fillColor}}
-        />
-      </Tooltip> */}
     </React.Fragment>
   )
 }
