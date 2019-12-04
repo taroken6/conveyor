@@ -6,7 +6,10 @@ import FlexibleInput from '../input/index'
 import { getInputType } from './InputType'
 import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable, skipOverride } from '../Utils'
-import { getActions, getEnumChoices, getEnumChoiceOrder, getField, getFieldLabel } from '../utils/schemaGetters'
+import {
+  getActions, getEnumChoices, getEnumChoiceOrder, getField,
+  getFieldLabel, getOptionsOverride
+} from '../utils/schemaGetters'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
@@ -49,13 +52,13 @@ const Input = ({
   schema,
   modelName,
   fieldName,
-  node,
+  node,  // todo: erase?
   value,
   error,
   inline,
   onChange,
   selectOptions,
-  disabled,
+  disabled,  // todo: erase?
   customLabel,
   formStack,
   autoFocus,
@@ -63,7 +66,8 @@ const Input = ({
   customProps
 }) => {
   const InputOverride = getInputOverride(schema, modelName, fieldName)
-
+  //console.log('node', node)
+  //console.log('disabled', disabled)
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
@@ -100,7 +104,8 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      node: R.path(['originData'], formStack), customProps
+      node: R.path(['originData'], formStack),
+      customProps
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -119,6 +124,7 @@ const Input = ({
     customLabel,
     onMenuOpen,
     onCreatableMenuOpen,
+    formStack,
     autoFocus,
     onKeyDown,
     customProps,
@@ -169,7 +175,8 @@ export const InputCore = ({
   customLabel,
   onMenuOpen,
   onCreatableMenuOpen,
-  customInput,
+  formStack,
+  customInput,  // optional; used for FlexibleInput only; differs from 'customProps'
   autoFocus,
   onKeyDown,
   customProps
@@ -232,6 +239,14 @@ export const InputCore = ({
       )
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
+      const options = getOptionsOverride({
+        schema,
+        modelName,
+        fieldName,
+        options: R.path([modelName, fieldName], selectOptions),
+        formStack,
+        value
+      })
       return (
         <FlexibleInput
           {...{
@@ -240,7 +255,7 @@ export const InputCore = ({
             isMulti: inputType === inputTypes.RELATIONSHIP_MULTIPLE,
             customLabel,
             onMenuOpen: evt => onMenuOpen({ modelName, fieldName }),
-            options: R.path([modelName, fieldName], selectOptions)
+            options
           }}
         />
       )
