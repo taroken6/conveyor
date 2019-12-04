@@ -25,9 +25,9 @@ export const DefaultIndexTitle = ({
   path,
   data,
   user,
-  selectedField,
   currentFilters,
   filterOrder,
+  filtersAreActive,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -58,12 +58,12 @@ export const DefaultIndexTitle = ({
         onFilterDropdown,
         currentFilters,
         filterOrder,
-        selectedField,
+        filtersAreActive,
         filterInputs: currentFilters
       }} />
       <div className='float-right'>
-        <FilterModalButton {...{ modelName, currentFilters }} />
-        {creatable && <CreateButton {...{ onClick, filterOrder }} />}
+        <FilterModalButton {...{ modelName, filtersAreActive }} />
+        {creatable && <CreateButton {...{ onClick }} />}
       </div>
     </div>
   )
@@ -79,9 +79,9 @@ const DefaultIndex = ({
   path,
   tooltipData,
   user,
-  selectedField,
   currentFilters,
   filterOrder,
+  filtersAreActive,
   tableOptions,
   customProps
 }) => {
@@ -124,9 +124,9 @@ const DefaultIndex = ({
             path,
             tooltipData,
             user,
-            selectedField,
             currentFilters,
             filterOrder,
+            filtersAreActive,
             tableOptions,
             customProps
           }}
@@ -144,9 +144,9 @@ const DefaultIndex = ({
             path,
             tooltipData,
             user,
-            selectedField,
             currentFilters,
             filterOrder,
+            filtersAreActive,
             tableOptions,
             customProps,
             fieldOrder,
@@ -170,9 +170,9 @@ const Index = ({
   path,
   tooltipData,
   user,
-  selectedField,
   currentFilters,
   filterOrder,
+  filtersAreActive,
   tableOptions,
   customProps
 }) => {
@@ -192,9 +192,9 @@ const Index = ({
         path,
         tooltipData,
         user,
-        selectedField,
         currentFilters,
         filterOrder,
+        filtersAreActive,
         tableOptions,
         customProps
       }}

@@ -99,39 +99,56 @@ const formatFilter = ({
       type: getInputType({ schema, modelName, fieldName })
     }
   })
-  const fieldOptions = filterables.map(fieldName => toOptions(fieldName))
-  const value = toOptions(filterOrder[index])
+  const unfiltered = filterables.filter(fieldName => !filterOrder.includes(fieldName))
+  const options = unfiltered.map(fieldName => toOptions(fieldName))
+  const value = R.isNil(fieldName) || R.isEmpty(fieldName)
+    ? { label: null, value: null }
+    : toOptions(filterOrder[index])
   return (
-    <li key={index} className='list-group-item'>
-      <FlexibleInput
-        type={inputTypes.SELECT_TYPE}
-        onChange={evt => onChange({
-          modelName,
-          field: R.path(['value', 'fieldName'], evt),
-          index
-        })}
-        value={value}
-        options={fieldOptions}
-        id={`${modelName}-filter-dropdown`}
-        noOptionsMessage='(no filterable fields)'
-        customInput={{
-          placeholder: 'Select field...'
-        }}
-      />
-      <FilterComp {...{
-        fieldName,
-        modelName,
-        schema,
-        onFilterChange: evt => onFilterChange({
-          modelName,
-          ...evt
-        }),
-        onFilterSubmit,
-        onFilterDropdown,
-        filterInput,
-        selectOptions
-      }}
-      />
+    <li key={index} className='list-group-item filter'>
+      <div className='filter-fieldname-dropdown'>
+        <div className='w-100'>
+          <FlexibleInput {...{
+            type: inputTypes.SELECT_TYPE,
+            onChange: evt => onChange({
+              modelName,
+              field: R.path(['value', 'fieldName'], evt),
+              index
+            }),
+            value,
+            options,
+            id: `${modelName}-filter-dropdown`,
+            customInput: {
+              noOptionsMessage: () => '(no filterable fields)',
+              placeholder: 'Select field...',
+              isClearable: false
+            }
+          }}/>
+        </div>
+      </div>
+      <div className='filter-rest align-middle'>
+        <div className='w-100'>
+          <FilterComp {...{
+            fieldName,
+            modelName,
+            schema,
+            onFilterChange: evt => onFilterChange({
+              modelName,
+              ...evt
+            }),
+            onFilterSubmit,
+            onFilterDropdown,
+            filterInput,
+            selectOptions
+          }}/>
+        </div>
+      </div>
+      <div className='filter-close align-middle'>
+        <button
+          className='btn btn-sm btn-danger btn-block'
+          onClick={() => {}}
+        >X</button>
+      </div>
     </li>
   )
 }
@@ -222,7 +239,7 @@ export const FilterModal = ({
   />
 )
 
-export const FilterModalButton = ({ modelName, currentFilters }) => (
+export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   <button
     className={'btn btn-sm btn-outline-primary'}
     data-toggle='modal'
@@ -234,7 +251,7 @@ export const FilterModalButton = ({ modelName, currentFilters }) => (
       svgStyle={{
         width: '12px',
         height: '12px',
-        fill: R.isEmpty(currentFilters) ? 'black' : 'lightgreen'
+        fill: filtersAreActive ? 'lightgreen' : 'black'
       }}
     />
   </button>
@@ -259,6 +276,9 @@ const FilterDropdown = ({
         value={operator}
         options={options}
         id={`${modelName}-${fieldName}-filter-radio`}
+        customInput={{
+          isClearable: false
+        }}
       />
     </React.Fragment>
   )
@@ -287,7 +307,7 @@ const enumOptions = [
   { label: 'Excludes', value: 'EXCLUDES' }
 ]
 
-const FilterApplyButton = ({
+const FilterOptions = ({
   schema,
   modelName,
   fieldName,
@@ -295,10 +315,6 @@ const FilterApplyButton = ({
   onFilterSubmit,
   onFilterDropdown
 }) => {
-  if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
-    return null
-  }
-
   const inputType = getInputType({ schema, modelName, fieldName })
 
   let options
@@ -343,27 +359,39 @@ const FilterPopover = ({
   onFilterSubmit,
   onFilterDropdown,
   selectOptions
-}) => (
-  <div style={{ 'minWidth': '350px', 'textAlign': 'left' }}>
-    <InputCore {...{
-      schema,
-      modelName,
-      fieldName,
-      value,
-      onChange: onFilterChange,
-      inline: true,
-      selectOptions
-    }} />
-    <FilterApplyButton {...{
-      schema,
-      modelName,
-      fieldName,
-      operator,
-      onFilterSubmit,
-      onFilterDropdown
-    }} />
-  </div>
-)
+}) => {
+  if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
+    return <div className='ml-3'>Select a field</div>
+  }
+  return (
+    <div>
+      <div className='filter-operator-dropdown'>
+        <FilterOptions {...{
+          schema,
+          modelName,
+          fieldName,
+          operator,
+          onFilterSubmit,
+          onFilterDropdown,
+        }} />
+      </div>
+      <div className='filter-input'>
+        <InputCore {...{
+          schema,
+          modelName,
+          fieldName,
+          value,
+          onChange: onFilterChange,
+          inline: true,
+          selectOptions,
+          customInput: {
+            placeholder: 'Enter value...',
+          }
+        }} />
+      </div>
+    </div>
+  )
+}
 
 export const FilterComp = ({
   fieldName,
