@@ -240,6 +240,30 @@ export const FilterModalButton = ({ modelName, currentFilters }) => (
   </button>
 )
 
+const FilterDropdown = ({
+  modelName,
+  fieldName,
+  operator,
+  onFilterRadio,
+  options
+}) => {
+  return (
+    <React.Fragment>
+      <FlexibleInput
+        type={inputTypes.SELECT_TYPE}
+        onChange={val => onFilterRadio({
+          modelName,
+          fieldName,
+          operator: val
+        })}
+        value={operator}
+        options={options}
+        id={`${modelName}-${fieldName}-filter-radio`}
+      />
+    </React.Fragment>
+  )
+}
+
 const FilterRadio = ({
   modelName,
   fieldName,
@@ -251,7 +275,7 @@ const FilterRadio = ({
     <React.Fragment>
       <FlexibleInput
         type={inputTypes.RADIO_TYPE}
-        onChange={(val) => onFilterRadio({
+        onChange={val => onFilterRadio({
           modelName,
           fieldName,
           operator: val
@@ -318,7 +342,7 @@ const FilterApplyButton = ({
     default:
       options = stringOptions
   }
-  return <FilterRadio {...{
+  return <FilterDropdown {...{
     modelName,
     fieldName,
     operator,
