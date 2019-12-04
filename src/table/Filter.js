@@ -52,16 +52,29 @@ const getFilterableFields = ({ modelName, schema }) => {
   return filterables
 }
 
-const AddFilter = ({ modelName, onClick }) => {
-  return (
-    <div id='add-filter' className='text-center mb-4'>
-      <button
-        className='btn btn-primary btn-sm'
-        onClick={() => onClick({ modelName })}
-      >+ Add Rule</button>
+const FilterButtons = ({ modelName, onFilterSubmit, clearFilters, onAdd }) => (
+  <div className='mt-3'>
+    <button
+      className='btn btn-primary btn-sm'
+      onClick={() => onAdd({ modelName })}
+    >+ Add Rule</button>
+    <div className='d-inline float-right'>
+      <div className='btn-group'>
+        <button
+          className='btn btn-success btn-sm'
+          onClick={() => onFilterSubmit({ modelName })}
+        >Apply All</button>
+        <button
+          className='btn btn-outline-danger btn-sm'
+          onClick={() => {
+            clearFilters({ modelName })
+            onFilterSubmit({ modelName })
+          }}
+        >Reset</button>
+      </div>
     </div>
-  )
-}
+  </div>
+)
 
 const formatFilter = ({
   fieldName,
@@ -127,9 +140,9 @@ const ActiveFilters = ({
   modelName,
   schema,
   data,
+  addFilter,
   onChange,
   selectOptions,
-  currentFilters,
   filterOrder,
   clearFilters,
   onFilterChange,
@@ -159,21 +172,12 @@ const ActiveFilters = ({
               })
             )
       }</ul>
-      <div className='text-right mt-3'>
-        <div className='btn-group'>
-          <button
-            className='btn btn-success btn-sm'
-            onClick={() => onFilterSubmit({ modelName })}
-          >Apply All</button>
-          <button
-            className='btn btn-outline-danger btn-sm'
-            onClick={() => {
-              clearFilters({ modelName })
-              onFilterSubmit({ modelName })
-            }}
-          >Reset</button>
-        </div>
-      </div>
+      <FilterButtons {...{
+        modelName,
+        onFilterSubmit,
+        clearFilters,
+        onAdd: addFilter }}
+      />
     </div>
   )
 }
@@ -198,11 +202,11 @@ export const FilterModal = ({
     title={'Filters - ' + modelName}
     children={
       <div>
-        <AddFilter {...{ modelName, onClick: addFilter }}/>
         <ActiveFilters {...{
           modelName,
           schema,
           data,
+          addFilter,
           onChange: changeField,
           selectOptions,
           currentFilters,
@@ -291,6 +295,10 @@ const FilterApplyButton = ({
   onFilterSubmit,
   onFilterRadio
 }) => {
+  if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
+    return null
+  }
+
   const inputType = getInputType({ schema, modelName, fieldName })
 
   let options
@@ -316,8 +324,8 @@ const FilterApplyButton = ({
     operator,
     onFilterSubmit,
     onFilterRadio,
-    options }}
-  />
+    options
+  }}/>
 }
 
 // todo: finish
