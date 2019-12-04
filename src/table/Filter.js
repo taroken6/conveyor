@@ -87,7 +87,7 @@ const formatFilter = ({
   filterOrder,
   onFilterChange,
   onFilterSubmit,
-  onFilterRadio,
+  onFilterDropdown,
   filterInputs
 }) => {
   const filterInput = R.prop(fieldName, filterInputs)
@@ -127,7 +127,7 @@ const formatFilter = ({
           ...evt
         }),
         onFilterSubmit,
-        onFilterRadio,
+        onFilterDropdown,
         filterInput,
         selectOptions
       }}
@@ -147,7 +147,7 @@ const ActiveFilters = ({
   clearFilters,
   onFilterChange,
   onFilterSubmit,
-  onFilterRadio,
+  onFilterDropdown,
   filterInputs
 }) => {
   return (
@@ -167,7 +167,7 @@ const ActiveFilters = ({
                 filterOrder,
                 onFilterChange,
                 onFilterSubmit,
-                onFilterRadio,
+                onFilterDropdown,
                 filterInputs
               })
             )
@@ -192,7 +192,7 @@ export const FilterModal = ({
   changeField,
   onFilterChange,
   onFilterSubmit,
-  onFilterRadio,
+  onFilterDropdown,
   currentFilters,
   filterOrder,
   filterInputs
@@ -214,7 +214,7 @@ export const FilterModal = ({
           clearFilters,
           onFilterChange,
           onFilterSubmit,
-          onFilterRadio,
+          onFilterDropdown,
           filterInputs
         }} />
       </div>
@@ -244,38 +244,14 @@ const FilterDropdown = ({
   modelName,
   fieldName,
   operator,
-  onFilterRadio,
+  onFilterDropdown,
   options
 }) => {
   return (
     <React.Fragment>
       <FlexibleInput
         type={inputTypes.SELECT_TYPE}
-        onChange={val => onFilterRadio({
-          modelName,
-          fieldName,
-          operator: val
-        })}
-        value={operator}
-        options={options}
-        id={`${modelName}-${fieldName}-filter-radio`}
-      />
-    </React.Fragment>
-  )
-}
-
-const FilterRadio = ({
-  modelName,
-  fieldName,
-  operator,
-  onFilterRadio,
-  options
-}) => {
-  return (
-    <React.Fragment>
-      <FlexibleInput
-        type={inputTypes.RADIO_TYPE}
-        onChange={val => onFilterRadio({
+        onChange={val => onFilterDropdown({
           modelName,
           fieldName,
           operator: val
@@ -317,7 +293,7 @@ const FilterApplyButton = ({
   fieldName,
   operator,
   onFilterSubmit,
-  onFilterRadio
+  onFilterDropdown
 }) => {
   if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
     return null
@@ -347,7 +323,7 @@ const FilterApplyButton = ({
     fieldName,
     operator,
     onFilterSubmit,
-    onFilterRadio,
+    onFilterDropdown,
     options
   }}/>
 }
@@ -365,7 +341,7 @@ const FilterPopover = ({
   operator,
   onFilterChange,
   onFilterSubmit,
-  onFilterRadio,
+  onFilterDropdown,
   selectOptions
 }) => (
   <div style={{ 'minWidth': '350px', 'textAlign': 'left' }}>
@@ -384,7 +360,8 @@ const FilterPopover = ({
       fieldName,
       operator,
       onFilterSubmit,
-      onFilterRadio}} />
+      onFilterDropdown
+    }} />
   </div>
 )
 
@@ -394,7 +371,7 @@ export const FilterComp = ({
   schema,
   onFilterChange,
   onFilterSubmit,
-  onFilterRadio,
+  onFilterDropdown,
   filterInput,
   selectOptions
 }) => {
@@ -410,7 +387,7 @@ export const FilterComp = ({
         operator,
         onFilterChange,
         onFilterSubmit,
-        onFilterRadio,
+        onFilterDropdown,
         selectOptions
       }} />
     </React.Fragment>

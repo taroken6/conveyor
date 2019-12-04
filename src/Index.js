@@ -37,7 +37,7 @@ export const DefaultIndexTitle = ({
   const changeField = R.path(['tableOptions', 'changeField'], actions)
   const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
   const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
-  const onFilterRadio = R.path(['tableOptions', 'filterRadio'], actions)
+  const onFilterDropdown = R.path(['tableOptions', 'filterDropdown'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   return (
@@ -55,7 +55,7 @@ export const DefaultIndexTitle = ({
         changeField,
         onFilterChange,
         onFilterSubmit,
-        onFilterRadio,
+        onFilterDropdown,
         currentFilters,
         filterOrder,
         selectedField,
