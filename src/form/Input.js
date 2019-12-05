@@ -58,6 +58,7 @@ const Input = ({
   inline,
   onChange,
   selectOptions,
+  modelStore,
   disabled,  // todo: erase?
   customLabel,
   formStack,
@@ -66,8 +67,6 @@ const Input = ({
   customProps
 }) => {
   const InputOverride = getInputOverride(schema, modelName, fieldName)
-  //console.log('node', node)
-  //console.log('disabled', disabled)
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
@@ -88,6 +87,7 @@ const Input = ({
         inline,
         onChange,
         selectOptions,
+        modelStore,
         disabled,
         customLabel,
         onMenuOpen,
@@ -120,6 +120,7 @@ const Input = ({
     inline,
     onChange,
     selectOptions,
+    modelStore,
     disabled,
     customLabel,
     onMenuOpen,
@@ -172,6 +173,7 @@ export const InputCore = ({
   inline,
   onChange,
   selectOptions,
+  modelStore,
   customLabel,
   onMenuOpen,
   onCreatableMenuOpen,
@@ -245,7 +247,8 @@ export const InputCore = ({
         fieldName,
         options: R.path([modelName, fieldName], selectOptions),
         formStack,
-        value
+        value,
+        modelStore
       })
       return (
         <FlexibleInput
