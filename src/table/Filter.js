@@ -149,7 +149,7 @@ const formatFilter = ({
           }}/>
         </div>
       </div>
-      <div className='filter-close align-middle'>
+      <div className='filter-close filter-padded align-middle'>
         <button
           className='btn btn-sm btn-danger btn-block'
           onClick={() => deleteFilter({ modelName, index })}
@@ -372,7 +372,7 @@ const FilterPopover = ({
   selectOptions
 }) => {
   if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
-    return <div className='ml-3'>Select a field</div>
+    return <div className='filter-padded'>Select a field</div>
   }
   return (
     <div>
