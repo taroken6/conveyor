@@ -3,7 +3,7 @@
 ## Version 1.4.0
 
 ### Unreleased
--
+-   Consolidate filters into one panel #93
 
 ## Version 1.3.0
 
