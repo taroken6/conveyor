@@ -49,7 +49,6 @@ body {
   float: right;
   width: max-content;
   overflow: hidden;
-  vertical-align: bottom;
 }
 
 .edit-icon:hover {
@@ -98,12 +97,4 @@ body {
 .header-title {
   float: left;
   font-size: .9em;
-}
-
-.header-button {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  text-decoration: bold;
-  width: 100%;
-  height: 100%;
 }
