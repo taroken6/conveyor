@@ -3,7 +3,7 @@
 ## Version 1.4.0
 
 ### Unreleased
--
+-   Add ability to sort by clicking on field name #95
 
 ## Version 1.3.0
 
