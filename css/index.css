@@ -46,9 +46,9 @@ body {
 }
 
 .header-overflow {
-  float: right;
   width: max-content;
   overflow: hidden;
+  float: right;
 }
 
 .edit-icon:hover {
