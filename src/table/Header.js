@@ -86,11 +86,11 @@ export const Header = ({
   return (
     <div
       className='header'
-      onClick={() => !showSort ? {} : onSort({
+      onClick={() => showSort ? onSort({
         modelName,
         fieldName,
         sortKey: getNextSortKey(sortKey)
-      })}
+      }) : {}}
     >
       <div className='title' >
         <a style={{ float: 'left', fontSize: '.9em' }}
