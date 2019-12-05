@@ -33,6 +33,7 @@ export const DefaultIndexTitle = ({
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const addFilter = R.path(['tableOptions', 'addFilter'], actions)
+  const deleteFilter = R.path(['tableOptions', 'deleteFilter'], actions)
   const clearFilters = R.path(['tableOptions', 'clearFilters'], actions)
   const changeField = R.path(['tableOptions', 'changeField'], actions)
   const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
@@ -51,6 +52,7 @@ export const DefaultIndexTitle = ({
         selectOptions,
         data,
         addFilter,
+        deleteFilter,
         clearFilters,
         changeField,
         onFilterChange,

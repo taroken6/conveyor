@@ -52,7 +52,12 @@ const getFilterableFields = ({ modelName, schema }) => {
   return filterables
 }
 
-const FilterButtons = ({ modelName, onFilterSubmit, clearFilters, onAdd }) => (
+const FilterButtons = ({
+  modelName,
+  onFilterSubmit,
+  clearFilters,
+  onAdd
+}) => (
   <div className='mt-3'>
     <button
       className='btn btn-primary btn-sm'
@@ -63,7 +68,7 @@ const FilterButtons = ({ modelName, onFilterSubmit, clearFilters, onAdd }) => (
         <button
           className='btn btn-success btn-sm'
           onClick={() => onFilterSubmit({ modelName })}
-        >Apply All</button>
+        >Apply</button>
         <button
           className='btn btn-outline-danger btn-sm'
           onClick={() => {
@@ -88,7 +93,8 @@ const formatFilter = ({
   onFilterChange,
   onFilterSubmit,
   onFilterDropdown,
-  filterInputs
+  filterInputs,
+  deleteFilter
 }) => {
   const filterInput = R.prop(fieldName, filterInputs)
   const filterables = getFilterableFields({ modelName, schema })
@@ -146,7 +152,7 @@ const formatFilter = ({
       <div className='filter-close align-middle'>
         <button
           className='btn btn-sm btn-danger btn-block'
-          onClick={() => {}}
+          onClick={() => deleteFilter({ modelName, index })}
         >X</button>
       </div>
     </li>
@@ -158,6 +164,7 @@ const ActiveFilters = ({
   schema,
   data,
   addFilter,
+  deleteFilter,
   onChange,
   selectOptions,
   filterOrder,
@@ -185,7 +192,8 @@ const ActiveFilters = ({
                 onFilterChange,
                 onFilterSubmit,
                 onFilterDropdown,
-                filterInputs
+                filterInputs,
+                deleteFilter
               })
             )
       }</ul>
@@ -193,7 +201,8 @@ const ActiveFilters = ({
         modelName,
         onFilterSubmit,
         clearFilters,
-        onAdd: addFilter }}
+        onAdd: addFilter
+      }}
       />
     </div>
   )
@@ -205,6 +214,7 @@ export const FilterModal = ({
   selectOptions,
   data,
   addFilter,
+  deleteFilter,
   clearFilters,
   changeField,
   onFilterChange,
@@ -224,6 +234,7 @@ export const FilterModal = ({
           schema,
           data,
           addFilter,
+          deleteFilter,
           onChange: changeField,
           selectOptions,
           currentFilters,
