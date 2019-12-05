@@ -126,6 +126,6 @@ body {
   padding-top: 6px;
 }
 
-.filter, filter div, .filter button, .filter p {
+.filter, .filter div, .filter button, .filter p {
   padding-bottom: 0% !important;
 }
