@@ -372,7 +372,7 @@ const FilterPopover = ({
   selectOptions
 }) => {
   if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
-    return <div className='filter-padded'>Select a field</div>
+    return <div className='ml-1 mt-1 filter-padded'>Select a field</div>
   }
   return (
     <div>
