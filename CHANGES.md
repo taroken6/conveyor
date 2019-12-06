@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+-   Add disabled options dropdown #111
+
 ## Version 1.4.0
 
 ### Released 12/6/19
@@ -26,7 +28,6 @@
 -   Add model level overrides #62
 -   Add CreatableStringSelect to conveyor's FlexibleInput choices #72
 -   Fix bug in modal creation #110
--   Add disabled options dropdown #111
 
 ## Version 1.2.0
 
