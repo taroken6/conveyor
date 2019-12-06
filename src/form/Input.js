@@ -52,14 +52,14 @@ const Input = ({
   schema,
   modelName,
   fieldName,
-  node,  // todo: erase?
+  node,
   value,
   error,
   inline,
   onChange,
   selectOptions,
   modelStore,
-  disabled,  // todo: erase?
+  disabled,
   customLabel,
   formStack,
   autoFocus,
@@ -201,6 +201,7 @@ export const InputCore = ({
   }
   const enumChoices = getEnumChoices(schema, modelName, fieldName)
   const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)
+  let options
 
   switch (inputType) {
     case inputTypes.STRING_TYPE:
@@ -226,22 +227,31 @@ export const InputCore = ({
         />
       )
     case inputTypes.ENUM_TYPE:
+      options = getOptionsOverride({
+        schema,
+        modelName,
+        fieldName,
+        options: enumChoiceOrder.map(choice => ({
+          label: enumChoices[choice],
+          value: choice
+        })),
+        formStack,
+        value,
+        modelStore
+      })
       return (
         <FlexibleInput
           {...{
             ...defaultProps,
             type: inputTypes.SELECT_TYPE,
-            options: enumChoiceOrder.map(choice => ({
-              label: enumChoices[choice],
-              value: choice
-            })),
+            options,
             customInput: { step: 'any' }
           }}
         />
       )
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
-      const options = getOptionsOverride({
+      options = getOptionsOverride({
         schema,
         modelName,
         fieldName,
