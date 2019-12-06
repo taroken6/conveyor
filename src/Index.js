@@ -129,6 +129,29 @@ const Index = ({
   tableOptions,
   customProps
 }) => {
+
+  // if singleton, Index redirects to Detail pg
+  if (R.path([modelName, 'singleTon'], schema)) {
+    const singleTon = R.last(data)
+    const singleId = R.propOr(null, 'id', singleTon)
+    if (singleId) {
+      return <Redirect to={`/${modelName}/${singleId}`} />
+    }
+    // if no singleId exists, must create
+    const actions = getActions(schema, modelName)
+    const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
+    return (
+      <div className='container'>
+        <h1>
+          No Directory Exists
+          <CreateButton {...{
+            onClick: () => onCreateClick({ modelName })
+          }} />
+        </h1>
+      </div>
+    )
+  }
+
   const IndexOverride = getIndexOverride(schema, modelName)
 
   const IndexComponent = IndexOverride || DefaultIndex
