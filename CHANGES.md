@@ -1,9 +1,12 @@
 # Conveyor Changelog
 
-## Version 1.4.0
+## Version 1.5.0
 
 ### Unreleased
--
+
+## Version 1.4.0
+
+### Released 12/6/19
 
 ## Version 1.3.0
 
