@@ -5,7 +5,7 @@ import CreateButton from './CreateButton'
 import {
   getActions,
   getHasIndex,
-  getIndexFields,
+  getIndexFields, getModelLabel,
   getModelLabelPlural
 } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
@@ -133,6 +133,7 @@ const Index = ({
   // if singleton, Index redirects to Detail pg
   if (R.path([modelName, 'singleTon'], schema)) {
     const singleTon = R.last(data)
+    // singleTon may not be null when last deleted; test for 'id'
     const singleId = R.propOr(null, 'id', singleTon)
     if (singleId) {
       return <Redirect to={`/${modelName}/${singleId}`} />
@@ -143,7 +144,7 @@ const Index = ({
     return (
       <div className='container'>
         <h1>
-          No Directory Exists
+          {`No ${getModelLabel({ schema, modelName, data, user, customProps })} Exists`}
           <CreateButton {...{
             onClick: () => onCreateClick({ modelName })
           }} />
