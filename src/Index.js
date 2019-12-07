@@ -6,7 +6,7 @@ import {
   getActions,
   getHasIndex,
   getIndexFields, getModelLabel,
-  getModelLabelPlural
+  getModelLabelPlural, getSingleTon
 } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
 import {
@@ -131,7 +131,7 @@ const Index = ({
 }) => {
 
   // if singleton, Index redirects to Detail pg
-  if (R.path([modelName, 'singleTon'], schema)) {
+  if (getSingleTon(schema, modelName)) {
     const singleTon = R.last(data)
     // singleTon may not be null when last deleted; test for 'id'
     const singleId = R.propOr(null, 'id', singleTon)
