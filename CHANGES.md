@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+-   Add singleton feature #113
+
 ## Version 1.4.0
 
 ### Released 12/6/19
