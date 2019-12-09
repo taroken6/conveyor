@@ -108,6 +108,10 @@ export const getHasIndex = (schema, modelName) => {
   return R.propOr(true, 'hasIndex', getModel(schema, modelName))
 }
 
+export const getSingleton = (schema, modelName) => {
+  return R.propOr(false, 'singleton', getModel(schema, modelName))
+}
+
 export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   const detailFieldOrder = R.prop('detailFieldOrder', getModel(schema, modelName))
   const defaultOrder = getShownFields({ schema, modelName, type: 'showDetail', node, customProps })
