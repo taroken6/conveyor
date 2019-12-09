@@ -108,8 +108,8 @@ export const getHasIndex = (schema, modelName) => {
   return R.propOr(true, 'hasIndex', getModel(schema, modelName))
 }
 
-export const getSingleTon = (schema, modelName) => {
-  return R.propOr(false, 'singleTon', getModel(schema, modelName))
+export const getSingleton = (schema, modelName) => {
+  return R.propOr(false, 'singleton', getModel(schema, modelName))
 }
 
 export const getDetailFields = ({ schema, modelName, node, customProps }) => {

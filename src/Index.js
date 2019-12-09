@@ -6,7 +6,7 @@ import {
   getActions,
   getHasIndex,
   getIndexFields, getModelLabel,
-  getModelLabelPlural, getSingleTon
+  getModelLabelPlural, getSingleton
 } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
 import {
@@ -134,10 +134,10 @@ const Index = ({
 }) => {
 
   // if singleton, Index redirects to Detail pg
-  if (getSingleTon(schema, modelName)) {
-    const singleTon = R.last(data)
-    // singleTon may not be null when last deleted; test for 'id'
-    const singleId = R.propOr(null, 'id', singleTon)
+  if (getSingleton(schema, modelName)) {
+    const singleton = R.last(data)
+    // singleton may not be null when last deleted; test for 'id'
+    const singleId = R.propOr(null, 'id', singleton)
     if (singleId) {
       return <Redirect to={`/${modelName}/${singleId}`} />
     }
