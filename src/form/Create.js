@@ -53,6 +53,7 @@ const DefaultCreatePage = ({
   formStack,
   selectOptions,
   user,
+  modelStore,
   customProps
 }) => {
   const stackIndex = R.prop('index', formStack)
@@ -127,6 +128,7 @@ const DefaultCreatePage = ({
                 value,
                 error,
                 selectOptions,
+                modelStore,
                 onChange,
                 disabled,
                 formStack,
@@ -178,6 +180,7 @@ const DefaultCreate = ({
   formStack,
   selectOptions,
   user,
+  modelStore,
   customProps
 }) => {
   const CreateTitleOverride = getCreateTitleOverride(schema, modelName)
@@ -217,6 +220,7 @@ const DefaultCreate = ({
             formStack,
             selectOptions,
             user,
+            modelStore,
             customProps
           }}
         />
@@ -231,6 +235,7 @@ const Create = ({
   formStack,
   selectOptions,
   user,
+  modelStore,
   customProps
 }) => {
   const CreateOverride = getCreateOverride(schema, modelName)
@@ -243,7 +248,7 @@ const Create = ({
 
   return skipOverride(CreateOverride) ? null : (
     <CreateComponent
-      {...{ schema, modelName, formStack, selectOptions, user, customProps }}
+      {...{ schema, modelName, formStack, selectOptions, user, customProps, modelStore }}
     />
   )
 }

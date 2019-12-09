@@ -5,6 +5,7 @@
 ### Unreleased
 
 -   Add singleton feature #113
+-   Add disabled options dropdown #111
 
 ## Version 1.4.0
 

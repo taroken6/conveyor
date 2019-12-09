@@ -72,6 +72,7 @@ export const DefaultDetailAttribute = ({
   editData,
   tooltipData,
   selectOptions,
+  modelStore,
   id,
   path,
   user,
@@ -122,7 +123,8 @@ export const DefaultDetailAttribute = ({
               node,
               editData: fieldEditData,
               error,
-              selectOptions
+              selectOptions,
+              modelStore
             }} />
           </div>
           <div className='inline-btn-group'>
@@ -300,6 +302,7 @@ export const DefaultDetailTable = ({
   path,
   editData,
   selectOptions,
+  modelStore,
   tooltipData,
   user,
   modalData,
@@ -347,6 +350,7 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
+            modelStore,
             tooltipData,
             node,
             data,
@@ -394,6 +398,7 @@ export const DefaultDetailTable = ({
             value: getFieldEditData(editData, modelName, fieldName, id),
             error: getFieldErrorEdit(editData, modelName, fieldName, id),
             selectOptions,
+            modelStore,
             customLabel: DetailLabel,
             onChange: ({ ...props }) => onEditInputChange({
               id,
@@ -452,6 +457,7 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
+            modelStore,
             tooltipData,
             node,
             data,
@@ -527,6 +533,7 @@ export const DetailFields = ({
   editData,
   tooltipData,
   selectOptions,
+  modelStore,
   path,
   user,
   customProps
@@ -557,6 +564,7 @@ export const DetailFields = ({
                 fieldName,
                 node,
                 selectOptions,
+                modelStore,
                 editData,
                 path,
                 tooltipData,
@@ -587,6 +595,7 @@ export const DetailFields = ({
               modelName,
               fieldName,
               selectOptions,
+              modelStore,
               tooltipData,
               node,
               modalData,
@@ -625,6 +634,7 @@ const DefaultDetail = ({
   tooltipData,
   user,
   selectOptions,
+  modelStore,
   customProps
 }) => {
   const DetailTitleOverride = getDetailTitleOverride(schema, modelName)
@@ -685,6 +695,7 @@ const DefaultDetail = ({
             fields: [],
             user,
             selectOptions,
+            modelStore,
             customProps
           }}
         />
@@ -705,6 +716,7 @@ const Detail = ({
   tooltipData,
   user,
   selectOptions,
+  modelStore,
   customProps
 }) => {
   const DetailOverride = getDetailOverride(schema, modelName)
@@ -725,6 +737,7 @@ const Detail = ({
         tooltipData,
         user,
         selectOptions,
+        modelStore,
         customProps
       }}
     />
