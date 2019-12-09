@@ -6,8 +6,8 @@ import { FilterModal, FilterModalButton } from './table/Filter'
 import {
   getActions,
   getHasIndex,
-  getIndexFields,
-  getModelLabelPlural
+  getIndexFields, getModelLabel,
+  getModelLabelPlural, getSingleton
 } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
 import {
@@ -78,6 +78,7 @@ const DefaultIndex = ({
   modalData,
   editData,
   selectOptions,
+  modelStore,
   path,
   tooltipData,
   user,
@@ -143,6 +144,7 @@ const DefaultIndex = ({
             modalData,
             editData,
             selectOptions,
+            modelStore,
             path,
             tooltipData,
             user,
@@ -169,6 +171,7 @@ const Index = ({
   modalData,
   editData,
   selectOptions,
+  modelStore,
   path,
   tooltipData,
   user,
@@ -178,6 +181,30 @@ const Index = ({
   tableOptions,
   customProps
 }) => {
+
+  // if singleton, Index redirects to Detail pg
+  if (getSingleton(schema, modelName)) {
+    const singleton = R.last(data)
+    // singleton may not be null when last deleted; test for 'id'
+    const singleId = R.propOr(null, 'id', singleton)
+    if (singleId) {
+      return <Redirect to={`/${modelName}/${singleId}`} />
+    }
+    // if no singleId exists, must create
+    const actions = getActions(schema, modelName)
+    const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
+    return (
+      <div className='container'>
+        <h1>
+          {`No ${getModelLabel({ schema, modelName, data, user, customProps })} Exists`}
+          <CreateButton {...{
+            onClick: () => onCreateClick({ modelName })
+          }} />
+        </h1>
+      </div>
+    )
+  }
+
   const IndexOverride = getIndexOverride(schema, modelName)
 
   const IndexComponent = IndexOverride || DefaultIndex
@@ -191,6 +218,7 @@ const Index = ({
         modalData,
         editData,
         selectOptions,
+        modelStore,
         path,
         tooltipData,
         user,

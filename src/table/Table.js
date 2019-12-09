@@ -122,7 +122,7 @@ export const TableButtonGroup = ({
   </div>)
 }
 
-export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, customProps }) => {
+export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, modelStore, user, parentNode, customProps }) => {
   if (isEditing(editData, modelName, node.id) && isFieldEditable({ schema, modelName, fieldName, node, user, parentNode, customProps })) {
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
@@ -135,6 +135,7 @@ export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, 
         editData: fieldEditData,
         error,
         selectOptions,
+        modelStore,
         customProps
       }} />
     )
@@ -220,6 +221,7 @@ const TBody = ({
   tableEditable,
   deletable,
   selectOptions,
+  modelStore,
   user,
   parentNode,
   fromIndex,
@@ -254,7 +256,7 @@ const TBody = ({
             return (
               <td key={`${node.id}-${headerIdx}`}>
                 <TableRowWithEdit key={`table-td-${node.id}-${headerIdx}`} {...{
-                  modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, user, parentNode, customProps
+                  modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, modelStore, user, parentNode, customProps
                 }} />
               </td>
             )
@@ -297,6 +299,7 @@ export const Table = ({
   modalData,
   editData,
   selectOptions,
+  modelStore,
   parentId,
   parentModelName,
   parentFieldName,
@@ -352,6 +355,7 @@ export const Table = ({
         parentFieldName,
         modalData,
         selectOptions,
+        modelStore,
         editData,
         deletable,
         tableEditable: editable,

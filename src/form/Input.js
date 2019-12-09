@@ -6,7 +6,10 @@ import FlexibleInput from '../input/index'
 import { getInputType } from './InputType'
 import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable, skipOverride } from '../Utils'
-import { getActions, getEnumChoices, getEnumChoiceOrder, getField, getFieldLabel } from '../utils/schemaGetters'
+import {
+  getActions, getEnumChoices, getEnumChoiceOrder, getField,
+  getFieldLabel, getOptionsOverride
+} from '../utils/schemaGetters'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
@@ -55,6 +58,7 @@ const Input = ({
   inline,
   onChange,
   selectOptions,
+  modelStore,
   disabled,
   customLabel,
   formStack,
@@ -63,7 +67,6 @@ const Input = ({
   customProps
 }) => {
   const InputOverride = getInputOverride(schema, modelName, fieldName)
-
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
@@ -84,6 +87,7 @@ const Input = ({
         inline,
         onChange,
         selectOptions,
+        modelStore,
         disabled,
         customLabel,
         onMenuOpen,
@@ -100,7 +104,8 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      node: R.path(['originData'], formStack), customProps
+      node: R.path(['originData'], formStack),
+      customProps
     })
 
     return <DisabledInput {...{ value, label }} />
@@ -115,10 +120,12 @@ const Input = ({
     inline,
     onChange,
     selectOptions,
+    modelStore,
     disabled,
     customLabel,
     onMenuOpen,
     onCreatableMenuOpen,
+    formStack,
     autoFocus,
     onKeyDown,
     customProps,
@@ -166,10 +173,12 @@ export const InputCore = ({
   inline,
   onChange,
   selectOptions,
+  modelStore,
   customLabel,
   onMenuOpen,
   onCreatableMenuOpen,
-  customInput,
+  formStack,
+  customInput,  // optional; used for FlexibleInput only; differs from 'customProps'
   autoFocus,
   onKeyDown,
   customProps
@@ -192,6 +201,7 @@ export const InputCore = ({
   }
   const enumChoices = getEnumChoices(schema, modelName, fieldName)
   const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)
+  let options
 
   switch (inputType) {
     case inputTypes.STRING_TYPE:
@@ -217,21 +227,39 @@ export const InputCore = ({
         />
       )
     case inputTypes.ENUM_TYPE:
+      options = getOptionsOverride({
+        schema,
+        modelName,
+        fieldName,
+        options: enumChoiceOrder.map(choice => ({
+          label: enumChoices[choice],
+          value: choice
+        })),
+        formStack,
+        value,
+        modelStore
+      })
       return (
         <FlexibleInput
           {...{
             ...defaultProps,
             type: inputTypes.SELECT_TYPE,
-            options: enumChoiceOrder.map(choice => ({
-              label: enumChoices[choice],
-              value: choice
-            })),
+            options,
             customInput: { step: 'any' }
           }}
         />
       )
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
+      options = getOptionsOverride({
+        schema,
+        modelName,
+        fieldName,
+        options: R.path([modelName, fieldName], selectOptions),
+        formStack,
+        value,
+        modelStore
+      })
       return (
         <FlexibleInput
           {...{
@@ -240,7 +268,7 @@ export const InputCore = ({
             isMulti: inputType === inputTypes.RELATIONSHIP_MULTIPLE,
             customLabel,
             onMenuOpen: evt => onMenuOpen({ modelName, fieldName }),
-            options: R.path([modelName, fieldName], selectOptions)
+            options
           }}
         />
       )

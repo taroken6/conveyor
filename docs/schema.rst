@@ -55,6 +55,7 @@ The schema utilized by the framework will be different than the existing schema 
             create: () => #A function that evaluates to true or false to determine if the field will display on a create page
           },
           disabled: () => {} #bool or function #Whether field should be disabled or not,
+          disabledDropDown: () => {} #function which filters out or disables drop down options,
           sortable: boolean #Whether the given field should be sortable on tables
           filterable: boolean #Whether the given field should be filterable on tables
           editable: boolean or function #Whether the given field should be editable
