@@ -181,7 +181,6 @@ const Index = ({
   tableOptions,
   customProps
 }) => {
-
   // if singleton, Index redirects to Detail pg
   if (getSingleton(schema, modelName)) {
     const singleton = R.last(data)
@@ -204,9 +203,8 @@ const Index = ({
       </div>
     )
   }
-
+  
   const IndexOverride = getIndexOverride(schema, modelName)
-
   const IndexComponent = IndexOverride || DefaultIndex
 
   return skipOverride(IndexOverride) ? null : (

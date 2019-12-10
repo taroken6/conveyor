@@ -123,7 +123,7 @@ const formatFilter = ({
             }),
             value,
             options,
-            id: `${modelName}-filter-dropdown`,
+            id: `${index}-${modelName}-filter-dropdown`,
             customInput: {
               noOptionsMessage: () => '(no filterable fields)',
               placeholder: 'Select field...',
@@ -228,24 +228,22 @@ export const FilterModal = ({
     id={'filter-' + modelName}
     title={'Filters - ' + modelName}
     children={
-      <div>
-        <ActiveFilters {...{
-          modelName,
-          schema,
-          data,
-          addFilter,
-          deleteFilter,
-          onChange: changeField,
-          selectOptions,
-          currentFilters,
-          filterOrder,
-          clearFilters,
-          onFilterChange,
-          onFilterSubmit,
-          onFilterDropdown,
-          filterInputs
-        }} />
-      </div>
+      <ActiveFilters {...{
+        modelName,
+        schema,
+        data,
+        addFilter,
+        deleteFilter,
+        onChange: changeField,
+        selectOptions,
+        currentFilters,
+        filterOrder,
+        clearFilters,
+        onFilterChange,
+        onFilterSubmit,
+        onFilterDropdown,
+        filterInputs
+      }} />
     }
   />
 )
