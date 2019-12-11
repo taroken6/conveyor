@@ -16,7 +16,7 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
   const inputType = getInputType({ schema, modelName, fieldName })
   return !(
     R.isNil(inputType) ||
-    (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) ||
+    (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) || // disabled for now
     (inputType === inputTypes.ENUM_TYPE) ||
     (inputType === inputTypes.RELATIONSHIP_SINGLE) ||
     (inputType === inputTypes.RELATIONSHIP_MULTIPLE) ||
@@ -48,16 +48,10 @@ export const isModelFilterable = ({ schema, modelName, tableOptions }) => {
   return isTableFilterable({ schema, modelName, fieldOrder, tableOptions, filterable })
 }
 
-const isStringOrInt = ({ modelName, fieldName, schema }) => {
-  const type = R.path([modelName, 'fields', fieldName, 'type'], schema)
-  return type === 'string' || type === 'int'
-}
-
 const getFilterableFields = ({ modelName, schema }) => {
   const fields = R.pathOr([], [modelName, 'fieldOrder'], schema)
   const filterables = fields.filter(
     fieldName => isFilterable({ schema, modelName, fieldName })
-      // && isStringOrInt({ modelName, fieldName, schema })
   )
   return filterables
 }
