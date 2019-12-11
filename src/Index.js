@@ -2,7 +2,7 @@ import React from 'react'
 import { Table } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
-import { FilterModal, FilterModalButton } from './table/Filter'
+import { FilterModal, FilterModalButton, isModelFilterable } from './table/Filter'
 import {
   getActions,
   getHasIndex,
@@ -18,6 +18,44 @@ import {
   skipOverride
 } from './Utils'
 
+const Filters = ({
+  schema,
+  modelName,
+  selectOptions,
+  data,
+  currentFilters,
+  filterOrder,
+  filtersAreActive
+}) => {
+  const actions = getActions(schema, modelName)
+  const addFilter = R.path(['tableOptions', 'addFilter'], actions)
+  const deleteFilter = R.path(['tableOptions', 'deleteFilter'], actions)
+  const clearFilters = R.path(['tableOptions', 'clearFilters'], actions)
+  const changeField = R.path(['tableOptions', 'changeField'], actions)
+  const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
+  const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
+  const onFilterDropdown = R.path(['tableOptions', 'filterDropdown'], actions)
+  return(
+    <FilterModal {...{
+      modelName,
+      schema,
+      selectOptions,
+      data,
+      addFilter,
+      deleteFilter,
+      clearFilters,
+      changeField,
+      onFilterChange,
+      onFilterSubmit,
+      onFilterDropdown,
+      currentFilters,
+      filterOrder,
+      filtersAreActive,
+      filterInputs: currentFilters
+    }} />
+  )
+}
+
 export const DefaultIndexTitle = ({
   schema,
   modelName,
@@ -31,40 +69,28 @@ export const DefaultIndexTitle = ({
   customProps
 }) => {
   const actions = getActions(schema, modelName)
+  const tableOptions = R.prop('tableOptions', actions)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
-  const addFilter = R.path(['tableOptions', 'addFilter'], actions)
-  const deleteFilter = R.path(['tableOptions', 'deleteFilter'], actions)
-  const clearFilters = R.path(['tableOptions', 'clearFilters'], actions)
-  const changeField = R.path(['tableOptions', 'changeField'], actions)
-  const onFilterChange = R.path(['tableOptions', 'filterChange'], actions)
-  const onFilterSubmit = R.path(['tableOptions', 'filterSubmit'], actions)
-  const onFilterDropdown = R.path(['tableOptions', 'filterDropdown'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
+  const filterable = isModelFilterable({ schema, modelName, tableOptions })
+  console.log('schema', schema)
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
-      <FilterModal {...{
-        modelName,
+      {filterable && <Filters {...{
         schema,
+        modelName,
         selectOptions,
         data,
-        addFilter,
-        deleteFilter,
-        clearFilters,
-        changeField,
-        onFilterChange,
-        onFilterSubmit,
-        onFilterDropdown,
         currentFilters,
         filterOrder,
-        filtersAreActive,
-        filterInputs: currentFilters
-      }} />
+        filtersAreActive
+      }}/>}
       <div className='float-right'>
-        <FilterModalButton {...{ modelName, filtersAreActive }} />
+        {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
         {creatable && <CreateButton {...{ onClick }} />}
       </div>
     </div>
@@ -203,7 +229,7 @@ const Index = ({
       </div>
     )
   }
-  
+
   const IndexOverride = getIndexOverride(schema, modelName)
   const IndexComponent = IndexOverride || DefaultIndex
 

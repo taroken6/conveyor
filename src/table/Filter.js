@@ -2,7 +2,6 @@ import React from 'react'
 import { InputCore } from '../form/Input'
 import { getInputType } from '../form/InputType'
 import ReactSVG from 'react-svg'
-import { Tooltip } from 'react-tippy'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
@@ -16,12 +15,15 @@ import { getFieldLabel } from '../utils/schemaGetters.js'
 export const isFilterable = ({schema, modelName, fieldName}) => {
   const inputType = getInputType({ schema, modelName, fieldName })
   return !(
+    R.isNil(inputType) ||
+    (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) ||
     (inputType === inputTypes.ENUM_TYPE) ||
     (inputType === inputTypes.RELATIONSHIP_SINGLE) ||
     (inputType === inputTypes.RELATIONSHIP_MULTIPLE) ||
     (inputType === inputTypes.DATE_TYPE) ||
     (inputType === inputTypes.PHONE_TYPE) ||
     (inputType === inputTypes.BOOLEAN_TYPE) ||
+    (inputType === inputTypes.ID_TYPE) ||
     // todo: add back currency once filter permissions added
     (inputType === inputTypes.CURRENCY_TYPE)
   )
@@ -38,16 +40,24 @@ export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, 
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
-const isStringOrInt = ({ schema, modelName, fieldName }) => {
-  const fieldType = R.pathOr(null, [modelName, 'fields', fieldName, 'type'], schema)
-  return fieldType === 'int' || fieldType === 'string'
+export const isModelFilterable = ({ schema, modelName, tableOptions }) => {
+  // return R.pathOr(true, [modelName, 'filterable'], schema)
+  const model = R.prop(modelName, schema)
+  const fieldOrder = R.prop('fieldOrder', model)
+  const filterable = R.propOr(true, 'filterable', model)
+  return isTableFilterable({ schema, modelName, fieldOrder, tableOptions, filterable })
+}
+
+const isStringOrInt = ({ modelName, fieldName, schema }) => {
+  const type = R.path([modelName, 'fields', fieldName, 'type'], schema)
+  return type === 'string' || type === 'int'
 }
 
 const getFilterableFields = ({ modelName, schema }) => {
   const fields = R.pathOr([], [modelName, 'fieldOrder'], schema)
   const filterables = fields.filter(
     fieldName => isFilterable({ schema, modelName, fieldName })
-      && isStringOrInt({ schema, modelName, fieldName }) // for now, filter only strings/ints
+      // && isStringOrInt({ modelName, fieldName, schema })
   )
   return filterables
 }
