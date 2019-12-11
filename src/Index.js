@@ -74,7 +74,6 @@ export const DefaultIndexTitle = ({
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   const filterable = isModelFilterable({ schema, modelName, tableOptions })
-  console.log('schema', schema)
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
