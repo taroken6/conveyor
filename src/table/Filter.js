@@ -41,7 +41,6 @@ export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, 
 }
 
 export const isModelFilterable = ({ schema, modelName, tableOptions }) => {
-  // return R.pathOr(true, [modelName, 'filterable'], schema)
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const filterable = R.propOr(true, 'filterable', model)
@@ -104,10 +103,7 @@ const formatFilter = ({
   const filterables = getFilterableFields({ modelName, schema })
   const toOptions = fieldName => ({
     label: getFieldLabel({ schema, modelName, fieldName, data }),
-    value: {
-      fieldName,
-      type: getInputType({ schema, modelName, fieldName })
-    }
+    value: fieldName
   })
   const unfiltered = filterables.filter(fieldName => !filterOrder.includes(fieldName))
   const options = unfiltered.map(fieldName => toOptions(fieldName))
@@ -122,7 +118,7 @@ const formatFilter = ({
             type: inputTypes.SELECT_TYPE,
             onChange: evt => onChange({
               modelName,
-              field: R.path(['value', 'fieldName'], evt),
+              fieldName: R.prop('value', evt),
               index
             }),
             value,
