@@ -266,33 +266,6 @@ export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   </button>
 )
 
-const FilterDropdown = ({
-  modelName,
-  fieldName,
-  operator,
-  onFilterDropdown,
-  options
-}) => {
-  return (
-    <React.Fragment>
-      <FlexibleInput
-        type={inputTypes.SELECT_TYPE}
-        onChange={val => onFilterDropdown({
-          modelName,
-          fieldName,
-          operator: val
-        })}
-        value={operator}
-        options={options}
-        id={`${modelName}-${fieldName}-filter-radio`}
-        customInput={{
-          isClearable: false
-        }}
-      />
-    </React.Fragment>
-  )
-}
-
 const stringOptions = [
   { label: 'Includes', value: 'INCLUDES' },
   { label: 'Equals', value: 'EQUALS' }
@@ -321,7 +294,6 @@ const FilterOptions = ({
   modelName,
   fieldName,
   operator,
-  onFilterSubmit,
   onFilterDropdown
 }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
@@ -343,14 +315,24 @@ const FilterOptions = ({
     default:
       options = stringOptions
   }
-  return <FilterDropdown {...{
-    modelName,
-    fieldName,
-    operator,
-    onFilterSubmit,
-    onFilterDropdown,
-    options
-  }}/>
+  return (
+    <React.Fragment>
+      <FlexibleInput
+        type={inputTypes.SELECT_TYPE}
+        onChange={val => onFilterDropdown({
+          modelName,
+          fieldName,
+          operator: val
+        })}
+        value={operator}
+        options={options}
+        id={`${modelName}-${fieldName}-filter-radio`}
+        customInput={{
+          isClearable: false
+        }}
+      />
+    </React.Fragment>
+  )
 }
 
 // todo: finish
@@ -358,22 +340,23 @@ const FilterOptions = ({
   // case inputTypes.PHONE_TYPE:
   // case inputTypes.BOOLEAN_TYPE:
 
-const FilterPopover = ({
-  schema,
-  modelName,
+export const FilterComp = ({
   fieldName,
-  value,
-  operator,
+  modelName,
+  schema,
   onFilterChange,
   onFilterSubmit,
   onFilterDropdown,
+  filterInput,
   selectOptions
 }) => {
   if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
     return <div className='ml-1 mt-1 filter-padded'>Select a field</div>
   }
+  const value = R.prop('value', filterInput)
+  const operator = R.prop('operator', filterInput)
   return (
-    <div>
+    <React.Fragment>
       <div className='filter-operator-dropdown'>
         <FilterOptions {...{
           schema,
@@ -398,35 +381,6 @@ const FilterPopover = ({
           }
         }} />
       </div>
-    </div>
-  )
-}
-
-export const FilterComp = ({
-  fieldName,
-  modelName,
-  schema,
-  onFilterChange,
-  onFilterSubmit,
-  onFilterDropdown,
-  filterInput,
-  selectOptions
-}) => {
-  const value = R.prop('value', filterInput)
-  const operator = R.prop('operator', filterInput)
-  return (
-    <React.Fragment>
-      <FilterPopover {...{
-        schema,
-        modelName,
-        fieldName,
-        value,
-        operator,
-        onFilterChange,
-        onFilterSubmit,
-        onFilterDropdown,
-        selectOptions
-      }} />
     </React.Fragment>
   )
 }

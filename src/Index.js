@@ -162,9 +162,7 @@ const Index = ({
   path,
   tooltipData,
   user,
-  currentFilters,
-  filterOrder,
-  filtersAreActive,
+  tableFilters,
   tableOptions,
   customProps
 }) => {
@@ -193,6 +191,7 @@ const Index = ({
 
   const IndexOverride = getIndexOverride(schema, modelName)
   const IndexComponent = IndexOverride || DefaultIndex
+  const { currentFilters, filterOrder, filtersAreActive } = { ...tableFilters }
 
   return skipOverride(IndexOverride) ? null : (
     <IndexComponent
