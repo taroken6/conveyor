@@ -120,10 +120,10 @@ const formatFilter = ({
             value,
             options,
             id: `${index}-${modelName}-filter-dropdown`,
+            isClearable: false,
             customInput: {
               noOptionsMessage: () => '(no filterable fields)',
-              placeholder: 'Select field...',
-              isClearable: false
+              placeholder: 'Select field...'
             }
           }}/>
         </div>
@@ -327,9 +327,7 @@ const FilterOptions = ({
         value={operator}
         options={options}
         id={`${modelName}-${fieldName}-filter-radio`}
-        customInput={{
-          isClearable: false
-        }}
+        isClearable={false}
       />
     </React.Fragment>
   )
