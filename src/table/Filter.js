@@ -6,7 +6,7 @@ import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
 import { Modal } from '../Modal'
-import { getFieldLabel } from '../utils/schemaGetters.js'
+import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 
 // todo: fix this
 // band-aid solution for filter types that are still broken;
@@ -29,22 +29,18 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
   )
 }
 
-export const isColFilterable = ({schema, modelName, fieldName, tableOptions, filterable}) =>
-  !!tableOptions && filterable && isFilterable({schema, modelName, fieldName})
+export const isColFilterable = ({schema, modelName, fieldName, tableFilters, filterable}) =>
+  !!tableFilters && filterable && isFilterable({schema, modelName, fieldName})
 
-export const isTableFilterable = ({schema, modelName, fieldOrder, tableOptions, filterable}) => {
-  const boolList = R.map(fieldName =>
-    isColFilterable({ schema, modelName, fieldName, tableOptions, filterable }),
-    fieldOrder
-  )
-  return !R.isEmpty(R.filter(R.identity, boolList))
-}
-
-export const isModelFilterable = ({ schema, modelName, tableOptions }) => {
+export const isTableFilterable = ({ schema, modelName, tableFilters }) => {
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const filterable = R.propOr(true, 'filterable', model)
-  return isTableFilterable({ schema, modelName, fieldOrder, tableOptions, filterable })
+  const boolList = R.map(fieldName =>
+    isColFilterable({ schema, modelName, fieldName, tableFilters, filterable }),
+    fieldOrder
+  )
+  return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
 const getFilterableFields = ({ modelName, schema }) => {
@@ -209,44 +205,48 @@ const ActiveFilters = ({
 }
 
 export const FilterModal = ({
-  modelName,
   schema,
+  modelName,
   selectOptions,
   data,
-  addFilter,
-  deleteFilter,
-  clearFilters,
-  changeField,
-  onFilterChange,
-  onFilterSubmit,
-  onFilterDropdown,
   currentFilters,
   filterOrder,
   filterInputs
-}) => (
-  <Modal
-    id={'filter-' + modelName}
-    title={'Filters - ' + modelName}
-    children={
-      <ActiveFilters {...{
-        modelName,
-        schema,
-        data,
-        addFilter,
-        deleteFilter,
-        onChange: changeField,
-        selectOptions,
-        currentFilters,
-        filterOrder,
-        clearFilters,
-        onFilterChange,
-        onFilterSubmit,
-        onFilterDropdown,
-        filterInputs
-      }} />
-    }
-  />
-)
+}) => {
+  const actions = getActions(schema, modelName)
+  const tableOptions = R.prop('tableOptions', actions)
+  const addFilter = R.prop('addFilter', tableOptions)
+  const deleteFilter = R.prop('deleteFilter', tableOptions)
+  const clearFilters = R.prop('clearFilters', tableOptions)
+  const changeField = R.prop('changeField', tableOptions)
+  const onFilterChange = R.prop('filterChange', tableOptions)
+  const onFilterSubmit = R.prop('filterSubmit', tableOptions)
+  const onFilterDropdown = R.prop('filterDropdown', tableOptions)
+  return (
+    <Modal
+      id={'filter-' + modelName}
+      title={'Filters - ' + modelName}
+      children={
+        <ActiveFilters {...{
+          modelName,
+          schema,
+          data,
+          addFilter,
+          deleteFilter,
+          onChange: changeField,
+          selectOptions,
+          currentFilters,
+          filterOrder,
+          clearFilters,
+          onFilterChange,
+          onFilterSubmit,
+          onFilterDropdown,
+          filterInputs
+        }} />
+      }
+    />
+  )
+}
 
 export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   <button

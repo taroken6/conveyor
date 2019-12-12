@@ -313,7 +313,9 @@ export const Table = ({
 }) => {
 
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
-  const allColFilterable = isTableFilterable({schema, modelName, fieldOrder, tableOptions, filterable})
+  const actions = getActions(schema, modelName)
+  const tableFilters = R.prop('tableOptions', actions)
+  const allColFilterable = isTableFilterable({schema, modelName, tableFilters})
 
   if (!allColFilterable && !data) { return <div>...Loading</div> }
 
