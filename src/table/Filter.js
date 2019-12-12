@@ -55,12 +55,12 @@ const FilterButtons = ({
   modelName,
   onFilterSubmit,
   clearFilters,
-  onAdd
+  onFilterAdd
 }) => (
   <div className='mt-3'>
     <button
       className='btn btn-primary btn-sm'
-      onClick={() => onAdd({ modelName })}
+      onClick={() => onFilterAdd({ modelName })}
     >+ Add Rule</button>
     <div className='d-inline float-right'>
       <div className='btn-group'>
@@ -197,7 +197,7 @@ const ActiveFilters = ({
         modelName,
         onFilterSubmit,
         clearFilters,
-        onAdd: addFilter
+        onFilterAdd: addFilter
       }}
       />
     </div>
