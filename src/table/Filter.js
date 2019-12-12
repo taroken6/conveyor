@@ -174,7 +174,7 @@ const ActiveFilters = ({
     <div id={'active-filters-' + modelName} className='mb-2'>
       <ul className="list-group">{
         R.isEmpty(filterOrder) || R.isNil(filterOrder)
-          ? <li key={-1} className='list-group-item text-muted'>Add a rule to get started...</li>
+          ? <li key='no-active-filters' className='list-group-item text-muted'>Add a rule to get started...</li>
           : filterOrder.map((fieldName, index) =>
               formatFilter({
                 fieldName,
