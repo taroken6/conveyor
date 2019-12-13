@@ -12,7 +12,7 @@ import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 // band-aid solution for filter types that are still broken;
 // currency filter is not broken, but does not have adequate permissions check
 // and can give away cost info indirectly by filtering via cost value
-export const isFilterable = ({schema, modelName, fieldName}) => {
+export const isFilterable = ({ schema, modelName, fieldName }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
   return !(
     R.isNil(inputType) ||
@@ -29,15 +29,15 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
   )
 }
 
-export const isColFilterable = ({schema, modelName, fieldName, tableView, filterable}) =>
-  !!tableView && filterable && isFilterable({schema, modelName, fieldName})
+export const isColFilterable = ({ schema, modelName, fieldName, filterable }) =>
+  filterable && isFilterable({ schema, modelName, fieldName })
 
-export const isTableFilterable = ({ schema, modelName, tableView }) => {
+export const isTableFilterable = ({ schema, modelName }) => {
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const filterable = R.propOr(true, 'filterable', model)
   const boolList = R.map(fieldName =>
-    isColFilterable({ schema, modelName, fieldName, tableView, filterable }),
+    isColFilterable({ schema, modelName, fieldName, filterable }),
     fieldOrder
   )
   return !R.isEmpty(R.filter(R.identity, boolList))
