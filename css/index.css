@@ -94,3 +94,38 @@ body {
     padding-bottom: 30px;
 }
 
+.filter-fieldname-dropdown {
+  width: 25%;
+  float: left;
+}
+
+.filter-rest {
+  width: 70%;
+  float: left;
+}
+
+.filter-operator-dropdown {
+  width: 40%;
+  padding-left: 2px;
+  padding-right: 2px;
+  float: left;
+}
+
+.filter-input {
+  width: 60%;
+  float: left;
+}
+
+.filter-close {
+  width: 5%;
+  float: right;
+}
+
+.filter-padded {
+  padding-left: 10px;
+  padding-top: 4px;
+}
+
+.filter {
+  padding-bottom: 0% !important;
+}

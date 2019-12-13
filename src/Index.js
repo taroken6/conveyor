@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
+import { FilterModal, FilterModalButton, isTableFilterable } from './table/Filter'
 import {
   getActions,
   getHasIndex,
@@ -17,19 +18,42 @@ import {
   skipOverride
 } from './Utils'
 
-export const DefaultIndexTitle = ({ schema, modelName, path, data, user, customProps }) => {
+export const DefaultIndexTitle = ({
+  schema,
+  modelName,
+  selectOptions,
+  path,
+  data,
+  user,
+  tableView,
+  customProps
+}) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
+  const filterable = isTableFilterable({ schema, modelName })
+  const currentFilters = R.path(['filter', modelName], tableView)
+  const filterOrder = R.path(['filterOrder', modelName], tableView)
+  const filtersAreActive = R.path(['filtersAreActive', modelName], tableView)
+
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
-      {creatable && <div className='float-right'>
-        <CreateButton {...{ onClick }} />
-      </div>}
+      {filterable && <FilterModal {...{
+        schema,
+        modelName,
+        selectOptions,
+        data,
+        filterOrder,
+        filterInputs: currentFilters
+      }}/>}
+      <div className='float-right'>
+        {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
+        {creatable && <CreateButton {...{ onClick }} />}
+      </div>
     </div>
   )
 }
@@ -45,7 +69,7 @@ const DefaultIndex = ({
   path,
   tooltipData,
   user,
-  tableOptions,
+  tableView,
   customProps
 }) => {
   if (!getHasIndex(schema, modelName)) {
@@ -87,7 +111,7 @@ const DefaultIndex = ({
             path,
             tooltipData,
             user,
-            tableOptions,
+            tableView,
             customProps
           }}
         />
@@ -105,7 +129,7 @@ const DefaultIndex = ({
             path,
             tooltipData,
             user,
-            tableOptions,
+            tableView,
             customProps,
             fieldOrder,
             fromIndex: true,
@@ -129,10 +153,9 @@ const Index = ({
   path,
   tooltipData,
   user,
-  tableOptions,
+  tableView,
   customProps
 }) => {
-
   // if singleton, Index redirects to Detail pg
   if (getSingleton(schema, modelName)) {
     const singleton = R.last(data)
@@ -157,9 +180,8 @@ const Index = ({
   }
 
   const IndexOverride = getIndexOverride(schema, modelName)
-
   const IndexComponent = IndexOverride || DefaultIndex
-
+  
   return skipOverride(IndexOverride) ? null : (
     <IndexComponent
       {...{
@@ -173,7 +195,7 @@ const Index = ({
         path,
         tooltipData,
         user,
-        tableOptions,
+        tableView,
         customProps
       }}
     />

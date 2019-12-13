@@ -6,6 +6,7 @@
 
 -   Add singleton feature #113
 -   Add disabled options dropdown #111
+-   Consolidate filters into one panel #93
 
 ## Version 1.4.0
 
