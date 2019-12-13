@@ -108,6 +108,10 @@ export const getHasIndex = (schema, modelName) => {
   return R.propOr(true, 'hasIndex', getModel(schema, modelName))
 }
 
+export const getSingleton = (schema, modelName) => {
+  return R.propOr(false, 'singleton', getModel(schema, modelName))
+}
+
 export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   const detailFieldOrder = R.prop('detailFieldOrder', getModel(schema, modelName))
   const defaultOrder = getShownFields({ schema, modelName, type: 'showDetail', node, customProps })
@@ -150,4 +154,18 @@ export const getFieldConditions = (schema, modelName, fieldName) => {
 // return null if no condition exists, to differentiate from boolean
 export const getFieldDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabled', getField(schema, modelName, fieldName))
+}
+
+export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
+  return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
+}
+
+export const getOptionsOverride = ({schema, modelName, fieldName, options, formStack, value, modelStore }) => {
+  const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
+  if (disabledDropDownCond) {
+    options = disabledDropDownCond({
+      schema, modelName, fieldName, options, formStack, value, modelStore
+    })
+  }
+  return options
 }

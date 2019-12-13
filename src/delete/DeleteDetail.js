@@ -88,7 +88,7 @@ const ReviewTable = ({ schema, table, customProps }) => {
     if (!customHeaders) {
       // pick fields that 'node' contains & order them by 'fieldOrder'
       const headerFields = getHeaders(schema, nodeModelName, node)
-      const fieldOrder = R.prop('fieldOrder', getModel(schema, nodeModelName))
+      const fieldOrder = R.propOr([], 'fieldOrder', getModel(schema, nodeModelName))
 
       editedHeaderFields = R.filter(
         R.identity,
@@ -104,7 +104,7 @@ const ReviewTable = ({ schema, table, customProps }) => {
     )
   }
   const tableDisplayName = getModelLabel({
-    schema, modelName: table[0].__typename, customProps
+    schema, modelName: R.propOr('', '__typename', R.head(table)), customProps
   })
   return (
     <div className='mt-2'>
@@ -148,7 +148,9 @@ export const DeleteDetail = ({
       <span><strong>The following entries will be deleted:</strong></span>
       {!modalStore && <div className={'text-center'}>...loading</div>}
       {modalStore && modalStore.map((table, index) => (
-        <ReviewTable key={`${index}-${table[0].__typename}`} {...{ schema, table, customProps }} />
+        <ReviewTable key={`${index}-${R.propOr('', '__typename', R.head(table))}`}
+          {...{ schema, table, customProps }}
+        />
       ))}
       <div className='modal-footer justify-content-center mt-3'>
         <div className='btn-group'>

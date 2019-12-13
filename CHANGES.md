@@ -1,9 +1,17 @@
 # Conveyor Changelog
 
-## Version 1.4.0
+## Version 1.5.0
 
 ### Unreleased
+
+-   Add singleton feature #113
+-   Add disabled options dropdown #111
+-   Consolidate filters into one panel #93
 -   Add ability to sort by clicking on field name #95
+
+## Version 1.4.0
+
+### Released 12/6/19
 
 ## Version 1.3.0
 

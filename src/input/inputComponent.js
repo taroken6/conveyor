@@ -472,6 +472,7 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
       isMulti={isMulti}
       value={value}
       options={options}
+      isOptionDisabled={(option) => R.prop('disabled', option) === true}
       onChange={onChange}
       id={id}
       onMenuOpen={onMenuOpen}

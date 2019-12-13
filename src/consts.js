@@ -13,6 +13,7 @@ const CREATABLE_STRING_SELECT_TYPE = 'creatable_string_select'
 const CHECKBOX_TYPE = 'checkbox'
 const BOOLEAN_TYPE = 'boolean'
 const CURRENCY_TYPE = 'currency'
+const ID_TYPE = 'ID'
 
 export const inputTypes = {
   STRING_TYPE,
@@ -33,6 +34,7 @@ export const inputTypes = {
   CREATABLE_STRING_SELECT_TYPE,
   PASSWORD_TYPE,
   RADIO_TYPE,
+  ID_TYPE,
   CHECKBOX_TYPE // not used
 }
 
