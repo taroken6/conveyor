@@ -47,14 +47,10 @@ export const THead = ({
           const isRelField = isRel(getField(schema, modelName, fieldName))
           const sortKeyObj = R.path(['sort', modelName], tableView)
           const showSort = (
-            tableView &&
-            sortable &&
-            isSortable({schema, modelName, fieldName})
+            tableView && sortable && isSortable({schema, modelName, fieldName})
           ) ? !isRelField : false
-          let sortKey = undefined
-          if (R.prop('fieldName', sortKeyObj) === fieldName) {
-            sortKey = R.prop('sortKey', sortKeyObj)
-          }
+          const sortKey = R.prop('fieldName', sortKeyObj) === fieldName
+            ? R.prop('sortKey', sortKeyObj) : undefined
           return (
             <th
               key={`${idx}-${modelName}-${fieldName}`}
