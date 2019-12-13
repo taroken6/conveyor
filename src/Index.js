@@ -29,11 +29,10 @@ export const DefaultIndexTitle = ({
   customProps
 }) => {
   const actions = getActions(schema, modelName)
-  const tableOptions = R.prop('tableOptions', actions)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
-  const filterable = isTableFilterable({ schema, modelName, tableOptions })
+  const filterable = isTableFilterable({ schema, modelName, tableView })
   const currentFilters = R.path(['filter', modelName], tableView)
   const filterOrder = R.path(['filterOrder', modelName], tableView)
   const filtersAreActive = R.path(['filtersAreActive', modelName], tableView)

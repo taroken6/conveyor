@@ -29,15 +29,15 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
   )
 }
 
-export const isColFilterable = ({schema, modelName, fieldName, tableOptions, filterable}) =>
-  !!tableOptions && filterable && isFilterable({schema, modelName, fieldName})
+export const isColFilterable = ({schema, modelName, fieldName, tableView, filterable}) =>
+  !!tableView && filterable && isFilterable({schema, modelName, fieldName})
 
-export const isTableFilterable = ({ schema, modelName, tableOptions }) => {
+export const isTableFilterable = ({ schema, modelName, tableView }) => {
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const filterable = R.propOr(true, 'filterable', model)
   const boolList = R.map(fieldName =>
-    isColFilterable({ schema, modelName, fieldName, tableOptions, filterable }),
+    isColFilterable({ schema, modelName, fieldName, tableView, filterable }),
     fieldOrder
   )
   return !R.isEmpty(R.filter(R.identity, boolList))
