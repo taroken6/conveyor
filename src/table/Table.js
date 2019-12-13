@@ -304,7 +304,7 @@ export const Table = ({
   parentModelName,
   parentFieldName,
   tooltipData,
-  tableOptions,
+  tableView,
   Head = THead,
   Body = TBody,
   user,
@@ -314,8 +314,8 @@ export const Table = ({
 
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
   const actions = getActions(schema, modelName)
-  const tableFilters = R.prop('tableOptions', actions)
-  const allColFilterable = isTableFilterable({schema, modelName, tableFilters})
+  const tableOptions = R.prop('tableOptions', actions)
+  const allColFilterable = isTableFilterable({schema, modelName, tableOptions})
 
   if (!allColFilterable && !data) { return <div>...Loading</div> }
 
@@ -339,7 +339,7 @@ export const Table = ({
         selectOptions,
         sortable,
         filterable,
-        tableOptions,
+        tableView,
         fromIndex,
         customProps
       }} />

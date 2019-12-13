@@ -29,15 +29,15 @@ export const isFilterable = ({schema, modelName, fieldName}) => {
   )
 }
 
-export const isColFilterable = ({schema, modelName, fieldName, tableFilters, filterable}) =>
-  !!tableFilters && filterable && isFilterable({schema, modelName, fieldName})
+export const isColFilterable = ({schema, modelName, fieldName, tableOptions, filterable}) =>
+  !!tableOptions && filterable && isFilterable({schema, modelName, fieldName})
 
-export const isTableFilterable = ({ schema, modelName, tableFilters }) => {
+export const isTableFilterable = ({ schema, modelName, tableOptions }) => {
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const filterable = R.propOr(true, 'filterable', model)
   const boolList = R.map(fieldName =>
-    isColFilterable({ schema, modelName, fieldName, tableFilters, filterable }),
+    isColFilterable({ schema, modelName, fieldName, tableOptions, filterable }),
     fieldOrder
   )
   return !R.isEmpty(R.filter(R.identity, boolList))
@@ -55,12 +55,12 @@ const FilterButtons = ({
   modelName,
   onFilterSubmit,
   clearFilters,
-  onFilterAdd
+  addFilter
 }) => (
   <div className='mt-3'>
     <button
       className='btn btn-primary btn-sm'
-      onClick={() => onFilterAdd({ modelName })}
+      onClick={() => addFilter({ modelName })}
     >+ Add Rule</button>
     <div className='d-inline float-right'>
       <div className='btn-group'>
@@ -169,47 +169,44 @@ const ActiveFilters = ({
   onFilterSubmit,
   onFilterDropdown,
   filterInputs
-}) => {
-  return (
-    <div id={'active-filters-' + modelName} className='mb-2'>
-      <ul className="list-group">{
-        R.isEmpty(filterOrder) || R.isNil(filterOrder)
-          ? <li key='no-active-filters' className='list-group-item text-muted'>Add a rule to get started...</li>
-          : filterOrder.map((fieldName, index) =>
-              formatFilter({
-                fieldName,
-                index,
-                modelName,
-                schema,
-                data,
-                onChange,
-                selectOptions,
-                filterOrder,
-                onFilterChange,
-                onFilterSubmit,
-                onFilterDropdown,
-                filterInputs,
-                deleteFilter
-              })
-            )
-      }</ul>
-      <FilterButtons {...{
-        modelName,
-        onFilterSubmit,
-        clearFilters,
-        onFilterAdd: addFilter
-      }}
-      />
-    </div>
-  )
-}
+}) => (
+  <div id={'active-filters-' + modelName} className='mb-2'>
+    <ul className="list-group">{
+      R.isEmpty(filterOrder) || R.isNil(filterOrder)
+        ? <li key='no-active-filters' className='list-group-item text-muted'>Add a rule to get started...</li>
+        : filterOrder.map((fieldName, index) =>
+            formatFilter({
+              fieldName,
+              index,
+              modelName,
+              schema,
+              data,
+              onChange,
+              selectOptions,
+              filterOrder,
+              onFilterChange,
+              onFilterSubmit,
+              onFilterDropdown,
+              filterInputs,
+              deleteFilter
+            })
+          )
+    }</ul>
+    <FilterButtons {...{
+      modelName,
+      onFilterSubmit,
+      clearFilters,
+      addFilter
+    }}
+    />
+  </div>
+)
 
 export const FilterModal = ({
   schema,
   modelName,
   selectOptions,
   data,
-  currentFilters,
   filterOrder,
   filterInputs
 }) => {
@@ -235,7 +232,6 @@ export const FilterModal = ({
           deleteFilter,
           onChange: changeField,
           selectOptions,
-          currentFilters,
           filterOrder,
           clearFilters,
           onFilterChange,

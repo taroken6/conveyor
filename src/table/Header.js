@@ -15,7 +15,7 @@ export const THead = ({
   deletable,
   detailField,
   data,
-  tableOptions,
+  tableView,
   sortable,
   fromIndex,
   customProps
@@ -45,7 +45,7 @@ export const THead = ({
           }
 
           const isRelField = isRel(getField(schema, modelName, fieldName))
-          const sortKeyObj = R.path(['sort', modelName], tableOptions)
+          const sortKeyObj = R.path(['sort', modelName], tableView)
           return (
             <th key={idx} style={{ minWidth: '130px' }}>
               <Header
@@ -57,7 +57,7 @@ export const THead = ({
                   }), // this is the actual 'data' list, not 'node'
                   onSort,
                   showSort: (
-                    tableOptions &&
+                    tableView &&
                     sortable &&
                     isSortable({schema, modelName, fieldName})
                   ) ? !isRelField : false,
