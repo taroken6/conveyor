@@ -17,12 +17,12 @@ export const isFilterable = ({ schema, modelName, fieldName }) => {
   return !(
     R.isNil(inputType) ||
     (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) || // disabled for now
-    (inputType === inputTypes.ENUM_TYPE) ||
-    (inputType === inputTypes.RELATIONSHIP_SINGLE) ||
+    // (inputType === inputTypes.ENUM_TYPE) ||
+    // (inputType === inputTypes.RELATIONSHIP_SINGLE) ||
     (inputType === inputTypes.RELATIONSHIP_MULTIPLE) ||
-    (inputType === inputTypes.DATE_TYPE) ||
+    // (inputType === inputTypes.DATE_TYPE) ||
     (inputType === inputTypes.PHONE_TYPE) ||
-    (inputType === inputTypes.BOOLEAN_TYPE) ||
+    // (inputType === inputTypes.BOOLEAN_TYPE) ||
     (inputType === inputTypes.ID_TYPE) ||
     // todo: add back currency once filter permissions added
     (inputType === inputTypes.CURRENCY_TYPE)
@@ -273,7 +273,7 @@ const numberOptions = [
   { label: '=', value: 'eq' },
   { label: '!=', value: 'neq' },
   { label: '>', value: 'gt' },
-  { label: '>=', value: 'gte' },
+  { label: '>=', value: 'gte' }
 ]
 
 const relOptions = [
@@ -281,8 +281,7 @@ const relOptions = [
 ]
 
 const enumOptions = [
-  { label: 'Includes', value: 'INCLUDES' },
-  { label: 'Excludes', value: 'EXCLUDES' }
+  { label: 'Includes', value: 'INCLUDES' }
 ]
 
 const FilterOptions = ({
