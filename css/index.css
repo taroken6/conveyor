@@ -41,7 +41,7 @@ body {
 }
 
 .header-icon {
-  display: inline-block;
+  float: right;
   margin-left: 2px;
 }
 
@@ -69,8 +69,6 @@ body {
   visibility: hidden;
 }
 
-
-
 .inline-btn-group {
   display: inline;
   position: absolute;
@@ -92,6 +90,11 @@ body {
 
 .table-btn-group {
     padding-bottom: 30px;
+}
+
+.header-title {
+  float: left;
+  font-size: .9em;
 }
 
 .filter-fieldname-dropdown {
