@@ -26,7 +26,7 @@ const getSortIcon = (sortKey) => {
   }
 }
 
-const getNextSortKey = (sortKey) => {
+export const getNextSortKey = (sortKey) => {
   switch (sortKey) {
     case undefined:
       return consts.ASC

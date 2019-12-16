@@ -3,9 +3,9 @@ import { getFieldLabel, getActions, getField, getFieldConditions } from '../util
 import { showButtonColumn } from './Table'
 import * as R from 'ramda'
 import { isRel } from '../utils/isType'
-import { FilterComp, isColFilterable } from './Filter'
 import { SortButton, isSortable } from './Sort'
 import { shouldDisplay } from '../Utils'
+import { getNextSortKey } from './Sort.js'
 
 export const THead = ({
   schema,
@@ -46,8 +46,21 @@ export const THead = ({
 
           const isRelField = isRel(getField(schema, modelName, fieldName))
           const sortKeyObj = R.path(['sort', modelName], tableView)
+          const showSort = (
+            sortable && isSortable({schema, modelName, fieldName})
+          ) ? !isRelField : false
+          const sortKey = R.prop('fieldName', sortKeyObj) === fieldName
+            ? R.prop('sortKey', sortKeyObj) : undefined
           return (
-            <th key={idx} style={{ minWidth: '130px' }}>
+            <th
+              key={`${idx}-${modelName}-${fieldName}`}
+              style={{ minWidth: '130px' }}
+              onClick={() => showSort ? onSort({
+                modelName,
+                fieldName,
+                sortKey: getNextSortKey(sortKey)
+              }) : {}}
+            >
               <Header
                 {...{
                   modelName,
@@ -56,12 +69,8 @@ export const THead = ({
                     schema, modelName, fieldName, data, customProps
                   }), // this is the actual 'data' list, not 'node'
                   onSort,
-                  showSort: (
-                    tableView &&
-                    sortable &&
-                    isSortable({schema, modelName, fieldName})
-                  ) ? !isRelField : false,
-                  sortKeyObj,
+                  showSort,
+                  sortKeyObj
                 }}
               />
             </th>
@@ -77,17 +86,16 @@ export const Header = ({
   title,
   onSort,
   showSort,
-  sortKeyObj,
-}) => (
-  <div className='header'>
-    <div className='title' >
-      <a style={{ float: 'left', fontSize: '.9em' }}
-        href={'#'}>
-        {title}
-      </a>
+  sortKeyObj
+}) => {
+  return (
+    <div className='header'>
+      <div className='title' >
+        <a className='header-title' href={'#'}>{title}</a>
+      </div>
       <div className={'header-overflow'}>
         { showSort && <SortButton {...{ modelName, fieldName, onSort, sortKeyObj }} /> }
       </div>
     </div>
-  </div>
-)
+  )
+}
