@@ -311,13 +311,11 @@ export const Table = ({
   fromIndex,
   customProps
 }) => {
-
+  if (!data) { return <div>...Loading</div> }
+  
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, tableView})
-
-  if (!allColFilterable && !data) { return <div>...Loading</div> }
-
-  if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
+  if (!allColFilterable || data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
 
   const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, customProps })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
