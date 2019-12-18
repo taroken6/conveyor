@@ -168,7 +168,16 @@ export const DefaultDetailAttribute = ({
         </dt>
         <dd className='col-sm-9'>
           {
-            skipOverride(ValueOverride) ? null : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData, customProps }} />
+            skipOverride(ValueOverride) ? null : <DetailValue {...{
+              schema,
+              modelName,
+              fieldName,
+              node,
+              id,
+              tooltipData,
+              showHeaders: false,
+              customProps
+            }} />
           }
           {editable &&
             <InlineEditButton {...{
@@ -340,7 +349,7 @@ export const DefaultDetailTable = ({
           customProps
         }} />
         }
-        { skipOverride(ValueOverride) ? null : <DetailValue
+        { skipOverride(ValueOverride) ? null: <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -363,6 +372,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             modalData,
+            showHeaders: false,
             customProps
           }}
         /> }
@@ -469,6 +479,7 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
+            showHeaders: false,
             modalData
           }}
         /> }
