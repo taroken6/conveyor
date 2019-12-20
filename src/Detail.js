@@ -53,7 +53,7 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
+export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
   const image = hideTable ? 'plus-square' : 'minus-square'
   const fill = hideTable ? 'green' : 'grey'
   return (
@@ -606,6 +606,7 @@ export const DetailFields = ({
             return null
           }
           const DetailAttribute = override || DefaultDetailAttribute
+          // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
           return (
             <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
               {...{
@@ -616,10 +617,12 @@ export const DetailFields = ({
                 selectOptions,
                 modelStore,
                 editData,
-                path,
                 tooltipData,
+                modalData,
+                path,
                 id,
                 user,
+                tableView,
                 customProps
               }}
             />
@@ -637,6 +640,7 @@ export const DetailFields = ({
           return null
         }
         const DetailTable = override || DefaultDetailTable
+        // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
         return (
           <DetailTable
             key={`DetailTable-${id}-${modelName}-${fieldName}`}
@@ -644,12 +648,12 @@ export const DetailFields = ({
               schema,
               modelName,
               fieldName,
+              node,
               selectOptions,
               modelStore,
-              tooltipData,
-              node,
-              modalData,
               editData,
+              tooltipData,
+              modalData,
               path,
               id,
               user,
