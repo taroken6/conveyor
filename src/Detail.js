@@ -40,6 +40,7 @@ import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
+import ReactSVG from 'react-svg'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -50,6 +51,23 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
     }
     labelValue={fieldLabel}
   />
+)
+
+const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => (
+  <button
+    className={'btn btn-sm btn-outline-secondary'}
+    onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
+  >{hideTable? 'Show' : 'Hide'}
+    <ReactSVG
+      src={`/static/img/minus-square.svg`}
+      className='header-icon ml-2'
+      svgStyle={{
+        width: '12px',
+        height: '12px',
+        fill: hideTable ? 'lightgreen' : 'black'
+      }}
+    />
+  </button>
 )
 
 export const DefaultDetailLabel = ({ schema, modelName, fieldName, node, customProps }) => {
@@ -215,8 +233,10 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targetInverseFieldName, targetModelName, path, node, user, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideTable, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
+  const actions = getActions(schema, modelName)
+  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
 
   return (
     <DefaultDetailTableTitleWrapper>
@@ -228,6 +248,13 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targe
         targetInverseFieldName,
         node
       }} /> }
+      <HideTableButton {...{
+        modelName,
+        fieldName,
+        id,
+        hideTable,
+        hideTableChange
+      }}/>
     </DefaultDetailTableTitleWrapper>
   )
 }
@@ -242,9 +269,12 @@ const DefaultDetailM2MTableTitle = ({
   path,
   targetModelName,
   user,
+  hideTable,
   customProps
 }) => {
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
+  const actions = getActions(schema, modelName)
+  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
@@ -260,6 +290,13 @@ const DefaultDetailM2MTableTitle = ({
           targetModelName
         }} />
       </div>}
+      <HideTableButton {...{
+          modelName,
+          fieldName,
+          id,
+          hideTable,
+          hideTableChange
+        }}/>
     </div>
   )
 }
@@ -318,6 +355,7 @@ export const DefaultDetailTable = ({
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
+  const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -333,11 +371,13 @@ export const DefaultDetailTable = ({
           schema,
           modelName,
           fieldName,
+          id,
           targetInverseFieldName,
           node,
           path,
           targetModelName,
           user,
+          hideTable,
           customProps
         }} />
         }
@@ -364,6 +404,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             tableView,
+            hideTable,
             modalData,
             customProps
           }}
@@ -447,6 +488,7 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
+          hideTable,
           customProps
         }} /> }
         { skipOverride(ValueOverride) ? null : <DetailValue
@@ -472,6 +514,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             tableView,
+            hideTable,
             modalData
           }}
         /> }
