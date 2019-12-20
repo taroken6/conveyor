@@ -329,47 +329,45 @@ export const Table = ({
   const sortable = R.pathOr(true, [modelName, 'sortable'], schema)
 
   return (
-    <React.Fragment>
-      <table className='table table-striped table-bordered table-hover'>
-        <Head {...{
-          schema,
-          modelName,
-          fieldOrder,
-          data,
-          deletable,
-          editable,
-          detailField,
-          selectOptions,
-          sortable,
-          filterable,
-          tableView,
-          fromIndex,
-          customProps
-        }} />
-        <Body {...{
-          schema,
-          modelName,
-          data,
-          onDelete,
-          onEditSubmit,
-          fieldOrder,
-          detailField,
-          tooltipData,
-          parentId,
-          parentModelName,
-          parentFieldName,
-          modalData,
-          selectOptions,
-          modelStore,
-          editData,
-          deletable,
-          tableEditable: editable,
-          user,
-          parentNode,
-          fromIndex,
-          customProps
-        }} />
-      </table>
-    </React.Fragment>
+    <table className='table table-striped table-bordered table-hover'>
+      <Head {...{
+        schema,
+        modelName,
+        fieldOrder,
+        data,
+        deletable,
+        editable,
+        detailField,
+        selectOptions,
+        sortable,
+        filterable,
+        tableView,
+        fromIndex,
+        customProps
+      }} />
+      <Body {...{
+        schema,
+        modelName,
+        data,
+        onDelete,
+        onEditSubmit,
+        fieldOrder,
+        detailField,
+        tooltipData,
+        parentId,
+        parentModelName,
+        parentFieldName,
+        modalData,
+        selectOptions,
+        modelStore,
+        editData,
+        deletable,
+        tableEditable: editable,
+        user,
+        parentNode,
+        fromIndex,
+        customProps
+      }} />
+    </table>
   )
 }
