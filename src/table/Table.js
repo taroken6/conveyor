@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom'
 import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
 import { DeleteDetail } from '../delete/DeleteDetail'
 import { isTableFilterable } from './Filter'
+import ReactSVG from 'react-svg'
 
 import {
   RowEditButton,
@@ -287,6 +288,23 @@ export const calcDetailField = ({schema, modelName, fieldOrder}) => {
   return schemaDefinedLinkField || (fieldOrder.includes('name') ? 'name' : null)
 }
 
+const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => (
+  <button
+    className={'btn btn-sm btn-outline-primary'}
+    onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
+  >{hideTable? 'Show' : 'Hide'}
+    <ReactSVG
+      src={`/static/img/filter.svg`}
+      className='header-icon ml-2'
+      svgStyle={{
+        width: '12px',
+        height: '12px',
+        fill: hideTable ? 'lightgreen' : 'black'
+      }}
+    />
+  </button>
+)
+
 /* Generic Overidable Table. To Override th/td pass in Table with <thead>/<tbody> component overriden. */
 export const Table = ({
   schema,
@@ -311,6 +329,9 @@ export const Table = ({
   fromIndex,
   customProps
 }) => {
+  const hideTable = R.path(['hideTable', parentModelName, parentId, parentFieldName], tableView)
+  const actions = getActions(schema, modelName)
+  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
 
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, tableView})
@@ -325,45 +346,58 @@ export const Table = ({
   const sortable = R.pathOr(true, [modelName, 'sortable'], schema)
 
   return (
-    <table className='table table-striped table-bordered table-hover'>
-      <Head {...{
-        schema,
-        modelName,
-        fieldOrder,
-        data,
-        deletable,
-        editable,
-        detailField,
-        selectOptions,
-        sortable,
-        filterable,
-        tableView,
-        fromIndex,
-        customProps
-      }} />
-      <Body {...{
-        schema,
-        modelName,
-        data,
-        onDelete,
-        onEditSubmit,
-        fieldOrder,
-        detailField,
-        tooltipData,
-        parentId,
-        parentModelName,
-        parentFieldName,
-        modalData,
-        selectOptions,
-        modelStore,
-        editData,
-        deletable,
-        tableEditable: editable,
-        user,
-        parentNode,
-        fromIndex,
-        customProps
-      }} />
-    </table>
+    <React.Fragment>
+      { !fromIndex &&
+        <HideTableButton {...{
+          modelName: parentModelName,
+          fieldName: parentFieldName,
+          id: parentId,
+          hideTable,
+          hideTableChange
+        }}/>
+      }
+      { (fromIndex || !hideTable) &&
+        <table className='table table-striped table-bordered table-hover'>
+          <Head {...{
+            schema,
+            modelName,
+            fieldOrder,
+            data,
+            deletable,
+            editable,
+            detailField,
+            selectOptions,
+            sortable,
+            filterable,
+            tableView,
+            fromIndex,
+            customProps
+          }} />
+          <Body {...{
+            schema,
+            modelName,
+            data,
+            onDelete,
+            onEditSubmit,
+            fieldOrder,
+            detailField,
+            tooltipData,
+            parentId,
+            parentModelName,
+            parentFieldName,
+            modalData,
+            selectOptions,
+            modelStore,
+            editData,
+            deletable,
+            tableEditable: editable,
+            user,
+            parentNode,
+            fromIndex,
+            customProps
+          }} />
+        </table>
+      }
+    </React.Fragment>
   )
 }

@@ -305,6 +305,7 @@ export const DefaultDetailTable = ({
   modelStore,
   tooltipData,
   user,
+  tableView,
   modalData,
   customProps
 }) => {
@@ -362,6 +363,7 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
+            tableView,
             modalData,
             customProps
           }}
@@ -469,6 +471,7 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
+            tableView,
             modalData
           }}
         /> }
@@ -536,6 +539,7 @@ export const DetailFields = ({
   modelStore,
   path,
   user,
+  tableView,
   customProps
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
@@ -603,6 +607,7 @@ export const DetailFields = ({
               path,
               id,
               user,
+              tableView,
               customProps
             }}
           />
@@ -633,6 +638,7 @@ const DefaultDetail = ({
   match,
   tooltipData,
   user,
+  tableView,
   selectOptions,
   modelStore,
   customProps
@@ -694,6 +700,7 @@ const DefaultDetail = ({
             path,
             fields: [],
             user,
+            tableView,
             selectOptions,
             modelStore,
             customProps
@@ -715,6 +722,7 @@ const Detail = ({
   match, // 'match' should be passed in by React by default
   tooltipData,
   user,
+  tableView,
   selectOptions,
   modelStore,
   customProps
@@ -736,6 +744,7 @@ const Detail = ({
         match,
         tooltipData,
         user,
+        tableView,
         selectOptions,
         modelStore,
         customProps

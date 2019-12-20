@@ -21,6 +21,7 @@ const TabFields = ({
   selectOptions,
   modelStore,
   user,
+  tableView,
   customProps
 }) => {
   if (Component) {
@@ -39,6 +40,7 @@ const TabFields = ({
       selectOptions,
       modelStore,
       user,
+      tableView,
       customProps
     }} />
   }
@@ -67,6 +69,7 @@ const TabFields = ({
       selectOptions,
       modelStore,
       user,
+      tableView,
       customProps
     }} />
   )
@@ -88,6 +91,7 @@ export const RecursiveTab = ({
   selectOptions,
   modelStore,
   user,
+  tableView,
   customProps
 }) => {
   if (tabs.length === 1) {
@@ -108,6 +112,7 @@ export const RecursiveTab = ({
         selectOptions,
         modelStore,
         user,
+        tableView,
         customProps
       }} />
     )
@@ -131,6 +136,7 @@ export const RecursiveTab = ({
         selectOptions,
         modelStore,
         user,
+        tableView,
         customProps
       }} />
       <ul className='nav nav-pills'>
@@ -175,6 +181,7 @@ export const RecursiveTab = ({
                   selectOptions,
                   modelStore,
                   user,
+                  tableView,
                   customProps,
                   ...renderProps
                 }} />
