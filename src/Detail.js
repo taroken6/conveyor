@@ -55,8 +55,7 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
 )
 
 export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
-  const image = hideTable ? 'plus-square' : 'minus-square'
-  const fill = hideTable ? 'green' : 'grey'
+  const image = hideTable ? 'angle-right' : 'angle-down'
   return (
     <ReactSVG
       src={`/static/img/${image}.svg`}
@@ -65,7 +64,7 @@ export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTable
       svgStyle={{
         width: '20px',
         height: '20px',
-        fill
+        fill: 'black'
       }}
     />
   )
