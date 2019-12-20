@@ -315,6 +315,10 @@ export const Table = ({
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, tableView})
 
+  if (!fromIndex && hideTable) {
+    return null
+  }
+
   if (!allColFilterable && !data) { return <div>...Loading</div> }
 
   if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
@@ -326,48 +330,46 @@ export const Table = ({
 
   return (
     <React.Fragment>
-      { (fromIndex || !hideTable) &&
-        <table className='table table-striped table-bordered table-hover'>
-          <Head {...{
-            schema,
-            modelName,
-            fieldOrder,
-            data,
-            deletable,
-            editable,
-            detailField,
-            selectOptions,
-            sortable,
-            filterable,
-            tableView,
-            fromIndex,
-            customProps
-          }} />
-          <Body {...{
-            schema,
-            modelName,
-            data,
-            onDelete,
-            onEditSubmit,
-            fieldOrder,
-            detailField,
-            tooltipData,
-            parentId,
-            parentModelName,
-            parentFieldName,
-            modalData,
-            selectOptions,
-            modelStore,
-            editData,
-            deletable,
-            tableEditable: editable,
-            user,
-            parentNode,
-            fromIndex,
-            customProps
-          }} />
-        </table>
-      }
+      <table className='table table-striped table-bordered table-hover'>
+        <Head {...{
+          schema,
+          modelName,
+          fieldOrder,
+          data,
+          deletable,
+          editable,
+          detailField,
+          selectOptions,
+          sortable,
+          filterable,
+          tableView,
+          fromIndex,
+          customProps
+        }} />
+        <Body {...{
+          schema,
+          modelName,
+          data,
+          onDelete,
+          onEditSubmit,
+          fieldOrder,
+          detailField,
+          tooltipData,
+          parentId,
+          parentModelName,
+          parentFieldName,
+          modalData,
+          selectOptions,
+          modelStore,
+          editData,
+          deletable,
+          tableEditable: editable,
+          user,
+          parentNode,
+          fromIndex,
+          customProps
+        }} />
+      </table>
     </React.Fragment>
   )
 }
