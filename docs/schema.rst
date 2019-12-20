@@ -54,6 +54,7 @@ The schema utilized by the framework will be different than the existing schema 
             index: () => #A function that evaluates to true or false to determines if the field will display in an index table
             create: () => #A function that evaluates to true or false to determine if the field will display on a create page
           },
+          hideable: #bool; if table component can be hidden, have 'hide' button
           disabled: () => {} #bool or function #Whether field should be disabled or not,
           disabledDropDown: () => {} #function which filters out or disables drop down options,
           sortable: boolean #Whether the given field should be sortable on tables

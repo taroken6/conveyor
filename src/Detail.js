@@ -18,7 +18,8 @@ import {
 } from './Utils'
 import {
   getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldConditions
+  getDetailFields, getHasIndex, getModelLabel, getFieldLabel,
+  getFieldConditions, getHideable
 } from './utils/schemaGetters'
 import { RecursiveTab } from './Tabs'
 import { getType } from './utils/getType'
@@ -233,18 +234,18 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideTable, hideTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideable, hideTable, hideTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
 
   return (
     <DefaultDetailTableTitleWrapper>
-      <HideTableButton {...{
+      {hideable && <HideTableButton {...{
         modelName,
         fieldName,
         id,
         hideTable,
         hideTableChange
-      }}/>
+      }}/>}
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
         schema,
@@ -267,6 +268,7 @@ const DefaultDetailM2MTableTitle = ({
   path,
   targetModelName,
   user,
+  hideable,
   hideTable,
   hideTableChange,
   customProps
@@ -276,13 +278,13 @@ const DefaultDetailM2MTableTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>
-        <HideTableButton {...{
+        {hideable && <HideTableButton {...{
           modelName,
           fieldName,
           id,
           hideTable,
           hideTableChange
-        }}/>
+        }}/>}
         {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
       </h4>
       {editable && <div className='pl-2 d-inline'>
@@ -357,6 +359,7 @@ export const DefaultDetailTable = ({
   const type = getType({ schema, modelName, fieldName })
   const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
+  const hideable = getHideable(schema, modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -378,6 +381,7 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
+          hideable,
           hideTable,
           hideTableChange,
           customProps
@@ -490,6 +494,7 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
+          hideable,
           hideTable,
           hideTableChange,
           customProps

@@ -156,6 +156,14 @@ export const getFieldDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabled', getField(schema, modelName, fieldName))
 }
 
+export const getHideable = (schema, modelName, fieldName) => {
+  // cannot set default as false ("R.propOr(true...") because boolean always eval as true here
+  const hideable = R.prop('hideable', getField(schema, modelName, fieldName))
+  // by default, all fields hideable
+  if (hideable === undefined) { return true }
+  return hideable
+}
+
 export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
