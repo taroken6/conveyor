@@ -45,6 +45,11 @@ body {
   margin-left: 2px;
 }
 
+.hide-icon {
+  display: inline-block;
+  margin-left: 5px;
+}
+
 .header-overflow {
   width: max-content;
   overflow: hidden;

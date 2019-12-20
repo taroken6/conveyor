@@ -53,22 +53,26 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => (
-  <button
-    className={'btn btn-sm btn-outline-secondary'}
-    onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
-  >{hideTable? 'Show' : 'Hide'}
-    <ReactSVG
-      src={`/static/img/minus-square.svg`}
-      className='header-icon ml-2'
-      svgStyle={{
-        width: '12px',
-        height: '12px',
-        fill: hideTable ? 'lightgreen' : 'black'
-      }}
-    />
-  </button>
-)
+const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
+  const image = hideTable ? 'plus-square' : 'minus-square'
+  const fill = hideTable ? 'green' : 'grey'
+  return (
+    <button
+      className={'btn btn-sm btn-outline-secondary hide-icon'}
+      onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
+    >{hideTable ? 'Show' : 'Hide'}
+      <ReactSVG
+        src={`/static/img/${image}.svg`}
+        className='hide-icon'
+        svgStyle={{
+          width: '20px',
+          height: '20px',
+          fill
+        }}
+      />
+    </button>
+  )
+}
 
 export const DefaultDetailLabel = ({ schema, modelName, fieldName, node, customProps }) => {
   const LabelInfoComponent = R.path(['components', 'labelInfo'], getField(schema, modelName, fieldName))
