@@ -308,12 +308,16 @@ export const Table = ({
   Head = THead,
   Body = TBody,
   user,
+  hideTable,
   fromIndex,
   customProps
 }) => {
-
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
   const allColFilterable = isTableFilterable({schema, modelName, tableView})
+
+  if (!fromIndex && hideTable) {
+    return null
+  }
 
   if (!allColFilterable && !data) { return <div>...Loading</div> }
 

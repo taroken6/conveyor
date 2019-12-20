@@ -18,7 +18,8 @@ import {
 } from './Utils'
 import {
   getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex, getModelLabel, getFieldLabel, getFieldConditions
+  getDetailFields, getHasIndex, getModelLabel, getFieldLabel,
+  getFieldConditions, getHideable
 } from './utils/schemaGetters'
 import { RecursiveTab } from './Tabs'
 import { getType } from './utils/getType'
@@ -40,6 +41,7 @@ import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
+import ReactSVG from 'react-svg'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -51,6 +53,22 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
     labelValue={fieldLabel}
   />
 )
+
+export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
+  const image = hideTable ? 'angle-right' : 'angle-down'
+  return (
+    <ReactSVG
+      src={`/static/img/${image}.svg`}
+      className='hide-icon'
+      onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
+      svgStyle={{
+        width: '20px',
+        height: '20px',
+        fill: 'black'
+      }}
+    />
+  )
+}
 
 export const DefaultDetailLabel = ({ schema, modelName, fieldName, node, customProps }) => {
   const LabelInfoComponent = R.path(['components', 'labelInfo'], getField(schema, modelName, fieldName))
@@ -215,11 +233,18 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, targetInverseFieldName, targetModelName, path, node, user, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideable, hideTable, hideTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
 
   return (
     <DefaultDetailTableTitleWrapper>
+      {hideable && <HideTableButton {...{
+        modelName,
+        fieldName,
+        id,
+        hideTable,
+        hideTableChange
+      }}/>}
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
         schema,
@@ -242,12 +267,25 @@ const DefaultDetailM2MTableTitle = ({
   path,
   targetModelName,
   user,
+  hideable,
+  hideTable,
+  hideTableChange,
   customProps
 }) => {
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
+
   return (
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
+      <h4 className='d-inline'>
+        {hideable && <HideTableButton {...{
+          modelName,
+          fieldName,
+          id,
+          hideTable,
+          hideTableChange
+        }}/>}
+        {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
+      </h4>
       {editable && <div className='pl-2 d-inline'>
         <TableEditButton {...{
           schema,
@@ -305,6 +343,7 @@ export const DefaultDetailTable = ({
   modelStore,
   tooltipData,
   user,
+  tableView,
   modalData,
   customProps
 }) => {
@@ -317,6 +356,9 @@ export const DefaultDetailTable = ({
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
+  const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
+  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
+  const hideable = getHideable(schema, modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -332,11 +374,15 @@ export const DefaultDetailTable = ({
           schema,
           modelName,
           fieldName,
+          id,
           targetInverseFieldName,
           node,
           path,
           targetModelName,
           user,
+          hideable,
+          hideTable,
+          hideTableChange,
           customProps
         }} />
         }
@@ -362,6 +408,8 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
+            tableView,
+            hideTable,
             modalData,
             customProps
           }}
@@ -445,6 +493,9 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
+          hideable,
+          hideTable,
+          hideTableChange,
           customProps
         }} /> }
         { skipOverride(ValueOverride) ? null : <DetailValue
@@ -469,6 +520,8 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
+            tableView,
+            hideTable,
             modalData
           }}
         /> }
@@ -536,6 +589,7 @@ export const DetailFields = ({
   modelStore,
   path,
   user,
+  tableView,
   customProps
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
@@ -556,6 +610,7 @@ export const DetailFields = ({
             return null
           }
           const DetailAttribute = override || DefaultDetailAttribute
+          // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
           return (
             <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
               {...{
@@ -566,10 +621,12 @@ export const DetailFields = ({
                 selectOptions,
                 modelStore,
                 editData,
-                path,
                 tooltipData,
+                modalData,
+                path,
                 id,
                 user,
+                tableView,
                 customProps
               }}
             />
@@ -587,6 +644,7 @@ export const DetailFields = ({
           return null
         }
         const DetailTable = override || DefaultDetailTable
+        // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
         return (
           <DetailTable
             key={`DetailTable-${id}-${modelName}-${fieldName}`}
@@ -594,15 +652,16 @@ export const DetailFields = ({
               schema,
               modelName,
               fieldName,
+              node,
               selectOptions,
               modelStore,
-              tooltipData,
-              node,
-              modalData,
               editData,
+              tooltipData,
+              modalData,
               path,
               id,
               user,
+              tableView,
               customProps
             }}
           />
@@ -633,6 +692,7 @@ const DefaultDetail = ({
   match,
   tooltipData,
   user,
+  tableView,
   selectOptions,
   modelStore,
   customProps
@@ -694,6 +754,7 @@ const DefaultDetail = ({
             path,
             fields: [],
             user,
+            tableView,
             selectOptions,
             modelStore,
             customProps
@@ -715,6 +776,7 @@ const Detail = ({
   match, // 'match' should be passed in by React by default
   tooltipData,
   user,
+  tableView,
   selectOptions,
   modelStore,
   customProps
@@ -736,6 +798,7 @@ const Detail = ({
         match,
         tooltipData,
         user,
+        tableView,
         selectOptions,
         modelStore,
         customProps

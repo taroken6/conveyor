@@ -8,6 +8,7 @@
 -   Add disabled options dropdown #111
 -   Consolidate filters into one panel #93
 -   Add ability to sort by clicking on field name or header #95
+-   Add table hide feature #109
 
 ## Version 1.4.0
 
