@@ -233,10 +233,8 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideTable, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideTable, hideTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
-  const actions = getActions(schema, modelName)
-  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
 
   return (
     <DefaultDetailTableTitleWrapper>
@@ -270,11 +268,11 @@ const DefaultDetailM2MTableTitle = ({
   targetModelName,
   user,
   hideTable,
+  hideTableChange,
   customProps
 }) => {
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
-  const actions = getActions(schema, modelName)
-  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
+
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
@@ -356,6 +354,7 @@ export const DefaultDetailTable = ({
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
   const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
+  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -378,6 +377,7 @@ export const DefaultDetailTable = ({
           targetModelName,
           user,
           hideTable,
+          hideTableChange,
           customProps
         }} />
         }
@@ -489,6 +489,7 @@ export const DefaultDetailTable = ({
           targetModelName,
           user,
           hideTable,
+          hideTableChange,
           customProps
         }} /> }
         { skipOverride(ValueOverride) ? null : <DetailValue
