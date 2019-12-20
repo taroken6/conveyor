@@ -57,20 +57,16 @@ const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange 
   const image = hideTable ? 'plus-square' : 'minus-square'
   const fill = hideTable ? 'green' : 'grey'
   return (
-    <button
-      className={'btn btn-sm btn-outline-secondary hide-icon'}
+    <ReactSVG
+      src={`/static/img/${image}.svg`}
+      className='hide-icon'
       onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
-    >{hideTable ? 'Show' : 'Hide'}
-      <ReactSVG
-        src={`/static/img/${image}.svg`}
-        className='hide-icon'
-        svgStyle={{
-          width: '20px',
-          height: '20px',
-          fill
-        }}
-      />
-    </button>
+      svgStyle={{
+        width: '20px',
+        height: '20px',
+        fill
+      }}
+    />
   )
 }
 
@@ -242,6 +238,13 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
 
   return (
     <DefaultDetailTableTitleWrapper>
+      <HideTableButton {...{
+        modelName,
+        fieldName,
+        id,
+        hideTable,
+        hideTableChange
+      }}/>
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
         schema,
@@ -250,13 +253,6 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
         targetInverseFieldName,
         node
       }} /> }
-      <HideTableButton {...{
-        modelName,
-        fieldName,
-        id,
-        hideTable,
-        hideTableChange
-      }}/>
     </DefaultDetailTableTitleWrapper>
   )
 }
@@ -279,7 +275,16 @@ const DefaultDetailM2MTableTitle = ({
 
   return (
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
+      <h4 className='d-inline'>
+        <HideTableButton {...{
+          modelName,
+          fieldName,
+          id,
+          hideTable,
+          hideTableChange
+        }}/>
+        {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
+      </h4>
       {editable && <div className='pl-2 d-inline'>
         <TableEditButton {...{
           schema,
@@ -292,13 +297,6 @@ const DefaultDetailM2MTableTitle = ({
           targetModelName
         }} />
       </div>}
-      <HideTableButton {...{
-          modelName,
-          fieldName,
-          id,
-          hideTable,
-          hideTableChange
-        }}/>
     </div>
   )
 }

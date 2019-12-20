@@ -46,8 +46,8 @@ body {
 }
 
 .hide-icon {
-  display: inline-block;
-  margin-left: 5px;
+  float: left;
+  margin-right: 5px;
 }
 
 .header-overflow {
