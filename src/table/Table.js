@@ -101,27 +101,29 @@ export const TableButtonGroup = ({
   const actions = getActions(schema, modelName)
   const modalId = 'confirm-delete-' + modelName + parentFieldName + idx
   const id = node.id
-  return (<div className='btn-group'>
-    {
-      // If detailField is null then use the detailButton
-      R.isNil(detailField) && <DetailViewButton {...{ modelName, id: node.id }} />
-    }
-    {
-      editable && <RowEditButton {...{
-        schema,
-        modelName,
-        id: node.id,
-        node
-      }} />
-    }
-    {
-      deletable && <DeleteButton {...{
-        modalId,
-        onDeleteWarning: R.path(['delete', 'onDeleteWarning'], actions),
-        modelName,
-        id
-      }} />
-    }
+  return (<React.Fragment>
+    <div className='btn-group'>
+      {
+        // If detailField is null then use the detailButton
+        R.isNil(detailField) && <DetailViewButton {...{ modelName, id: node.id }} />
+      }
+      {
+        editable && <RowEditButton {...{
+          schema,
+          modelName,
+          id: node.id,
+          node
+        }} />
+      }
+      {
+        deletable && <DeleteButton {...{
+          modalId,
+          onDeleteWarning: R.path(['delete', 'onDeleteWarning'], actions),
+          modelName,
+          id
+        }} />
+      }
+    </div>
     { deletable &&
       <DeleteDetail {...{
         schema,
@@ -135,7 +137,7 @@ export const TableButtonGroup = ({
         customProps
       }} />
     }
-  </div>)
+  </React.Fragment>)
 }
 
 export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, modelStore, user, parentNode, customProps }) => {
