@@ -5,7 +5,7 @@ import { DefaultDetailAttribute } from './Detail'
 import { DefaultDetailTable } from './Detail'
 import { DefaultDetailTableTitleWrapper } from './Detail'
 import { DefaultIndexTitle } from './Index'
-import { DeleteButton } from './table/Table'
+import { DeleteButtonModal } from './table/Table'
 import Detail from './Detail'
 import { DetailCreateButton } from './Detail'
 import DetailLink from './DetailLink'
@@ -60,7 +60,7 @@ export { DefaultDetailAttribute }
 export { DefaultDetailTable }
 export { DefaultDetailTableTitleWrapper }
 export { DefaultIndexTitle }
-export { DeleteButton }
+export { DeleteButtonModal }
 export { Detail }
 export { DetailCreateButton }
 export { DetailLink }

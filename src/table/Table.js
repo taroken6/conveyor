@@ -35,7 +35,18 @@ export const DetailViewButton = ({ modelName, id }) => (
   >View</Link>
 )
 
-export const DeleteButton = ({
+const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
+  return (
+    <button
+      className='btn btn-sm btn-outline-danger'
+      data-toggle='modal'
+      data-target={'#' + modalId}
+      onClick={() => onDeleteWarning({ modelName, id })}
+    >Delete</button>
+  )
+}
+
+export const DeleteButtonModal = ({
   schema,
   modelName,
   id,
@@ -51,22 +62,16 @@ export const DeleteButton = ({
 
   return (
     <div>
-      <button
-        className='btn btn-sm btn-outline-danger'
-        data-toggle='modal'
-        data-target={'#' + modalId}
-        onClick={() => onDeleteWarning({ modelName, id })}
-      >Delete</button>
+      <DeleteButton {...{ modalId, onDeleteWarning, modelName, id }} />
       <DeleteDetail {...{
         schema,
         id,
         modalId,
-        title: 'Confirm Delete',
         modelName,
         onDelete,
         parentId,
         parentModelName,
-        modalStore: R.prop('Delete', modalData),
+        modalData,
         customProps
       }} />
     </div>
@@ -93,6 +98,9 @@ export const TableButtonGroup = ({
   onDelete,
   customProps
 }) => {
+  const actions = getActions(schema, modelName)
+  const modalId = 'confirm-delete-' + modelName + parentFieldName + idx
+  const id = node.id
   return (<div className='btn-group'>
     {
       // If detailField is null then use the detailButton
@@ -108,13 +116,21 @@ export const TableButtonGroup = ({
     }
     {
       deletable && <DeleteButton {...{
+        modalId,
+        onDeleteWarning: R.path(['delete', 'onDeleteWarning'], actions),
+        modelName,
+        id
+      }} />
+    }
+    { deletable &&
+      <DeleteDetail {...{
         schema,
+        id,
+        modalId,
         modelName,
         onDelete,
         parentId,
         parentModelName,
-        id: node.id,
-        modalId: 'confirm-delete-' + modelName + parentFieldName + idx,
         modalData,
         customProps
       }} />

@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import { Table, DeleteButton } from './table/Table'
+import { Table, DeleteButtonModal } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
 import Field, { getRelSchemaEntry } from './table/Field'
 import {
@@ -560,7 +560,7 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, cust
     <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
       { isDeletable({ schema, modelName, node, user, customProps }) &&
         <div className='float-right'>
-          <DeleteButton {...{
+          <DeleteButtonModal {...{
             schema,
             modelName,
             id: node.id,
