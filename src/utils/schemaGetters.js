@@ -108,6 +108,10 @@ export const getHasIndex = (schema, modelName) => {
   return R.propOr(true, 'hasIndex', getModel(schema, modelName))
 }
 
+export const getHasDetail = (schema, modelName) => {
+  return R.propOr(true, 'hasDetail', getModel(schema, modelName))
+}
+
 export const getSingleton = (schema, modelName) => {
   return R.propOr(false, 'singleton', getModel(schema, modelName))
 }
