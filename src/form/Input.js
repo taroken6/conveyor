@@ -69,7 +69,6 @@ const Input = ({
   const InputOverride = getInputOverride(schema, modelName, fieldName)
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
-  console.log('onMenuOpen', onMenuOpen)
   const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
 
   if (skipOverride(InputOverride)) {

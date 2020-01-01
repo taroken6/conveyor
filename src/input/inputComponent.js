@@ -515,7 +515,8 @@ export const InputCreatableStringSelect = ({
   customInput,
   customError,
   customLabel
-}) => (
+}) => {
+  return (
   <FormGroup
     labelStr={labelStr}
     htmlFor={id}
@@ -534,4 +535,4 @@ export const InputCreatableStringSelect = ({
       {...customInput}
     />
   </FormGroup>
-)
+)}

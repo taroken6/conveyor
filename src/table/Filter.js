@@ -346,8 +346,11 @@ export const FilterComp = ({
   if (R.isNil(fieldName) || R.isEmpty(fieldName)) {
     return <div className='ml-1 mt-1 filter-padded'>Select a field</div>
   }
+  console.log('filterInput', filterInput)
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
+  const actions = getActions(schema, modelName)
+  const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
@@ -369,6 +372,7 @@ export const FilterComp = ({
           onChange: onFilterChange,
           inline: true,
           selectOptions,
+          onMenuOpen,
           customInput: {
             placeholder: 'Enter value...',
           }
