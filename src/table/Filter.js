@@ -334,18 +334,6 @@ const FilterOptions = ({
   // case inputTypes.PHONE_TYPE:
   // case inputTypes.BOOLEAN_TYPE:
 
-const isDropdownField = ({ schema, modelName, fieldName }) => {
-  console.log('type', getInputType({ schema, modelName, fieldName }))
-  switch (getInputType({ schema, modelName, fieldName })) {
-    case inputTypes.CREATABLE_STRING_SELECT_TYPE:
-    case inputTypes.ENUM_TYPE:
-    case inputTypes.RELATIONSHIP_MULTIPLE:
-    case inputTypes.RELATIONSHIP_SINGLE:
-      return true
-    default:
-      return false
-  }
-}
 
 export const FilterComp = ({
   fieldName,
@@ -364,9 +352,6 @@ export const FilterComp = ({
   const operator = R.prop('operator', filterInput)
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
-  const field = R.pathOr({}, [modelName, 'fields', fieldName], schema)
-  console.log('value', value)
-  const inputValue = isDropdownField({ schema, modelName, fieldName }) ? value : { label: value, value }
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
