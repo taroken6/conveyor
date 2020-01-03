@@ -335,6 +335,7 @@ const FilterOptions = ({
   // case inputTypes.BOOLEAN_TYPE:
 
 const isDropdownField = ({ schema, modelName, fieldName }) => {
+  console.log('type', getInputType({ schema, modelName, fieldName }))
   switch (getInputType({ schema, modelName, fieldName })) {
     case inputTypes.CREATABLE_STRING_SELECT_TYPE:
     case inputTypes.ENUM_TYPE:
@@ -364,7 +365,8 @@ export const FilterComp = ({
   const actions = getActions(schema, modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   const field = R.pathOr({}, [modelName, 'fields', fieldName], schema)
-  const inputValue = isDropdownField({ schema, modelName, fieldName }) ? { label: value, value } : value
+  console.log('value', value)
+  const inputValue = isDropdownField({ schema, modelName, fieldName }) ? value : { label: value, value }
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
@@ -382,7 +384,7 @@ export const FilterComp = ({
           schema,
           modelName,
           fieldName,
-          value: inputValue,
+          value,
           onChange: onFilterChange,
           inline: true,
           selectOptions,
