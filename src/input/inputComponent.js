@@ -468,7 +468,7 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
     <Select
       className={className}
       classNamePrefix='select'
-      isClearable={isClearable}
+      isClearable={required ? false : isClearable}
       isMulti={isMulti}
       value={value}
       options={options}
