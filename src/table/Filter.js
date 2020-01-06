@@ -285,6 +285,10 @@ const enumOptions = [
   { label: 'Includes', value: 'INCLUDES' }
 ]
 
+const dateOptions = [
+  { label: 'Before', value: 'BEFORE' }
+]
+
 const FilterOptions = ({
   schema,
   modelName,
@@ -303,6 +307,9 @@ const FilterOptions = ({
       break;
     case inputTypes.ENUM_TYPE:
       options = enumOptions
+      break;
+    case inputTypes.DATE_TYPE:
+      options = dateOptions
       break;
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
