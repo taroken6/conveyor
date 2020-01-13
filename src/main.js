@@ -52,6 +52,7 @@ import { getRows } from './TreeTable'
 import { getOnChange } from './form/Input'
 import { isEditing } from './Edit'
 import { HideTableButton } from './Detail'
+import { getInputType } from './form/InputType'
 
 export { Index }
 export { Create }
@@ -107,3 +108,4 @@ export { getRows }
 export { getOnChange }
 export { isEditing }
 export { HideTableButton }
+export { getInputType }

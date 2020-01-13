@@ -22,7 +22,7 @@ export const THead = ({
 }) => {
   const actions = getActions(schema, modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
-  return(
+  return (
     <thead>
       <tr>
         {fieldOrder.map((fieldName, idx) => {
