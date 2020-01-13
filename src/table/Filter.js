@@ -285,6 +285,10 @@ const dateOptions = [
   { label: 'Before', value: 'BEFORE' }
 ]
 
+const booleanOptions = [
+  { label: 'Equals', value: 'EQUALS' }
+]
+
 const FilterOptions = ({
   schema,
   modelName,
@@ -306,6 +310,9 @@ const FilterOptions = ({
       break;
     case inputTypes.DATE_TYPE:
       options = dateOptions
+      break;
+    case inputTypes.BOOLEAN_TYPE:
+      options = booleanOptions
       break;
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
