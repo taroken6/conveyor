@@ -10,6 +10,7 @@
 -   Add ability to sort by clicking on field name or header #95
 -   Add table hide feature #109
 -   Give CreatableStringSelect input type className / classNamePrefix #121
+-   Changed Tooltip action model to modelName #122
 
 ## Version 1.4.0
 
