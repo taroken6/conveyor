@@ -359,7 +359,6 @@ export const FilterComp = ({
   }
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
-  const actions = getActions(schema, modelName)
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
