@@ -7,7 +7,6 @@ import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
 import { Modal } from '../Modal'
 import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
-import { isRel } from '../utils/isType'
 
 // todo: fix this
 // band-aid solution for filter types that are still broken;
@@ -361,7 +360,6 @@ export const FilterComp = ({
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
   const actions = getActions(schema, modelName)
-  const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
@@ -383,7 +381,6 @@ export const FilterComp = ({
           onChange: onFilterChange,
           inline: true,
           selectOptions,
-          onMenuOpen,
           customInput: {
             placeholder: 'Enter value...',
           }
