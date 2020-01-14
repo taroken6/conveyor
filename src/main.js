@@ -19,6 +19,7 @@ import { getField } from './utils/schemaGetters'
 import { getFieldLabel } from './utils/schemaGetters'
 import { getFields } from './utils/schemaGetters'
 import { getHasIndex } from './utils/schemaGetters'
+import { getHasDetail } from './utils/schemaGetters'
 import { getIndexFields } from './utils/schemaGetters'
 import { getModel } from './utils/schemaGetters'
 import { getModelLabel } from './utils/schemaGetters'
@@ -76,6 +77,7 @@ export { getField }
 export { getFieldLabel }
 export { getFields }
 export { getHasIndex }
+export { getHasDetail }
 export { getIndexFields }
 export { getModel }
 export { getModelLabel }
