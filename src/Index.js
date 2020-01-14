@@ -180,7 +180,15 @@ const Index = ({
     )
   }
 
+  const model = R.prop(modelName, schema)
+  if (R.isNil(model)) {
+    return null
+  }
+
   const IndexOverride = getIndexOverride(schema, modelName)
+  console.log('IndexOverride', IndexOverride)
+  console.log('modelName', modelName)
+  console.log('schema', schema)
   const IndexComponent = IndexOverride || DefaultIndex
   
   return skipOverride(IndexOverride) ? null : (
