@@ -248,7 +248,7 @@ export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   >Filter
     <ReactSVG
       src={`/static/img/filter.svg`}
-      className='header-icon ml-2'
+      className={`header-icon-${filtersAreActive ? 'active' : 'inactive'} ml-2`}
       svgStyle={{
         width: '12px',
         height: '12px',
@@ -359,6 +359,8 @@ export const FilterComp = ({
   }
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
+  const actions = getActions(schema, modelName)
+  const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
@@ -380,6 +382,7 @@ export const FilterComp = ({
           onChange: onFilterChange,
           inline: true,
           selectOptions,
+          onMenuOpen,
           customInput: {
             placeholder: 'Enter value...',
           }
