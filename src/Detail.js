@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import { Table, DeleteButtonModal } from './table/Table'
+import { DeleteButton, Table } from './table/Table'
 import { isOneToMany, isManyToMany } from './utils/isType'
 import Field, { getRelSchemaEntry } from './table/Field'
 import {
@@ -42,6 +42,7 @@ import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
 import ReactSVG from 'react-svg'
+import { DeleteDetail } from './delete/DeleteDetail'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -555,20 +556,24 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, cust
   const label = getDisplayValue({ schema, modelName, node, customProps })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
+  const onDeleteWarning = R.path(['delete', 'onDeleteWarning'], actions)
+  const modalId = 'confirm-delete-' + modelName
+  const id = R.prop('id', node)
   const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
   return (
     <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
       { isDeletable({ schema, modelName, node, user, customProps }) &&
         <div className='float-right'>
-          <DeleteButtonModal {...{
+          <DeleteButton {...{ modalId, onDeleteWarning, modelName, id }} />
+          <DeleteDetail {...{
             schema,
+            id,
+            modalId,
             modelName,
-            id: node.id,
             onDelete,
-            modalId: 'confirm-delete-' + modelName,
             modalData,
-            customProps }}
-          />
+            customProps
+          }} />
         </div>
       }
     </div>

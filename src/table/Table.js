@@ -35,7 +35,7 @@ export const DetailViewButton = ({ modelName, id }) => (
   >View</Link>
 )
 
-const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
+export const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
   return (
     <button
       className='btn btn-sm btn-outline-danger'
@@ -43,38 +43,6 @@ const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
       data-target={'#' + modalId}
       onClick={() => onDeleteWarning({ modelName, id })}
     >Delete</button>
-  )
-}
-
-export const DeleteButtonModal = ({
-  schema,
-  modelName,
-  id,
-  onDelete,
-  modalId,
-  parentId,
-  parentModelName,
-  modalData,
-  customProps
-}) => {
-  const actions = getActions(schema, modelName)
-  const onDeleteWarning = R.path(['delete', 'onDeleteWarning'], actions)
-
-  return (
-    <div>
-      <DeleteButton {...{ modalId, onDeleteWarning, modelName, id }} />
-      <DeleteDetail {...{
-        schema,
-        id,
-        modalId,
-        modelName,
-        onDelete,
-        parentId,
-        parentModelName,
-        modalData,
-        customProps
-      }} />
-    </div>
   )
 }
 
