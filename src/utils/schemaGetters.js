@@ -61,7 +61,7 @@ export const getField = (schema, modelName, fieldName) => (
 
 const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
-  return R.filter(fieldName => {
+  return R.filter(fieldName => { // here is where the error is happening
     let show
     switch (type) {
       case 'showCreate':

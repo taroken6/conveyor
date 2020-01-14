@@ -81,6 +81,7 @@ const DefaultIndex = ({
 
   const IndexTitle = IndexTitleOverride || DefaultIndexTitle
   const IndexPage = IndexPageOverride || Table
+  console.log('data', data)
 
   const fieldOrder = getIndexFields({
     schema,
