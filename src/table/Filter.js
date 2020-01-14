@@ -248,7 +248,7 @@ export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   >Filter
     <ReactSVG
       src={`/static/img/filter.svg`}
-      className='header-icon ml-2'
+      className={`header-icon-${filtersAreActive ? 'active' : 'inactive'} ml-2`}
       svgStyle={{
         width: '12px',
         height: '12px',

@@ -59,7 +59,7 @@ export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTable
   return (
     <ReactSVG
       src={`/static/img/${image}.svg`}
-      className='hide-icon'
+      className={`hide-icon-${hideTable ? 'angle-right' : 'angle-down'}`}
       onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
       svgStyle={{
         width: '20px',

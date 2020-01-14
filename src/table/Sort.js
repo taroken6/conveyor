@@ -7,9 +7,9 @@ import { getInputType } from '../form/InputType'
 
 // currency sort is not broken, but does not have adequate permissions check
 // and can give away cost info indirectly by sorting via cost value
-export const isSortable = ({schema, modelName, fieldName}) => {
+export const isSortable = ({ schema, modelName, fieldName }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
-   // todo: add back currency once sort permissions added
+  // todo: add back currency once sort permissions added
   return !(
     (inputType === inputTypes.CURRENCY_TYPE)
   )
@@ -38,7 +38,7 @@ export const getNextSortKey = (sortKey) => {
 }
 
 export const SortButton = ({ modelName, fieldName, onSort, sortKeyObj }) => {
-  let sortKey = undefined
+  let sortKey
   if (R.prop('fieldName', sortKeyObj) === fieldName) {
     sortKey = R.prop('sortKey', sortKeyObj)
   }
@@ -47,8 +47,8 @@ export const SortButton = ({ modelName, fieldName, onSort, sortKeyObj }) => {
   return (
     <ReactSVG
       src={`/static/img/${getSortIcon(sortKey)}.svg`}
-      className='header-icon'
-      svgStyle={{width: '20px', height: '20px', fill: fillColor}}
+      className={`header-icon-${sortKey ? 'active' : 'inactive'}`}
+      svgStyle={{ width: '20px', height: '20px', fill: fillColor }}
       onClick={() => onSort({
         modelName,
         fieldName,
