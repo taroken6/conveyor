@@ -5,7 +5,6 @@ import { DefaultDetailAttribute } from './Detail'
 import { DefaultDetailTable } from './Detail'
 import { DefaultDetailTableTitleWrapper } from './Detail'
 import { DefaultIndexTitle } from './Index'
-import { DeleteButton } from './table/Table'
 import Detail from './Detail'
 import { DetailCreateButton } from './Detail'
 import DetailLink from './DetailLink'
@@ -52,6 +51,8 @@ import { getRows } from './TreeTable'
 import { getOnChange } from './form/Input'
 import { isEditing } from './Edit'
 import { HideTableButton } from './Detail'
+import { DeleteDetail } from './delete/DeleteDetail'
+import { DeleteButton } from './table/Table'
 import { getInputType } from './form/InputType'
 
 export { Index }
@@ -61,7 +62,6 @@ export { DefaultDetailAttribute }
 export { DefaultDetailTable }
 export { DefaultDetailTableTitleWrapper }
 export { DefaultIndexTitle }
-export { DeleteButton }
 export { Detail }
 export { DetailCreateButton }
 export { DetailLink }
@@ -108,4 +108,6 @@ export { getRows }
 export { getOnChange }
 export { isEditing }
 export { HideTableButton }
+export { DeleteDetail }
+export { DeleteButton }
 export { getInputType }
