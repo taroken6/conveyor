@@ -9,6 +9,8 @@
 -   Consolidate filters into one panel #93
 -   Add ability to sort by clicking on field name or header #95
 -   Add table hide feature #109
+-   Fix broken filter rels #94
+-   Changed Tooltip action model to modelName #122
 
 ## Version 1.4.0
 

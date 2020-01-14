@@ -11,6 +11,7 @@ The schema utilized by the framework will be different than the existing schema 
       hasIndex: boolean #Whether the model should be included in an index page
       deletable: boolean or function #Whether the given field should be deletable
       creatable: boolean or function #Whether the given field should be creatable
+      singleton: boolean #Whether this model is singleton (display one instance only)
       createFieldOrder: #List or a function that returns a list of the order that the create fields display
       indexFieldOrder: #List or a function that returns a list of the order that the index fields display
       detailFieldOrder: #List or a function that returns a list of the order that the detail fields display
