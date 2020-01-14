@@ -40,12 +40,12 @@ body {
   margin-left: 10px;
 }
 
-.header-icon {
+.header-icon-active, .header-icon-inactive {
   float: right;
   margin-left: 2px;
 }
 
-.hide-icon {
+.hide-icon-angle-right, .hide-icon-angle-down {
   float: left;
   margin-right: 5px;
 }
