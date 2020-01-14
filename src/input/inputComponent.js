@@ -507,6 +507,7 @@ export const InputCreatableStringSelect = ({
   labelStr,
   id,
   error,
+  className,
   value,
   options,
   onChange,
@@ -526,6 +527,8 @@ export const InputCreatableStringSelect = ({
     customLabel={customLabel}
   >
     <CreatableSelect
+      className={className}
+      classNamePrefix='select'
       id={id}
       options={options}
       onChange={(selectedOption) => onChange(selectedOption.value)}
