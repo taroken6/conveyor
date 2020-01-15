@@ -81,7 +81,6 @@ const DefaultIndex = ({
 
   const IndexTitle = IndexTitleOverride || DefaultIndexTitle
   const IndexPage = IndexPageOverride || Table
-  console.log('data', data)
 
   const fieldOrder = getIndexFields({
     schema,
@@ -157,15 +156,6 @@ const Index = ({
   tableView,
   customProps
 }) => {
-  const model = R.prop(modelName, schema)
-  if (R.isNil(model)) {
-    return (
-      <div className='text-center mt-5'>
-        <h1>404 Not Found</h1>
-      </div>
-    )
-  }
-
   // if singleton, Index redirects to Detail pg
   if (getSingleton(schema, modelName)) {
     const singleton = R.last(data)
@@ -190,9 +180,6 @@ const Index = ({
   }
 
   const IndexOverride = getIndexOverride(schema, modelName)
-  console.log('IndexOverride', IndexOverride)
-  console.log('modelName', modelName)
-  console.log('schema', schema)
   const IndexComponent = IndexOverride || DefaultIndex
   
   return skipOverride(IndexOverride) ? null : (
