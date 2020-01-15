@@ -35,41 +35,14 @@ export const DetailViewButton = ({ modelName, id }) => (
   >View</Link>
 )
 
-export const DeleteButton = ({
-  schema,
-  modelName,
-  id,
-  onDelete,
-  modalId,
-  parentId,
-  parentModelName,
-  modalData,
-  customProps
-}) => {
-  const actions = getActions(schema, modelName)
-  const onDeleteWarning = R.path(['delete', 'onDeleteWarning'], actions)
-
+export const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
   return (
-    <div>
-      <button
-        className='btn btn-sm btn-outline-danger'
-        data-toggle='modal'
-        data-target={'#' + modalId}
-        onClick={() => onDeleteWarning({ modelName, id })}
-      >Delete</button>
-      <DeleteDetail {...{
-        schema,
-        id,
-        modalId,
-        title: 'Confirm Delete',
-        modelName,
-        onDelete,
-        parentId,
-        parentModelName,
-        modalStore: R.prop('Delete', modalData),
-        customProps
-      }} />
-    </div>
+    <button
+      className='btn btn-sm btn-outline-danger'
+      data-toggle='modal'
+      data-target={'#' + modalId}
+      onClick={() => onDeleteWarning({ modelName, id })}
+    >Delete</button>
   )
 }
 
@@ -93,33 +66,46 @@ export const TableButtonGroup = ({
   onDelete,
   customProps
 }) => {
-  return (<div className='btn-group'>
-    {
-      // If detailField is null then use the detailButton
-      R.isNil(detailField) && <DetailViewButton {...{ modelName, id: node.id }} />
-    }
-    {
-      editable && <RowEditButton {...{
+  const actions = getActions(schema, modelName)
+  const modalId = 'confirm-delete-' + modelName + parentFieldName + idx
+  const id = node.id
+  return (<React.Fragment>
+    <div className='btn-group'>
+      {
+        // If detailField is null then use the detailButton
+        R.isNil(detailField) && <DetailViewButton {...{ modelName, id: node.id }} />
+      }
+      {
+        editable && <RowEditButton {...{
+          schema,
+          modelName,
+          id: node.id,
+          node
+        }} />
+      }
+      {
+        deletable && <DeleteButton {...{
+          modalId,
+          onDeleteWarning: R.path(['delete', 'onDeleteWarning'], actions),
+          modelName,
+          id
+        }} />
+      }
+    </div>
+    { deletable &&
+      <DeleteDetail {...{
         schema,
-        modelName,
-        id: node.id,
-        node
-      }} />
-    }
-    {
-      deletable && <DeleteButton {...{
-        schema,
+        id,
+        modalId,
         modelName,
         onDelete,
         parentId,
         parentModelName,
-        id: node.id,
-        modalId: 'confirm-delete-' + modelName + parentFieldName + idx,
         modalData,
         customProps
       }} />
     }
-  </div>)
+  </React.Fragment>)
 }
 
 export const TableRowWithEdit = ({ modelName, fieldName, parentModelName, node, schema, detailField, editData, tooltipData, selectOptions, modelStore, user, parentNode, customProps }) => {

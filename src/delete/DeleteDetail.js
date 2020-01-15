@@ -134,13 +134,14 @@ export const DeleteDetail = ({
   modelName,
   id,
   modalId,
-  title,
+  title = 'Confirm Delete',
   onDelete,
-  modalStore,
+  modalData,
   parentModelName,
   parentId,
   customProps
 }) => {
+  const modalStore = R.prop('Delete', modalData)
   const actions = getActions(schema, modelName)
   const onCancelDelete = R.path(['delete', 'onCancelDelete'], actions)
   return (

@@ -5,7 +5,6 @@ import { DefaultDetailAttribute } from './Detail'
 import { DefaultDetailTable } from './Detail'
 import { DefaultDetailTableTitleWrapper } from './Detail'
 import { DefaultIndexTitle } from './Index'
-import { DeleteButton } from './table/Table'
 import Detail from './Detail'
 import { DetailCreateButton } from './Detail'
 import DetailLink from './DetailLink'
@@ -20,6 +19,7 @@ import { getField } from './utils/schemaGetters'
 import { getFieldLabel } from './utils/schemaGetters'
 import { getFields } from './utils/schemaGetters'
 import { getHasIndex } from './utils/schemaGetters'
+import { getHasDetail } from './utils/schemaGetters'
 import { getIndexFields } from './utils/schemaGetters'
 import { getModel } from './utils/schemaGetters'
 import { getModelLabel } from './utils/schemaGetters'
@@ -52,6 +52,8 @@ import { getRows } from './TreeTable'
 import { getOnChange } from './form/Input'
 import { isEditing } from './Edit'
 import { HideTableButton } from './Detail'
+import { DeleteDetail } from './delete/DeleteDetail'
+import { DeleteButton } from './table/Table'
 import { getInputType } from './form/InputType'
 
 export { Index }
@@ -61,7 +63,6 @@ export { DefaultDetailAttribute }
 export { DefaultDetailTable }
 export { DefaultDetailTableTitleWrapper }
 export { DefaultIndexTitle }
-export { DeleteButton }
 export { Detail }
 export { DetailCreateButton }
 export { DetailLink }
@@ -76,6 +77,7 @@ export { getField }
 export { getFieldLabel }
 export { getFields }
 export { getHasIndex }
+export { getHasDetail }
 export { getIndexFields }
 export { getModel }
 export { getModelLabel }
@@ -108,4 +110,6 @@ export { getRows }
 export { getOnChange }
 export { isEditing }
 export { HideTableButton }
+export { DeleteDetail }
+export { DeleteButton }
 export { getInputType }
