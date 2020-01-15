@@ -157,6 +157,15 @@ const Index = ({
   tableView,
   customProps
 }) => {
+  const model = R.prop(modelName, schema)
+  if (R.isNil(model)) {
+    return (
+      <div className='text-center mt-5'>
+        <h1>404 Not Found</h1>
+      </div>
+    )
+  }
+
   // if singleton, Index redirects to Detail pg
   if (getSingleton(schema, modelName)) {
     const singleton = R.last(data)
@@ -178,11 +187,6 @@ const Index = ({
         </h1>
       </div>
     )
-  }
-
-  const model = R.prop(modelName, schema)
-  if (R.isNil(model)) {
-    return null
   }
 
   const IndexOverride = getIndexOverride(schema, modelName)
