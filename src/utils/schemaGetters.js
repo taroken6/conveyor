@@ -61,7 +61,6 @@ export const getField = (schema, modelName, fieldName) => (
 
 const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
-  if (R.isNil(fieldOrder)) { return [] }
   return R.filter(fieldName => {
     let show
     switch (type) {

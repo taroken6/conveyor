@@ -5,7 +5,7 @@ import CreateButton from './CreateButton'
 import { FilterModal, FilterModalButton, isTableFilterable } from './table/Filter'
 import {
   getActions,
-  getHasIndex,
+  getHasIndex, getModel,
   getIndexFields, getModelLabel,
   getModelLabelPlural, getSingleton
 } from './utils/schemaGetters'
@@ -72,8 +72,8 @@ const DefaultIndex = ({
   tableView,
   customProps
 }) => {
-  if (!getHasIndex(schema, modelName)) {
-    return <Redirect to='/' />
+  if (!getHasIndex(schema, modelName) || R.isNil(getModel(schema, modelName))) {
+    return <Redirect to='/PageNotFound' />
   }
 
   const IndexTitleOverride = getIndexTitleOverride(schema, modelName)
