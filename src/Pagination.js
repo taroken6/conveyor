@@ -28,54 +28,61 @@ export const Pagination = ({ schema, modelName, tableView }) => {
   const paginationAmt = R.prop('paginationAmt', tableView)
   const lastIndex = Math.floor((totalDataLength - 1) / paginationAmt)
 
-  // get previous & last conditions
-  const hasPrevious = idx > 0
-  const hasLast = (lastIndex > 0) && (idx !== lastIndex)
+  // get previous & last conditions; 'lastIndex' can be NaN
+  const hasFirst = idx > 1
+  const hasPrev = idx > 0
+  const hasNext = (lastIndex > 0) && (idx < lastIndex)
+  const hasLast = (lastIndex > 0) && (idx < (lastIndex-1))
 
-  console.log('totalDataLength', totalDataLength)
-  console.log('lastIndex', lastIndex)
-  console.log('idx', idx)
-  console.log('hasPrev', hasPrevious)
-  console.log('hasLast', hasLast)
+  // number displayed to user
+  const displayIndex = idx + 1
 
   // no pagination
-  if (!hasPrevious && !hasLast) {
+  if (!hasFirst && !hasPrev && !hasNext && !hasLast) {
     return null
   }
 
-  //'←'
-  //'⇤'
-  //'→'
-  //'⇥'
-  //'«' ... '»'
-  //'‹' ... '›'
   return (
     <nav aria-label="Page navigation example">
       <ul className="pagination">
         {
-          hasPrevious && <PaginationLink {...{
+          hasFirst && <PaginationLink {...{
+            modelName,
+            changePage,
+            text: '«',
+            updatedPageIndex: (0)
+          }} />
+        }
+        {
+          hasPrev && <PaginationLink {...{
             modelName,
             changePage,
             text: '‹',
             updatedPageIndex: (idx - 1)
           }} />
         }
-
         {
           <PaginationLink {...{
             modelName,
             changePage,
-            text: `${idx}`,
+            text: `${displayIndex}`,
             updatedPageIndex: (idx)
           }} />
         }
-
         {
-          hasLast && <PaginationLink {...{
+          hasNext && <PaginationLink {...{
             modelName,
             changePage,
             text: '›',
             updatedPageIndex: (idx + 1)
+          }} />
+        }
+        {
+          hasLast && <PaginationLink {...{
+            modelName,
+            changePage,
+            text: '»',
+            updatedPageIndex: (lastIndex)
           }} />
         }
       </ul>
