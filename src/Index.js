@@ -17,6 +17,8 @@ import {
   getIndexPageOverride,
   skipOverride
 } from './Utils'
+import { Pagination } from './Pagination'
+import 'bootstrap'
 
 export const DefaultIndexTitle = ({
   schema,
@@ -138,6 +140,13 @@ const DefaultIndex = ({
           }}
         />
       )}
+      {
+        <Pagination {...{
+          schema,
+          modelName,
+          tableView
+        }} />
+      }
     </div>
   )
 }
@@ -181,7 +190,7 @@ const Index = ({
 
   const IndexOverride = getIndexOverride(schema, modelName)
   const IndexComponent = IndexOverride || DefaultIndex
-  
+
   return skipOverride(IndexOverride) ? null : (
     <IndexComponent
       {...{
