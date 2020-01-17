@@ -14,6 +14,7 @@
 -   Changed Tooltip action model to modelName #122
 -   Fix filter dropdown bug #124
 -   Give filter, hide, and sort icons unique classnames #120
+-   Add redirect to PageNotFound with bad url #123
 
 ## Version 1.4.0
 
