@@ -18,7 +18,6 @@ import {
   skipOverride
 } from './Utils'
 import { Pagination } from './Pagination'
-import 'bootstrap'
 
 export const DefaultIndexTitle = ({
   schema,
