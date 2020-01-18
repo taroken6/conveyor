@@ -1,6 +1,5 @@
 import React from 'react'
 import * as R from 'ramda'
-import 'bootstrap'
 import { getActions } from './utils/schemaGetters'
 
 const PaginationLink = ({ modelName, changePage, text, updatedPageIndex }) => {
