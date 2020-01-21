@@ -194,7 +194,6 @@ export const DefaultDetailAttribute = ({
               node,
               id,
               tooltipData,
-              showHeaders: false,
               customProps
             }} />
           }
@@ -423,7 +422,6 @@ export const DefaultDetailTable = ({
             tableView,
             hideTable,
             modalData,
-            showHeaders: false,
             customProps
           }}
         /> }
@@ -535,7 +533,6 @@ export const DefaultDetailTable = ({
             }),
             fieldOrder,
             user,
-            showHeaders: false,
             tableView,
             hideTable,
             modalData
