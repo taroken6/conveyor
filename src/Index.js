@@ -33,7 +33,7 @@ export const DefaultIndexTitle = ({
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
-  const filterable = isTableFilterable({ schema, modelName })
+  const filterable = isTableFilterable({ schema, modelName, user })
   const currentFilters = R.path(['filter', modelName], tableView)
   const filterOrder = R.path(['filterOrder', modelName], tableView)
   const filtersAreActive = R.path(['filtersAreActive', modelName], tableView)
@@ -49,7 +49,7 @@ export const DefaultIndexTitle = ({
         selectOptions,
         data,
         filterOrder,
-        filterInputs: currentFilters
+        filterInputs: currentFilters, user
       }}/>}
       <div className='float-right'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}

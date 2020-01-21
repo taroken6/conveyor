@@ -16,6 +16,8 @@
 -   Give filter, hide, and sort icons unique classnames #120
 -   Add pagination #126
 -   Hide table headers if empty #115
+-   Filterable and Sortable are bool or func; currency filterable now #129
+-   Table Header is no longer link #133
 
 ## Version 1.4.0
 

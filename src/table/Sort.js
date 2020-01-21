@@ -2,18 +2,6 @@ import React from 'react'
 import * as consts from '../consts'
 import * as R from 'ramda'
 import ReactSVG from 'react-svg'
-import { inputTypes } from '../consts'
-import { getInputType } from '../form/InputType'
-
-// currency sort is not broken, but does not have adequate permissions check
-// and can give away cost info indirectly by sorting via cost value
-export const isSortable = ({ schema, modelName, fieldName }) => {
-  const inputType = getInputType({ schema, modelName, fieldName })
-  // todo: add back currency once sort permissions added
-  return !(
-    (inputType === inputTypes.CURRENCY_TYPE)
-  )
-}
 
 const getSortIcon = (sortKey) => {
   switch (sortKey) {
