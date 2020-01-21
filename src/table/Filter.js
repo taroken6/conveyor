@@ -8,32 +8,31 @@ import FlexibleInput from '../input'
 import { Modal } from '../Modal'
 import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 
-// todo: fix this
-// band-aid solution for filter types that are still broken;
-// currency filter is not broken, but does not have adequate permissions check
-// and can give away cost info indirectly by filtering via cost value
 export const isFilterable = ({ schema, modelName, fieldName }) => {
+  const fieldFilterable = R.pathOr(true, [modelName, fieldName, 'filterable'], schema)
+  if (fieldFilterable === false) {
+    return false
+  }
   const inputType = getInputType({ schema, modelName, fieldName })
+  // these types don't work with magql
   return !(
     R.isNil(inputType) ||
-    (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) || // disabled for now
+    (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) ||
     (inputType === inputTypes.RELATIONSHIP_MULTIPLE) ||
     (inputType === inputTypes.PHONE_TYPE) ||
-    (inputType === inputTypes.ID_TYPE) ||
-    // todo: add back currency once filter permissions added
-    (inputType === inputTypes.CURRENCY_TYPE)
+    (inputType === inputTypes.ID_TYPE)
   )
 }
 
-export const isColFilterable = ({ schema, modelName, fieldName, filterable }) =>
-  filterable && isFilterable({ schema, modelName, fieldName })
-
 export const isTableFilterable = ({ schema, modelName }) => {
+  const tableFilterable = R.pathOr(true, [modelName, 'filterable'], schema)
+  if (tableFilterable === false) {
+    return false
+  }
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
-  const filterable = R.propOr(true, 'filterable', model)
   const boolList = R.map(fieldName =>
-    isColFilterable({ schema, modelName, fieldName, filterable }),
+    isFilterable({ schema, modelName, fieldName }),
     fieldOrder
   )
   return !R.isEmpty(R.filter(R.identity, boolList))

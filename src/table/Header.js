@@ -3,7 +3,7 @@ import { getFieldLabel, getActions, getField, getFieldConditions } from '../util
 import { showButtonColumn } from './Table'
 import * as R from 'ramda'
 import { isRel } from '../utils/isType'
-import { SortButton, isSortable } from './Sort'
+import { SortButton } from './Sort'
 import { shouldDisplay } from '../Utils'
 import { getNextSortKey } from './Sort.js'
 
@@ -46,9 +46,7 @@ export const THead = ({
 
           const isRelField = isRel(getField(schema, modelName, fieldName))
           const sortKeyObj = R.path(['sort', modelName], tableView)
-          const showSort = (
-            sortable && isSortable({schema, modelName, fieldName})
-          ) ? !isRelField : false
+          const showSort = sortable ? !isRelField : false
           const sortKey = R.prop('fieldName', sortKeyObj) === fieldName
             ? R.prop('sortKey', sortKeyObj) : undefined
           return (
