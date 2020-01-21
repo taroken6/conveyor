@@ -17,12 +17,8 @@ export const isFilterable = ({ schema, modelName, fieldName }) => {
   return !(
     R.isNil(inputType) ||
     (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) || // disabled for now
-    (inputType === inputTypes.ENUM_TYPE) ||
-    (inputType === inputTypes.RELATIONSHIP_SINGLE) ||
     (inputType === inputTypes.RELATIONSHIP_MULTIPLE) ||
-    (inputType === inputTypes.DATE_TYPE) ||
     (inputType === inputTypes.PHONE_TYPE) ||
-    (inputType === inputTypes.BOOLEAN_TYPE) ||
     (inputType === inputTypes.ID_TYPE) ||
     // todo: add back currency once filter permissions added
     (inputType === inputTypes.CURRENCY_TYPE)
@@ -252,7 +248,7 @@ export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   >Filter
     <ReactSVG
       src={`/static/img/filter.svg`}
-      className='header-icon ml-2'
+      className={`header-icon-${filtersAreActive ? 'active' : 'inactive'} ml-2`}
       svgStyle={{
         width: '12px',
         height: '12px',
@@ -273,7 +269,7 @@ const numberOptions = [
   { label: '=', value: 'eq' },
   { label: '!=', value: 'neq' },
   { label: '>', value: 'gt' },
-  { label: '>=', value: 'gte' },
+  { label: '>=', value: 'gte' }
 ]
 
 const relOptions = [
@@ -281,8 +277,15 @@ const relOptions = [
 ]
 
 const enumOptions = [
-  { label: 'Includes', value: 'INCLUDES' },
-  { label: 'Excludes', value: 'EXCLUDES' }
+  { label: 'Includes', value: 'INCLUDES' }
+]
+
+const dateOptions = [
+  { label: 'Before', value: 'BEFORE' }
+]
+
+const booleanOptions = [
+  { label: 'Equals', value: 'EQUALS' }
 ]
 
 const FilterOptions = ({
@@ -303,6 +306,12 @@ const FilterOptions = ({
       break;
     case inputTypes.ENUM_TYPE:
       options = enumOptions
+      break;
+    case inputTypes.DATE_TYPE:
+      options = dateOptions
+      break;
+    case inputTypes.BOOLEAN_TYPE:
+      options = booleanOptions
       break;
     case inputTypes.RELATIONSHIP_SINGLE:
     case inputTypes.RELATIONSHIP_MULTIPLE:
@@ -334,6 +343,7 @@ const FilterOptions = ({
   // case inputTypes.PHONE_TYPE:
   // case inputTypes.BOOLEAN_TYPE:
 
+
 export const FilterComp = ({
   fieldName,
   modelName,
@@ -349,6 +359,8 @@ export const FilterComp = ({
   }
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
+  const actions = getActions(schema, modelName)
+  const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
     <React.Fragment>
       <div className='filter-operator-dropdown'>
@@ -370,6 +382,7 @@ export const FilterComp = ({
           onChange: onFilterChange,
           inline: true,
           selectOptions,
+          onMenuOpen,
           customInput: {
             placeholder: 'Enter value...',
           }

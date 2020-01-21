@@ -108,6 +108,10 @@ export const getHasIndex = (schema, modelName) => {
   return R.propOr(true, 'hasIndex', getModel(schema, modelName))
 }
 
+export const getHasDetail = (schema, modelName) => {
+  return R.propOr(true, 'hasDetail', getModel(schema, modelName))
+}
+
 export const getSingleton = (schema, modelName) => {
   return R.propOr(false, 'singleton', getModel(schema, modelName))
 }
@@ -154,6 +158,14 @@ export const getFieldConditions = (schema, modelName, fieldName) => {
 // return null if no condition exists, to differentiate from boolean
 export const getFieldDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabled', getField(schema, modelName, fieldName))
+}
+
+export const getHideable = (schema, modelName, fieldName) => {
+  // cannot set default as false ("R.propOr(true...") because boolean always eval as true here
+  const hideable = R.prop('hideable', getField(schema, modelName, fieldName))
+  // by default, all fields hideable
+  if (hideable === undefined) { return true }
+  return hideable
 }
 
 export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
