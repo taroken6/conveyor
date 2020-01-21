@@ -23,7 +23,7 @@ export const Pagination = ({ schema, modelName, tableView }) => {
   const idx = R.pathOr(0, ['page', modelName], tableView)
 
   // get index of last hypothetical data point
-  const lastIndex = R.prop('lastIndexPagination', tableView)
+  const lastIndex = R.path(['lastIndexPagination', modelName], tableView)
 
   // get previous & last conditions; 'lastIndex' can be null or '0' value
   const hasFirst = idx > 1
