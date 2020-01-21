@@ -15,6 +15,7 @@
 -   Fix filter dropdown bug #124
 -   Give filter, hide, and sort icons unique classnames #120
 -   Add pagination #126
+-   Filterable and Sortable are bool or func; currency filterable now #129
 
 ## Version 1.4.0
 
