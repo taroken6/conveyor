@@ -9,12 +9,20 @@ import { Modal } from '../Modal'
 import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 
 const isFilterable = ({ schema, modelName, fieldName }) => {
+  // first check if can filter on field level
   const fieldFilterable = R.pathOr(true, [modelName, 'fields', fieldName, 'filterable'], schema)
   if (fieldFilterable === false) {
     return false
   }
+  // repeat above if 'fieldFilterable' is function
+  if (
+    R.type(fieldFilterable) === 'Function' &&
+    fieldFilterable({ schema, modelName, fieldName }) === false
+  ) {
+    return false
+  }
+  // next, filter out field types which don't work with magql
   const inputType = getInputType({ schema, modelName, fieldName })
-  // these types don't work with magql
   return !(
     R.isNil(inputType) ||
     (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) ||
@@ -25,10 +33,19 @@ const isFilterable = ({ schema, modelName, fieldName }) => {
 }
 
 export const isTableFilterable = ({ schema, modelName }) => {
+  // first check if can filter on model level
   const tableFilterable = R.pathOr(true, [modelName, 'filterable'], schema)
   if (tableFilterable === false) {
     return false
   }
+  // repeat above if 'tableFilterable' is function
+  if (
+    R.type(tableFilterable) === 'Function' &&
+    tableFilterable({ schema, modelName }) === false
+  ) {
+    return false
+  }
+  // next, check field level filter
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const boolList = R.map(fieldName =>
