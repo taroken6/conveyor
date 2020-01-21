@@ -59,6 +59,12 @@ export const DefaultIndexTitle = ({
   )
 }
 
+const PageNotFound = () => (
+  <div id='page-not-found' className='text-center mt-5'>
+    <h1>Page Not Found</h1>
+  </div>
+)
+
 const DefaultIndex = ({
   schema,
   modelName,
@@ -74,7 +80,7 @@ const DefaultIndex = ({
   customProps
 }) => {
   if (!getHasIndex(schema, modelName) || R.isNil(getModel(schema, modelName))) {
-    return <Redirect to='/PageNotFound' />
+    return <PageNotFound />
   }
 
   const IndexTitleOverride = getIndexTitleOverride(schema, modelName)
