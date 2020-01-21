@@ -369,8 +369,6 @@ export const DefaultDetailTable = ({
   const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
   const hideable = getHideable(schema, modelName, fieldName)
-  // console.log('fieldName', fieldName)
-  console.log(fieldName, data)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
