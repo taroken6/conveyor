@@ -15,6 +15,7 @@
 -   Fix filter dropdown bug #124
 -   Give filter, hide, and sort icons unique classnames #120
 -   Add pagination #126
+-   Hide table headers if empty #115
 
 ## Version 1.4.0
 
