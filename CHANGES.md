@@ -15,6 +15,7 @@
 -   Fix filter dropdown bug #124
 -   Give filter, hide, and sort icons unique classnames #120
 -   Add redirect to PageNotFound with bad url #123
+-   Add pagination #126
 
 ## Version 1.4.0
 
