@@ -21,7 +21,7 @@ export const THead = ({
   user
 }) => {
   // first check if sortable on model level
-  const tableSortable = isTableSortable({ schema, modelName, user })
+  const tableSortable = fromIndex && isTableSortable({ schema, modelName, user })
   const actions = getActions(schema, modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
   return (
