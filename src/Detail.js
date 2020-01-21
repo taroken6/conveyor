@@ -369,6 +369,8 @@ export const DefaultDetailTable = ({
   const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
   const hideable = getHideable(schema, modelName, fieldName)
+  // console.log('fieldName', fieldName)
+  console.log(fieldName, data)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -396,7 +398,9 @@ export const DefaultDetailTable = ({
           customProps
         }} />
         }
-        { skipOverride(ValueOverride) ? null: <DetailValue
+        { skipOverride(ValueOverride) ? null
+        : R.isNil(data) || R.isEmpty(data) ? <div className='mb-2'>N/A</div>
+        : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -509,7 +513,9 @@ export const DefaultDetailTable = ({
           hideTableChange,
           customProps
         }} /> }
-        { skipOverride(ValueOverride) ? null : <DetailValue
+        { skipOverride(ValueOverride) ? null
+        : R.isNil(data) || R.isEmpty(data) ? <div className='mb-2'>N/A</div>
+        : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,

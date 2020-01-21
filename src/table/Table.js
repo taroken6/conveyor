@@ -296,7 +296,6 @@ export const Table = ({
   user,
   hideTable,
   fromIndex,
-  showHeaders = true,
   customProps
 }) => {
   const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
