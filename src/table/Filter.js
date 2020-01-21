@@ -8,6 +8,7 @@ import FlexibleInput from '../input'
 import { Modal } from '../Modal'
 import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 
+// should not be used w/o checking 'isTableFilterable' as well (model level req)
 const isFilterable = ({ schema, modelName, fieldName, user }) => {
   // first check if can filter on field level
   const fieldFilterable = R.pathOr(true, [modelName, 'fields', fieldName, 'filterable'], schema)

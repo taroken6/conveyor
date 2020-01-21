@@ -4,7 +4,7 @@ import { showButtonColumn } from './Table'
 import * as R from 'ramda'
 import { isRel } from '../utils/isType'
 import { SortButton } from './Sort'
-import { shouldDisplay } from '../Utils'
+import {isSortable, isTableSortable, shouldDisplay} from '../Utils'
 import { getNextSortKey } from './Sort.js'
 
 export const THead = ({
@@ -16,10 +16,12 @@ export const THead = ({
   detailField,
   data,
   tableView,
-  sortable,
   fromIndex,
-  customProps
+  customProps,
+  user
 }) => {
+  // first check if sortable on model level
+  const tableSortable = isTableSortable({ schema, modelName, user })
   const actions = getActions(schema, modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
   return (
@@ -44,9 +46,9 @@ export const THead = ({
             }
           }
 
-          const isRelField = isRel(getField(schema, modelName, fieldName))
           const sortKeyObj = R.path(['sort', modelName], tableView)
-          const showSort = sortable ? !isRelField : false
+          // now check if field level is sortable as well
+          const showSort = tableSortable ? isSortable({ schema, modelName, fieldName, user }) : false
           const sortKey = R.prop('fieldName', sortKeyObj) === fieldName
             ? R.prop('sortKey', sortKeyObj) : undefined
           return (
