@@ -399,7 +399,7 @@ export const DefaultDetailTable = ({
         }} />
         }
         { skipOverride(ValueOverride) ? null
-        : R.isNil(data) || R.isEmpty(data) ? <div className='mb-2'>N/A</div>
+        : R.isNil(data) || R.isEmpty(data) ? <div className='mt-0 mb-2'>N/A</div>
         : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
@@ -514,7 +514,7 @@ export const DefaultDetailTable = ({
           customProps
         }} /> }
         { skipOverride(ValueOverride) ? null
-        : R.isNil(data) || R.isEmpty(data) ? <div className='mb-2'>N/A</div>
+        : R.isNil(data) || R.isEmpty(data) ? <div className='mt-0 mb-2'>N/A</div>
         : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
