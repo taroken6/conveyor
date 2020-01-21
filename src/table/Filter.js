@@ -8,8 +8,8 @@ import FlexibleInput from '../input'
 import { Modal } from '../Modal'
 import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 
-export const isFilterable = ({ schema, modelName, fieldName }) => {
-  const fieldFilterable = R.pathOr(true, [modelName, fieldName, 'filterable'], schema)
+const isFilterable = ({ schema, modelName, fieldName }) => {
+  const fieldFilterable = R.pathOr(true, [modelName, 'fields', fieldName, 'filterable'], schema)
   if (fieldFilterable === false) {
     return false
   }
