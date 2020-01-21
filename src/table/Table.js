@@ -298,7 +298,7 @@ export const Table = ({
   fromIndex,
   customProps
 }) => {
-  const allColFilterable = isTableFilterable({schema, modelName, tableView})
+  const allColFilterable = isTableFilterable({schema, modelName, user})
 
   if (!fromIndex && hideTable) {
     return null
