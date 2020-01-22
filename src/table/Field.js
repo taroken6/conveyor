@@ -26,7 +26,7 @@ const FieldString = ({ schema, modelName, fieldName, node }) => {
   const displayString = (R.isNil(value) || value === '') ? 'N/A' : value
 
   return (
-    <span>{displayString}</span>
+    <span className='text-area-display'>{displayString}</span>
   )
 }
 
