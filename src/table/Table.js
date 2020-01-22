@@ -27,6 +27,7 @@ import {
   getFieldErrorEdit
 } from '../Edit'
 import getDisplayValue from '../utils/getDisplayValue'
+import { IndexPagination } from '../Pagination'
 
 export const DetailViewButton = ({ modelName, id }) => (
   <Link
@@ -309,7 +310,10 @@ export const Table = ({
   const detailField = calcDetailField({schema, modelName, fieldOrder})
   const editable = isTableEditable({ schema, modelName, data, parentNode, user, fieldOrder, customProps })
 
+  const PaginationComponent = fromIndex ? IndexPagination : DetailPagination
+
   return (
+    <React.Fragment>
     <table className='table table-striped table-bordered table-hover'>
       <Head {...{
         schema,
@@ -349,5 +353,7 @@ export const Table = ({
         customProps
       }} />
     </table>
+    <PaginationComponent {...{ schema, modelName, tableView }} />
+    </React.Fragment>
   )
 }

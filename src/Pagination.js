@@ -15,16 +15,7 @@ const PaginationLink = ({ modelName, changePage, text, updatedPageIndex }) => {
   )
 }
 
-export const Pagination = ({ schema, modelName, tableView }) => {
-  const actions = getActions(schema, modelName)
-  const changePage = R.path(['tableOptions', 'changePage'], actions)
-
-  // current page idx
-  const idx = R.pathOr(0, ['page', modelName], tableView)
-
-  // get index of last hypothetical data point
-  const lastIndex = R.path(['lastIndexPagination', modelName], tableView)
-
+export const Pagination = ({ modelName, idx, lastIndex, changePage }) => {
   // get previous & last conditions; 'lastIndex' can be null or '0' value
   const hasFirst = idx > 1
   const hasPrev = idx > 0
@@ -86,3 +77,18 @@ export const Pagination = ({ schema, modelName, tableView }) => {
     </nav>
   )
 }
+
+export const IndexPagination = ({ schema, modelName, tableView }) => {
+  const actions = getActions(schema, modelName)
+  const changePage = R.path(['tableOptions', 'changePage'], actions)
+
+  // current page idx
+  const idx = R.pathOr(0, ['page', modelName], tableView)
+
+  // get index of last hypothetical data point
+  const lastIndex = R.path(['lastIndexPagination', modelName], tableView)
+
+  return <Pagination {...{ modelName, idx, lastIndex, changePage }} />
+}
+
+export const DetailPagination = ({ schema, modelName, tableView }) => {}
