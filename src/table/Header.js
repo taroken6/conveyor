@@ -91,7 +91,7 @@ export const Header = ({
   return (
     <div className='header'>
       <div className='title' >
-        <span>{title}</span>
+        <span className='header-title'>{title}</span>
       </div>
       <div className={'header-overflow'}>
         { showSort && <SortButton {...{ modelName, fieldName, onSort, sortKeyObj }} /> }
