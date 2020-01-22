@@ -395,9 +395,7 @@ export const DefaultDetailTable = ({
           customProps
         }} />
         }
-        { skipOverride(ValueOverride) ? null
-        : R.isNil(data) || R.isEmpty(data) ? <div className='mt-0 mb-2'>N/A</div>
-        : <DetailValue
+        { skipOverride(ValueOverride) ? null : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -509,9 +507,7 @@ export const DefaultDetailTable = ({
           hideTableChange,
           customProps
         }} /> }
-        { skipOverride(ValueOverride) ? null
-        : R.isNil(data) || R.isEmpty(data) ? <div className='mt-0 mb-2'>N/A</div>
-        : <DetailValue
+        { skipOverride(ValueOverride) ? null : <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
