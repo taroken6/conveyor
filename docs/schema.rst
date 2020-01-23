@@ -24,6 +24,8 @@ The schema utilized by the framework will be different than the existing schema 
       tableLinkField: "" #name of the field/column in a table that links to the detail page, a value of null means no link to the model should be displayed on a table
       displayField: "" #name of field that holds the data used to represent the instance when it is being displayed or referenced, defaults to "name" if left undefined, can also be a function that determines the value for any instance of the model
       fieldOrder: "" #List of ALL fields on a model in the order that they should be displayed on its own Detail and Index pages, also serves as a fall back if a different model is displaying this model without having specified the order in which the fields should be displayed.
+      filterable: bool or func #Whether the given table should be filterable (can be set on field lvl as well)
+      sortable: bool or func #Whether the given table should be sortable (can be set on field lvl as well)
       fields: {
         <fieldName>: {
           components: {
@@ -58,8 +60,8 @@ The schema utilized by the framework will be different than the existing schema 
           hideable: #bool; if table component can be hidden, have 'hide' button
           disabled: () => {} #bool or function #Whether field should be disabled or not,
           disabledDropDown: () => {} #function which filters out or disables drop down options,
-          sortable: boolean #Whether the given field should be sortable on tables
-          filterable: boolean #Whether the given field should be filterable on tables
+          sortable: bool or func #Whether the given field should be sortable on tables (can be set on table lvl as well)
+          filterable: bool or func #Whether the given field should be filterable on tables (can be set on table lvl as well)
           editable: boolean or function #Whether the given field should be editable
           showDetail: boolean or function #Whether the given field should be displayed on the detail page
           showIndex: boolean or function #Whether the given field should be displayed on the index page

@@ -14,6 +14,11 @@
 -   Changed Tooltip action model to modelName #122
 -   Fix filter dropdown bug #124
 -   Give filter, hide, and sort icons unique classnames #120
+-   Add pagination #126
+-   Hide table headers if empty #115
+-   Filterable and Sortable are bool or func; currency filterable now #129
+-   Table Header is no longer link #133
+-   Text area now correctly display new lines #132
 -   Use react-icons instead of react-svg #125
 
 ## Version 1.4.0

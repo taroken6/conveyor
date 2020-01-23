@@ -181,7 +181,15 @@ export const DefaultDetailAttribute = ({
         </dt>
         <dd className='col-sm-9'>
           {
-            skipOverride(ValueOverride) ? null : <DetailValue {...{ schema, modelName, fieldName, node, id, tooltipData, customProps }} />
+            skipOverride(ValueOverride) ? null : <DetailValue {...{
+              schema,
+              modelName,
+              fieldName,
+              node,
+              id,
+              tooltipData,
+              customProps
+            }} />
           }
           {editable &&
             <InlineEditButton {...{

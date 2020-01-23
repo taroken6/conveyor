@@ -298,21 +298,16 @@ export const Table = ({
   fromIndex,
   customProps
 }) => {
-  const filterable = R.pathOr(true, [modelName, 'filterable'], schema)
-  const allColFilterable = isTableFilterable({schema, modelName, tableView})
-
   if (!fromIndex && hideTable) {
     return null
   }
 
-  if (!allColFilterable && !data) { return <div>...Loading</div> }
-
-  if (!allColFilterable && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
+  if (!data) { return <div>...Loading</div> }
+  if (!fromIndex && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }
 
   const deletable = isTableDeletable({ schema, modelName, data, parentNode, user, customProps })
   const detailField = calcDetailField({schema, modelName, fieldOrder})
   const editable = isTableEditable({ schema, modelName, data, parentNode, user, fieldOrder, customProps })
-  const sortable = R.pathOr(true, [modelName, 'sortable'], schema)
 
   return (
     <table className='table table-striped table-bordered table-hover'>
@@ -325,11 +320,10 @@ export const Table = ({
         editable,
         detailField,
         selectOptions,
-        sortable,
-        filterable,
         tableView,
         fromIndex,
-        customProps
+        customProps,
+        user
       }} />
       <Body {...{
         schema,
