@@ -1,8 +1,7 @@
 import React from 'react'
 import * as consts from '../consts'
 import * as R from 'ramda'
-import ReactSVG from 'react-svg'
-import { inputTypes } from '../consts'
+import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa'
 import { getInputType } from '../form/InputType'
 
 // currency sort is not broken, but does not have adequate permissions check
@@ -11,18 +10,18 @@ export const isSortable = ({ schema, modelName, fieldName }) => {
   const inputType = getInputType({ schema, modelName, fieldName })
   // todo: add back currency once sort permissions added
   return !(
-    (inputType === inputTypes.CURRENCY_TYPE)
+    (inputType === consts.inputTypes.CURRENCY_TYPE)
   )
 }
 
 const getSortIcon = (sortKey) => {
   switch (sortKey) {
     case undefined:
-      return 'sort'
+      return FaSort
     case 'asc':
-      return 'sort-up'
+      return FaSortUp
     case 'desc':
-      return 'sort-down'
+      return FaSortDown
   }
 }
 
@@ -42,13 +41,13 @@ export const SortButton = ({ modelName, fieldName, onSort, sortKeyObj }) => {
   if (R.prop('fieldName', sortKeyObj) === fieldName) {
     sortKey = R.prop('sortKey', sortKeyObj)
   }
+  const SortIcon = getSortIcon(sortKey)
 
   const fillColor = sortKey ? 'lightgreen' : 'black'
   return (
-    <ReactSVG
-      src={`/static/img/${getSortIcon(sortKey)}.svg`}
+    <SortIcon
       className={`header-icon-${sortKey ? 'active' : 'inactive'}`}
-      svgStyle={{ width: '20px', height: '20px', fill: fillColor }}
+      color={fillColor}
       onClick={() => onSort({
         modelName,
         fieldName,

@@ -41,8 +41,8 @@ import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
-import ReactSVG from 'react-svg'
 import { DeleteDetail } from './delete/DeleteDetail'
+import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -56,17 +56,11 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
 )
 
 export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
-  const image = hideTable ? 'angle-right' : 'angle-down'
+  const HideTableIcon = hideTable ? FaAngleRight : FaAngleDown
   return (
-    <ReactSVG
-      src={`/static/img/${image}.svg`}
+    <HideTableIcon
       className={`hide-icon-${hideTable ? 'angle-right' : 'angle-down'}`}
       onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
-      svgStyle={{
-        width: '20px',
-        height: '20px',
-        fill: 'black'
-      }}
     />
   )
 }

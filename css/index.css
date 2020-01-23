@@ -36,18 +36,32 @@ body {
 
 .edit-icon {
   display: inline-block;
-  width: 25px;
+  height: 20px;
+  width: 20px;
   margin-left: 10px;
 }
 
+.filter-icon-active, .filter-icon-inactive {
+  height: 13px;
+  width: 13px;
+}
+
 .header-icon-active, .header-icon-inactive {
-  float: right;
   margin-left: 2px;
+  height: 20px;
+  width: 20px;
 }
 
 .hide-icon-angle-right, .hide-icon-angle-down {
-  float: left;
   margin-right: 5px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.tree-toggle-icon-angle-right, .tree-toggle-icon-angle-down {
+  height: 18px;
+  width: 18px;
 }
 
 .header-overflow {
@@ -60,12 +74,16 @@ body {
   fill: lightgreen;
   cursor: pointer;
 }
+
 .trash-icon {
   display: inline-block;
-  width: 16px;
+  height: 20px;
+  width: 20px;
   margin-left: 5px;
   fill: rgba(255, 64, 88, 1);
+  cursor: pointer;
 }
+
 .text-area {
     white-space: pre-wrap;
 }
@@ -81,11 +99,6 @@ body {
 
 .table-btn-padding {
   padding-bottom: 10px;
-}
-
-.svg-width-height {
-  width: 20px;
-  height: 20px;
 }
 
 .detail-edit {

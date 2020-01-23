@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import ReactSVG from 'react-svg'
+import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
 import { Tooltip } from 'react-tippy'
 
 export const toggleState = {
@@ -75,18 +75,16 @@ const ToggleContainer = ({ stateNode, toggleRow, children }) => {
 }
 
 const Toggle = ({ stateNode, toggleRow, iconPath }) => {
-  const svgStyle = { width: '18px', height: '18px' }
-
   let component
   switch (stateNode.toggle) {
     case toggleState.EXPAND:
-      component = <ReactSVG src={iconPath('angle-down')} svgStyle={svgStyle} />
+      component = <FaAngleDown className='tree-toggle-icon-angle-down' />
       break
     case toggleState.MINIMIZE:
-      component = <ReactSVG src={iconPath('angle-right')} svgStyle={svgStyle} />
+      component = <FaAngleRight className='tree-toggle-icon-angle-right' />
       break
     case toggleState.HIDDEN:
-      component = <ReactSVG src={iconPath('angle-right')} svgStyle={svgStyle} svgClassName='invisible' />
+      component = <FaAngleRight className='invisible' />
       break
   }
 
