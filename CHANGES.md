@@ -19,6 +19,7 @@
 -   Filterable and Sortable are bool or func; currency filterable now #129
 -   Table Header is no longer link #133
 -   Add pagination to detail page tables #127
+-   Text area now correctly display new lines #132
 
 ## Version 1.4.0
 
