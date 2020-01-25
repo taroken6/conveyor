@@ -180,8 +180,7 @@ const FlexibleInput = props => {
       break
 
     case inputTypes.DATE_TYPE:
-      // params['dateFormat'] = R.defaultTo('YYYY-MM-DD', params['dateFormat']) //todo: changed
-      // params['className'] = R.defaultTo('form-control', params['className']) //todo: changed
+      params['dateFormat'] = R.defaultTo('yyyy/MM/dd', params['dateFormat'])
       params['isClearable'] = R.defaultTo(true, params['isClearable'])
       break
 

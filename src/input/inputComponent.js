@@ -68,7 +68,7 @@ const CustomErrorComponent = ({ error, id }) =>
  */
 
 // TODO: get classname for invalid from new react-datepicker
-export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, className, isClearable, required, customInput, customError, customLabel }) => {
+export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, isClearable, required, customInput, customError, customLabel }) => {
   let date
   if (value) {
     date = new Date(value)
@@ -85,9 +85,8 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, cl
       <DatePicker
         placeholderText='Click to select a date'
         fixedHeight={true}
-        dateFormat={'yyyy/MM/dd'}
-        selected={date} // YYYY-MM-DD required for Date()
-        //className={`${className}${error ? ' is-invalid' : ''}`}
+        dateFormat={dateFormat}
+        selected={date} // yyyy/MM/dd required for Date()
         onChange={evt => {
           if (evt === undefined || evt === null) {
             return (onChange(null))
