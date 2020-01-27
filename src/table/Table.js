@@ -15,7 +15,6 @@ import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
 import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
 import { DeleteDetail } from '../delete/DeleteDetail'
-import { isTableFilterable } from './Filter'
 
 import {
   RowEditButton,
@@ -27,6 +26,7 @@ import {
   getFieldErrorEdit
 } from '../Edit'
 import getDisplayValue from '../utils/getDisplayValue'
+import { IndexPagination, DetailPagination } from '../Pagination'
 
 export const DetailViewButton = ({ modelName, id }) => (
   <Link
@@ -310,6 +310,7 @@ export const Table = ({
   const editable = isTableEditable({ schema, modelName, data, parentNode, user, fieldOrder, customProps })
 
   return (
+    <React.Fragment>
     <table className='table table-striped table-bordered table-hover'>
       <Head {...{
         schema,
@@ -349,5 +350,19 @@ export const Table = ({
         customProps
       }} />
     </table>
+    {fromIndex ?
+      <IndexPagination {...{
+        schema,
+        modelName,
+        tableView
+      }} /> :
+      <DetailPagination {...{
+        schema,
+        modelName: parentModelName,
+        fieldName: parentFieldName,
+        tableView
+      }} />
+    }
+    </React.Fragment>
   )
 }

@@ -37,7 +37,6 @@ export const RelTooltipContent = ({ data }) => {
 const RelTooltip = ({ schema, modelName, id, data, children }) => {
   const actions = getActions(schema, modelName)
   const tooltipOpened = R.path(['tooltip', 'onTooltipOpen'], actions)
-  // const formattedData =
   return <Tooltip
     useContext
     interactive
