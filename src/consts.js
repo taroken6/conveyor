@@ -29,20 +29,15 @@ export const inputTypes = {
   CURRENCY_TYPE,
   FILE_TYPE,
   SELECT_TYPE,
-  RELATIONSHIP_SINGLE: 'relSingle',
-  RELATIONSHIP_MULTIPLE: 'relMultiple',
   CREATABLE_STRING_SELECT_TYPE,
   PASSWORD_TYPE,
   RADIO_TYPE,
   ID_TYPE,
-  CHECKBOX_TYPE // not used
-}
-
-export const relInputTypes = {
-  ONE_TO_MANY_TYPE: 'OneToMany',
-  MANY_TO_ONE_TYPE: 'ManyToOne',
-  ONE_TO_ONE_TYPE: 'OneToOne',
-  MANY_TO_MANY_TYPE: 'ManyToMany'
+  CHECKBOX_TYPE, // not used
+  MANY_TO_ONE_TYPE: 'ManyToOne',  // single 'ToOne'
+  ONE_TO_ONE_TYPE: 'OneToOne',  // single 'ToOne'
+  ONE_TO_MANY_TYPE: 'OneToMany',  // multiple
+  MANY_TO_MANY_TYPE: 'ManyToMany' // multiple
 }
 
 export const ASC = 'asc'

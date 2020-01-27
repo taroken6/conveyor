@@ -54,7 +54,6 @@ import { isEditing } from './Edit'
 import { HideTableButton } from './Detail'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { DeleteButton } from './table/Table'
-import { getInputType } from './form/InputType'
 
 export { Index }
 export { Create }
@@ -112,4 +111,3 @@ export { isEditing }
 export { HideTableButton }
 export { DeleteDetail }
 export { DeleteButton }
-export { getInputType }

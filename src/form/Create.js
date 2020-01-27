@@ -6,7 +6,6 @@ import { getActions, getField, getCreateFields, getModelLabel, getFieldCondition
 import { Breadcrumbs } from './Breadcrumbs'
 import { getType } from '../utils/getType'
 import { isAutoFocusInput } from '../input/index'
-import { getInputType } from '../form/InputType'
 import { getCreateOverride, skipOverride, getCreateTitleOverride, getCreatePageOverride, shouldDisplay, isFieldDisabled } from '../Utils'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
@@ -113,7 +112,7 @@ const DefaultCreatePage = ({
           let autoFocus = false
           if (
             !autoFocusAdded &&
-            isAutoFocusInput(getInputType({ schema, modelName, fieldName }))
+            isAutoFocusInput(getType({ schema, modelName, fieldName }))
           ) {
             autoFocus = true
             autoFocusAdded = true
