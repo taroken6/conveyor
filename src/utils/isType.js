@@ -29,9 +29,9 @@ export const isPassword = field => R.prop('type', field) === 'password'
 
 // children relationship
 export const isOneToMany = (field) => {
-  return (R.pathOr(false, ['type', 'type'], field) === consts.relInputTypes.ONE_TO_MANY_TYPE)
+  return (R.pathOr(false, ['type', 'type'], field) === consts.inputTypes.ONE_TO_MANY_TYPE)
 }
 
 export const isManyToMany = (field) => {
-  return (R.pathOr(false, ['type', 'type'], field) === consts.relInputTypes.MANY_TO_MANY_TYPE)
+  return (R.pathOr(false, ['type', 'type'], field) === consts.inputTypes.MANY_TO_MANY_TYPE)
 }

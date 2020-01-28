@@ -176,7 +176,7 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
       return <FieldBoolean {...props} />
     case consts.inputTypes.CURRENCY_TYPE:
       return <FieldCurrency {...props} />
-    case consts.relInputTypes.MANY_TO_ONE_TYPE:
+    case consts.inputTypes.MANY_TO_ONE_TYPE:
       return <FieldToOne {...{
         ...props,
         node: R.prop(fieldName, node),
@@ -185,10 +185,10 @@ export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipDa
         fieldName,
         tooltipData
       }} />
-    case consts.relInputTypes.MANY_TO_MANY_TYPE:
-    case consts.relInputTypes.ONE_TO_MANY_TYPE:
+    case consts.inputTypes.MANY_TO_MANY_TYPE:
+    case consts.inputTypes.ONE_TO_MANY_TYPE:
       return <FieldToMany {...props} />
-    case consts.relInputTypes.ONE_TO_ONE_TYPE:
+    case consts.inputTypes.ONE_TO_ONE_TYPE:
       return <span>OneToOne</span>
     default:
       return <span>NO TYPE</span>
