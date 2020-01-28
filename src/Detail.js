@@ -365,7 +365,7 @@ export const DefaultDetailTable = ({
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
-  const hideTable = R.path(['hideTable', modelName, id, fieldName], tableView)
+  const hideTable = R.path([modelName, 'fields', fieldName, 'hideTable'], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
   const hideable = getHideable(schema, modelName, fieldName)
 
