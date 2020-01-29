@@ -46,7 +46,7 @@ export const THead = ({
             }
           }
 
-          const sortKeyObj = R.path(['sort', modelName], tableView)
+          const sortKeyObj = R.path([modelName, 'sort'], tableView)
           // now check if field level is sortable as well
           const showSort = tableSortable ? isSortable({ schema, modelName, fieldName, user }) : false
           const sortKey = R.prop('fieldName', sortKeyObj) === fieldName

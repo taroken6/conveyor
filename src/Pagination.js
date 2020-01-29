@@ -77,10 +77,10 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
   const onChangePage = R.path(['tableOptions', 'changePage'], actions)
 
   // current page idx
-  const idx = R.pathOr(0, ['page', modelName], tableView)
+  const idx = R.pathOr(0, [modelName, 'page', 'currentPage'], tableView)
 
   // get index of last hypothetical data point
-  const lastIndex = R.path(['lastIndexPagination', modelName], tableView)
+  const lastIndex = R.path([modelName, 'page', 'lastIndex'], tableView)
 
   return <Pagination {...{ modelName, idx, lastIndex, onChangePage }} />
 }
@@ -90,10 +90,10 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
   const onChangePage = R.path(['tableOptions', 'changeRelTablePage'], actions)
 
   // current page idx
-  const idx = R.pathOr(0, ['relTablePage', modelName, fieldName], tableView)
+  const idx = R.pathOr(0, [modelName, 'fields', fieldName, 'page', 'currentPage'], tableView)
 
   // get index of last hypothetical data point
-  const lastIndex = R.path(['lastIndexRelTablePagination', modelName, fieldName], tableView)
+  const lastIndex = R.path([modelName, 'fields', fieldName, 'page', 'lastIndex'], tableView)
 
   return <Pagination {...{ modelName, fieldName, idx, lastIndex, onChangePage }} />
 }
