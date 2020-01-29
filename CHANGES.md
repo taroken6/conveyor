@@ -14,6 +14,7 @@
 -   Changed Tooltip action model to modelName #122
 -   Fix filter dropdown bug #124
 -   Give filter, hide, and sort icons unique classnames #120
+-   Add redirect to PageNotFound with bad url #123
 -   Add pagination #126
 -   Hide table headers if empty #115
 -   Filterable and Sortable are bool or func; currency filterable now #129
