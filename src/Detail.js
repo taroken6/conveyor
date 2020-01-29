@@ -55,13 +55,13 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
-  const image = hideTable ? 'angle-right' : 'angle-down'
+export const HideTableButton = ({ modelName, fieldName, id, collapse, hideTableChange }) => {
+  const image = collapse ? 'angle-right' : 'angle-down'
   return (
     <ReactSVG
       src={`/static/img/${image}.svg`}
-      className={`hide-icon-${hideTable ? 'angle-right' : 'angle-down'}`}
-      onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
+      className={`hide-icon-${collapse ? 'angle-right' : 'angle-down'}`}
+      onClick={() => hideTableChange({ modelName, fieldName, id, collapse })}
       svgStyle={{
         width: '20px',
         height: '20px',
@@ -242,7 +242,7 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideable, hideTable, hideTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideable, collapse, hideTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
 
   return (
@@ -251,7 +251,7 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
         modelName,
         fieldName,
         id,
-        hideTable,
+        collapse,
         hideTableChange
       }}/>}
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
@@ -277,7 +277,7 @@ const DefaultDetailM2MTableTitle = ({
   targetModelName,
   user,
   hideable,
-  hideTable,
+  collapse,
   hideTableChange,
   customProps
 }) => {
@@ -290,7 +290,7 @@ const DefaultDetailM2MTableTitle = ({
           modelName,
           fieldName,
           id,
-          hideTable,
+          collapse,
           hideTableChange
         }}/>}
         {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
@@ -365,7 +365,7 @@ export const DefaultDetailTable = ({
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
-  const hideTable = R.path([modelName, 'fields', fieldName, 'hideTable'], tableView)
+  const collapse = R.path([modelName, 'fields', fieldName, 'collapse'], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
   const hideable = getHideable(schema, modelName, fieldName)
 
@@ -390,7 +390,7 @@ export const DefaultDetailTable = ({
           targetModelName,
           user,
           hideable,
-          hideTable,
+          collapse,
           hideTableChange,
           customProps
         }} />
@@ -418,7 +418,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             tableView,
-            hideTable,
+            collapse,
             modalData,
             customProps
           }}
@@ -503,7 +503,7 @@ export const DefaultDetailTable = ({
           targetModelName,
           user,
           hideable,
-          hideTable,
+          collapse,
           hideTableChange,
           customProps
         }} /> }
@@ -530,7 +530,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             tableView,
-            hideTable,
+            collapse,
             modalData
           }}
         /> }
