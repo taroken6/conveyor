@@ -242,12 +242,12 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideable, collapse, hideTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, collapsable, collapse, hideTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
 
   return (
     <DefaultDetailTableTitleWrapper>
-      {hideable && <HideTableButton {...{
+      {collapsable && <HideTableButton {...{
         modelName,
         fieldName,
         id,
@@ -276,7 +276,7 @@ const DefaultDetailM2MTableTitle = ({
   path,
   targetModelName,
   user,
-  hideable,
+  collapsable,
   collapse,
   hideTableChange,
   customProps
@@ -286,7 +286,7 @@ const DefaultDetailM2MTableTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>
-        {hideable && <HideTableButton {...{
+        {collapsable && <HideTableButton {...{
           modelName,
           fieldName,
           id,
@@ -367,7 +367,7 @@ export const DefaultDetailTable = ({
   const type = getType({ schema, modelName, fieldName })
   const collapse = R.path([modelName, 'fields', fieldName, 'collapse'], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
-  const hideable = getHideable(schema, modelName, fieldName)
+  const collapsable = getHideable(schema, modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -389,7 +389,7 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
-          hideable,
+          collapsable,
           collapse,
           hideTableChange,
           customProps
@@ -502,7 +502,7 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
-          hideable,
+          collapsable,
           collapse,
           hideTableChange,
           customProps
