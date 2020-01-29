@@ -55,13 +55,13 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-export const CollapseTableButton = ({ modelName, fieldName, id, collapse, hideTableChange }) => {
+export const CollapseTableButton = ({ modelName, fieldName, id, collapse, collapseTableChange }) => {
   const image = collapse ? 'angle-right' : 'angle-down'
   return (
     <ReactSVG
       src={`/static/img/${image}.svg`}
       className={`hide-icon-${collapse ? 'angle-right' : 'angle-down'}`}
-      onClick={() => hideTableChange({ modelName, fieldName, id, collapse })}
+      onClick={() => collapseTableChange({ modelName, fieldName, id, collapse })}
       svgStyle={{
         width: '20px',
         height: '20px',
@@ -242,7 +242,7 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, collapsable, collapse, hideTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, collapsable, collapse, collapseTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
 
   return (
@@ -252,7 +252,7 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
         fieldName,
         id,
         collapse,
-        hideTableChange
+        collapseTableChange
       }}/>}
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
@@ -278,7 +278,7 @@ const DefaultDetailM2MTableTitle = ({
   user,
   collapsable,
   collapse,
-  hideTableChange,
+  collapseTableChange,
   customProps
 }) => {
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
@@ -291,7 +291,7 @@ const DefaultDetailM2MTableTitle = ({
           fieldName,
           id,
           collapse,
-          hideTableChange
+          collapseTableChange
         }}/>}
         {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
       </h4>
@@ -366,7 +366,7 @@ export const DefaultDetailTable = ({
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
   const collapse = R.path([modelName, 'fields', fieldName, 'collapse'], tableView)
-  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
+  const collapseTableChange = R.path(['tableOptions', 'collapseTableChange'], actions)
   const collapsable = getCollapsable(schema, modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
@@ -391,7 +391,7 @@ export const DefaultDetailTable = ({
           user,
           collapsable,
           collapse,
-          hideTableChange,
+          collapseTableChange,
           customProps
         }} />
         }
@@ -504,7 +504,7 @@ export const DefaultDetailTable = ({
           user,
           collapsable,
           collapse,
-          hideTableChange,
+          collapseTableChange,
           customProps
         }} /> }
         { skipOverride(ValueOverride) ? null : <DetailValue
