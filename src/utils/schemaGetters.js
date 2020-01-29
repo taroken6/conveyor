@@ -160,7 +160,7 @@ export const getFieldDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabled', getField(schema, modelName, fieldName))
 }
 
-export const getHideable = (schema, modelName, fieldName) => {
+export const getCollapsable = (schema, modelName, fieldName) => {
   // cannot set default as false ("R.propOr(true...") because boolean always eval as true here
   const collapsable = R.prop('collapsable', getField(schema, modelName, fieldName))
   // by default, all fields collapsable

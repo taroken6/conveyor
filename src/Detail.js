@@ -19,7 +19,7 @@ import {
 import {
   getActions, getModelAttribute, getField,
   getDetailFields, getHasIndex, getModelLabel, getFieldLabel,
-  getFieldConditions, getHideable
+  getFieldConditions, getCollapsable
 } from './utils/schemaGetters'
 import { RecursiveTab } from './Tabs'
 import { getType } from './utils/getType'
@@ -55,7 +55,7 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-export const HideTableButton = ({ modelName, fieldName, id, collapse, hideTableChange }) => {
+export const CollapseTableButton = ({ modelName, fieldName, id, collapse, hideTableChange }) => {
   const image = collapse ? 'angle-right' : 'angle-down'
   return (
     <ReactSVG
@@ -247,7 +247,7 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
 
   return (
     <DefaultDetailTableTitleWrapper>
-      {collapsable && <HideTableButton {...{
+      {collapsable && <CollapseTableButton {...{
         modelName,
         fieldName,
         id,
@@ -286,7 +286,7 @@ const DefaultDetailM2MTableTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>
-        {collapsable && <HideTableButton {...{
+        {collapsable && <CollapseTableButton {...{
           modelName,
           fieldName,
           id,
@@ -367,7 +367,7 @@ export const DefaultDetailTable = ({
   const type = getType({ schema, modelName, fieldName })
   const collapse = R.path([modelName, 'fields', fieldName, 'collapse'], tableView)
   const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
-  const collapsable = getHideable(schema, modelName, fieldName)
+  const collapsable = getCollapsable(schema, modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
