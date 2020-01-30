@@ -19,7 +19,7 @@ import {
 import {
   getActions, getModelAttribute, getField,
   getDetailFields, getHasIndex, getModelLabel, getFieldLabel,
-  getFieldConditions, getHideable
+  getFieldConditions, getCollapsable
 } from './utils/schemaGetters'
 import { RecursiveTab } from './Tabs'
 import { getType } from './utils/getType'
@@ -55,13 +55,13 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   />
 )
 
-export const HideTableButton = ({ modelName, fieldName, id, hideTable, hideTableChange }) => {
-  const image = hideTable ? 'angle-right' : 'angle-down'
+export const CollapseTableButton = ({ modelName, fieldName, id, collapse, collapseTableChange }) => {
+  const image = collapse ? 'angle-right' : 'angle-down'
   return (
     <ReactSVG
       src={`/static/img/${image}.svg`}
-      className={`hide-icon-${hideTable ? 'angle-right' : 'angle-down'}`}
-      onClick={() => hideTableChange({ modelName, fieldName, id, hideTable })}
+      className={`hide-icon-${collapse ? 'angle-right' : 'angle-down'}`}
+      onClick={() => collapseTableChange({ modelName, fieldName, id, collapse })}
       svgStyle={{
         width: '20px',
         height: '20px',
@@ -242,17 +242,17 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, hideable, hideTable, hideTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, collapsable, collapse, collapseTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
 
   return (
     <DefaultDetailTableTitleWrapper>
-      {hideable && <HideTableButton {...{
+      {collapsable && <CollapseTableButton {...{
         modelName,
         fieldName,
         id,
-        hideTable,
-        hideTableChange
+        collapse,
+        collapseTableChange
       }}/>}
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
       { creatable && <DetailCreateButton {...{
@@ -276,9 +276,9 @@ const DefaultDetailM2MTableTitle = ({
   path,
   targetModelName,
   user,
-  hideable,
-  hideTable,
-  hideTableChange,
+  collapsable,
+  collapse,
+  collapseTableChange,
   customProps
 }) => {
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
@@ -286,12 +286,12 @@ const DefaultDetailM2MTableTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h4 className='d-inline'>
-        {hideable && <HideTableButton {...{
+        {collapsable && <CollapseTableButton {...{
           modelName,
           fieldName,
           id,
-          hideTable,
-          hideTableChange
+          collapse,
+          collapseTableChange
         }}/>}
         {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
       </h4>
@@ -365,9 +365,9 @@ export const DefaultDetailTable = ({
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
   const type = getType({ schema, modelName, fieldName })
-  const hideTable = R.path([modelName, 'fields', fieldName, 'hideTable'], tableView)
-  const hideTableChange = R.path(['tableOptions', 'hideTableChange'], actions)
-  const hideable = getHideable(schema, modelName, fieldName)
+  const collapse = R.path([modelName, 'fields', fieldName, 'collapse'], tableView)
+  const collapseTableChange = R.path(['tableOptions', 'collapseTableChange'], actions)
+  const collapsable = getCollapsable(schema, modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
@@ -389,9 +389,9 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
-          hideable,
-          hideTable,
-          hideTableChange,
+          collapsable,
+          collapse,
+          collapseTableChange,
           customProps
         }} />
         }
@@ -418,7 +418,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             tableView,
-            hideTable,
+            collapse,
             modalData,
             customProps
           }}
@@ -502,9 +502,9 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
-          hideable,
-          hideTable,
-          hideTableChange,
+          collapsable,
+          collapse,
+          collapseTableChange,
           customProps
         }} /> }
         { skipOverride(ValueOverride) ? null : <DetailValue
@@ -530,7 +530,7 @@ export const DefaultDetailTable = ({
             fieldOrder,
             user,
             tableView,
-            hideTable,
+            collapse,
             modalData
           }}
         /> }
