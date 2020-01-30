@@ -1,8 +1,12 @@
 # Conveyor Changelog
 
-## Version 1.5.0
+## Version 1.6.0
 
 ### Unreleased
+
+## Version 1.5.0
+
+### Released 1/30/20
 
 -   Add singleton feature #113
 -   Add disabled options dropdown #111
