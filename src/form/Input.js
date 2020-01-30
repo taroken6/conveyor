@@ -104,7 +104,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      node: R.path(['originData'], formStack),
+      node: R.path(['originNode'], formStack),
       customProps
     })
 
