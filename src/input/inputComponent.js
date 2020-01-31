@@ -1,11 +1,12 @@
 import React from 'react'
-import Select from 'react-select'
+import Select, { createFilter } from 'react-select'
 import CreatableSelect from "react-select/creatable"
 import DatePicker from 'react-datepicker'
 import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
+import { optimizeSelect } from '../utils/optimizeSelect'  
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)
 
@@ -476,6 +477,8 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
       id={id}
       onMenuOpen={onMenuOpen}
       noOptionsMessage={noOptionsMessage}
+      filterOption={createFilter({ ignoreAccents: false })}
+      components={optimizeSelect.components}
       {...customInput}
     />
   </FormGroup>
