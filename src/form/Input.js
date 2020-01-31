@@ -3,7 +3,6 @@
 import React from 'react'
 import * as R from 'ramda'
 import FlexibleInput from '../input/index'
-import { getInputType } from './InputType'
 import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable, skipOverride } from '../Utils'
 import {
@@ -13,6 +12,7 @@ import {
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
+import { getType } from '../utils/getType'
 
 export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, user, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
@@ -104,7 +104,7 @@ const Input = ({
       schema,
       modelName,
       fieldName,
-      node: R.path(['originData'], formStack),
+      node: R.path(['originNode'], formStack),
       customProps
     })
 
@@ -183,7 +183,7 @@ export const InputCore = ({
   onKeyDown,
   customProps
 }) => {
-  const inputType = getInputType({ schema, modelName, fieldName })
+  const inputType = getType({ schema, modelName, fieldName })
 
   const defaultHandleOnChange = getOnChange({ inputType, onChange, fieldName })
   const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
@@ -249,8 +249,10 @@ export const InputCore = ({
           }}
         />
       )
-    case inputTypes.RELATIONSHIP_SINGLE:
-    case inputTypes.RELATIONSHIP_MULTIPLE:
+    case inputTypes.ONE_TO_ONE_TYPE:
+    case inputTypes.MANY_TO_ONE_TYPE:
+    case inputTypes.ONE_TO_MANY_TYPE:
+    case inputTypes.MANY_TO_MANY_TYPE:
       options = getOptionsOverride({
         schema,
         modelName,
@@ -265,7 +267,10 @@ export const InputCore = ({
           {...{
             ...R.dissoc('type', defaultProps),
             type: inputTypes.SELECT_TYPE,
-            isMulti: inputType === inputTypes.RELATIONSHIP_MULTIPLE,
+            isMulti: (
+              inputType === inputTypes.ONE_TO_MANY_TYPE ||
+              inputType === inputTypes.MANY_TO_MANY_TYPE
+            ),
             customLabel,
             onMenuOpen: evt => onMenuOpen({ modelName, fieldName }),
             options

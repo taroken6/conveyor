@@ -294,11 +294,11 @@ export const Table = ({
   Head = THead,
   Body = TBody,
   user,
-  hideTable,
+  collapse,
   fromIndex,
   customProps
 }) => {
-  if (!fromIndex && hideTable) {
+  if (!fromIndex && collapse) {
     return null
   }
 

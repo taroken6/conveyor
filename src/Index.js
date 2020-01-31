@@ -5,7 +5,7 @@ import CreateButton from './CreateButton'
 import { FilterModal, FilterModalButton, isTableFilterable } from './table/Filter'
 import {
   getActions,
-  getHasIndex,
+  getHasIndex, getModel,
   getIndexFields, getModelLabel,
   getModelLabelPlural, getSingleton
 } from './utils/schemaGetters'
@@ -33,9 +33,9 @@ export const DefaultIndexTitle = ({
   const onClick = () => onCreateClick({ modelName, path })
   const creatable = isCreatable({ schema, modelName, data, user, customProps })
   const filterable = isTableFilterable({ schema, modelName, user })
-  const currentFilters = R.path(['filter', modelName], tableView)
-  const filterOrder = R.path(['filterOrder', modelName], tableView)
-  const filtersAreActive = R.path(['filtersAreActive', modelName], tableView)
+  const currentFilters = R.path([modelName, 'filter', 'filterValue'], tableView)
+  const filterOrder = R.path([modelName, 'filter', 'filterOrder'], tableView)
+  const filtersAreActive = R.path([modelName, 'filter', 'filtersAreActive'], tableView)
 
   return (
     <div style={{ marginBottom: '10px' }}>
@@ -58,6 +58,12 @@ export const DefaultIndexTitle = ({
   )
 }
 
+const PageNotFound = () => (
+  <div id='page-not-found' className='text-center mt-5'>
+    <h1>Page Not Found</h1>
+  </div>
+)
+
 const DefaultIndex = ({
   schema,
   modelName,
@@ -72,8 +78,8 @@ const DefaultIndex = ({
   tableView,
   customProps
 }) => {
-  if (!getHasIndex(schema, modelName)) {
-    return <Redirect to='/' />
+  if (!getHasIndex(schema, modelName) || R.isNil(getModel(schema, modelName))) {
+    return <PageNotFound />
   }
 
   const IndexTitleOverride = getIndexTitleOverride(schema, modelName)

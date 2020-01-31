@@ -7,6 +7,7 @@ import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
 import { Modal } from '../Modal'
 import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
+import { getType } from '../utils/getType'
 
 // should not be used w/o checking 'isTableFilterable' as well (model level req)
 const isFilterable = ({ schema, modelName, fieldName, user }) => {
@@ -23,11 +24,12 @@ const isFilterable = ({ schema, modelName, fieldName, user }) => {
     return false
   }
   // next, filter out field types which don't work with magql
-  const inputType = getInputType({ schema, modelName, fieldName })
+  const inputType = getType({ schema, modelName, fieldName })
   return !(
     R.isNil(inputType) ||
     (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) ||
-    (inputType === inputTypes.RELATIONSHIP_MULTIPLE) ||
+    (inputType === inputTypes.ONE_TO_MANY_TYPE) ||
+    (inputType === inputTypes.MANY_TO_MANY_TYPE) ||
     (inputType === inputTypes.PHONE_TYPE) ||
     (inputType === inputTypes.ID_TYPE)
   )
@@ -308,7 +310,7 @@ const FilterOptions = ({
   operator,
   onFilterDropdown
 }) => {
-  const inputType = getInputType({ schema, modelName, fieldName })
+  const inputType = getType({ schema, modelName, fieldName })
 
   let options
   switch (inputType) {
@@ -326,8 +328,10 @@ const FilterOptions = ({
     case inputTypes.BOOLEAN_TYPE:
       options = booleanOptions
       break;
-    case inputTypes.RELATIONSHIP_SINGLE:
-    case inputTypes.RELATIONSHIP_MULTIPLE:
+    case inputTypes.ONE_TO_ONE_TYPE:
+    case inputTypes.MANY_TO_ONE_TYPE:
+    case inputTypes.ONE_TO_MANY_TYPE:
+    case inputTypes.MANY_TO_MANY_TYPE:
       options = relOptions
       break;
     default:

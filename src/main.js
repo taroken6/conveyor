@@ -51,10 +51,9 @@ import { formatCSS } from './TreeTable'
 import { getRows } from './TreeTable'
 import { getOnChange } from './form/Input'
 import { isEditing } from './Edit'
-import { HideTableButton } from './Detail'
+import { CollapseTableButton } from './Detail'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { DeleteButton } from './table/Table'
-import { getInputType } from './form/InputType'
 
 export { Index }
 export { Create }
@@ -109,7 +108,6 @@ export { formatCSS }
 export { getRows }
 export { getOnChange }
 export { isEditing }
-export { HideTableButton }
+export { CollapseTableButton }
 export { DeleteDetail }
 export { DeleteButton }
-export { getInputType }
