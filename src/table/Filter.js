@@ -1,6 +1,7 @@
 import React from 'react'
 import { InputCore } from '../form/Input'
-import ReactSVG from 'react-svg'
+import { getInputType } from '../form/InputType'
+import { FaFilter } from 'react-icons/fa'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
@@ -260,18 +261,14 @@ export const FilterModal = ({
 
 export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   <button
-    className={'btn btn-sm btn-outline-primary'}
+    className='btn btn-sm btn-outline-primary'
     data-toggle='modal'
     data-target={'#filter-' + modelName}
-  >Filter
-    <ReactSVG
-      src={`/static/img/filter.svg`}
-      className={`header-icon-${filtersAreActive ? 'active' : 'inactive'} ml-2`}
-      svgStyle={{
-        width: '12px',
-        height: '12px',
-        fill: filtersAreActive ? 'lightgreen' : 'black'
-      }}
+  >
+    Filter
+    <FaFilter
+      className={`filter-icon-${filtersAreActive ? 'active' : 'inactive'} ml-2`}
+      color={filtersAreActive ? 'lightgreen' : 'black'}
     />
   </button>
 )

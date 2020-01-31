@@ -1,16 +1,16 @@
 import React from 'react'
 import * as consts from '../consts'
 import * as R from 'ramda'
-import ReactSVG from 'react-svg'
+import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa'
 
 const getSortIcon = (sortKey) => {
   switch (sortKey) {
     case undefined:
-      return 'sort'
+      return FaSort
     case 'asc':
-      return 'sort-up'
+      return FaSortUp
     case 'desc':
-      return 'sort-down'
+      return FaSortDown
   }
 }
 
@@ -30,13 +30,13 @@ export const SortButton = ({ modelName, fieldName, onSort, sortKeyObj }) => {
   if (R.prop('fieldName', sortKeyObj) === fieldName) {
     sortKey = R.prop('sortKey', sortKeyObj)
   }
+  const SortIcon = getSortIcon(sortKey)
 
   const fillColor = sortKey ? 'lightgreen' : 'black'
   return (
-    <ReactSVG
-      src={`/static/img/${getSortIcon(sortKey)}.svg`}
+    <SortIcon
       className={`header-icon-${sortKey ? 'active' : 'inactive'}`}
-      svgStyle={{ width: '20px', height: '20px', fill: fillColor }}
+      color={fillColor}
       onClick={() => onSort({
         modelName,
         fieldName,

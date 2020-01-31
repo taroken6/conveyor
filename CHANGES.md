@@ -25,6 +25,7 @@
 -   Table Header is no longer link #133
 -   Add pagination to detail page tables #127
 -   Text area now correctly display new lines #132
+-   Use react-icons instead of react-svg #125
 -   Set clearable to false if required, other set to isClearable #100
 -   Refactor 'inputTypes', delete 'getInputType' #138
 -   Refactor tableView structure to fit pagination #135
