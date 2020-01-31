@@ -2,24 +2,21 @@ import React from 'react'
 import * as R from 'ramda'
 import { getActions } from './utils/schemaGetters'
 import Input from './form/Input'
-import ReactSVG from 'react-svg'
+import { FaEdit } from 'react-icons/fa'
+import { MdDelete } from 'react-icons/md'
 import { Modal } from './Modal'
 
-export const InlineEditButton = ({ onEditClick }) =>
-  <ReactSVG
-    src='/static/img/edit.svg'
-    className='edit-icon'
-    svgStyle={{ width: '20px', height: '20px' }}
-    onClick={onEditClick}
-  />
+export const InlineEditButton = ({ onEditClick }) => (
+  <FaEdit className='edit-icon' onClick={onEditClick} />
+)
 
-export const FileDeleteIcon = ({ modalId }) =>
-  <ReactSVG
-    src='/static/img/trash-alt.svg'
+export const FileDeleteIcon = ({ modalId }) => (
+  <MdDelete
     className='trash-icon'
     data-toggle='modal'
     data-target={'#' + modalId}
   />
+)
 
 export const FileDelete = ({ id, fieldName, onFileDelete }) => {
   // do not begin modalId with number
