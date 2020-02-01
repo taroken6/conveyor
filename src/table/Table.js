@@ -27,6 +27,7 @@ import {
 } from '../Edit'
 import getDisplayValue from '../utils/getDisplayValue'
 import { IndexPagination, DetailPagination } from '../Pagination'
+import { getFieldOrderAlternate } from './FiledOrderAlter'
 
 export const DetailViewButton = ({ modelName, id }) => (
   <Link
@@ -301,6 +302,13 @@ export const Table = ({
   if (!fromIndex && collapse) {
     return null
   }
+  // column order can be altered by user
+  fieldOrder = getFieldOrderAlternate({
+    tableView,
+    modelName,
+    fieldName: parentFieldName,
+    fieldOrder
+  })
 
   if (!data) { return <div>...Loading</div> }
   if (!fromIndex && data.length === 0) { return <div style={{paddingBottom: '10px'}}>N/A</div> }

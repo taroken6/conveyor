@@ -43,6 +43,7 @@ import '../css/index.css'
 import { inputTypes } from './consts'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
+import { FieldOrderAlter } from './table/FiledOrderAlter'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -236,9 +237,9 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, collapsable, collapse, collapseTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, tableView, fieldOrder, collapsable, collapse, collapseTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
-
+  console.log('DefaultTableTitle:', modelName, fieldName, targetModelName)
   return (
     <DefaultDetailTableTitleWrapper>
       {collapsable && <CollapseTableButton {...{
@@ -256,6 +257,9 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
         targetInverseFieldName,
         node
       }} /> }
+      <FieldOrderAlter {...{
+        schema, modelName, fieldName, tableView, fieldOrder, node, customProps
+      }}/>
     </DefaultDetailTableTitleWrapper>
   )
 }
@@ -270,6 +274,8 @@ const DefaultDetailM2MTableTitle = ({
   path,
   targetModelName,
   user,
+  tableView,
+  fieldOrder,
   collapsable,
   collapse,
   collapseTableChange,
@@ -301,6 +307,9 @@ const DefaultDetailM2MTableTitle = ({
           targetModelName
         }} />
       </div>}
+      <FieldOrderAlter {...{
+        schema, modelName, fieldName, tableView, fieldOrder, node, customProps
+      }}/>
     </div>
   )
 }
@@ -383,6 +392,8 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
+          tableView,
+          fieldOrder,
           collapsable,
           collapse,
           collapseTableChange,
@@ -496,6 +507,8 @@ export const DefaultDetailTable = ({
           path,
           targetModelName,
           user,
+          tableView,
+          fieldOrder,
           collapsable,
           collapse,
           collapseTableChange,
