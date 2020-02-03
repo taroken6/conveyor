@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 import { FaListOl } from 'react-icons/fa'
 import { getActions, getFieldLabel } from '../utils/schemaGetters'
-import FlexibleInput from "../input";
+import FlexibleInput from '../input'
 import { inputTypes } from '../consts'
 
 
@@ -16,24 +16,21 @@ export const getFieldOrderAlternate = ({ tableView, modelName, fieldName=undefin
     console.log('===', modelName, fieldName, fieldOrder)
 
     // get form object from redux store; 'fieldName' indicates location
-    const fieldOrderValues = fieldName ?
+    const fieldOrderAltValues = fieldName ?
       R.pathOr([], [modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView) :
       R.pathOr([], [modelName, 'fieldOrderAlt'], tableView)
 
     // get fieldNames from form object
-    let alt = R.map(val => val.value, fieldOrderValues)
+    const alt = R.map(val => val.value, fieldOrderAltValues)
 
     // if the result is empty, return 'fieldOrder' as default
-    alt = R.isEmpty(alt) ? fieldOrder : alt
-
-    // return alternate fieldOrder list
-    return alt
+    return R.isEmpty(alt) ? fieldOrder : alt
 }
 
 export const FieldOrderAlterButton = ({
     active,
     options,
-    fieldOrderValues,
+    fieldOrderAltValues,
     fieldOrderChange,
     fieldOrderReset,
     modelName,
@@ -47,7 +44,7 @@ export const FieldOrderAlterButton = ({
             if (!active) {
                 return fieldOrderChange({
                     modelName, fieldName,
-                    fieldOrderValues: options
+                    fieldOrderAltValues: options
                 })
             }
             // otherwise, if already in the process, do nothing
@@ -59,12 +56,10 @@ export const FieldOrderAlterButton = ({
       <FlexibleInput
         {...{
           id: `fieldOrderAlt-input-${modelName}-${fieldName}`,
-          onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderValues: evt }),
-          value: fieldOrderValues,
+          onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAlt: evt }),
+          value: fieldOrderAltValues,
           type: inputTypes.SELECT_TYPE,
           isMulti: true,
-          // initially populate the field with
-          // onMenuOpen: evt => fieldOrderChange({ modelName, fieldName, fieldOrderValues: options }),
           options
         }}
       />
@@ -76,11 +71,11 @@ export const FieldOrderAlterDetail = ({ schema, modelName, fieldName, tableView,
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderDetailChange'], actions)
   const fieldOrderReset = R.path(['tableOptions', 'fieldOrderDetailReset'], actions)
-  const fieldOrderValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView)
+  const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView)
 
   return (<FieldOrderAlter {...{
     schema, modelName, fieldName, fieldOrder,
-    fieldOrderValues, fieldOrderChange, fieldOrderReset, node, customProps
+    fieldOrderAltValues, fieldOrderChange, fieldOrderReset, node, customProps
   }} />)
 }
 
@@ -89,11 +84,11 @@ export const FieldOrderAlterIndex = ({ schema, modelName, tableView, fieldOrder,
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
   const fieldOrderReset = R.path(['tableOptions', 'fieldOrderIndexReset'], actions)
-  const fieldOrderValues = R.path([modelName, 'fieldOrderAlt'], tableView)
+  const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt'], tableView)
 
   return (<FieldOrderAlter {...{
     schema, modelName, fieldOrder,
-    fieldOrderValues, fieldOrderChange, fieldOrderReset, node, customProps
+    fieldOrderAltValues, fieldOrderChange, fieldOrderReset, node, customProps
   }} />)
 }
 
@@ -103,14 +98,14 @@ export const FieldOrderAlter = ({
   modelName,
   fieldName,
   fieldOrder,
-  fieldOrderValues,
+  fieldOrderAltValues,
   fieldOrderChange,
   fieldOrderReset,
   node,
   customProps
 }) => {
     // if has values, display
-    const active = fieldOrderValues && !R.isEmpty(fieldOrderValues)
+    const active = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
 
     // todo: fix this it doesn't always get right name
     // get dropdown options
@@ -126,7 +121,7 @@ export const FieldOrderAlter = ({
         <FieldOrderAlterButton {...{
             active,
             options,
-            fieldOrderValues,
+            fieldOrderAltValues,
             fieldOrderChange,
             fieldOrderReset,
             modelName,

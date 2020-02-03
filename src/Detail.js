@@ -237,7 +237,7 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, tableView, fieldOrder, collapsable, collapse, collapseTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, tableView, fieldOrder, collapsable, collapse, collapseTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
   return (
     <DefaultDetailTableTitleWrapper>
