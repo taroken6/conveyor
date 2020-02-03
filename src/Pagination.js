@@ -20,18 +20,14 @@ const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageI
     onClick={() => onChangePage({
       modelName, fieldName, updatedPageIndex
     })}
-  >
-    {text}
-  </a>
+  >{text}</a>
   if (isNaN(text)) {
     return (
       <Tooltip
         html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
         delay={0}
         interactive
-      >
-        {link}
-      </Tooltip>
+      >{link}</Tooltip>
     )
   }
   return link
