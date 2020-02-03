@@ -41,8 +41,8 @@ import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
-import ReactSVG from 'react-svg'
 import { DeleteDetail } from './delete/DeleteDetail'
+import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -56,17 +56,11 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
 )
 
 export const CollapseTableButton = ({ modelName, fieldName, id, collapse, collapseTableChange }) => {
-  const image = collapse ? 'angle-right' : 'angle-down'
+  const CollapseTableIcon = collapse ? FaAngleDown : FaAngleDown
   return (
-    <ReactSVG
-      src={`/static/img/${image}.svg`}
+    <CollapseTableIcon
       className={`hide-icon-${collapse ? 'angle-right' : 'angle-down'}`}
       onClick={() => collapseTableChange({ modelName, fieldName, id, collapse })}
-      svgStyle={{
-        width: '20px',
-        height: '20px',
-        fill: 'black'
-      }}
     />
   )
 }

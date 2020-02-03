@@ -1,8 +1,12 @@
 # Conveyor Changelog
 
-## Version 1.5.0
+## Version 1.6.0
 
 ### Unreleased
+
+## Version 1.5.0
+
+### Released 1/30/20
 
 -   Add singleton feature #113
 -   Add disabled options dropdown #111
@@ -21,10 +25,12 @@
 -   Table Header is no longer link #133
 -   Add pagination to detail page tables #127
 -   Text area now correctly display new lines #132
+-   Use react-icons instead of react-svg #125
 -   Set clearable to false if required, other set to isClearable #100
 -   Refactor 'inputTypes', delete 'getInputType' #138
 -   Refactor tableView structure to fit pagination #135
 -   Add page number tooltips to pagination buttons #136
+-   Add search component #147
 
 ## Version 1.4.0
 
