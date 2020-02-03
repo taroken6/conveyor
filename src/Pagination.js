@@ -2,44 +2,27 @@ import React from 'react'
 import * as R from 'ramda'
 import { getActions } from './utils/schemaGetters'
 import { Tooltip } from 'react-tippy'
-import FlexibleInput from './input'
-import { inputTypes } from './consts'
-
-const TooltipContent = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
-  if (isNaN(text)) {
-    return <span>{`Page ${updatedPageIndex + 1}`}</span>
-  }
-  return (
-    <div>
-      Go to page:
-      <FlexibleInput
-        {...{
-          type: inputTypes.INT_TYPE
-        }}
-      />
-    </div>
-  )
-}
 
 const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
-  const content = <TooltipContent {...{ modelName, fieldName, onChangePage, text, updatedPageIndex }} />
-  return (
-    <Tooltip
-      html={content}
-      delay={0}
-      interactive
-    >
-      <a
-        className='page-link'
-        href='#'
-        onClick={() => onChangePage({
-          modelName, fieldName, updatedPageIndex
-        })}
+  const link = <a
+    className='page-link'
+    href='#'
+    onClick={() => onChangePage({
+      modelName, fieldName, updatedPageIndex
+    })}
+  >{text}</a>
+  if (isNaN(text)) {
+    return (
+      <Tooltip
+        html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
+        delay={0}
+        interactive
       >
-        {text}
-      </a>
-    </Tooltip>
-  )
+        {link}
+      </Tooltip>
+    )
+  }
+  return link
 }
 
 export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChangePage }) => {
