@@ -97,8 +97,7 @@ export const getCreateFields = ({ schema, modelName, formStack, user, customProp
   const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', user, customProps })
   if (R.type(createFieldOrder) === 'Function') {
     return createFieldOrder({ schema, modelName, formStack, user, defaultOrder, customProps })
-  }
-  else if (R.type(createFieldOrder) === 'Array') {
+  } else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
   }
   return defaultOrder
@@ -121,8 +120,7 @@ export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   const defaultOrder = getShownFields({ schema, modelName, type: 'showDetail', node, customProps })
   if (R.type(detailFieldOrder) === 'Function') {
     return detailFieldOrder({ schema, modelName, node, defaultOrder, customProps })
-  }
-  else if (R.type(detailFieldOrder) === 'Array') {
+  } else if (R.type(detailFieldOrder) === 'Array') {
     return detailFieldOrder
   }
   return defaultOrder
@@ -133,11 +131,35 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
   const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, user, customProps })
   if (R.type(indexFieldOrder) === 'Function') {
     return indexFieldOrder({ schema, modelName, data, user, defaultOrder, customProps })
-  }
-  else if (R.type(indexFieldOrder) === 'Array') {
+  } else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
   }
   return defaultOrder
+}
+
+export const getFooterFields = ({ schema, modelName, fieldName, customProps }) => {
+  const footerFieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
+  const defaultOrder = getShownFooters({ schema, modelName, type: 'summable', fieldName, customProps })
+  if (R.type(footerFieldOrder) === 'Function') {
+    return footerFieldOrder({ schema, modelName, fieldName, defaultOrder, customProps })
+  } else if (R.type(footerFieldOrder) === 'Array') {
+    return footerFieldOrder
+  }
+  return defaultOrder
+}
+
+export const getShownFooters = ({ schema, modelName, type, data, user, customProps }) => {
+  const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
+
+  return R.filter(fieldName => {
+    let show = R.propOr(false, type, getField(schema, modelName, fieldName))
+
+    if (R.type(show) === 'Function') {
+      show = show({ schema, modelName, type, data, user, customProps })
+    }
+
+    return show
+  }, fieldOrder)
 }
 
 export const getTooltipFields = (schema, modelName, customProps = null) => {
@@ -164,7 +186,7 @@ export const getCollapsable = (schema, modelName, fieldName) => {
   // cannot set default as false ("R.propOr(true...") because boolean always eval as true here
   const collapsable = R.prop('collapsable', getField(schema, modelName, fieldName))
   // by default, all fields collapsable
-  if (collapsable === undefined) { return true }
+  if (collapsable === undefined) {return true}
   return collapsable
 }
 
@@ -172,7 +194,7 @@ export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
 
-export const getOptionsOverride = ({schema, modelName, fieldName, options, formStack, value, modelStore }) => {
+export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, modelStore }) => {
   const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
   if (disabledDropDownCond) {
     options = disabledDropDownCond({

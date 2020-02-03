@@ -1,26 +1,18 @@
 import * as R from 'ramda'
-import {
-  getField, getFieldDisableCondition,
-  getModel
-} from './utils/schemaGetters'
-import {getType} from "./utils/getType";
-import {isRel} from "./utils/isType";
+import { getField, getFieldDisableCondition, getModel } from './utils/schemaGetters'
+import { getType } from './utils/getType'
+import { isRel, isCurrency } from './utils/isType'
 
-export const capitalizeFirstChar = (str) => str.replace(/^./, str => str.toUpperCase())
+export const capitalizeFirstChar = str => str.replace(/^./, str => str.toUpperCase())
 
-export const spaceOnCapitalLetter = (str) => str.replace(/([A-Z])/g, ' $1')
+export const spaceOnCapitalLetter = str => str.replace(/([A-Z])/g, ' $1')
 
-export const underscoreToSpace = (str) => str.replace(/_/g, ' ')
+export const underscoreToSpace = str => str.replace(/_/g, ' ')
 
-export const trimWhitespaceBetweenWords = (str) => str.replace(/\s\s+/g, ' ')
+export const trimWhitespaceBetweenWords = str => str.replace(/\s\s+/g, ' ')
 
-export const humanize = str => R.pipe(
-  spaceOnCapitalLetter,
-  capitalizeFirstChar,
-  underscoreToSpace,
-  trimWhitespaceBetweenWords,
-  R.trim
-)(str)
+export const humanize = str =>
+  R.pipe(spaceOnCapitalLetter, capitalizeFirstChar, underscoreToSpace, trimWhitespaceBetweenWords, R.trim)(str)
 
 export const titleize = title => {
   let strArr = title.split(' ')
@@ -30,64 +22,43 @@ export const titleize = title => {
   return strArr.join(' ')
 }
 
-export const getCellOverride = (schema, modelName, fieldName) => (
+export const getCellOverride = (schema, modelName, fieldName) =>
   R.path([modelName, 'fields', fieldName, 'components', 'cell'], schema)
-)
 
-export const getDetailFieldOverride = (schema, modelName, fieldName) => (
+export const getDetailFieldOverride = (schema, modelName, fieldName) =>
   R.path([modelName, 'fields', fieldName, 'components', 'detail'], schema)
-)
 
-export const getDetailLabelOverride = (schema, modelName, fieldName) => (
+export const getDetailLabelOverride = (schema, modelName, fieldName) =>
   R.path([modelName, 'fields', fieldName, 'components', 'detailLabel'], schema)
-)
 
-export const getDetailValueOverride = (schema, modelName, fieldName) => (
+export const getDetailValueOverride = (schema, modelName, fieldName) =>
   R.path([modelName, 'fields', fieldName, 'components', 'detailValue'], schema)
-)
 
-export const getInputOverride = (schema, modelName, fieldName) => (
+export const getInputOverride = (schema, modelName, fieldName) =>
   R.path([modelName, 'fields', fieldName, 'components', 'input'], schema)
-)
 
-export const getCreateOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'create'], schema)
-)
+export const getCreateOverride = (schema, modelName) => R.path([modelName, 'components', 'create'], schema)
 
-export const getCreateTitleOverride = (schema, modelName) => (
+export const getCreateTitleOverride = (schema, modelName) =>
   R.path([modelName, 'components', 'createTitle'], schema)
-)
 
-export const getCreatePageOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'createPage'], schema)
-)
+export const getCreatePageOverride = (schema, modelName) => R.path([modelName, 'components', 'createPage'], schema)
 
-export const getDetailOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'detail'], schema)
-)
+export const getDetailOverride = (schema, modelName) => R.path([modelName, 'components', 'detail'], schema)
 
-export const getDetailTitleOverride = (schema, modelName) => (
+export const getDetailTitleOverride = (schema, modelName) =>
   R.path([modelName, 'components', 'detailTitle'], schema)
-)
 
-export const getDetailPageOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'detailPage'], schema)
-)
+export const getDetailPageOverride = (schema, modelName) => R.path([modelName, 'components', 'detailPage'], schema)
 
-export const getIndexOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'index'], schema)
-)
+export const getIndexOverride = (schema, modelName) => R.path([modelName, 'components', 'index'], schema)
 
-export const getIndexTitleOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'indexTitle'], schema)
-)
+export const getIndexTitleOverride = (schema, modelName) => R.path([modelName, 'components', 'indexTitle'], schema)
 
-export const getIndexPageOverride = (schema, modelName) => (
-  R.path([modelName, 'components', 'indexPage'], schema)
-)
+export const getIndexPageOverride = (schema, modelName) => R.path([modelName, 'components', 'indexPage'], schema)
 
 // override component skipped only if 'null' (undefined by default)
-export const skipOverride = (component) => component === null
+export const skipOverride = component => component === null
 
 export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
   if (value === null) {
@@ -108,16 +79,18 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
  */
 
 export const isTableEditable = ({ schema, modelName, data, user, parentNode, fieldOrder, customProps }) => {
-  return (
-    !R.isEmpty(data.filter(node => isRowEditable({
-      schema,
-      modelName,
-      user,
-      node,
-      parentNode,
-      fieldOrder,
-      customProps
-    })))
+  return !R.isEmpty(
+    data.filter(node =>
+      isRowEditable({
+        schema,
+        modelName,
+        user,
+        node,
+        parentNode,
+        fieldOrder,
+        customProps
+      })
+    )
   )
 }
 
@@ -128,16 +101,18 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, user, field
   }
   for (const index in fieldOrder) {
     const fieldName = R.prop(index, fieldOrder)
-    if (isFieldEditable({
-      schema,
-      modelName,
-      fieldName,
-      node,
-      parentNode,
-      user,
-      fieldOrder,
-      customProps
-    })) {
+    if (
+      isFieldEditable({
+        schema,
+        modelName,
+        fieldName,
+        node,
+        parentNode,
+        user,
+        fieldOrder,
+        customProps
+      })
+    ) {
       return true
     }
   }
@@ -156,15 +131,17 @@ export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode
 }
 
 export const isTableDeletable = ({ schema, modelName, data, parentNode, user, customProps }) => {
-  return (
-    !R.isEmpty(data.filter(node => isDeletable({
-      schema,
-      modelName,
-      node,
-      parentNode,
-      user,
-      customProps
-    })))
+  return !R.isEmpty(
+    data.filter(node =>
+      isDeletable({
+        schema,
+        modelName,
+        node,
+        parentNode,
+        user,
+        customProps
+      })
+    )
   )
 }
 
@@ -190,11 +167,11 @@ export const isCreatable = ({ schema, modelName, user, parentNode, data, customP
   }
 }
 
-export const shouldDisplay = ({schema, modelName, id, fieldName, node, displayCondition, customProps}) => {
+export const shouldDisplay = ({ schema, modelName, id, fieldName, node, displayCondition, customProps }) => {
   if (R.type(displayCondition) === 'Boolean') {
     return displayCondition
   } else if (R.type(displayCondition) === 'Function') {
-    return displayCondition({schema, modelName, id, fieldName, node, customProps})
+    return displayCondition({ schema, modelName, id, fieldName, node, customProps })
   } else {
     return true
   }
@@ -223,7 +200,7 @@ export const isFieldDisabled = ({ schema, modelName, fieldName, formStack, custo
   const disableCondition = getFieldDisableCondition(schema, modelName, fieldName)
 
   if (R.type(disableCondition) === 'Function') {
-    return disableCondition({schema, modelName, fieldName, formStack, defaultDisable, customProps})
+    return disableCondition({ schema, modelName, fieldName, formStack, defaultDisable, customProps })
   }
   if (R.type(disableCondition) === 'Boolean') {
     return disableCondition
@@ -240,10 +217,7 @@ export const isSortable = ({ schema, modelName, fieldName, user }) => {
     return false
   }
   // repeat above if 'fieldSortable' is function
-  if (
-    R.type(fieldSortable) === 'Function' &&
-    fieldSortable({ schema, modelName, fieldName, user }) === false
-  ) {
+  if (R.type(fieldSortable) === 'Function' && fieldSortable({ schema, modelName, fieldName, user }) === false) {
     return false
   }
   // by default, all non-rel fields are sortable
@@ -257,18 +231,25 @@ export const isTableSortable = ({ schema, modelName, user }) => {
     return false
   }
   // repeat above if 'tableSortable' is function
-  if (
-    R.type(tableSortable) === 'Function' &&
-    tableSortable({ schema, modelName, user }) === false
-  ) {
+  if (R.type(tableSortable) === 'Function' && tableSortable({ schema, modelName, user }) === false) {
     return false
   }
   // next, check field level sort
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
-  const boolList = R.map(fieldName =>
-    isSortable({ schema, modelName, fieldName, user }),
-    fieldOrder
-  )
+  const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, user }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
+}
+
+export const isSummable = ({ schema, modelName, fieldName, user }) => {
+  const fieldSummable = R.pathOr(false, [modelName, 'fields', fieldName, 'summable'], schema)
+
+  if (fieldSummable === false) {
+    return false
+  }
+  if (R.type(fieldSummable) === 'Function' && fieldSummable({ schema, modelName, fieldName, user }) === false) {
+    return false
+  }
+  // by default, all currency fields are summable
+  return isCurrency(getField(schema, modelName, fieldName))
 }
