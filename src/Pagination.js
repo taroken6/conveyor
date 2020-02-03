@@ -3,6 +3,7 @@ import * as R from 'ramda'
 import { getActions } from './utils/schemaGetters'
 import { Tooltip } from 'react-tippy'
 import FlexibleInput from './input'
+import { inputTypes } from './consts'
 
 const TooltipContent = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
   if (isNaN(text)) {
@@ -10,11 +11,10 @@ const TooltipContent = ({ modelName, fieldName, onChangePage, text, updatedPageI
   }
   return (
     <div>
+      Go to page:
       <FlexibleInput
         {...{
-          ...defaultProps,
-          type: inputTypes.INT_TYPE,
-          customInput: { step: 'any' }
+          type: inputTypes.INT_TYPE
         }}
       />
     </div>
@@ -27,10 +27,11 @@ const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageI
     <Tooltip
       html={content}
       delay={0}
+      interactive
     >
       <a
-        className="page-link"
-        href="#"
+        className='page-link'
+        href='#'
         onClick={() => onChangePage({
           modelName, fieldName, updatedPageIndex
         })}
