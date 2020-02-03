@@ -303,9 +303,10 @@ export const Table = ({
     return null
   }
   // column order can be altered by user
+  // note: do not alter 'fieldOrder' before it reaches the 'FieldOrderAlterDetail' component
   fieldOrder = getFieldOrderAlternate({
     tableView,
-    modelName,
+    modelName: parentModelName,
     fieldName: parentFieldName,
     fieldOrder
   })

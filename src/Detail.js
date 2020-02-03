@@ -43,7 +43,7 @@ import '../css/index.css'
 import { inputTypes } from './consts'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
-import { FieldOrderAlter } from './table/FiledOrderAlter'
+import { FieldOrderAlterDetail } from './table/FiledOrderAlter'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -239,7 +239,6 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
 
 export const DefaultDetailO2MTableTitle = ({schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, tableView, fieldOrder, collapsable, collapse, collapseTableChange, customProps }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
-  console.log('DefaultTableTitle:', modelName, fieldName, targetModelName)
   return (
     <DefaultDetailTableTitleWrapper>
       {collapsable && <CollapseTableButton {...{
@@ -257,7 +256,7 @@ export const DefaultDetailO2MTableTitle = ({schema, modelName, fieldName, id, ta
         targetInverseFieldName,
         node
       }} /> }
-      <FieldOrderAlter {...{
+      <FieldOrderAlterDetail {...{
         schema, modelName, fieldName, tableView, fieldOrder, node, customProps
       }}/>
     </DefaultDetailTableTitleWrapper>
@@ -307,7 +306,7 @@ const DefaultDetailM2MTableTitle = ({
           targetModelName
         }} />
       </div>}
-      <FieldOrderAlter {...{
+      <FieldOrderAlterDetail {...{
         schema, modelName, fieldName, tableView, fieldOrder, node, customProps
       }}/>
     </div>
