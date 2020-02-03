@@ -29,6 +29,7 @@
 -   Set clearable to false if required, other set to isClearable #100
 -   Refactor 'inputTypes', delete 'getInputType' #138
 -   Refactor tableView structure to fit pagination #135
+-   Add page number tooltips to pagination buttons #136
 -   Add search component #147
 
 ## Version 1.4.0
