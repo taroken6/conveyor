@@ -182,36 +182,48 @@ const ActiveFilters = ({
   onFilterChange,
   onFilterSubmit,
   onFilterDropdown,
-  filterInputs, user
+  filterInputs,
+  user
 }) => (
-  <div id={'active-filters-' + modelName} className='mb-2'>
-    <ul className="list-group">{
-      R.isEmpty(filterOrder) || R.isNil(filterOrder)
-        ? <li key='no-active-filters' className='list-group-item text-muted'>Add a rule to get started...</li>
-        : filterOrder.map((fieldName, index) =>
-            formatFilter({
-              fieldName,
-              index,
-              modelName,
-              schema,
-              data,
-              onChange,
-              selectOptions,
-              filterOrder,
-              onFilterChange,
-              onFilterSubmit,
-              onFilterDropdown,
-              filterInputs,
-              deleteFilter, user
-            })
-          )
-    }</ul>
-    <FilterButtons {...{
-      modelName,
-      onFilterSubmit,
-      clearFilters,
-      addFilter
-    }}
+  <div id={'active-filters-' + modelName} className="mb-2">
+    <ul className="list-group">
+      {R.isEmpty(filterOrder) || R.isNil(filterOrder) ? (
+        <li
+          key="no-active-filters"
+          className="list-group-item text-muted"
+          style={{ cursor: 'pointer' }}
+          onClick={() => addFilter({ modelName })}
+        >
+          Add a rule to get started...
+        </li>
+      ) : (
+        filterOrder.map((fieldName, index) =>
+          formatFilter({
+            fieldName,
+            index,
+            modelName,
+            schema,
+            data,
+            onChange,
+            selectOptions,
+            filterOrder,
+            onFilterChange,
+            onFilterSubmit,
+            onFilterDropdown,
+            filterInputs,
+            deleteFilter,
+            user
+          })
+        )
+      )}
+    </ul>
+    <FilterButtons
+      {...{
+        modelName,
+        onFilterSubmit,
+        clearFilters,
+        addFilter
+      }}
     />
   </div>
 )
