@@ -1,6 +1,5 @@
 import React from 'react'
 import { InputCore } from '../form/Input'
-import { getInputType } from '../form/InputType'
 import { FaFilter } from 'react-icons/fa'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
