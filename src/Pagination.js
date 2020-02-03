@@ -28,7 +28,7 @@ export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChan
   const hasFirst = idx > 1
   const hasPrev = idx > 0
   const hasNext = (lastIndex > 0) && (idx < lastIndex)
-  const hasLast = (lastIndex > 0) && (idx < (lastIndex-1))
+  const hasLast = (lastIndex > 0) && (idx < (lastIndex - 1))
 
   // number displayed to user
   const displayIndex = idx + 1
@@ -76,6 +76,7 @@ export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChan
             updatedPageIndex: (lastIndex)
           }} />
         }
+        <span className="pagination-list">{'Hello'}</span>
       </ul>
     </nav>
   )

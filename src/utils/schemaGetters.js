@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import { titleize, humanize } from '../Utils'
 import pluralize from 'pluralize'
+import { isCurrency } from './isType'
 
 // This is an example of our naming issue, node and data should not both be passed here
 export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {

@@ -9,7 +9,8 @@ import {
   isTableEditable,
   isRowEditable,
   skipOverride,
-  shouldDisplay
+  shouldDisplay,
+  isFooterShown
 } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
@@ -445,6 +446,8 @@ export const Table = ({
     customProps
   })
 
+  const footerShown = fromIndex && isFooterShown({ schema, modelName, user })
+
   // TODO: Add Footer with summation if the view has showFooter enabled for at least one item
   return (
     <React.Fragment>
@@ -490,7 +493,7 @@ export const Table = ({
             customProps
           }}
         />
-        <Foot
+        {footerShown && <Foot
           {...{
             schema,
             modelName,
@@ -505,7 +508,7 @@ export const Table = ({
             customProps,
             user
           }}
-        />
+        />}
       </table>
       {fromIndex ? (
         <IndexPagination
