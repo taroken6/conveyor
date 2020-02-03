@@ -76,7 +76,6 @@ export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChan
             updatedPageIndex: (lastIndex)
           }} />
         }
-        <span className="pagination-list">{'Hello'}</span>
       </ul>
     </nav>
   )
