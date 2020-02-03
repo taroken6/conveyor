@@ -41,7 +41,8 @@
     "react-dom": "^16.8.6",
     "react-icons": "^3.8.0",
     "react-select": "^3.0.4",
-    "react-tippy": "^1.2.3"
+    "react-tippy": "^1.2.3",
+    "react-window": "^1.8.5"
   },
   "peerDependencies": {
     "react-router-dom": "4.3.1"

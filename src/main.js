@@ -54,6 +54,8 @@ import { isEditing } from './Edit'
 import { CollapseTableButton } from './Detail'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { DeleteButton } from './table/Table'
+import { Search } from './Search'
+import { getSearchable } from './utils/schemaGetters'
 
 export { Index }
 export { Create }
@@ -111,3 +113,5 @@ export { isEditing }
 export { CollapseTableButton }
 export { DeleteDetail }
 export { DeleteButton }
+export { Search }
+export { getSearchable }
