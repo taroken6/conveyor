@@ -4,23 +4,24 @@ import { FixedSizeList } from 'react-window'
 
 const OptimizedMenuList = props => {
   const { options, children, maxHeight, getValue } = props
+  if (!children || !Array.isArray(children)) return null
 
-  const height = 35
-  const selectedValues = getValue()
-  const initialOffset = selectedValues[0]
-    ? options.indexOf(selectedValues[0]) * height
+  const height = 38
+  const [value] = getValue()
+  const initialOffset = value
+    ? options.indexOf(value) * height
     : 0
 
   return (
     <FixedSizeList
-      width={''}
-      height={maxHeight}
+      width={''} // 100% width
+      height={Math.min(maxHeight, height * children.length)}
       itemCount={children.length}
       itemSize={height}
       initialScrollOffset={initialOffset}
     >
       {({ index, style }) => (
-        <div style={style}>
+        <div className='select-option-wrapper' style={style}>
           {children[index]}
         </div>
       )}

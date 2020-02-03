@@ -475,10 +475,10 @@ export const InputSelect = ({ labelStr, id, error, className, isClearable, isMul
       isOptionDisabled={(option) => R.prop('disabled', option) === true}
       onChange={onChange}
       id={id}
-      onMenuOpen={onMenuOpen}
+      onMenuOpen={R.isNil(options) ? onMenuOpen : undefined}
       noOptionsMessage={noOptionsMessage}
       filterOption={createFilter({ ignoreAccents: false })}
-      components={optimizeSelect.components}
+      components={options ? optimizeSelect.components : undefined}
       {...customInput}
     />
   </FormGroup>
