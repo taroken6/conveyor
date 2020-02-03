@@ -17,9 +17,7 @@ const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageI
         html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
         delay={0}
         interactive
-      >
-        {link}
-      </Tooltip>
+      >{link}</Tooltip>
     )
   }
   return link
