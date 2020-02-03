@@ -237,7 +237,23 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, tableView, fieldOrder, collapsable, collapse, collapseTableChange, customProps }) => {
+export const DefaultDetailO2MTableTitle = ({
+  schema,
+  modelName,
+  fieldName,
+  id,
+  targetInverseFieldName,
+  targetModelName,
+  path,
+  node,
+  user,
+  tableView,
+  fieldOrder,
+  collapsable,
+  collapse,
+  collapseTableChange,
+  customProps
+}) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
   return (
     <DefaultDetailTableTitleWrapper>
@@ -257,7 +273,7 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
         node
       }} /> }
       <FieldOrderAlterDetail {...{
-        schema, modelName, fieldName, tableView, fieldOrder, node, customProps
+        schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps
       }}/>
     </DefaultDetailTableTitleWrapper>
   )
@@ -307,7 +323,7 @@ const DefaultDetailM2MTableTitle = ({
         }} />
       </div>}
       <FieldOrderAlterDetail {...{
-        schema, modelName, fieldName, tableView, fieldOrder, node, customProps
+        schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps
       }}/>
     </div>
   )

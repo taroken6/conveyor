@@ -56,7 +56,7 @@ export const FieldOrderAlterButton = ({
       <FlexibleInput
         {...{
           id: `fieldOrderAlt-input-${modelName}-${fieldName}`,
-          onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAlt: evt }),
+          onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: evt }),
           value: fieldOrderAltValues,
           type: inputTypes.SELECT_TYPE,
           isMulti: true,
@@ -67,27 +67,27 @@ export const FieldOrderAlterButton = ({
 )
 
 // field order alternate => for detail page
-export const FieldOrderAlterDetail = ({ schema, modelName, fieldName, tableView, fieldOrder, node, customProps }) => {
+export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderDetailChange'], actions)
   const fieldOrderReset = R.path(['tableOptions', 'fieldOrderDetailReset'], actions)
   const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView)
 
   return (<FieldOrderAlter {...{
-    schema, modelName, fieldName, fieldOrder,
+    schema, modelName, targetModelName, fieldName, fieldOrder,
     fieldOrderAltValues, fieldOrderChange, fieldOrderReset, node, customProps
   }} />)
 }
 
 // field order alternate => for index page
-export const FieldOrderAlterIndex = ({ schema, modelName, tableView, fieldOrder, node, customProps }) => {
+export const FieldOrderAlterIndex = ({ schema, modelName, targetModelName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
   const fieldOrderReset = R.path(['tableOptions', 'fieldOrderIndexReset'], actions)
   const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt'], tableView)
 
   return (<FieldOrderAlter {...{
-    schema, modelName, fieldOrder,
+    schema, modelName, targetModelName, fieldOrder,
     fieldOrderAltValues, fieldOrderChange, fieldOrderReset, node, customProps
   }} />)
 }
@@ -96,7 +96,8 @@ export const FieldOrderAlterIndex = ({ schema, modelName, tableView, fieldOrder,
 export const FieldOrderAlter = ({
   schema,
   modelName,
-  fieldName,
+  targetModelName,
+  fieldName,  // can be undefined
   fieldOrder,
   fieldOrderAltValues,
   fieldOrderChange,
@@ -107,10 +108,9 @@ export const FieldOrderAlter = ({
     // if has values, display
     const active = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
 
-    // todo: fix this it doesn't always get right name
     // get dropdown options
     const toOptions = fieldName => ({
-      label: getFieldLabel({ schema, modelName, fieldName, node, customProps}),
+      label: getFieldLabel({ schema, modelName: targetModelName, fieldName, node, customProps}),
       value: fieldName
     })
 
