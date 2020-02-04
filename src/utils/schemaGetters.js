@@ -1,7 +1,7 @@
 import * as R from 'ramda'
-import { titleize, humanize } from '../Utils'
+import { titleize, humanize, isFooterShown } from '../Utils'
 import pluralize from 'pluralize'
-import { isCurrency } from './isType'
+import { inputTypes } from '../consts'
 
 // This is an example of our naming issue, node and data should not both be passed here
 export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
@@ -140,7 +140,7 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
 
 export const getFooterFields = ({ schema, modelName, fieldName, customProps }) => {
   const footerFieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFooters({ schema, modelName, type: 'summable', fieldName, customProps })
+  const defaultOrder = getShownFooters({ schema, modelName, type: fieldName.type, fieldName, customProps })
   if (R.type(footerFieldOrder) === 'Function') {
     return footerFieldOrder({ schema, modelName, fieldName, defaultOrder, customProps })
   } else if (R.type(footerFieldOrder) === 'Array') {
@@ -150,17 +150,33 @@ export const getFooterFields = ({ schema, modelName, fieldName, customProps }) =
 }
 
 export const getShownFooters = ({ schema, modelName, type, data, user, customProps }) => {
-  const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
+  const fields = R.prop('fields', getModel(schema, modelName))
 
   return R.filter(fieldName => {
-    let show = R.propOr(false, type, getField(schema, modelName, fieldName))
+    let show
 
-    if (R.type(show) === 'Function') {
-      show = show({ schema, modelName, type, data, user, customProps })
+    switch (type) {
+      case inputTypes.CURRENCY_TYPE:
+        show = fieldName
+        break
+
+      default:
+        show = R.propOr(false, 'summable', getField(schema, modelName, fieldName))
     }
-
+    if (R.type(show) === 'Function') {
+      show = show({ schema, modelName, fieldName, data, user, customProps })
+    }
     return show
-  }, fieldOrder)
+  }, fields)
+}
+
+export const getFooterLabel = ({ schema, modelName, fieldName, data, customProps }) => {
+  const displayName = R.pathOr(humanize(fieldName), [modelName, 'fields', fieldName, 'displayName'], schema)
+
+  if (R.type(displayName) === 'Function') {
+    return displayName({ schema, modelName, data, customProps })
+  }
+  return displayName
 }
 
 export const getTooltipFields = (schema, modelName, customProps = null) => {

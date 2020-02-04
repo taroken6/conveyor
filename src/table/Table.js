@@ -10,7 +10,7 @@ import {
   isRowEditable,
   skipOverride,
   shouldDisplay,
-  isFooterShown
+  isTableFooterShown
 } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
@@ -414,7 +414,8 @@ export const Table = ({
   user,
   collapse,
   fromIndex,
-  customProps
+  customProps,
+  summary
 }) => {
   if (!fromIndex && collapse) {
     return null
@@ -446,7 +447,7 @@ export const Table = ({
     customProps
   })
 
-  const footerShown = fromIndex && isFooterShown({ schema, modelName, user })
+  const footerShown = fromIndex && isTableFooterShown({ schema, modelName, user })
 
   // TODO: Add Footer with summation if the view has showFooter enabled for at least one item
   return (
@@ -506,7 +507,8 @@ export const Table = ({
             tableView,
             fromIndex,
             customProps,
-            user
+            user,
+            summary
           }}
         />}
       </table>

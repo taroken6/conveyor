@@ -241,32 +241,35 @@ export const isTableSortable = ({ schema, modelName, user }) => {
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
-export const isFooterShown = ({ schema, modelName, user }) => {
+export const isTableFooterShown = ({ schema, modelName, user }) => {
   const footerShown = R.pathOr(false, [modelName, 'showFooter'], schema)
 
-  if (footerShown === false) {
-    return false
-  }
-
-  if (R.type(footerShown) === 'Function' && footerShown({ schema, modelName, user }) === false) {
-    return false
-  }
-
-  return true
-}
-export const isSummable = ({ schema, modelName, fieldName, user }) => {
-  // by default, all currency fields are summable
-  if (isCurrency(getField(schema, modelName, fieldName))) {
+  if (footerShown === true) {
     return true
   }
 
-  const fieldSummable = R.pathOr(false, [modelName, 'fields', fieldName, 'summable'], schema)
+  if (R.type(footerShown) === 'Function' && footerShown({ schema, modelName, user }) === true) {
+    return true
+  }
 
-  if (fieldSummable === false) {
-    return false
+  const model = R.prop(modelName, schema)
+  const fieldOrder = R.prop('fieldOrder', model)
+  const boolList = R.map(fieldName => isFooterShown({ schema, modelName, fieldName, user }), fieldOrder)
+
+  return !R.isEmpty(R.filter(R.identity, boolList))
+}
+
+export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
+  const fieldFooterShown = R.pathOr(false, [modelName, 'fields', fieldName, 'showFooter'], schema)
+
+  if (fieldFooterShown === true) {
+    return true
   }
-  if (R.type(fieldSummable) === 'Function' && fieldSummable({ schema, modelName, fieldName, user }) === false) {
-    return false
+
+  if (R.type(fieldFooterShown) === 'Function' && fieldFooterShown({ schema, modelName, user }) === true) {
+    return true
   }
-  return fieldSummable
+
+  // by default totals are shown for currency fields
+  return isCurrency(getField(schema, modelName, fieldName))
 }
