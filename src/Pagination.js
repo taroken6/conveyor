@@ -166,11 +166,9 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
   const goto = R.prop('goto', page)
 
   // current page idx
-  // const idx = R.pathOr(0, [modelName, 'page', 'currentPage'], tableView)
   const idx = R.propOr(0, 'currentPage', page)
 
   // get index of last hypothetical data point
-  // const lastIndex = R.path([modelName, 'page', 'lastIndex'], tableView)
   const lastIndex = R.prop('lastIndex', page)
 
   return <Pagination {...{ modelName, idx, lastIndex, goto, onChangePage, onChangeGoto }} />
@@ -184,11 +182,9 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
   const goto = R.prop('goto', page)
 
   // current page idx
-  // const idx = R.pathOr(0, [modelName, 'fields', fieldName, 'page', 'currentPage'], tableView)
   const idx = R.propOr(0, 'currentPage', page)
 
   // get index of last hypothetical data point
-  // const lastIndex = R.path([modelName, 'fields', fieldName, 'page', 'lastIndex'], tableView)
   const lastIndex = R.prop('lastIndex', page)
 
   return <Pagination {...{ modelName, fieldName, idx, lastIndex, goto, onChangePage, onChangeGoto }} />
