@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+- Add Summary and Footer #141
+
 ## Version 1.5.0
 
 ### Released 1/30/20
