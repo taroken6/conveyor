@@ -13,6 +13,7 @@ const GotoTooltip = ({
   lastIndex,
   goto,
 }) => {
+  const isValidPage = 0 <= goto <= lastIndex
   return (
     <div className='d-flex goto-tooltip'>
       <div className='mr-2 float-left'>
@@ -20,7 +21,7 @@ const GotoTooltip = ({
           type: inputTypes.INT_TYPE,
           id: `${modelName}${fieldName}-goto`,
           value: goto,
-          onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt }),
+          onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt, isValidPage }),
           customInput: {
             placeholder: 'Go to page...',
           }
@@ -29,7 +30,7 @@ const GotoTooltip = ({
       <div className='float-right'>
         <button
           className='btn btn-success'
-          onClick={() => onChangePage({ modelName, fieldName, updatedPageIndex: goto - 1 })}
+          onClick={() => onChangePage({ modelName, fieldName, updatedPageIndex: goto - 1, isValidPage })}
         >Go</button>
       </div>
     </div>
