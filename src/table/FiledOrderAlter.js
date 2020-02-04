@@ -12,8 +12,8 @@ export const getFieldOrderAlternate = ({ tableView, modelName, fieldName=undefin
 
   // get form object from redux store; 'fieldName' indicates location
   const fieldOrderAltValues = fieldName ?
-    R.pathOr([], [modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView) :
-    R.pathOr([], [modelName, 'fieldOrderAlt'], tableView)
+    R.pathOr([], [modelName, 'fields', fieldName, 'fieldOrderAlt', 'values'], tableView) :
+    R.pathOr([], [modelName, 'fieldOrderAlt', 'values'], tableView)
 
   // get fieldNames from form object
   const alt = R.map(val => val.value, fieldOrderAltValues)
@@ -77,7 +77,7 @@ export const FieldOrderAlterButton = ({
 export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderDetailChange'], actions)
-  const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView)
+  const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt', 'values'], tableView)
 
   return (<FieldOrderAlter {...{
     schema, modelName, targetModelName, fieldName, fieldOrder,
@@ -89,7 +89,7 @@ export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fiel
 export const FieldOrderAlterIndex = ({ schema, modelName, targetModelName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
-  const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt'], tableView)
+  const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt', 'values'], tableView)
 
   return (<FieldOrderAlter {...{
     schema, modelName, targetModelName, fieldOrder,
