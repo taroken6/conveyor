@@ -17,6 +17,7 @@ import {
   getIndexPageOverride,
   skipOverride
 } from './Utils'
+import { FieldOrderAlterIndex } from './table/FiledOrderAlter'
 
 export const DefaultIndexTitle = ({
   schema,
@@ -26,6 +27,7 @@ export const DefaultIndexTitle = ({
   data,
   user,
   tableView,
+  fieldOrder,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -42,6 +44,9 @@ export const DefaultIndexTitle = ({
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
+      <FieldOrderAlterIndex {...{
+        schema, modelName, tableView, fieldOrder, data, customProps
+      }}/>
       {filterable && <FilterModal {...{
         schema,
         modelName,
@@ -118,6 +123,7 @@ const DefaultIndex = ({
             tooltipData,
             user,
             tableView,
+            fieldOrder,
             customProps
           }}
         />

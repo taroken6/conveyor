@@ -80,44 +80,7 @@ export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fiel
   const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt', 'values'], tableView)
   const open = R.pathOr(true, [modelName, 'fields', fieldName, 'fieldOrderAlt', 'open'], tableView)
 
-  return (<FieldOrderAlter {...{
-    schema, modelName, targetModelName, fieldName, fieldOrder, open,
-    fieldOrderAltValues, fieldOrderChange, fieldOrderToggle, node, customProps
-  }} />)
-}
-
-// field order alternate => for index page
-export const FieldOrderAlterIndex = ({ schema, modelName, targetModelName, tableView, fieldOrder, node, customProps }) => {
-  const actions = getActions(schema, modelName)
-  const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
-  const fieldOrderToggle = R.path(['tableOptions', 'fieldOrderIndexToggle'], actions)
-  const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt', 'values'], tableView)
-  const open = R.pathOr(true, [modelName, 'fieldOrderAlt', 'open'], tableView)
-
-  return (<FieldOrderAlter {...{
-    schema, modelName, targetModelName, fieldOrder, open,
-    fieldOrderAltValues, fieldOrderChange, fieldOrderToggle, node, customProps
-  }} />)
-}
-
-
-export const FieldOrderAlter = ({
-  schema,
-  modelName,
-  targetModelName,
-  fieldName,  // can be undefined
-  fieldOrder,
-  open,
-  fieldOrderAltValues,
-  fieldOrderChange,
-  fieldOrderToggle,
-  node,
-  customProps
-}) => {
-  // if has values, display
-  const hasValues = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
-
-  // get dropdown options
+    // get dropdown options
   const toOptions = fieldName => ({
     label: getFieldLabel({ schema, modelName: targetModelName, fieldName, node, customProps}),
     value: fieldName
@@ -125,6 +88,48 @@ export const FieldOrderAlter = ({
 
   // fieldOrder here represents the raw field order of all possible fields that can be on the table
   const options = fieldOrder.map(fieldName => toOptions(fieldName))
+
+  return (<FieldOrderAlter {...{
+    modelName, fieldName, open, options,
+    fieldOrderAltValues, fieldOrderChange, fieldOrderToggle
+  }} />)
+}
+
+// field order alternate => for index page
+export const FieldOrderAlterIndex = ({ schema, modelName, tableView, fieldOrder, data, customProps }) => {
+  const actions = getActions(schema, modelName)
+  const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
+  const fieldOrderToggle = R.path(['tableOptions', 'fieldOrderIndexToggle'], actions)
+  const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt', 'values'], tableView)
+  const open = R.pathOr(true, [modelName, 'fieldOrderAlt', 'open'], tableView)
+
+    // get dropdown options
+  const toOptions = fieldName => ({
+    label: getFieldLabel({ schema, modelName, fieldName, data, customProps}),
+    value: fieldName
+  })
+
+  // fieldOrder here represents the raw field order of all possible fields that can be on the table
+  const options = fieldOrder.map(fieldName => toOptions(fieldName))
+
+  return (<FieldOrderAlter {...{
+    modelName, open, options,
+    fieldOrderAltValues, fieldOrderChange, fieldOrderToggle
+  }} />)
+}
+
+
+export const FieldOrderAlter = ({
+  modelName,
+  fieldName,  // can be undefined
+  open,
+  options,
+  fieldOrderAltValues,
+  fieldOrderChange,
+  fieldOrderToggle
+}) => {
+  // if has values, display
+  const hasValues = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
 
   return(
     <FieldOrderAlterButton {...{
