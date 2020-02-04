@@ -23,12 +23,20 @@ const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageI
   return link
 }
 
-export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChangePage }) => {
+export const Pagination = ({
+  modelName,
+  fieldName = null,
+  idx,
+  lastIndex,
+  totalDataLength,
+  amtPerPage,
+  onChangePage
+}) => {
   // get previous & last conditions; 'lastIndex' can be null or '0' value
   const hasFirst = idx > 1
   const hasPrev = idx > 0
-  const hasNext = (lastIndex > 0) && (idx < lastIndex)
-  const hasLast = (lastIndex > 0) && (idx < (lastIndex-1))
+  const hasNext = lastIndex > 0 && idx < lastIndex
+  const hasLast = lastIndex > 0 && idx < lastIndex - 1
 
   // number displayed to user
   const displayIndex = idx + 1
@@ -41,41 +49,68 @@ export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChan
   return (
     <nav aria-label="Page navigation example">
       <ul className="pagination">
+        {hasFirst && (
+          <PaginationLink
+            {...{
+              modelName,
+              fieldName,
+              onChangePage,
+              text: '«',
+              updatedPageIndex: 0
+            }}
+          />
+        )}
+        {hasPrev && (
+          <PaginationLink
+            {...{
+              modelName,
+              fieldName,
+              onChangePage,
+              text: '‹',
+              updatedPageIndex: idx - 1
+            }}
+          />
+        )}
         {
-          hasFirst && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
-            text: '«',
-            updatedPageIndex: (0)
-          }} />
+          <PaginationLink
+            {...{
+              modelName,
+              fieldName,
+              onChangePage,
+              text: `${displayIndex}`,
+              updatedPageIndex: idx
+            }}
+          />
         }
-        {
-          hasPrev && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
-            text: '‹',
-            updatedPageIndex: (idx - 1)
-          }} />
-        }
-        {
-          <PaginationLink {...{
-            modelName, fieldName, onChangePage,
-            text: `${displayIndex}`,
-            updatedPageIndex: (idx)
-          }} />
-        }
-        {
-          hasNext && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
-            text: '›',
-            updatedPageIndex: (idx + 1)
-          }} />
-        }
-        {
-          hasLast && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
-            text: '»',
-            updatedPageIndex: (lastIndex)
-          }} />
-        }
+        {hasNext && (
+          <PaginationLink
+            {...{
+              modelName,
+              fieldName,
+              onChangePage,
+              text: '›',
+              updatedPageIndex: idx + 1
+            }}
+          />
+        )}
+        {hasLast && (
+          <PaginationLink
+            {...{
+              modelName,
+              fieldName,
+              onChangePage,
+              text: '»',
+              updatedPageIndex: lastIndex
+            }}
+          />
+        )}
+        {totalDataLength && amtPerPage && (
+          <span className="ml-2 my-auto">
+            {idx * amtPerPage + 1}-
+            {Math.min((idx + 1) * amtPerPage, totalDataLength)} of{' '}
+            {totalDataLength}
+          </span>
+        )}
       </ul>
     </nav>
   )
@@ -91,7 +126,10 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
   // get index of last hypothetical data point
   const lastIndex = R.path([modelName, 'page', 'lastIndex'], tableView)
 
-  return <Pagination {...{ modelName, idx, lastIndex, onChangePage }} />
+  const totalDataLength = R.path([modelName, 'page', 'total'], tableView)
+  const amtPerPage = R.prop('amtPerPage', tableView)
+
+  return <Pagination {...{ modelName, idx, lastIndex, totalDataLength, amtPerPage, onChangePage }} />
 }
 
 export const DetailPagination = ({ schema, modelName, fieldName, tableView }) => {
@@ -104,5 +142,11 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
   // get index of last hypothetical data point
   const lastIndex = R.path([modelName, 'fields', fieldName, 'page', 'lastIndex'], tableView)
 
-  return <Pagination {...{ modelName, fieldName, idx, lastIndex, onChangePage }} />
+  const totalDataLength = R.path(
+    [modelName, 'fields', fieldName, 'page', 'total'],
+    tableView
+  )
+  const amtPerPage = R.prop('amtPerPage', tableView)
+
+  return <Pagination {...{ modelName, fieldName, idx, lastIndex, totalDataLength, amtPerPage, onChangePage }} />
 }
