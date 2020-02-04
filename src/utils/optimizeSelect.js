@@ -1,6 +1,6 @@
 import { components } from 'react-select'
 import React from 'react'
-import { FixedSizeList } from 'react-window'
+import { FixedSizeList as List } from 'react-window'
 
 const OptimizedMenuList = props => {
   const { options, children, maxHeight, getValue } = props
@@ -13,19 +13,25 @@ const OptimizedMenuList = props => {
     : 0
 
   return (
-    <FixedSizeList
-      width={''} // 100% width
+    <List
+      width="100%"
       height={Math.min(maxHeight, height * children.length)}
       itemCount={children.length}
       itemSize={height}
       initialScrollOffset={initialOffset}
     >
       {({ index, style }) => (
-        <div className='select-option-wrapper' style={style}>
+        <div
+          className="select-option-wrapper"
+          style={{
+            whiteSpace: 'nowrap',
+            ...style
+          }}
+        >
           {children[index]}
         </div>
       )}
-    </FixedSizeList>
+    </List>
   )
 }
 
