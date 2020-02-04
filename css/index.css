@@ -159,5 +159,6 @@ body {
 
 .field-order-alter-input {
   font-size: medium;
-  padding-top: 12px;
+  padding-top: 10px;
+  margin-right: 5px;
 }

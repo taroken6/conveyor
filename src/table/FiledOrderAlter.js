@@ -27,7 +27,6 @@ export const FieldOrderAlterButton = ({
   options,
   fieldOrderAltValues,
   fieldOrderChange,
-  fieldOrderReset,
   modelName,
   fieldName // can be undefined
 }) => (
@@ -49,17 +48,28 @@ export const FieldOrderAlterButton = ({
     >
       <FaListOl color={active ? 'lightgreen' : 'inherit'} />
     </button>
-    {active && <FlexibleInput
-      className={'field-order-alter-input'}
-      {...{
-        id: `fieldOrderAlt-input-${modelName}-${fieldName}`,
-        onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: evt }),
-        value: fieldOrderAltValues,
-        type: inputTypes.SELECT_TYPE,
-        isMulti: true,
-        options
-      }}
-    />}
+    {active &&
+    <div>
+      <div className='d-inline-block' style={{'width': '94%'}}>
+        <FlexibleInput
+          className={'field-order-alter-input'}
+          {...{
+            id: `alternate-input-${modelName}-${fieldName}`,
+            onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: evt }),
+            value: fieldOrderAltValues,
+            type: inputTypes.SELECT_TYPE,
+            isMulti: true,
+            options
+          }}
+        />
+      </div>
+      <button
+        style={{'verticalAlign': 'text-bottom'}}
+        className='btn btn-sm btn-outline-danger'
+        onClick={() => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: options })}
+      >Reset</button>
+    </div>
+    }
   </React.Fragment>
 )
 
@@ -67,12 +77,11 @@ export const FieldOrderAlterButton = ({
 export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderDetailChange'], actions)
-  const fieldOrderReset = R.path(['tableOptions', 'fieldOrderDetailReset'], actions)
   const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt'], tableView)
 
   return (<FieldOrderAlter {...{
     schema, modelName, targetModelName, fieldName, fieldOrder,
-    fieldOrderAltValues, fieldOrderChange, fieldOrderReset, node, customProps
+    fieldOrderAltValues, fieldOrderChange, node, customProps
   }} />)
 }
 
@@ -80,12 +89,11 @@ export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fiel
 export const FieldOrderAlterIndex = ({ schema, modelName, targetModelName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
-  const fieldOrderReset = R.path(['tableOptions', 'fieldOrderIndexReset'], actions)
   const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt'], tableView)
 
   return (<FieldOrderAlter {...{
     schema, modelName, targetModelName, fieldOrder,
-    fieldOrderAltValues, fieldOrderChange, fieldOrderReset, node, customProps
+    fieldOrderAltValues, fieldOrderChange, node, customProps
   }} />)
 }
 
@@ -98,7 +106,6 @@ export const FieldOrderAlter = ({
   fieldOrder,
   fieldOrderAltValues,
   fieldOrderChange,
-  fieldOrderReset,
   node,
   customProps
 }) => {
@@ -120,7 +127,6 @@ export const FieldOrderAlter = ({
       options,
       fieldOrderAltValues,
       fieldOrderChange,
-      fieldOrderReset,
       modelName,
       fieldName
     }}/>
