@@ -34,6 +34,7 @@ export const FieldOrderAlterButton = ({
   <React.Fragment>
     <button
       className='btn btn-sm btn-outline-primary'
+      style={{ marginLeft: '4px' }}
       onClick={() => {
         // if button not clicked previously, populate input w/ all options
         if (!active) {
@@ -46,9 +47,10 @@ export const FieldOrderAlterButton = ({
         return null
       }}
     >
-      <FaListOl color={active ? 'lightgreen' : 'black'} />
+      <FaListOl color={active ? 'lightgreen' : 'inherit'} />
     </button>
-    <FlexibleInput
+    {active && <FlexibleInput
+      className={'field-order-alter-input'}
       {...{
         id: `fieldOrderAlt-input-${modelName}-${fieldName}`,
         onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: evt }),
@@ -57,7 +59,7 @@ export const FieldOrderAlterButton = ({
         isMulti: true,
         options
       }}
-    />
+    />}
   </React.Fragment>
 )
 

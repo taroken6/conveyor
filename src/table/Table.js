@@ -266,10 +266,6 @@ export const calcDetailField = ({schema, modelName, fieldOrder}) => {
   const model = getModel(schema, modelName)
   const schemaDefinedLinkField = R.prop('tableLinkField', model)
 
-  // If the schema explicitly defines a field that is not found, raise an error
-  if (schemaDefinedLinkField && !fieldOrder.includes(schemaDefinedLinkField)) {
-    throw new Error('Schema attribute for displayField does not exist in fieldOrder.')
-  }
   // If the schema does not define a displayField then check if there is a name field
   return schemaDefinedLinkField || (fieldOrder.includes('name') ? 'name' : null)
 }

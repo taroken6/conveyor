@@ -154,3 +154,8 @@ body {
 .text-area-display {
   white-space: pre-line;
 }
+
+.field-order-alter-input {
+  font-size: medium;
+  padding-top: 12px;
+}
