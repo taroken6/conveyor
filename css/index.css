@@ -32,7 +32,9 @@ body {
     text-align: left;
 }
 
-
+.select-option-wrapper:hover {
+  background-color: #DEEBFF;
+}
 
 .edit-icon {
   display: inline-block;
