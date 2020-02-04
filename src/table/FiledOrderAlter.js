@@ -39,11 +39,9 @@ export const FieldOrderAlterButton = ({
       onClick={() => {
         // if button not clicked previously, populate input w/ all options
         if (!hasValues) {
-          return fieldOrderChange({
-            modelName, fieldName,
-            fieldOrderAltValues: options
-          })
+          return fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: options })
         }
+        // otherwise, clicking will 'close' the feature
         return fieldOrderToggle({ modelName, fieldName, open })
       }}
     >
@@ -67,7 +65,7 @@ export const FieldOrderAlterButton = ({
       <button
         style={{'verticalAlign': 'text-bottom'}}
         className='btn btn-sm btn-outline-danger'
-        onClick={() => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: options })}
+        onClick={() => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: null })}
       >Reset</button>
     </div>
     }
