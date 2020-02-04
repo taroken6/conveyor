@@ -181,3 +181,7 @@ export const getOptionsOverride = ({schema, modelName, fieldName, options, formS
   }
   return options
 }
+
+export const getSearchable = (schema, modelName) => {
+  return R.propOr(false, 'searchable', getModel(schema, modelName))
+}

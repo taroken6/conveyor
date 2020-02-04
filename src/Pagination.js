@@ -1,17 +1,26 @@
 import React from 'react'
 import * as R from 'ramda'
 import { getActions } from './utils/schemaGetters'
+import { Tooltip } from 'react-tippy'
 
 const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
-  return (
-    <li className="page-item">
-      <a className="page-link" href="#" onClick={() => onChangePage({
-        modelName, fieldName, updatedPageIndex
-      })}>
-        {text}
-      </a>
-    </li>
-  )
+  const link = <a
+    className='page-link'
+    href='#'
+    onClick={() => onChangePage({
+      modelName, fieldName, updatedPageIndex
+    })}
+  >{text}</a>
+  if (isNaN(text)) {
+    return (
+      <Tooltip
+        html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
+        delay={0}
+        interactive
+      >{link}</Tooltip>
+    )
+  }
+  return link
 }
 
 export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChangePage }) => {
