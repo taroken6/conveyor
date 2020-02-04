@@ -1,6 +1,7 @@
 import * as R from 'ramda'
-import { titleize, humanize } from '../Utils'
+import { titleize, humanize, isFooterShown } from '../Utils'
 import pluralize from 'pluralize'
+import { inputTypes } from '../consts'
 
 // This is an example of our naming issue, node and data should not both be passed here
 export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
@@ -97,8 +98,7 @@ export const getCreateFields = ({ schema, modelName, formStack, user, customProp
   const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', user, customProps })
   if (R.type(createFieldOrder) === 'Function') {
     return createFieldOrder({ schema, modelName, formStack, user, defaultOrder, customProps })
-  }
-  else if (R.type(createFieldOrder) === 'Array') {
+  } else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
   }
   return defaultOrder
@@ -121,8 +121,7 @@ export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   const defaultOrder = getShownFields({ schema, modelName, type: 'showDetail', node, customProps })
   if (R.type(detailFieldOrder) === 'Function') {
     return detailFieldOrder({ schema, modelName, node, defaultOrder, customProps })
-  }
-  else if (R.type(detailFieldOrder) === 'Array') {
+  } else if (R.type(detailFieldOrder) === 'Array') {
     return detailFieldOrder
   }
   return defaultOrder
@@ -133,11 +132,51 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
   const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, user, customProps })
   if (R.type(indexFieldOrder) === 'Function') {
     return indexFieldOrder({ schema, modelName, data, user, defaultOrder, customProps })
-  }
-  else if (R.type(indexFieldOrder) === 'Array') {
+  } else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
   }
   return defaultOrder
+}
+
+export const getFooterFields = ({ schema, modelName, fieldName, customProps }) => {
+  const footerFieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
+  const defaultOrder = getShownFooters({ schema, modelName, type: fieldName.type, fieldName, customProps })
+  if (R.type(footerFieldOrder) === 'Function') {
+    return footerFieldOrder({ schema, modelName, fieldName, defaultOrder, customProps })
+  } else if (R.type(footerFieldOrder) === 'Array') {
+    return footerFieldOrder
+  }
+  return defaultOrder
+}
+
+export const getShownFooters = ({ schema, modelName, type, data, user, customProps }) => {
+  const fields = R.prop('fields', getModel(schema, modelName))
+
+  return R.filter(fieldName => {
+    let show
+
+    switch (type) {
+      case inputTypes.CURRENCY_TYPE:
+        show = fieldName
+        break
+
+      default:
+        show = R.propOr(false, 'summable', getField(schema, modelName, fieldName))
+    }
+    if (R.type(show) === 'Function') {
+      show = show({ schema, modelName, fieldName, data, user, customProps })
+    }
+    return show
+  }, fields)
+}
+
+export const getFooterLabel = ({ schema, modelName, fieldName, data, customProps }) => {
+  const displayName = R.pathOr(humanize(fieldName), [modelName, 'fields', fieldName, 'displayName'], schema)
+
+  if (R.type(displayName) === 'Function') {
+    return displayName({ schema, modelName, data, customProps })
+  }
+  return displayName
 }
 
 export const getTooltipFields = (schema, modelName, customProps = null) => {
@@ -164,7 +203,7 @@ export const getCollapsable = (schema, modelName, fieldName) => {
   // cannot set default as false ("R.propOr(true...") because boolean always eval as true here
   const collapsable = R.prop('collapsable', getField(schema, modelName, fieldName))
   // by default, all fields collapsable
-  if (collapsable === undefined) { return true }
+  if (collapsable === undefined) {return true}
   return collapsable
 }
 
@@ -172,7 +211,7 @@ export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
 
-export const getOptionsOverride = ({schema, modelName, fieldName, options, formStack, value, modelStore }) => {
+export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, modelStore }) => {
   const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
   if (disabledDropDownCond) {
     options = disabledDropDownCond({

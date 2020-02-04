@@ -26,7 +26,7 @@ export const DefaultIndexTitle = ({
   data,
   user,
   tableView,
-  customProps
+  customProps,
 }) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
@@ -40,7 +40,7 @@ export const DefaultIndexTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {getModelLabelPlural({schema, modelName, data, user, customProps })}
+        {getModelLabelPlural({ schema, modelName, data, user, customProps })}
       </h3>
       {filterable && <FilterModal {...{
         schema,
@@ -49,7 +49,7 @@ export const DefaultIndexTitle = ({
         data,
         filterOrder,
         filterInputs: currentFilters, user
-      }}/>}
+      }} />}
       <div className='float-right'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
         {creatable && <CreateButton {...{ onClick }} />}
@@ -76,7 +76,8 @@ const DefaultIndex = ({
   tooltipData,
   user,
   tableView,
-  customProps
+  customProps,
+  summary
 }) => {
   if (!getHasIndex(schema, modelName) || R.isNil(getModel(schema, modelName))) {
     return <PageNotFound />
@@ -140,7 +141,8 @@ const DefaultIndex = ({
             fieldOrder,
             fromIndex: true,
             onDelete,
-            onEditSubmit
+            onEditSubmit,
+            summary
           }}
         />
       )}
@@ -160,7 +162,8 @@ const Index = ({
   tooltipData,
   user,
   tableView,
-  customProps
+  customProps,
+  summary,
 }) => {
   // if singleton, Index redirects to Detail pg
   if (getSingleton(schema, modelName)) {
@@ -202,7 +205,8 @@ const Index = ({
         tooltipData,
         user,
         tableView,
-        customProps
+        customProps,
+        summary
       }}
     />
   )
