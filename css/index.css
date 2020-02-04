@@ -154,3 +154,7 @@ body {
 .text-area-display {
   white-space: pre-line;
 }
+
+.goto-tooltip {
+  max-width: 200px;
+}
