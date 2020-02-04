@@ -5,15 +5,47 @@ import { Tooltip } from 'react-tippy'
 import FlexibleInput from './input'
 import { inputTypes } from './consts'
 
-const TooltipContent = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
-  if (isNaN(text)) {
-    return <span>{`Page ${updatedPageIndex + 1}`}</span>
-  }
-  return <span />
+const GotoTooltip = ({
+  modelName,
+  fieldName,
+  onChangePage,
+  onChangeGoto,
+  lastIndex,
+  goto,
+}) => {
+  return (
+    <div className='d-flex goto-tooltip'>
+      <div className='mr-2 float-left'>
+        <FlexibleInput {...{
+          type: inputTypes.INT_TYPE,
+          id: `${modelName}${fieldName}-goto`,
+          value: goto,
+          onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt }),
+          customInput: {
+            placeholder: 'Go to page...',
+          }
+        }}/>
+      </div>
+      <div className='float-right'>
+        <button
+          className='btn btn-success'
+          onClick={() => onChangePage({ modelName, fieldName, updatedPageIndex: goto - 1 })}
+        >Go</button>
+      </div>
+    </div>
+  )
 }
 
-const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
-  // const content = <TooltipContent {...{ modelName, fieldName, onChangePage, text, updatedPageIndex }} />
+const PaginationLink = ({
+  modelName,
+  fieldName,
+  onChangePage,
+  onChangeGoto = null,
+  lastIndex,
+  goto = null,
+  text,
+  updatedPageIndex
+}) => {
   const link = <a
     className='page-link'
     href='#'
@@ -25,15 +57,36 @@ const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageI
     return (
       <Tooltip
         html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
-        delay={0}
-        interactive
       >{link}</Tooltip>
     )
   }
-  return link
+  return (
+    <Tooltip
+      html={<GotoTooltip {...{
+        modelName,
+        fieldName,
+        onChangePage,
+        onChangeGoto,
+        lastIndex,
+        goto,
+        text,
+        updatedPageIndex
+      }} />}
+      trigger='click'
+      interactive
+    >{link}</Tooltip>
+  )
 }
 
-export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChangePage }) => {
+export const Pagination = ({
+  modelName,
+  fieldName = null,
+  idx,
+  lastIndex,
+  goto,
+  onChangePage,
+  onChangeGoto
+}) => {
   // get previous & last conditions; 'lastIndex' can be null or '0' value
   const hasFirst = idx > 1
   const hasPrev = idx > 0
@@ -53,35 +106,48 @@ export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChan
       <ul className="pagination">
         {
           hasFirst && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
+            modelName,
+            fieldName,
+            onChangePage,
             text: '«',
             updatedPageIndex: (0)
           }} />
         }
         {
           hasPrev && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
+            modelName,
+            fieldName,
+            onChangePage,
             text: '‹',
             updatedPageIndex: (idx - 1)
           }} />
         }
         {
           <PaginationLink {...{
-            modelName, fieldName, onChangePage,
+            modelName,
+            fieldName,
+            onChangePage,
+            onChangeGoto,
+            lastIndex,
+            goto,
             text: `${displayIndex}`,
             updatedPageIndex: (idx)
           }} />
         }
         {
           hasNext && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
+            modelName,
+            fieldName,
+            onChangePage,
             text: '›',
             updatedPageIndex: (idx + 1)
           }} />
         }
         {
           hasLast && <PaginationLink {...{
-            modelName, fieldName, onChangePage,
+            modelName,
+            fieldName,
+            onChangePage,
             text: '»',
             updatedPageIndex: (lastIndex)
           }} />
@@ -94,25 +160,35 @@ export const Pagination = ({ modelName, fieldName = null, idx, lastIndex, onChan
 export const IndexPagination = ({ schema, modelName, tableView }) => {
   const actions = getActions(schema, modelName)
   const onChangePage = R.path(['tableOptions', 'changePage'], actions)
+  const onChangeGoto = R.path(['tableOptions', 'changeGotoPage'], actions)
+  const page = R.path([modelName, 'page'], tableView)
+  const goto = R.prop('goto', page)
 
   // current page idx
-  const idx = R.pathOr(0, [modelName, 'page', 'currentPage'], tableView)
+  // const idx = R.pathOr(0, [modelName, 'page', 'currentPage'], tableView)
+  const idx = R.propOr(0, 'currentPage', page)
 
   // get index of last hypothetical data point
-  const lastIndex = R.path([modelName, 'page', 'lastIndex'], tableView)
+  // const lastIndex = R.path([modelName, 'page', 'lastIndex'], tableView)
+  const lastIndex = R.prop('lastIndex', page)
 
-  return <Pagination {...{ modelName, idx, lastIndex, onChangePage }} />
+  return <Pagination {...{ modelName, idx, lastIndex, goto, onChangePage, onChangeGoto }} />
 }
 
 export const DetailPagination = ({ schema, modelName, fieldName, tableView }) => {
   const actions = getActions(schema, modelName)
   const onChangePage = R.path(['tableOptions', 'changeRelTablePage'], actions)
+  const onChangeGoto = R.path(['tableOptions', 'changeRelGotoPage'], actions)
+  const page = R.path([modelName, 'fields', fieldName, 'page'], tableView)
+  const goto = R.prop('goto', page)
 
   // current page idx
-  const idx = R.pathOr(0, [modelName, 'fields', fieldName, 'page', 'currentPage'], tableView)
+  // const idx = R.pathOr(0, [modelName, 'fields', fieldName, 'page', 'currentPage'], tableView)
+  const idx = R.propOr(0, 'currentPage', page)
 
   // get index of last hypothetical data point
-  const lastIndex = R.path([modelName, 'fields', fieldName, 'page', 'lastIndex'], tableView)
+  // const lastIndex = R.path([modelName, 'fields', fieldName, 'page', 'lastIndex'], tableView)
+  const lastIndex = R.prop('lastIndex', page)
 
-  return <Pagination {...{ modelName, fieldName, idx, lastIndex, onChangePage }} />
+  return <Pagination {...{ modelName, fieldName, idx, lastIndex, goto, onChangePage, onChangeGoto }} />
 }
