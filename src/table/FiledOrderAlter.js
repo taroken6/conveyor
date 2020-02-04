@@ -23,10 +23,12 @@ export const getFieldOrderAlternate = ({ tableView, modelName, fieldName=undefin
 }
 
 export const FieldOrderAlterButton = ({
-  active,
+  hasValues,
+  open,
   options,
   fieldOrderAltValues,
   fieldOrderChange,
+  fieldOrderToggle,
   modelName,
   fieldName // can be undefined
 }) => (
@@ -36,19 +38,18 @@ export const FieldOrderAlterButton = ({
       style={{ marginLeft: '4px' }}
       onClick={() => {
         // if button not clicked previously, populate input w/ all options
-        if (!active) {
+        if (!hasValues) {
           return fieldOrderChange({
             modelName, fieldName,
             fieldOrderAltValues: options
           })
         }
-        // otherwise, if already in the process, do nothing
-        return null
+        return fieldOrderToggle({ modelName, fieldName, open })
       }}
     >
-      <FaListOl color={active ? 'lightgreen' : 'inherit'} />
+      <FaListOl color={hasValues ? 'lightgreen' : 'inherit'} />
     </button>
-    {active &&
+    {hasValues && open &&
     <div>
       <div className='d-inline-block' style={{'width': '94%'}}>
         <FlexibleInput
@@ -77,11 +78,13 @@ export const FieldOrderAlterButton = ({
 export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderDetailChange'], actions)
+  const fieldOrderToggle = R.path(['tableOptions', 'fieldOrderDetailToggle'], actions)
   const fieldOrderAltValues = R.path([modelName, 'fields', fieldName, 'fieldOrderAlt', 'values'], tableView)
+  const open = R.pathOr(true, [modelName, 'fields', fieldName, 'fieldOrderAlt', 'open'], tableView)
 
   return (<FieldOrderAlter {...{
-    schema, modelName, targetModelName, fieldName, fieldOrder,
-    fieldOrderAltValues, fieldOrderChange, node, customProps
+    schema, modelName, targetModelName, fieldName, fieldOrder, open,
+    fieldOrderAltValues, fieldOrderChange, fieldOrderToggle, node, customProps
   }} />)
 }
 
@@ -89,11 +92,13 @@ export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fiel
 export const FieldOrderAlterIndex = ({ schema, modelName, targetModelName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
+  const fieldOrderToggle = R.path(['tableOptions', 'fieldOrderIndexToggle'], actions)
   const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt', 'values'], tableView)
+  const open = R.pathOr(true, [modelName, 'fieldOrderAlt', 'open'], tableView)
 
   return (<FieldOrderAlter {...{
-    schema, modelName, targetModelName, fieldOrder,
-    fieldOrderAltValues, fieldOrderChange, node, customProps
+    schema, modelName, targetModelName, fieldOrder, open,
+    fieldOrderAltValues, fieldOrderChange, fieldOrderToggle, node, customProps
   }} />)
 }
 
@@ -104,13 +109,15 @@ export const FieldOrderAlter = ({
   targetModelName,
   fieldName,  // can be undefined
   fieldOrder,
+  open,
   fieldOrderAltValues,
   fieldOrderChange,
+  fieldOrderToggle,
   node,
   customProps
 }) => {
   // if has values, display
-  const active = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
+  const hasValues = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
 
   // get dropdown options
   const toOptions = fieldName => ({
@@ -123,10 +130,12 @@ export const FieldOrderAlter = ({
 
   return(
     <FieldOrderAlterButton {...{
-      active,
+      hasValues,
+      open,
       options,
       fieldOrderAltValues,
       fieldOrderChange,
+      fieldOrderToggle,
       modelName,
       fieldName
     }}/>
