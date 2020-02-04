@@ -13,25 +13,29 @@ const GotoTooltip = ({
   lastIndex,
   goto,
 }) => {
-  const isValidPage = 0 <= goto <= lastIndex
+  const isValidPage = 0 <= goto && goto <= lastIndex
+  const onClick = 0 <= goto && goto <= lastIndex ? onChangePage : () => {}
   return (
-    <div className='d-flex goto-tooltip'>
-      <div className='mr-2 float-left'>
-        <FlexibleInput {...{
-          type: inputTypes.INT_TYPE,
-          id: `${modelName}${fieldName}-goto`,
-          value: goto,
-          onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt, isValidPage }),
-          customInput: {
-            placeholder: 'Go to page...',
-          }
-        }}/>
-      </div>
-      <div className='float-right'>
-        <button
-          className='btn btn-success'
-          onClick={() => onChangePage({ modelName, fieldName, updatedPageIndex: goto - 1, isValidPage })}
-        >Go</button>
+    <div id={`${modelName}${fieldName ? '-' + fieldName : ''}-pg-tooltip`} className='goto-tooltip'>
+      {isValidPage ? null : <div className='mb-2 goto-tooltip-invalid'>Please enter a valid page number.</div>}
+      <div className='d-flex'>
+        <div className='mr-2 float-left'>
+          <FlexibleInput {...{
+            type: inputTypes.INT_TYPE,
+            id: `${modelName}${fieldName ? '-' + fieldName : ''}-goto`,
+            value: goto,
+            onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt, isValidPage }),
+            customInput: {
+              placeholder: 'Go to page...',
+            }
+          }}/>
+        </div>
+        <div className='float-right'>
+          <button
+            className='btn btn-success'
+            onClick={() => onClick({ modelName, fieldName, updatedPageIndex: goto - 1, isValidPage })}
+          >Go</button>
+        </div>
       </div>
     </div>
   )
