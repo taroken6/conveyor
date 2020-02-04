@@ -31,6 +31,7 @@
 -   Refactor tableView structure to fit pagination #135
 -   Add page number tooltips to pagination buttons #136
 -   Add search component #147
+-   Optimize select input type #146
 
 ## Version 1.4.0
 
