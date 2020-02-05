@@ -4,6 +4,8 @@
 
 ### Unreleased
 
+- Add Summary and Footer #141
+
 ## Version 1.5.0
 
 ### Released 1/30/20
@@ -32,6 +34,7 @@
 -   Add page number tooltips to pagination buttons #136
 -   Add search component #147
 -   Optimize select input type #146
+-   Show total items currently selected and show the range of items #142
 
 ## Version 1.4.0
 
