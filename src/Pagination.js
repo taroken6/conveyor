@@ -12,19 +12,18 @@ const GotoTooltip = ({
   onChangeGoto,
   lastIndex,
   goto,
+  canGoto,
 }) => {
-  const isValidPage = 0 <= goto && goto <= lastIndex
-  const onClick = 0 <= goto && goto <= lastIndex ? onChangePage : () => {}
   return (
     <div id={`${modelName}${fieldName ? '-' + fieldName : ''}-pg-tooltip`} className='goto-tooltip'>
-      {isValidPage ? null : <div className='mb-2 goto-tooltip-invalid'>Please enter a valid page number.</div>}
+      {canGoto ? null : <div className='mb-2 goto-tooltip-invalid'>Please enter a valid page number.</div>}
       <div className='d-flex'>
         <div className='mr-2 float-left'>
           <FlexibleInput {...{
             type: inputTypes.INT_TYPE,
             id: `${modelName}${fieldName ? '-' + fieldName : ''}-goto`,
             value: goto,
-            onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt, isValidPage }),
+            onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt }),
             customInput: {
               placeholder: 'Go to page...',
             }
@@ -33,7 +32,12 @@ const GotoTooltip = ({
         <div className='float-right'>
           <button
             className='btn btn-success'
-            onClick={() => onClick({ modelName, fieldName, updatedPageIndex: goto - 1, isValidPage })}
+            onClick={() => onChangePage({
+              modelName,
+              fieldName,
+              updatedPageIndex: goto - 1,
+              isValid: 0 < goto && goto <= lastIndex + 1
+            })}
           >Go</button>
         </div>
       </div>
@@ -48,6 +52,7 @@ const PaginationLink = ({
   onChangeGoto = null,
   lastIndex,
   goto = null,
+  canGoto,
   text,
   updatedPageIndex
 }) => {
@@ -74,8 +79,7 @@ const PaginationLink = ({
         onChangeGoto,
         lastIndex,
         goto,
-        text,
-        updatedPageIndex
+        canGoto,
       }} />}
       trigger='click'
       interactive
@@ -89,6 +93,7 @@ export const Pagination = ({
   idx,
   lastIndex,
   goto,
+  canGoto,
   onChangePage,
   onChangeGoto,
   totalDataLength,
@@ -141,6 +146,7 @@ export const Pagination = ({
             onChangeGoto,
             lastIndex,
             goto,
+            canGoto,
             text: `${displayIndex}`,
             updatedPageIndex: (idx)
           }} />
@@ -185,6 +191,7 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
   const onChangeGoto = R.path(['tableOptions', 'changeGotoPage'], actions)
   const page = R.path([modelName, 'page'], tableView)
   const goto = R.prop('goto', page)
+  const canGoto = R.propOr(true, 'canGoto', page)
 
   // current page idx
   const idx = R.propOr(0, 'currentPage', page)
@@ -202,6 +209,7 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
     totalDataLength,
     amtPerPage,
     goto,
+    canGoto,
     onChangePage,
     onChangeGoto
   }} />
@@ -213,6 +221,7 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
   const onChangeGoto = R.path(['tableOptions', 'changeRelGotoPage'], actions)
   const page = R.path([modelName, 'fields', fieldName, 'page'], tableView)
   const goto = R.prop('goto', page)
+  const canGoto = R.propOr(true, 'canGoto', page)
 
   // current page idx
   const idx = R.propOr(0, 'currentPage', page)
@@ -234,6 +243,7 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
     totalDataLength,
     amtPerPage,
     goto,
+    canGoto,
     onChangePage,
     onChangeGoto
   }} />

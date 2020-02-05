@@ -4,7 +4,8 @@
 
 ### Unreleased
 
-- Add Summary and Footer #141
+-   Add Summary and Footer #141
+-   Add 'go to' pagination tooltip #146
 
 ## Version 1.5.0
 
