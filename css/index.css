@@ -160,3 +160,8 @@ body {
 .goto-tooltip {
   max-width: 200px;
 }
+
+.goto-tooltip-invalid {
+  color: #ff4444;
+  font-size: 13px;
+}
