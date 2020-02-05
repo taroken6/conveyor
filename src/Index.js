@@ -27,12 +27,8 @@ export const DefaultIndexTitle = ({
   data,
   user,
   tableView,
-<<<<<<< HEAD
   fieldOrder,
   customProps
-=======
-  customProps,
->>>>>>> master
 }) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
@@ -68,13 +64,8 @@ export const DefaultIndexTitle = ({
         data,
         filterOrder,
         filterInputs: currentFilters, user
-<<<<<<< HEAD
-      }}/>}
-      <div className='float-right btn-group'>
-=======
       }} />}
-      <div className='float-right'>
->>>>>>> master
+      <div className='float-right btn-group'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
         {creatable && <CreateButton {...{ onClick }} />}
         <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName}} />
