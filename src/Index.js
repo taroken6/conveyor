@@ -7,7 +7,7 @@ import {
   getActions,
   getHasIndex, getModel,
   getIndexFields, getModelLabel,
-  getModelLabelPlural, getSingleton
+  getModelLabelPlural, getSingleton, getFieldLabel
 } from './utils/schemaGetters'
 import { Redirect } from 'react-router-dom'
 import {
@@ -17,7 +17,7 @@ import {
   getIndexPageOverride,
   skipOverride
 } from './Utils'
-import { FieldOrderAlterIndex } from './table/FiledOrderAlter'
+import { FieldOrderButton, FieldOrderInput} from './table/FiledOrderAlter'
 
 export const DefaultIndexTitle = ({
   schema,
@@ -39,14 +39,24 @@ export const DefaultIndexTitle = ({
   const filterOrder = R.path([modelName, 'filter', 'filterOrder'], tableView)
   const filtersAreActive = R.path([modelName, 'filter', 'filtersAreActive'], tableView)
 
+  // get FieldOrderAlternate props
+  const fieldOrderChange = R.path(['tableOptions', 'fieldOrderIndexChange'], actions)
+  const fieldOrderToggle = R.path(['tableOptions', 'fieldOrderIndexToggle'], actions)
+  const fieldOrderAltValues = R.path([modelName, 'fieldOrderAlt', 'values'], tableView)
+  const open = R.pathOr(true, [modelName, 'fieldOrderAlt', 'open'], tableView)
+  const toOptions = fieldName => ({
+    label: getFieldLabel({ schema, modelName, fieldName, data, customProps}),
+    value: fieldName
+  })
+  // fieldOrder here represents the raw field order of all possible fields that can be on the table
+  const options = fieldOrder.map(fieldName => toOptions(fieldName))
+  const hasValues = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
+
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
         {getModelLabelPlural({schema, modelName, data, user, customProps })}
       </h3>
-      <FieldOrderAlterIndex {...{
-        schema, modelName, tableView, fieldOrder, data, customProps
-      }}/>
       {filterable && <FilterModal {...{
         schema,
         modelName,
@@ -55,10 +65,13 @@ export const DefaultIndexTitle = ({
         filterOrder,
         filterInputs: currentFilters, user
       }}/>}
-      <div className='float-right'>
+      <div className='float-right btn-group'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
         {creatable && <CreateButton {...{ onClick }} />}
+        <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName}} />
       </div>
+      <FieldOrderInput {...{hasValues, open, options,
+        fieldOrderAltValues, fieldOrderChange, modelName }} />
     </div>
   )
 }
