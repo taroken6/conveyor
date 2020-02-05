@@ -421,9 +421,11 @@ export const Table = ({
   // note: do not alter 'fieldOrder' before it reaches the 'FieldOrderAlterDetail' component
   fieldOrder = getFieldOrderAlternate({
     tableView,
-    modelName: parentModelName,
-    fieldName: parentFieldName,
-    fieldOrder
+    parentModelName,
+    parentFieldName,
+    modelName,
+    fieldOrder,
+    fromIndex
   })
 
   if (!data) {

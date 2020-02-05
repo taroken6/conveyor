@@ -5,15 +5,15 @@ import { getActions, getFieldLabel } from '../utils/schemaGetters'
 import FlexibleInput from '../input'
 import { inputTypes } from '../consts'
 
-export const getFieldOrderAlternate = ({ tableView, modelName, fieldName=undefined, fieldOrder }) => {
+export const getFieldOrderAlternate = ({ tableView, parentModelName, parentFieldName, modelName, fieldOrder, fromIndex }) => {
   /* by default, returns fieldOrder
   returns alternate fieldOrder based on user preference
   if fieldName not passed in, assume table is index table, otherwise detail relationship table */
 
   // get form object from redux store; 'fieldName' indicates location
-  const fieldOrderAltValues = fieldName ?
-    R.pathOr([], [modelName, 'fields', fieldName, 'fieldOrderAlt', 'values'], tableView) :
-    R.pathOr([], [modelName, 'fieldOrderAlt', 'values'], tableView)
+  const fieldOrderAltValues = fromIndex ?
+    R.pathOr([], [modelName, 'fieldOrderAlt', 'values'], tableView) :
+    R.pathOr([], [parentModelName, 'fields', parentFieldName, 'fieldOrderAlt', 'values'], tableView)
 
   // get fieldNames from form object
   const alt = R.map(val => val.value, fieldOrderAltValues)
