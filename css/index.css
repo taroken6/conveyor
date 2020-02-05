@@ -162,6 +162,7 @@ body {
 }
 
 .goto-tooltip-invalid {
-  color: #ff4444;
-  font-size: 13px;
+  color: #ff5555;
+  font-size: 16px;
+  font-weight: 500;
 }
