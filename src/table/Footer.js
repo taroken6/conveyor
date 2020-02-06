@@ -1,12 +1,14 @@
 import React from 'react'
-import { getFooterLabel, getActions, getFieldConditions, getFooterFields, getShownFooters } from '../utils/schemaGetters'
-import { shouldDisplay, isTableFooterShown, isFooterShown } from '../Utils'
-import { Summation } from './Summation'
+import { getFooterLabel, getFieldConditions, getFooterFields, getShownFooters } from '../utils/schemaGetters'
+import { shouldDisplay, isFooterShown, isDetailFieldFooterShown } from '../Utils'
+import { Summation, DetailSummation } from './Summation'
 import * as R from 'ramda'
 
 export const TFoot = ({
   schema,
   modelName,
+  parentModelName,
+  parentFieldName,
   fieldOrder,
   editable,
   deletable,
@@ -36,8 +38,9 @@ export const TFoot = ({
             }
           }
 
-          const showFooterInfo = isFooterShown({ schema, modelName, fieldName, user })
-          const shownFooters = getShownFooters({ schema, modelName, type: fieldName.type, data, user, customProps })
+          const showFooterInfo = isFooterShown({ schema, modelName, fieldName, user }) ||
+            isDetailFieldFooterShown({ schema, parentModelName, parentFieldName, modelName, fieldName, user })
+          let shownFooters
 
           return (
             <th key={`${idx}-${modelName}-${fieldName}`} style={{ minWidth: '130px' }}>
@@ -46,8 +49,11 @@ export const TFoot = ({
                   schema,
                   modelName,
                   fieldName,
+                  parentModelName,
+                  parentFieldName,
                   title: showFooterInfo ? getFooterLabel({ schema, modelName, fieldName, data, customProps }) : false,
                   summary,
+                  fromIndex,
                   showFooterInfo,
                   shownFooters,
                   customProps
@@ -61,12 +67,15 @@ export const TFoot = ({
   )
 }
 
-export const Footer = ({ schema, modelName, fieldName, title, summary, showFooterInfo, customProps }) => {
+export const Footer = ({ schema, modelName, fieldName, parentModelName, parentFieldName, title, summary, fromIndex, showFooterInfo, customProps }) => {
   return (
     <div className="footer">
       <div className="sum">
         <span className="footer-title">{title ? `Total ${title}: ` : null}</span>
-        {showFooterInfo && <Summation {...{ schema, modelName, fieldName, summary, customProps }} />}
+        {fromIndex ? (showFooterInfo && <Summation {...{ schema, modelName, fieldName, summary, customProps }} />) :
+          (showFooterInfo && <DetailSummation {...{
+            schema, modelName, fieldName, parentModelName, parentFieldName, summary, customProps
+          }} />)}
       </div>
     </div>
   )

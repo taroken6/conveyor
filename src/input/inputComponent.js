@@ -6,7 +6,7 @@ import CurrencyInput from 'react-currency-input'
 import Switch from 'rc-switch'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
-import { optimizeSelect } from '../utils/optimizeSelect'  
+import { optimizeSelect } from '../utils/optimizeSelect'
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)
 
@@ -73,35 +73,36 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, is
   let date
   if (value) {
     date = new Date(value)
-    date.setMinutes( date.getMinutes() + date.getTimezoneOffset() )
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
   } else {
     date = ''
   }
 
   return (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
-    customError={R.defaultTo(CustomErrorComponent, customError)}
-    customLabel={customLabel}>
-    <div style={{ display: 'inherit' }}>
-      <DatePicker
-        placeholderText='Click to select a date'
-        fixedHeight={true}
-        dateFormat={dateFormat}
-        selected={date} // yyyy/MM/dd required for Date()
-        onChange={evt => {
-          if (evt === undefined || evt === null) {
-            return (onChange(null))
-          }
-          return onChange(
-            `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`
-          )
-        }}
-        isClearable={isClearable}
-        {...customInput}
-      />
-    </div>
-  </FormGroup>
-)}
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+      customError={R.defaultTo(CustomErrorComponent, customError)}
+      customLabel={customLabel}>
+      <div style={{ display: 'inherit' }}>
+        <DatePicker
+          placeholderText='Click to select a date'
+          fixedHeight={true}
+          dateFormat={dateFormat}
+          selected={date} // yyyy/MM/dd required for Date()
+          onChange={evt => {
+            if (evt === undefined || evt === null) {
+              return (onChange(null))
+            }
+            return onChange(
+              `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`
+            )
+          }}
+          isClearable={isClearable}
+          {...customInput}
+        />
+      </div>
+    </FormGroup>
+  )
+}
 
 const inputStringTypeMap = {
   [inputTypes.STRING_TYPE]: 'text',
@@ -197,7 +198,7 @@ export const InputPassword = ({ onChange, id, labelStr, error, value, className,
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
  */
 
-const MAX_SQL_INT_SIZE = Math.pow(2, 31) -1
+const MAX_SQL_INT_SIZE = Math.pow(2, 31) - 1
 
 const MIN_SQL_INT_SIZE = - Math.pow(2, 31)
 
@@ -520,24 +521,25 @@ export const InputCreatableStringSelect = ({
   customLabel
 }) => {
   return (
-  <FormGroup
-    labelStr={labelStr}
-    htmlFor={id}
-    error={error}
-    required={required}
-    customError={R.defaultTo(CustomErrorComponent, customError)}
-    customLabel={customLabel}
-  >
-    <CreatableSelect
-      className={className}
-      classNamePrefix='select'
-      id={id}
-      options={options}
-      onChange={(selectedOption) => onChange(selectedOption.value)}
-      value={{label: value, value}}
-      onMenuOpen={onMenuOpen}
-      createOptionPosition={'first'}
-      {...customInput}
-    />
-  </FormGroup>
-)}
+    <FormGroup
+      labelStr={labelStr}
+      htmlFor={id}
+      error={error}
+      required={required}
+      customError={R.defaultTo(CustomErrorComponent, customError)}
+      customLabel={customLabel}
+    >
+      <CreatableSelect
+        className={className}
+        classNamePrefix='select'
+        id={id}
+        options={options}
+        onChange={(selectedOption) => onChange(selectedOption.value)}
+        value={{ label: value, value }}
+        onMenuOpen={onMenuOpen}
+        createOptionPosition={'first'}
+        {...customInput}
+      />
+    </FormGroup>
+  )
+}

@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { titleize, humanize, isFooterShown } from '../Utils'
+import { titleize, humanize, isIndexTableFieldFooterShown } from '../Utils'
 import pluralize from 'pluralize'
 import { inputTypes } from '../consts'
 

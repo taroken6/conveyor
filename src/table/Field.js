@@ -56,7 +56,7 @@ const FieldLink = ({ schema, modelName, fieldName, node, prefix = ['https://', '
 
 const FieldCurrency = ({ schema, modelName, fieldName, node }) => {
   const num = R.prop(fieldName, node)
-  const displayString = num ? '$ ' + num : 'N/A'
+  const displayString = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num)
 
   return (
     <span>{displayString}</span>
