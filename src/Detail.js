@@ -227,7 +227,7 @@ export const DetailCreateButton = ({ schema, targetModelName, path, targetInvers
     targetInverseFieldName,
     node
   })
-  return <CreateButton {...{ onClick }} />
+  return <CreateButton {...{ onClick, className: 'padding-left' }} />
 }
 
 export const DefaultDetailTableTitleWrapper = ({ children }) => {
@@ -283,8 +283,9 @@ export const DefaultDetailO2MTableTitle = ({
           targetInverseFieldName,
           node
         }} /> }
-        <FieldOrderButton style={ !creatable && {'marginLeft': '4px'}} {...{
-          hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName
+        <FieldOrderButton {...{
+          hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName,
+          className: `${creatable ? undefined : 'padding-left'}`
         }}/>
       </div>
       { hasValues && open && <FieldOrderInput {...{
@@ -345,8 +346,9 @@ const DefaultDetailM2MTableTitle = ({
             targetModelName
           }} />
         </div>}
-        <FieldOrderButton style={ !editable && {'marginLeft': '4px'}} {...{
-          hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName
+        <FieldOrderButton {...{
+          hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName,
+          className: `${editable ? undefined : 'padding-left'}`
         }}/>
       </div>
       { hasValues && open && <FieldOrderInput {...{

@@ -26,7 +26,7 @@ export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick
       <span>{labelStr}</span>
       { required && ' *'}
       { creatable && <CreateButton {...{
-        onClick
+        onClick, className: 'padding-left'
       }} /> }
     </label>
   )

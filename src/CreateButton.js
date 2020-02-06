@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 
 const CreateButton = ({
   onClick,
-  className='btn btn-sm btn-outline-success create-pad'
+  className
 }) => (
   <Link
     to='/Create'
     onClick={onClick}
-    className={className}
+    className={`btn btn-sm btn-outline-success ${className}`}
     role='button'
     replace
   >Create</Link>

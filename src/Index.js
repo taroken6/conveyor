@@ -67,7 +67,7 @@ export const DefaultIndexTitle = ({
       }} />}
       <div className='float-right btn-group'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
-        {creatable && <CreateButton {...{ onClick, className: 'btn btn-sm btn-outline-success' }} />}
+        {creatable && <CreateButton {...{ onClick }} />}
         <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName}} />
       </div>
       {hasValues && open && <FieldOrderInput {...{hasValues, open, options,
@@ -200,7 +200,7 @@ const Index = ({
         <h1>
           {`No ${getModelLabel({ schema, modelName, data, user, customProps })} Exists`}
           <CreateButton {...{
-            onClick: () => onCreateClick({ modelName })
+            onClick: () => onCreateClick({ modelName }), className: 'padding-left'
           }} />
         </h1>
       </div>

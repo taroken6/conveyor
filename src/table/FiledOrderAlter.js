@@ -28,12 +28,11 @@ export const FieldOrderButton = ({
   options,
   fieldOrderChange,
   fieldOrderToggle,
-  modelName,
+  modelName, className,
   fieldName // can be undefined
 }) =>
   <button
-    className='btn btn-sm btn-outline-primary'
-    //style={{ marginLeft: '10px' }}
+    className={ `btn btn-sm btn-outline-primary ${className}`}
     onClick={() => {
       // if button not clicked previously, populate input w/ all options
       if (!hasValues) {
