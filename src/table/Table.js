@@ -84,19 +84,11 @@ export const TableButtonGroup = ({
   m2m,
   customProps
 }) => {
-  console.log('node', node)
-  console.log('modalData', modalData)
-  console.log('parentFieldName', parentFieldName)
-  console.log('parentModelName', parentModelName)
-  console.log('schema', schema)
-  console.log('m2m', m2m)
   const actions = getActions(schema, modelName)
-  console.log('actions', actions)
-  // const onRemove = () => {console.log('REMOVED')} // temporary placeholder
   const onRemove = R.path(['edit', 'onDetailTableRemoveSubmit'], actions)
   const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
   const id = node.id
-  console.log('modalId', modalId)
+  const canRemove = !R.isNil(parentModelName) && !R.isNil(parentFieldName) && !fromIndex && m2m && editable
   return (
     <React.Fragment>
       <div className="btn-group">
@@ -112,7 +104,7 @@ export const TableButtonGroup = ({
             }}
           />
         )}
-        {!fromIndex && m2m && editable && (
+        {canRemove && (
           <RemoveButton
             {...{
               modalId,
@@ -133,7 +125,7 @@ export const TableButtonGroup = ({
           />
         )}
       </div>
-      {!fromIndex && m2m && (
+      {canRemove && (
         <RemoveDetail
           {...{
             schema,
