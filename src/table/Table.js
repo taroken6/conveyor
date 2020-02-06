@@ -16,7 +16,7 @@ import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
 import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
-import { DeleteDetail } from '../delete/DeleteDetail'
+import { DeleteDetail, RemoveDetail } from '../delete/DeleteDetail'
 
 import {
   RowEditButton,
@@ -49,6 +49,19 @@ export const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
   )
 }
 
+export const RemoveButton = ({ modalId, onRemoveWarning, modelName, id }) => {
+  return (
+    <button
+      className="btn btn-sm btn-outline-warning"
+      data-toggle="modal"
+      data-target={'#' + modalId}
+      onClick={() => onRemoveWarning({ modelName, id })}
+    >
+      Remove
+    </button>
+  )
+}
+
 export const showButtonColumn = ({ deletable, editable, detailField }) => {
   /* Check if any of the possible buttons are being displayed */
   return deletable || editable || R.isNil(detailField)
@@ -67,11 +80,22 @@ export const TableButtonGroup = ({
   parentFieldName,
   deletable,
   onDelete,
+  fromDetail,
+  m2m,
   customProps
 }) => {
+  console.log('node', node)
+  console.log('modalData', modalData)
+  console.log('parentFieldName', parentFieldName)
+  console.log('parentModelName', parentModelName)
+  console.log('schema', schema)
+  console.log('m2m', m2m)
   const actions = getActions(schema, modelName)
-  const modalId = 'confirm-delete-' + modelName + parentFieldName + idx
+  console.log('actions', actions)
+  const onRemove = () => {console.log('REMOVED')} // temporary placeholder
+  const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
   const id = node.id
+  console.log('modalId', modalId)
   return (
     <React.Fragment>
       <div className="btn-group">
@@ -87,7 +111,17 @@ export const TableButtonGroup = ({
             }}
           />
         )}
-        {deletable && (
+        {fromDetail && m2m && editable && (
+          <RemoveButton
+            {...{
+              modalId,
+              onRemoveWarning: R.path(['remove', 'onRemoveWarning'], actions), // or wherever it is
+              modelName,
+              id
+            }}
+          />
+        )}
+        {deletable && !m2m && (
           <DeleteButton
             {...{
               modalId,
@@ -98,7 +132,23 @@ export const TableButtonGroup = ({
           />
         )}
       </div>
-      {deletable && (
+      {fromDetail && m2m && (
+        <RemoveDetail
+          {...{
+            schema,
+            id,
+            modalId,
+            modelName,
+            onRemove,
+            parentId,
+            parentModelName,
+            parentFieldName,
+            node,
+            customProps
+          }}
+        />
+      )}
+      {deletable && !m2m && (
         <DeleteDetail
           {...{
             schema,
@@ -225,6 +275,8 @@ export const TableButtonCell = ({
   parentFieldName,
   onDelete,
   idx,
+  fromDetail,
+  m2m,
   customProps
 }) => {
   return isEditing(editData, modelName, node.id) ? (
@@ -257,6 +309,8 @@ export const TableButtonCell = ({
         parentModelName,
         parentFieldName,
         onDelete,
+        fromDetail,
+        m2m,
         customProps
       }}
     />
@@ -284,6 +338,8 @@ const TBody = ({
   user,
   parentNode,
   fromIndex,
+  fromDetail,
+  m2m,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -365,6 +421,8 @@ const TBody = ({
                       parentFieldName,
                       onDelete,
                       idx,
+                      fromDetail,
+                      m2m,
                       customProps
                     }}
                   />
@@ -414,6 +472,8 @@ export const Table = ({
   user,
   collapse,
   fromIndex,
+  fromDetail,
+  m2m,
   customProps,
   summary
 }) => {
@@ -491,6 +551,8 @@ export const Table = ({
             user,
             parentNode,
             fromIndex,
+            fromDetail,
+            m2m,
             customProps
           }}
         />

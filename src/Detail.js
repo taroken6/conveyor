@@ -41,7 +41,7 @@ import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
 import { inputTypes } from './consts'
-import { DeleteDetail } from './delete/DeleteDetail'
+import { DeleteDetail, RemoveDetail } from './delete/DeleteDetail'
 import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
@@ -525,6 +525,8 @@ export const DefaultDetailTable = ({
             user,
             tableView,
             collapse,
+            fromDetail: true,
+            m2m: true,
             modalData
           }}
         /> }

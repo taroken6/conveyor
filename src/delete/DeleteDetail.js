@@ -175,3 +175,51 @@ export const DeleteDetail = ({
     </Modal>
   )
 }
+
+export const RemoveDetail = ({
+  schema,
+  modelName,
+  id,
+  modalId,
+  title = 'Confirm Removal',
+  onRemove,
+  parentModelName,
+  parentFieldName,
+  parentId,
+  node,
+  customProps
+}) => {
+  // const modalStore = R.prop('Remove', modalData)
+  const name = R.path(['type', 'name'], node)
+  const actions = getActions(schema, modelName)
+  const onCancelRemove = R.path(['remove', 'onCancelRemove'], actions) // or wherever onCancelRemove is
+  const parentField = getFieldLabel({ schema, modelName: parentModelName, fieldName: parentFieldName, customProps })
+  console.log('parentField', parentField)
+  return (
+    <Modal {...{ id: modalId, title }}>
+      <span>
+        <strong>{`Do you want to remove ${name} from ${parentField}?`}</strong>
+        {` Note: ${name} will not be deleted, but the relationship will be cut.`}
+      </span>
+      <div className='modal-footer justify-content-center mt-3'>
+        <div className='btn-group'>
+          <button
+            className='btn btn-small btn-outline-secondary '
+            data-dismiss='modal'
+            onClick={() => onCancelRemove()}
+          >Cancel</button>
+          <button
+            className='btn btn-small btn-outline-danger '
+            data-dismiss='modal'
+            onClick={() => onRemove({
+              id: id,
+              parentModel: parentModelName,
+              parentId,
+              modelName
+            })}
+          >Confirm Removal</button>
+        </div>
+      </div>
+    </Modal>
+  )
+}
