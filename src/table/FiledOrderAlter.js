@@ -33,7 +33,7 @@ export const FieldOrderButton = ({
 }) =>
   <button
     className='btn btn-sm btn-outline-primary'
-    style={{ marginLeft: '4px' }}
+    style={{ marginLeft: '10px' }}
     onClick={() => {
       // if button not clicked previously, populate input w/ all options
       if (!hasValues) {
@@ -55,31 +55,28 @@ export const FieldOrderInput = ({
   modelName,
   fieldName // can be undefined
 }) => {
-  if (hasValues && open) {
-    return (
-      <div>
-        <div className='d-inline-block' style={{'width': '94%'}}>
-          <FlexibleInput
-            className={'field-order-alter-input'}
-            {...{
-              id: `alternate-input-${modelName}-${fieldName}`,
-              onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: evt }),
-              value: fieldOrderAltValues,
-              type: inputTypes.SELECT_TYPE,
-              isMulti: true,
-              options
-            }}
-          />
-        </div>
-        <button
-          style={{'verticalAlign': 'text-bottom'}}
-          className='btn btn-sm btn-outline-danger'
-          onClick={() => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: null })}
-        >Reset</button>
+  return (
+    <div>
+      <div className='d-inline-block' style={{'width': '94%'}}>
+        <FlexibleInput
+          className={'field-order-alter-input'}
+          {...{
+            id: `alternate-input-${modelName}-${fieldName}`,
+            onChange: evt => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: evt }),
+            value: fieldOrderAltValues,
+            type: inputTypes.SELECT_TYPE,
+            isMulti: true,
+            options
+          }}
+        />
       </div>
-    )
-  }
-  return null
+      <button
+        style={{'verticalAlign': 'text-bottom'}}
+        className='btn btn-sm btn-outline-danger'
+        onClick={() => fieldOrderChange({ modelName, fieldName, fieldOrderAltValues: null })}
+      >Reset</button>
+    </div>
+  )
 }
 
 // field order alternate => for detail page
@@ -103,7 +100,7 @@ export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fiel
   return (
     <React.Fragment>
       <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName}} />
-      <FieldOrderInput {...{hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName }} />
+      {hasValues && open && <FieldOrderInput {...{hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName }} />}
     </React.Fragment>
   )
 }

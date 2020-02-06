@@ -70,8 +70,8 @@ export const DefaultIndexTitle = ({
         {creatable && <CreateButton {...{ onClick }} />}
         <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName}} />
       </div>
-      <FieldOrderInput {...{hasValues, open, options,
-        fieldOrderAltValues, fieldOrderChange, modelName }} />
+      {hasValues && open && <FieldOrderInput {...{hasValues, open, options,
+        fieldOrderAltValues, fieldOrderChange, modelName }} />}
     </div>
   )
 }
