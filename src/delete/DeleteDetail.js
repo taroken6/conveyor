@@ -178,7 +178,6 @@ export const DeleteDetail = ({
 
 export const RemoveDetail = ({
   schema,
-  modelName,
   id,
   modalId,
   title = 'Confirm Removal',
@@ -189,8 +188,6 @@ export const RemoveDetail = ({
   name,
   customProps
 }) => {
-  const actions = getActions(schema, modelName)
-  const onCancelRemove = R.path(['remove', 'onCancelRemove'], actions) // or wherever onCancelRemove is
   const parentField = getFieldLabel({ schema, modelName: parentModelName, fieldName: parentFieldName, customProps })
   return (
     <Modal {...{ id: modalId, title }}>
@@ -203,7 +200,6 @@ export const RemoveDetail = ({
           <button
             className='btn btn-small btn-outline-secondary '
             data-dismiss='modal'
-            onClick={() => onCancelRemove()}
           >Cancel</button>
           <button
             className='btn btn-small btn-outline-danger '

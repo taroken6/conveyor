@@ -49,13 +49,12 @@ export const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
   )
 }
 
-export const RemoveButton = ({ modalId, onRemoveWarning, modelName, id }) => {
+export const RemoveButton = ({ modalId }) => {
   return (
     <button
       className="btn btn-sm btn-outline-warning"
       data-toggle="modal"
       data-target={'#' + modalId}
-      onClick={() => onRemoveWarning({ modelName, id })}
     >
       Remove
     </button>
@@ -108,7 +107,6 @@ export const TableButtonGroup = ({
           <RemoveButton
             {...{
               modalId,
-              onRemoveWarning: R.path(['remove', 'onRemoveWarning'], actions), // or wherever it is
               modelName,
               id
             }}
