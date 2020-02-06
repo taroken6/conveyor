@@ -88,7 +88,7 @@ export const TableButtonGroup = ({
   const onRemove = R.path(['edit', 'onDetailTableRemoveSubmit'], actions)
   const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
   const id = node.id
-  const canRemove = !R.isNil(parentModelName) && !R.isNil(parentFieldName) && !fromIndex && m2m && editable
+  const canRemove = !fromIndex && m2m && editable
   return (
     <React.Fragment>
       <div className="btn-group">
