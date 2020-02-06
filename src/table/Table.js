@@ -418,7 +418,7 @@ export const Table = ({
     return null
   }
   // column order can be altered by user
-  // note: do not alter 'fieldOrder' before it reaches the 'FieldOrderAlterDetail' component
+  // note: do not alter 'fieldOrder' before it reaches the 'FieldOrderButton'/ 'FieldOrderInput' components
   fieldOrder = getFieldOrderAlternate({
     tableView,
     parentModelName,

@@ -43,6 +43,10 @@ body {
   margin-left: 10px;
 }
 
+.create-pad {
+  margin-left: 10px;
+}
+
 .filter-icon-active, .filter-icon-inactive {
   height: 13px;
   width: 13px;

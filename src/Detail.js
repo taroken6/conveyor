@@ -43,7 +43,10 @@ import '../css/index.css'
 import { inputTypes } from './consts'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { FaAngleDown, FaAngleRight } from 'react-icons/fa'
-import { FieldOrderAlterDetail } from './table/FiledOrderAlter'
+import {
+  FieldOrderButton,
+  FieldOrderInput, getFieldOrderAlterDetailProps
+} from './table/FiledOrderAlter'
 
 const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
   <Popover
@@ -255,6 +258,13 @@ export const DefaultDetailO2MTableTitle = ({
   customProps
 }) => {
   const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
+  // get fieldOrderAlter props for Detail
+  const {
+    fieldOrderChange, fieldOrderToggle, fieldOrderAltValues,
+    open, options, hasValues
+  } = getFieldOrderAlterDetailProps({
+    schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps
+  })
   return (
     <DefaultDetailTableTitleWrapper>
       {collapsable && <CollapseTableButton {...{
@@ -265,16 +275,21 @@ export const DefaultDetailO2MTableTitle = ({
         collapseTableChange
       }}/>}
       <DefaultDetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
-      { creatable && <DetailCreateButton {...{
-        schema,
-        targetModelName,
-        path,
-        targetInverseFieldName,
-        node
-      }} /> }
-      <FieldOrderAlterDetail {...{
-        schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps
-      }}/>
+      <div className='btn-group'>
+        { creatable && <DetailCreateButton {...{
+          schema,
+          targetModelName,
+          path,
+          targetInverseFieldName,
+          node
+        }} /> }
+        <FieldOrderButton style={ !creatable && {'marginLeft': '4px'}} {...{
+          hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName
+        }}/>
+      </div>
+      { hasValues && open && <FieldOrderInput {...{
+        hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName
+      }} />}
     </DefaultDetailTableTitleWrapper>
   )
 }
@@ -297,6 +312,13 @@ const DefaultDetailM2MTableTitle = ({
   customProps
 }) => {
   const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
+  // get fieldOrderAlter props for Detail
+  const {
+    fieldOrderChange, fieldOrderToggle, fieldOrderAltValues,
+    open, options, hasValues
+  } = getFieldOrderAlterDetailProps({
+    schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps
+  })
 
   return (
     <div style={{ marginBottom: '10px' }}>
@@ -310,21 +332,26 @@ const DefaultDetailM2MTableTitle = ({
         }}/>}
         {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
       </h4>
-      {editable && <div className='pl-2 d-inline'>
-        <TableEditButton {...{
-          schema,
-          modelName,
-          id,
-          fieldName,
-          targetInverseFieldName,
-          node,
-          path,
-          targetModelName
-        }} />
-      </div>}
-      <FieldOrderAlterDetail {...{
-        schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps
-      }}/>
+      <div className='btn-group'>
+        {editable && <div className='pl-2 d-inline'>
+          <TableEditButton {...{
+            schema,
+            modelName,
+            id,
+            fieldName,
+            targetInverseFieldName,
+            node,
+            path,
+            targetModelName
+          }} />
+        </div>}
+        <FieldOrderButton style={ !editable && {'marginLeft': '4px'}} {...{
+          hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName
+        }}/>
+      </div>
+      { hasValues && open && <FieldOrderInput {...{
+        hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName
+      }} />}
     </div>
   )
 }

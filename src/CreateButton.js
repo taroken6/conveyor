@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const CreateButton = ({ onClick }) => (
+const CreateButton = ({
+  onClick,
+  className='btn btn-sm btn-outline-success create-pad'
+}) => (
   <Link
     to='/Create'
     onClick={onClick}
-    className='btn btn-sm btn-outline-success'
-    style={{ marginLeft: '10px' }}
+    className={className}
     role='button'
     replace
   >Create</Link>

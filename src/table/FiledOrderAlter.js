@@ -33,7 +33,7 @@ export const FieldOrderButton = ({
 }) =>
   <button
     className='btn btn-sm btn-outline-primary'
-    style={{ marginLeft: '10px' }}
+    //style={{ marginLeft: '10px' }}
     onClick={() => {
       // if button not clicked previously, populate input w/ all options
       if (!hasValues) {
@@ -80,7 +80,7 @@ export const FieldOrderInput = ({
 }
 
 // field order alternate => for detail page
-export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps }) => {
+export const getFieldOrderAlterDetailProps = ({ schema, modelName, targetModelName, fieldName, tableView, fieldOrder, node, customProps }) => {
   const actions = getActions(schema, modelName)
   const fieldOrderChange = R.path(['tableOptions', 'fieldOrderDetailChange'], actions)
   const fieldOrderToggle = R.path(['tableOptions', 'fieldOrderDetailToggle'], actions)
@@ -97,10 +97,5 @@ export const FieldOrderAlterDetail = ({ schema, modelName, targetModelName, fiel
   const options = fieldOrder.map(fieldName => toOptions(fieldName))
   const hasValues = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
 
-  return (
-    <React.Fragment>
-      <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName, fieldName}} />
-      {hasValues && open && <FieldOrderInput {...{hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName }} />}
-    </React.Fragment>
-  )
+  return ({ fieldOrderChange, fieldOrderToggle, fieldOrderAltValues, open, options, hasValues})
 }

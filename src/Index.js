@@ -67,7 +67,7 @@ export const DefaultIndexTitle = ({
       }} />}
       <div className='float-right btn-group'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}
-        {creatable && <CreateButton {...{ onClick }} />}
+        {creatable && <CreateButton {...{ onClick, className: 'btn btn-sm btn-outline-success' }} />}
         <FieldOrderButton {...{hasValues, open, options, fieldOrderChange, fieldOrderToggle, modelName}} />
       </div>
       {hasValues && open && <FieldOrderInput {...{hasValues, open, options,
