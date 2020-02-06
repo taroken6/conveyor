@@ -138,17 +138,6 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
   return defaultOrder
 }
 
-export const getFooterFields = ({ schema, modelName, fieldName, customProps }) => {
-  const footerFieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFooters({ schema, modelName, type: fieldName.type, fieldName, customProps })
-  if (R.type(footerFieldOrder) === 'Function') {
-    return footerFieldOrder({ schema, modelName, fieldName, defaultOrder, customProps })
-  } else if (R.type(footerFieldOrder) === 'Array') {
-    return footerFieldOrder
-  }
-  return defaultOrder
-}
-
 export const getShownFooters = ({ schema, modelName, type, data, user, customProps }) => {
   const fields = R.prop('fields', getModel(schema, modelName))
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getFooterLabel, getFieldConditions, getFooterFields, getShownFooters } from '../utils/schemaGetters'
+import { getFooterLabel, getFieldConditions } from '../utils/schemaGetters'
 import { shouldDisplay, isFooterShown, isDetailFieldFooterShown } from '../Utils'
 import { Summation, DetailSummation } from './Summation'
 import * as R from 'ramda'
