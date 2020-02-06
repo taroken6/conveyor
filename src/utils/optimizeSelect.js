@@ -4,7 +4,7 @@ import { FixedSizeList as List } from 'react-window'
 
 const OptimizedMenuList = props => {
   const { options, children, maxHeight, getValue } = props
-  if (!children || !Array.isArray(children)) return null
+  if (!children || !Array.isArray(children)) return children
 
   const height = 38
   const [value] = getValue()
