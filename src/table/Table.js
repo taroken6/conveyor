@@ -114,7 +114,7 @@ export const TableButtonGroup = ({
             }}
           />
         )}
-        {deletable && !m2m && (
+        {deletable && !canRemove && (
           <DeleteButton
             {...{
               modalId,
@@ -141,7 +141,7 @@ export const TableButtonGroup = ({
           }}
         />
       )}
-      {deletable && !m2m && (
+      {deletable && !canRemove && (
         <DeleteDetail
           {...{
             schema,
