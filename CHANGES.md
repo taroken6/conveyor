@@ -4,7 +4,8 @@
 
 ### Unreleased
 
-- Add Summary and Footer #141
+-   Add Summary and Footer #141
+-   Fix multi-select bug #157
 
 ## Version 1.5.0
 
