@@ -186,15 +186,12 @@ export const RemoveDetail = ({
   parentModelName,
   parentFieldName,
   parentId,
-  node,
+  name,
   customProps
 }) => {
-  // const modalStore = R.prop('Remove', modalData)
-  const name = R.path(['type', 'name'], node)
   const actions = getActions(schema, modelName)
   const onCancelRemove = R.path(['remove', 'onCancelRemove'], actions) // or wherever onCancelRemove is
   const parentField = getFieldLabel({ schema, modelName: parentModelName, fieldName: parentFieldName, customProps })
-  console.log('parentField', parentField)
   return (
     <Modal {...{ id: modalId, title }}>
       <span>
@@ -212,10 +209,10 @@ export const RemoveDetail = ({
             className='btn btn-small btn-outline-danger '
             data-dismiss='modal'
             onClick={() => onRemove({
-              id: id,
-              parentModel: parentModelName,
+              parentModelName,
+              parentFieldName,
               parentId,
-              modelName
+              removedId: id
             })}
           >Confirm Removal</button>
         </div>

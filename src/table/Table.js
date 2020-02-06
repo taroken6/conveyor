@@ -80,7 +80,7 @@ export const TableButtonGroup = ({
   parentFieldName,
   deletable,
   onDelete,
-  fromDetail,
+  fromIndex,
   m2m,
   customProps
 }) => {
@@ -92,7 +92,8 @@ export const TableButtonGroup = ({
   console.log('m2m', m2m)
   const actions = getActions(schema, modelName)
   console.log('actions', actions)
-  const onRemove = () => {console.log('REMOVED')} // temporary placeholder
+  // const onRemove = () => {console.log('REMOVED')} // temporary placeholder
+  const onRemove = R.path(['edit', 'onDetailTableRemoveSubmit'], actions)
   const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
   const id = node.id
   console.log('modalId', modalId)
@@ -111,7 +112,7 @@ export const TableButtonGroup = ({
             }}
           />
         )}
-        {fromDetail && m2m && editable && (
+        {!fromIndex && m2m && editable && (
           <RemoveButton
             {...{
               modalId,
@@ -132,7 +133,7 @@ export const TableButtonGroup = ({
           />
         )}
       </div>
-      {fromDetail && m2m && (
+      {!fromIndex && m2m && (
         <RemoveDetail
           {...{
             schema,
@@ -143,7 +144,7 @@ export const TableButtonGroup = ({
             parentId,
             parentModelName,
             parentFieldName,
-            node,
+            name: R.prop('name', node) || R.path(['type', 'name'], node),
             customProps
           }}
         />
@@ -275,7 +276,7 @@ export const TableButtonCell = ({
   parentFieldName,
   onDelete,
   idx,
-  fromDetail,
+  fromIndex,
   m2m,
   customProps
 }) => {
@@ -309,7 +310,7 @@ export const TableButtonCell = ({
         parentModelName,
         parentFieldName,
         onDelete,
-        fromDetail,
+        fromIndex,
         m2m,
         customProps
       }}
@@ -338,7 +339,6 @@ const TBody = ({
   user,
   parentNode,
   fromIndex,
-  fromDetail,
   m2m,
   customProps
 }) => {
@@ -421,7 +421,7 @@ const TBody = ({
                       parentFieldName,
                       onDelete,
                       idx,
-                      fromDetail,
+                      fromIndex,
                       m2m,
                       customProps
                     }}
@@ -472,7 +472,6 @@ export const Table = ({
   user,
   collapse,
   fromIndex,
-  fromDetail,
   m2m,
   customProps,
   summary
@@ -551,7 +550,6 @@ export const Table = ({
             user,
             parentNode,
             fromIndex,
-            fromDetail,
             m2m,
             customProps
           }}

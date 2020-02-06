@@ -525,7 +525,6 @@ export const DefaultDetailTable = ({
             user,
             tableView,
             collapse,
-            fromDetail: true,
             m2m: true,
             modalData
           }}
