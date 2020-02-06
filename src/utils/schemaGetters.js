@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { titleize, humanize, isFooterShown } from '../Utils'
+import { titleize, humanize, isIndexTableFieldFooterShown } from '../Utils'
 import pluralize from 'pluralize'
 import { inputTypes } from '../consts'
 
@@ -134,17 +134,6 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
     return indexFieldOrder({ schema, modelName, data, user, defaultOrder, customProps })
   } else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
-  }
-  return defaultOrder
-}
-
-export const getFooterFields = ({ schema, modelName, fieldName, customProps }) => {
-  const footerFieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFooters({ schema, modelName, type: fieldName.type, fieldName, customProps })
-  if (R.type(footerFieldOrder) === 'Function') {
-    return footerFieldOrder({ schema, modelName, fieldName, defaultOrder, customProps })
-  } else if (R.type(footerFieldOrder) === 'Array') {
-    return footerFieldOrder
   }
   return defaultOrder
 }
