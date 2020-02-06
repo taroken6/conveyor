@@ -56,6 +56,10 @@ import { DeleteDetail } from './delete/DeleteDetail'
 import { DeleteButton } from './table/Table'
 import { Search } from './Search'
 import { getSearchable } from './utils/schemaGetters'
+import { FieldOrderButton } from './table/FiledOrderAlter'
+import { FieldOrderInput } from './table/FiledOrderAlter'
+import { getFieldOrderAlterDetailProps } from './table/FiledOrderAlter'
+import { getFieldOrderAlternate } from './table/FiledOrderAlter'
 
 export { Index }
 export { Create }
@@ -115,3 +119,7 @@ export { DeleteDetail }
 export { DeleteButton }
 export { Search }
 export { getSearchable }
+export { FieldOrderButton }
+export { FieldOrderInput }
+export { getFieldOrderAlterDetailProps }
+export { getFieldOrderAlternate }

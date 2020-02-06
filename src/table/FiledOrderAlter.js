@@ -96,5 +96,5 @@ export const getFieldOrderAlterDetailProps = ({ schema, modelName, targetModelNa
   const options = fieldOrder.map(fieldName => toOptions(fieldName))
   const hasValues = fieldOrderAltValues && !R.isEmpty(fieldOrderAltValues)
 
-  return ({ fieldOrderChange, fieldOrderToggle, fieldOrderAltValues, open, options, hasValues})
+  return ({ fieldOrderChange, fieldOrderToggle, fieldOrderAltValues, open, options, hasValues })
 }
