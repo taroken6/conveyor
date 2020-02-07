@@ -10,13 +10,14 @@ import {
   isRowEditable,
   skipOverride,
   shouldDisplay,
-  isTableFooterShown
+  isIndexTableFooterShown,
+  isDetailTableFooterShown
 } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
 import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
-import { DeleteDetail } from '../delete/DeleteDetail'
+import { DeleteDetail, RemoveDetail } from '../delete/DeleteDetail'
 
 import {
   RowEditButton,
@@ -29,6 +30,7 @@ import {
 } from '../Edit'
 import getDisplayValue from '../utils/getDisplayValue'
 import { IndexPagination, DetailPagination } from '../Pagination'
+import { getType } from '../utils/getType'
 
 export const DetailViewButton = ({ modelName, id }) => (
   <Link to={`/${modelName}/${id}`} className="btn btn-sm btn-outline-primary">
@@ -45,6 +47,18 @@ export const DeleteButton = ({ modalId, onDeleteWarning, modelName, id }) => {
       onClick={() => onDeleteWarning({ modelName, id })}
     >
       Delete
+    </button>
+  )
+}
+
+export const RemoveButton = ({ modalId }) => {
+  return (
+    <button
+      className="btn btn-sm btn-outline-warning"
+      data-toggle="modal"
+      data-target={'#' + modalId}
+    >
+      Remove
     </button>
   )
 }
@@ -67,11 +81,16 @@ export const TableButtonGroup = ({
   parentFieldName,
   deletable,
   onDelete,
+  fromIndex,
   customProps
 }) => {
+  const parentFieldType = getType({ schema, modelName: parentModelName, fieldName: parentFieldName })
+  const m2m = parentFieldType === 'ManyToMany'
   const actions = getActions(schema, modelName)
-  const modalId = 'confirm-delete-' + modelName + parentFieldName + idx
+  const onRemove = R.path(['edit', 'onDetailTableRemoveSubmit'], actions)
+  const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
   const id = node.id
+  const canRemove = !fromIndex && m2m && editable
   return (
     <React.Fragment>
       <div className="btn-group">
@@ -87,7 +106,16 @@ export const TableButtonGroup = ({
             }}
           />
         )}
-        {deletable && (
+        {canRemove && (
+          <RemoveButton
+            {...{
+              modalId,
+              modelName,
+              id
+            }}
+          />
+        )}
+        {deletable && !canRemove && (
           <DeleteButton
             {...{
               modalId,
@@ -98,7 +126,23 @@ export const TableButtonGroup = ({
           />
         )}
       </div>
-      {deletable && (
+      {canRemove && (
+        <RemoveDetail
+          {...{
+            schema,
+            id,
+            modalId,
+            modelName,
+            onRemove,
+            parentId,
+            parentModelName,
+            parentFieldName,
+            name: R.prop('name', node) || R.path(['type', 'name'], node),
+            customProps
+          }}
+        />
+      )}
+      {deletable && !canRemove && (
         <DeleteDetail
           {...{
             schema,
@@ -225,6 +269,7 @@ export const TableButtonCell = ({
   parentFieldName,
   onDelete,
   idx,
+  fromIndex,
   customProps
 }) => {
   return isEditing(editData, modelName, node.id) ? (
@@ -257,6 +302,7 @@ export const TableButtonCell = ({
         parentModelName,
         parentFieldName,
         onDelete,
+        fromIndex,
         customProps
       }}
     />
@@ -365,6 +411,7 @@ const TBody = ({
                       parentFieldName,
                       onDelete,
                       idx,
+                      fromIndex,
                       customProps
                     }}
                   />
@@ -447,9 +494,13 @@ export const Table = ({
     customProps
   })
 
-  const footerShown = fromIndex && isTableFooterShown({ schema, modelName, user })
+  let footerShown
+  if (fromIndex) {
+    footerShown = isIndexTableFooterShown({ schema, modelName, user })
+  } else {
+    footerShown = isDetailTableFooterShown({ schema, parentModelName, modelName, user })
+  }
 
-  // TODO: Add Footer with summation if the view has showFooter enabled for at least one item
   return (
     <React.Fragment>
       <table className="table table-striped table-bordered table-hover">
@@ -494,10 +545,28 @@ export const Table = ({
             customProps
           }}
         />
-        {footerShown && <Foot
+        {fromIndex ? (footerShown && <Foot
           {...{
             schema,
             modelName,
+            parentModelName,
+            parentFieldName,
+            fieldOrder,
+            editable,
+            deletable,
+            detailField,
+            summary,
+            data,
+            fromIndex,
+            customProps,
+            user,
+          }}
+        />) : (footerShown && <Foot
+          {...{
+            schema,
+            modelName,
+            parentModelName,
+            parentFieldName,
             fieldOrder,
             editable,
             deletable,
@@ -510,7 +579,7 @@ export const Table = ({
             user,
             summary
           }}
-        />}
+        />)}
       </table>
       {fromIndex ? (
         <IndexPagination

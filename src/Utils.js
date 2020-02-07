@@ -241,15 +241,14 @@ export const isTableSortable = ({ schema, modelName, user }) => {
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
-export const isTableFooterShown = ({ schema, modelName, user }) => {
+export const isIndexTableFooterShown = ({ schema, modelName, user }) => {
   const footerShown = R.pathOr(false, [modelName, 'showFooter'], schema)
 
-  if (footerShown === true) {
-    return true
-  }
+  if (footerShown === false)
+    return false
 
-  if (R.type(footerShown) === 'Function' && footerShown({ schema, modelName, user }) === true) {
-    return true
+  if (R.type(footerShown) === 'Function' && footerShown({ schema, modelName, user }) === false) {
+    return false
   }
 
   const model = R.prop(modelName, schema)
@@ -272,4 +271,37 @@ export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
 
   // by default totals are shown for currency fields
   return isCurrency(getField(schema, modelName, fieldName))
+}
+
+export const isDetailTableFooterShown = ({ schema, parentModelName, modelName, user }) => {
+  const footerShown = R.pathOr(false, [parentModelName, 'showFooter'], schema)
+
+  if (!footerShown)
+    return false
+  if (R.type(footerShown) === 'Function' && footerShown({ schema, parentModelName, user }) === false)
+    return false
+
+  const parentModel = R.prop(parentModelName, schema)
+  const parentFieldOrder = R.prop('fieldOrder', parentModel)
+  const parentBoolList = R.map(parentFieldName => {
+    const model = R.prop(parentModelName, schema)
+    const fieldOrder = R.prop('fieldOrder', model)
+    const boolList = R.map(fieldName => isDetailFieldFooterShown({ schema, parentModelName, parentFieldName, modelName, fieldName, user }), fieldOrder)
+
+    return boolList
+  }, parentFieldOrder)
+
+  return !R.isEmpty(R.filter(R.identity, parentBoolList))
+}
+
+export const isDetailFieldFooterShown = ({ schema, parentModelName, parentFieldName, modelName, fieldName, user }) => {
+  const detailFooterShown = isFooterShown({ schema, parentModelName, parentFieldName, user }) || isFooterShown({ schema, modelName, fieldName, user })
+
+  if (detailFooterShown)
+    return true
+  if (R.type(detailFooterShown) === 'Function' && detailFooterShown({ schema, parentModelName, parentFieldName,
+    modelName, fieldName, user }))
+    return true
+
+  return isCurrency(getField(schema, parentModelName, parentFieldName)) || isCurrency(getField(schema, modelName, fieldName))
 }
