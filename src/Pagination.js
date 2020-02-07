@@ -36,7 +36,7 @@ const GotoTooltip = ({
               modelName,
               fieldName,
               updatedPageIndex: goto - 1,
-              isValid: 0 < goto && goto <= lastIndex + 1
+              isValid: 0 < goto && goto <= lastIndex + 1 && Number.isInteger(goto)
             })}
           >Go</button>
         </div>
