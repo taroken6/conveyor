@@ -29,6 +29,7 @@ import {
 } from '../Edit'
 import getDisplayValue from '../utils/getDisplayValue'
 import { IndexPagination, DetailPagination } from '../Pagination'
+import { getType } from '../utils/getType'
 
 export const DetailViewButton = ({ modelName, id }) => (
   <Link to={`/${modelName}/${id}`} className="btn btn-sm btn-outline-primary">
@@ -80,9 +81,10 @@ export const TableButtonGroup = ({
   deletable,
   onDelete,
   fromIndex,
-  m2m,
   customProps
 }) => {
+  const parentFieldType = getType({ schema, modelName: parentModelName, fieldName: parentFieldName })
+  const m2m = parentFieldType === 'ManyToMany'
   const actions = getActions(schema, modelName)
   const onRemove = R.path(['edit', 'onDetailTableRemoveSubmit'], actions)
   const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
@@ -267,7 +269,6 @@ export const TableButtonCell = ({
   onDelete,
   idx,
   fromIndex,
-  m2m,
   customProps
 }) => {
   return isEditing(editData, modelName, node.id) ? (
@@ -301,7 +302,6 @@ export const TableButtonCell = ({
         parentFieldName,
         onDelete,
         fromIndex,
-        m2m,
         customProps
       }}
     />
@@ -329,7 +329,6 @@ const TBody = ({
   user,
   parentNode,
   fromIndex,
-  m2m,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -412,7 +411,6 @@ const TBody = ({
                       onDelete,
                       idx,
                       fromIndex,
-                      m2m,
                       customProps
                     }}
                   />
@@ -462,7 +460,6 @@ export const Table = ({
   user,
   collapse,
   fromIndex,
-  m2m,
   customProps,
   summary
 }) => {
@@ -540,7 +537,6 @@ export const Table = ({
             user,
             parentNode,
             fromIndex,
-            m2m,
             customProps
           }}
         />
