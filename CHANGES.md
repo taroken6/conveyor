@@ -6,6 +6,7 @@
 
 -   Add Summary and Footer #141
 -   Fix multi-select bug #157
+-   Add Removable feature #159
 
 ## Version 1.5.0
 
