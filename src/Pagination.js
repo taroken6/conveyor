@@ -2,8 +2,62 @@ import React from 'react'
 import * as R from 'ramda'
 import { getActions } from './utils/schemaGetters'
 import { Tooltip } from 'react-tippy'
+import FlexibleInput from './input'
+import { inputTypes } from './consts'
 
-const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageIndex }) => {
+const GotoTooltip = ({
+  modelName,
+  fieldName,
+  onChangePage,
+  onChangeGoto,
+  lastIndex,
+  goto,
+  canGoto,
+}) => {
+  return (
+    <div id={`${modelName}${fieldName ? '-' + fieldName : ''}-pg-tooltip`} className='goto-tooltip'>
+      {canGoto ? null : <div className='mb-2 goto-tooltip-invalid'>Please enter a valid page number.</div>}
+      <div className='d-flex'>
+        <div className='mr-2 float-left'>
+          <FlexibleInput {...{
+            type: inputTypes.INT_TYPE,
+            id: `${modelName}${fieldName ? '-' + fieldName : ''}-goto`,
+            value: goto,
+            onChange: evt => onChangeGoto({ modelName, fieldName, pageIndex: evt }),
+            customInput: {
+              placeholder: 'Go to page...',
+            }
+          }}/>
+        </div>
+        <div className='float-right'>
+          <button
+            className='btn btn-success'
+            onClick={() => onChangePage({
+              modelName,
+              fieldName,
+              // goto is the page number, which will always be 1 greater than the index
+              // because index begins at 0 while page number begins at 1
+              updatedPageIndex: goto - 1,
+              isValid: 1 <= goto && goto <= lastIndex + 1 && Number.isInteger(goto)
+            })}
+          >Go</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const PaginationLink = ({
+  modelName,
+  fieldName,
+  onChangePage,
+  onChangeGoto = null,
+  lastIndex,
+  goto = null,
+  canGoto,
+  text,
+  updatedPageIndex
+}) => {
   const link = <a
     className='page-link'
     href='#'
@@ -15,12 +69,24 @@ const PaginationLink = ({ modelName, fieldName, onChangePage, text, updatedPageI
     return (
       <Tooltip
         html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
-        delay={0}
-        interactive
       >{link}</Tooltip>
     )
   }
-  return link
+  return (
+    <Tooltip
+      html={<GotoTooltip {...{
+        modelName,
+        fieldName,
+        onChangePage,
+        onChangeGoto,
+        lastIndex,
+        goto,
+        canGoto,
+      }} />}
+      trigger='click'
+      interactive
+    >{link}</Tooltip>
+  )
 }
 
 export const Pagination = ({
@@ -28,9 +94,12 @@ export const Pagination = ({
   fieldName = null,
   idx,
   lastIndex,
+  goto,
+  canGoto,
+  onChangePage,
+  onChangeGoto,
   totalDataLength,
-  amtPerPage,
-  onChangePage
+  amtPerPage
 }) => {
   // get previous & last conditions; 'lastIndex' can be null or '0' value
   const hasFirst = idx > 1
@@ -72,15 +141,17 @@ export const Pagination = ({
           />
         )}
         {
-          <PaginationLink
-            {...{
-              modelName,
-              fieldName,
-              onChangePage,
-              text: `${displayIndex}`,
-              updatedPageIndex: idx
-            }}
-          />
+          <PaginationLink {...{
+            modelName,
+            fieldName,
+            onChangePage,
+            onChangeGoto,
+            lastIndex,
+            goto,
+            canGoto,
+            text: `${displayIndex}`,
+            updatedPageIndex: (idx)
+          }} />
         }
         {hasNext && (
           <PaginationLink
@@ -119,28 +190,46 @@ export const Pagination = ({
 export const IndexPagination = ({ schema, modelName, tableView }) => {
   const actions = getActions(schema, modelName)
   const onChangePage = R.path(['tableOptions', 'changePage'], actions)
+  const onChangeGoto = R.path(['tableOptions', 'changeGotoPage'], actions)
+  const page = R.path([modelName, 'page'], tableView)
+  const goto = R.prop('goto', page)
+  const canGoto = R.propOr(true, 'canGoto', page)
 
   // current page idx
-  const idx = R.pathOr(0, [modelName, 'page', 'currentPage'], tableView)
+  const idx = R.propOr(0, 'currentPage', page)
 
   // get index of last hypothetical data point
-  const lastIndex = R.path([modelName, 'page', 'lastIndex'], tableView)
+  const lastIndex = R.prop('lastIndex', page)
 
   const totalDataLength = R.path([modelName, 'page', 'total'], tableView)
   const amtPerPage = R.prop('amtPerPage', tableView)
 
-  return <Pagination {...{ modelName, idx, lastIndex, totalDataLength, amtPerPage, onChangePage }} />
+  return <Pagination {...{
+    modelName,
+    idx,
+    lastIndex,
+    totalDataLength,
+    amtPerPage,
+    goto,
+    canGoto,
+    onChangePage,
+    onChangeGoto
+  }} />
 }
 
 export const DetailPagination = ({ schema, modelName, fieldName, tableView }) => {
   const actions = getActions(schema, modelName)
   const onChangePage = R.path(['tableOptions', 'changeRelTablePage'], actions)
+  const onChangeGoto = R.path(['tableOptions', 'changeRelGotoPage'], actions)
+  const page = R.path([modelName, 'fields', fieldName, 'page'], tableView)
+  const goto = R.prop('goto', page)
+  const canGoto = R.propOr(true, 'canGoto', page)
 
   // current page idx
-  const idx = R.pathOr(0, [modelName, 'fields', fieldName, 'page', 'currentPage'], tableView)
+  const idx = R.propOr(0, 'currentPage', page)
 
   // get index of last hypothetical data point
-  const lastIndex = R.path([modelName, 'fields', fieldName, 'page', 'lastIndex'], tableView)
+  const lastIndex = R.prop('lastIndex', page)
 
   const totalDataLength = R.path(
     [modelName, 'fields', fieldName, 'page', 'total'],
@@ -148,5 +237,16 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
   )
   const amtPerPage = R.prop('amtPerPage', tableView)
 
-  return <Pagination {...{ modelName, fieldName, idx, lastIndex, totalDataLength, amtPerPage, onChangePage }} />
+  return <Pagination {...{
+    modelName,
+    fieldName,
+    idx,
+    lastIndex,
+    totalDataLength,
+    amtPerPage,
+    goto,
+    canGoto,
+    onChangePage,
+    onChangeGoto
+  }} />
 }

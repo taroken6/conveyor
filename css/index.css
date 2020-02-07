@@ -156,3 +156,12 @@ body {
 .text-area-display {
   white-space: pre-line;
 }
+
+.goto-tooltip {
+  max-width: 200px;
+}
+
+.goto-tooltip-invalid {
+  color: #ff5555;
+  font-size: 14px;
+}
