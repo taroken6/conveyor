@@ -205,10 +205,10 @@ export const RemoveDetail = ({
             className='btn btn-small btn-outline-danger '
             data-dismiss='modal'
             onClick={() => onRemove({
-              parentModelName,
-              parentFieldName,
-              parentId,
-              removedId: id
+              modelName: parentModelName,
+              fieldName: parentFieldName,
+              id: parentId,
+              removedId: id,
             })}
           >Confirm Removal</button>
         </div>
