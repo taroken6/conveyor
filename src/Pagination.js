@@ -35,8 +35,10 @@ const GotoTooltip = ({
             onClick={() => onChangePage({
               modelName,
               fieldName,
+              // goto is the page number, which will always be 1 greater than the index
+              // because index begins at 0 while page number begins at 1
               updatedPageIndex: goto - 1,
-              isValid: 0 < goto && goto <= lastIndex + 1 && Number.isInteger(goto)
+              isValid: 1 <= goto && goto <= lastIndex + 1 && Number.isInteger(goto)
             })}
           >Go</button>
         </div>
