@@ -1,10 +1,8 @@
 import React from 'react'
-import { inputTypes } from '../consts'
 import * as R from 'ramda'
-import { getField } from '../utils/schemaGetters'
 import { getType } from '../utils/getType'
 
-export const Summation = ({ schema, modelName, fieldName, summary, customProps }) => {
+export const Summation = ({ schema, modelName, fieldName, title, summary, customProps }) => {
   let total
 
   if (summary && summary[modelName]) {
@@ -15,27 +13,30 @@ export const Summation = ({ schema, modelName, fieldName, summary, customProps }
       total = new Intl.NumberFormat('en-US', {
         style: 'currency', currency: 'USD'
       }).format(currentTotal)
+    else
+      total = currentTotal
   } else {
     total = 'N/A'
   }
 
-  return <span>{total}</span>
+  return <span>{total ? `Total ${title}: ${total}` : null}</span>
 }
 
-export const DetailSummation = ({ schema, modelName, fieldName, parentModelName, parentFieldName, summary, customProps }) => {
+export const DetailSummation = ({ schema, modelName, fieldName, parentModelName, parentFieldName, title, summary, customProps }) => {
   let total
   if (summary) {
-    if (getType({ schema, modelName, fieldName }) === 'currency') {
-      const fieldTotal = R.path([parentModelName, parentFieldName, fieldName], summary)
-      if (fieldTotal !== undefined) {
-        total = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(fieldTotal)
-      } else {
-        total = 'N/A'
-      }
-    } else {
-      total = 'N/A'
-    }
-
-    return <span>{total}</span>
+    const fieldTotal = R.path([parentModelName, parentFieldName, fieldName], summary)
+    if (fieldTotal === undefined)
+      total = null
+    else if (getType({ schema, modelName, fieldName }) === 'currency')
+      total = new Intl.NumberFormat('en-US', {
+        style: 'currency', currency: 'USD'
+      }).format(fieldTotal)
+    else
+      total = fieldTotal
+  } else {
+    total = null
   }
+
+  return <span>{total ? `Total ${title}: ${total}` : null}</span>
 }
