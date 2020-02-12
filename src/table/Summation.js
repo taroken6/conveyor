@@ -8,8 +8,10 @@ export const Summation = ({ schema, modelName, fieldName, summary, customProps }
   let total
 
   if (summary && summary[modelName]) {
-    const currentTotal = summary[modelName][fieldName]
-    if (getType({ schema, modelName, fieldName }) === 'currency')
+    const currentTotal = R.path([modelName, fieldName], summary)
+    if (currentTotal === undefined)
+      total = 'N/A'
+    else if (getType({ schema, modelName, fieldName }) === 'currency')
       total = new Intl.NumberFormat('en-US', {
         style: 'currency', currency: 'USD'
       }).format(currentTotal)
@@ -25,12 +27,15 @@ export const DetailSummation = ({ schema, modelName, fieldName, parentModelName,
 
   if (summary) {
     if (getType({ schema, modelName, fieldName }) === 'currency') {
-      const fieldTotal = summary[parentModelName][parentFieldName][fieldName]
-      total = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(fieldTotal)
+      const fieldTotal = R.path([parentModelName, parentFieldName, fieldName], summary)
+      if (total !== undefined) {
+        total = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(fieldTotal)
+      }
+      total = 'N/A'
+    } else {
+      total = 'N/A'
     }
-  } else {
-    total = 'N/A'
-  }
 
-  return <span>{total}</span>
+    return <span>{total}</span>
+  }
 }

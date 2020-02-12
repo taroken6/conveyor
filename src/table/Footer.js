@@ -38,7 +38,7 @@ export const TFoot = ({
             }
           }
 
-          const showFooterInfo = isFooterShown({ schema, modelName, fieldName, user }) ||
+          const showFooterInfo = fromIndex ? isFooterShown({ schema, modelName, fieldName, user }) :
             isDetailFieldFooterShown({ schema, parentModelName, parentFieldName, modelName, fieldName, user })
           let shownFooters
 
