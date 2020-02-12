@@ -24,14 +24,14 @@ export const Summation = ({ schema, modelName, fieldName, summary, customProps }
 
 export const DetailSummation = ({ schema, modelName, fieldName, parentModelName, parentFieldName, summary, customProps }) => {
   let total
-
   if (summary) {
     if (getType({ schema, modelName, fieldName }) === 'currency') {
       const fieldTotal = R.path([parentModelName, parentFieldName, fieldName], summary)
-      if (total !== undefined) {
+      if (fieldTotal !== undefined) {
         total = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(fieldTotal)
+      } else {
+        total = 'N/A'
       }
-      total = 'N/A'
     } else {
       total = 'N/A'
     }

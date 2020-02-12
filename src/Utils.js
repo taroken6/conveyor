@@ -240,7 +240,7 @@ export const isTableSortable = ({ schema, modelName, user }) => {
   const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, user }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
-
+// index, model level
 export const isIndexTableFooterShown = ({ schema, modelName, user }) => {
   const footerShown = R.pathOr(false, [modelName, 'showFooter'], schema)
 
@@ -257,7 +257,7 @@ export const isIndexTableFooterShown = ({ schema, modelName, user }) => {
 
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
-
+// index, field level
 export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
   const fieldFooterShown = R.pathOr(false, [modelName, 'fields', fieldName, 'showFooter'], schema)
 
@@ -269,10 +269,12 @@ export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
     return true
   }
 
+  // todo: get rid of 'isCurrency' here because its confusing and will return by default true (if field is currency)
+  //  when in reality the schema may be saying otherwise (false); also simplify all the 'showFooter' functions
   // by default totals are shown for currency fields
   return isCurrency(getField(schema, modelName, fieldName))
 }
-
+// detail, model level
 export const isDetailTableFooterShown = ({ schema, parentModelName, modelName, user }) => {
   const footerShown = R.pathOr(false, [parentModelName, 'showFooter'], schema)
 
@@ -293,9 +295,9 @@ export const isDetailTableFooterShown = ({ schema, parentModelName, modelName, u
 
   return !R.isEmpty(R.filter(R.identity, parentBoolList))
 }
-
+// detail, field level
 export const isDetailFieldFooterShown = ({ schema, parentModelName, parentFieldName, modelName, fieldName, user }) => {
-  const detailFooterShown = isFooterShown({ schema, parentModelName, parentFieldName, user }) || isFooterShown({ schema, modelName, fieldName, user })
+  const detailFooterShown = isFooterShown({ schema, modelName: parentModelName, fieldName: parentFieldName, user })
 
   if (detailFooterShown)
     return true
@@ -303,5 +305,5 @@ export const isDetailFieldFooterShown = ({ schema, parentModelName, parentFieldN
     modelName, fieldName, user }))
     return true
 
-  return isCurrency(getField(schema, parentModelName, parentFieldName)) || isCurrency(getField(schema, modelName, fieldName))
+  return isCurrency(getField(schema, parentModelName, parentFieldName))
 }
