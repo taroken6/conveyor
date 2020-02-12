@@ -150,7 +150,7 @@ export const getShownFooters = ({ schema, modelName, type, data, user, customPro
         break
 
       default:
-        show = R.propOr(false, 'summable', getField(schema, modelName, fieldName))
+        show = false
     }
     if (R.type(show) === 'Function') {
       show = show({ schema, modelName, fieldName, data, user, customProps })
