@@ -270,7 +270,7 @@ export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
   }
 
   // by default totals are shown for currency fields
-  return isCurrency(getField(schema, modelName, fieldName))
+  return fieldFooterShown
 }
 
 export const isDetailTableFooterShown = ({ schema, parentModelName, modelName, user }) => {
@@ -299,9 +299,11 @@ export const isDetailFieldFooterShown = ({ schema, parentModelName, parentFieldN
 
   if (detailFooterShown)
     return true
-  if (R.type(detailFooterShown) === 'Function' && detailFooterShown({ schema, parentModelName, parentFieldName,
-    modelName, fieldName, user }))
+  if (R.type(detailFooterShown) === 'Function' && detailFooterShown({
+    schema, parentModelName, parentFieldName,
+    modelName, fieldName, user
+  }))
     return true
 
-  return isCurrency(getField(schema, parentModelName, parentFieldName)) || isCurrency(getField(schema, modelName, fieldName))
+  return detailFooterShown
 }
