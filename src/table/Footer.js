@@ -71,10 +71,9 @@ export const Footer = ({ schema, modelName, fieldName, parentModelName, parentFi
   return (
     <div className="footer">
       <div className="sum">
-        <span className="footer-title">{title ? `Total ${title}: ` : null}</span>
-        {fromIndex ? (showFooterInfo && <Summation {...{ schema, modelName, fieldName, summary, customProps }} />) :
+        {fromIndex ? (showFooterInfo && <Summation {...{ schema, modelName, fieldName, title, summary, customProps }} />) :
           (showFooterInfo && <DetailSummation {...{
-            schema, modelName, fieldName, parentModelName, parentFieldName, summary, customProps
+            schema, modelName, fieldName, parentModelName, parentFieldName, title, summary, customProps
           }} />)}
       </div>
     </div>
