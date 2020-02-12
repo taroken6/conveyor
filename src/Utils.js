@@ -240,23 +240,7 @@ export const isTableSortable = ({ schema, modelName, user }) => {
   const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, user }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
-// index, model level
-export const isIndexTableFooterShown = ({ schema, modelName, user }) => {
-  const footerShown = R.pathOr(false, [modelName, 'showFooter'], schema)
 
-  if (footerShown === false)
-    return false
-
-  if (R.type(footerShown) === 'Function' && footerShown({ schema, modelName, user }) === false) {
-    return false
-  }
-
-  const model = R.prop(modelName, schema)
-  const fieldOrder = R.prop('fieldOrder', model)
-  const boolList = R.map(fieldName => isFooterShown({ schema, modelName, fieldName, user }), fieldOrder)
-
-  return !R.isEmpty(R.filter(R.identity, boolList))
-}
 // index, field level
 export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
   const fieldFooterShown = R.pathOr(false, [modelName, 'fields', fieldName, 'showFooter'], schema)
@@ -274,27 +258,7 @@ export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
   // by default totals are shown for currency fields
   return fieldFooterShown
 }
-// detail, model level
-export const isDetailTableFooterShown = ({ schema, parentModelName, modelName, user }) => {
-  const footerShown = R.pathOr(false, [parentModelName, 'showFooter'], schema)
 
-  if (!footerShown)
-    return false
-  if (R.type(footerShown) === 'Function' && footerShown({ schema, parentModelName, user }) === false)
-    return false
-
-  const parentModel = R.prop(parentModelName, schema)
-  const parentFieldOrder = R.prop('fieldOrder', parentModel)
-  const parentBoolList = R.map(parentFieldName => {
-    const model = R.prop(parentModelName, schema)
-    const fieldOrder = R.prop('fieldOrder', model)
-    const boolList = R.map(fieldName => isDetailFieldFooterShown({ schema, parentModelName, parentFieldName, modelName, fieldName, user }), fieldOrder)
-
-    return boolList
-  }, parentFieldOrder)
-
-  return !R.isEmpty(R.filter(R.identity, parentBoolList))
-}
 // detail, field level
 export const isDetailFieldFooterShown = ({ schema, parentModelName, parentFieldName, modelName, fieldName, user }) => {
   const detailFooterShown = isFooterShown({ schema, modelName: parentModelName, fieldName: parentFieldName, user })
