@@ -16,6 +16,27 @@ export const TFoot = ({
   customProps,
   user,
 }) => {
+  console.log('----', modelName, parentModelName, parentFieldName)
+  console.log('---sum', summary)
+  console.log('---sch', schema)
+  console.log('---fieldOrder', fieldOrder)
+
+  const showFooter = R.any(
+    fieldName => {
+      const summaryPath = fromIndex ? [modelName, fieldName] : [parentModelName, parentFieldName, fieldName]
+      const schemaPath = [modelName, 'fields', fieldName, 'showFooter']
+      return(
+        R.path(summaryPath, summary) &&
+        R.path(schemaPath, schema)
+      )
+    },
+    fieldOrder
+  )
+
+  if (!showFooter) {
+    return null
+  }
+
   return (
     <tfoot>
       <tr>
