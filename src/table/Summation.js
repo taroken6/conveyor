@@ -24,7 +24,6 @@ export const Summation = ({ schema, modelName, fieldName, title, summary, custom
 
 export const DetailSummation = ({ schema, modelName, fieldName, parentModelName, parentFieldName, title, summary, customProps }) => {
   let total
-
   if (summary) {
     const fieldTotal = R.path([parentModelName, parentFieldName, fieldName], summary)
     if (fieldTotal === undefined)
