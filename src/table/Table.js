@@ -16,7 +16,6 @@ import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
 import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
 import { DeleteDetail, RemoveDetail } from '../delete/DeleteDetail'
-
 import {
   RowEditButton,
   EditSaveButton,
@@ -135,7 +134,13 @@ export const TableButtonGroup = ({
             parentId,
             parentModelName,
             parentFieldName,
-            name: R.prop('name', node) || R.path(['type', 'name'], node),
+            name: getDisplayValue({
+              schema,
+              modelName,
+              parentModelName,
+              node,
+              customProps
+            }),
             customProps
           }}
         />
