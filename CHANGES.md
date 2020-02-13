@@ -5,7 +5,9 @@
 ### Unreleased
 
 -   Add Summary and Footer #141
+-   Add 'go to' pagination tooltip #146
 -   Fix multi-select bug #157
+-   Add Removable feature #159
 
 ## Version 1.5.0
 
