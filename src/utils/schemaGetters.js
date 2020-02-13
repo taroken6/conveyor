@@ -138,36 +138,6 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
   return defaultOrder
 }
 
-export const getShownFooters = ({ schema, modelName, type, data, user, customProps }) => {
-  const fields = R.prop('fields', getModel(schema, modelName))
-
-  return R.filter(fieldName => {
-    let show
-
-    switch (type) {
-      case inputTypes.CURRENCY_TYPE:
-        show = fieldName
-        break
-
-      default:
-        show = false
-    }
-    if (R.type(show) === 'Function') {
-      show = show({ schema, modelName, fieldName, data, user, customProps })
-    }
-    return show
-  }, fields)
-}
-
-export const getFooterLabel = ({ schema, modelName, fieldName, data, customProps }) => {
-  const displayName = R.pathOr(humanize(fieldName), [modelName, 'fields', fieldName, 'displayName'], schema)
-
-  if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
-  }
-  return displayName
-}
-
 export const getTooltipFields = (schema, modelName, customProps = null) => {
   return getShownFields({ schema, modelName, type: 'showTooltip', customProps })
 }
