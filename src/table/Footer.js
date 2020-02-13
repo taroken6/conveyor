@@ -10,11 +10,9 @@ export const TFoot = ({
   parentModelName,
   parentFieldName,
   fieldOrder,
-  data,
   summary,
   fromIndex,
   customProps,
-  user,
 }) => {
   const geSummaryPath = fieldName => fromIndex ? [modelName, fieldName] : [parentModelName, parentFieldName, fieldName]
 

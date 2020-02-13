@@ -498,10 +498,8 @@ export const Table = ({
             parentFieldName,
             fieldOrder,
             summary,
-            data,
             fromIndex,
             customProps,
-            user,
           }}
         />
       </table>
