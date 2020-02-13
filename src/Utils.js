@@ -240,36 +240,3 @@ export const isTableSortable = ({ schema, modelName, user }) => {
   const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, user }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
-
-// index, field level
-export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
-  const fieldFooterShown = R.pathOr(false, [modelName, 'fields', fieldName, 'showFooter'], schema)
-
-  if (fieldFooterShown === true) {
-    return true
-  }
-
-  if (R.type(fieldFooterShown) === 'Function' && fieldFooterShown({ schema, modelName, user }) === true) {
-    return true
-  }
-
-  // todo: get rid of 'isCurrency' here because its confusing and will return by default true (if field is currency)
-  //  when in reality the schema may be saying otherwise (false); also simplify all the 'showFooter' functions
-  // by default totals are shown for currency fields
-  return fieldFooterShown
-}
-
-// detail, field level
-export const isDetailFieldFooterShown = ({ schema, parentModelName, parentFieldName, modelName, fieldName, user }) => {
-  const detailFooterShown = isFooterShown({ schema, modelName: parentModelName, fieldName: parentFieldName, user })
-
-  if (detailFooterShown)
-    return true
-  if (R.type(detailFooterShown) === 'Function' && detailFooterShown({
-    schema, parentModelName, parentFieldName,
-    modelName, fieldName, user
-  }))
-    return true
-
-  return detailFooterShown
-}
