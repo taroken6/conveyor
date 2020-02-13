@@ -14,10 +14,10 @@ export const TFoot = ({
   fromIndex,
   customProps,
 }) => {
-  const geSummaryPath = fieldName => fromIndex ? [modelName, fieldName] : [parentModelName, parentFieldName, fieldName]
+  const getSummaryPath = fieldName => fromIndex ? [modelName, fieldName] : [parentModelName, parentFieldName, fieldName]
 
   const checkFooterField = fieldName => {
-      const summaryPath = geSummaryPath(fieldName)
+      const summaryPath = getSummaryPath(fieldName)
       const schemaPath = [modelName, 'fields', fieldName, 'showFooter']
       return(
         R.path(summaryPath, summary) &&
@@ -56,7 +56,7 @@ export const TFoot = ({
           if (!checkFooterField(fieldName)) {
             return <th key={`${idx}-${modelName}-${fieldName}`} />
           }
-          const summaryPath = geSummaryPath(fieldName)
+          const summaryPath = getSummaryPath(fieldName)
           let total = R.path(summaryPath, summary)
 
           if (getType({ schema, modelName, fieldName }) === 'currency')
