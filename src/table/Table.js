@@ -9,9 +9,7 @@ import {
   isTableEditable,
   isRowEditable,
   skipOverride,
-  shouldDisplay,
-  isIndexTableFooterShown,
-  isDetailTableFooterShown
+  shouldDisplay
 } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
@@ -494,13 +492,6 @@ export const Table = ({
     customProps
   })
 
-  let footerShown
-  if (fromIndex) {
-    footerShown = isIndexTableFooterShown({ schema, modelName, user })
-  } else {
-    footerShown = isDetailTableFooterShown({ schema, parentModelName, modelName, user })
-  }
-
   return (
     <React.Fragment>
       <table className="table table-striped table-bordered table-hover">
@@ -545,41 +536,18 @@ export const Table = ({
             customProps
           }}
         />
-        {fromIndex ? (footerShown && <Foot
+        <Foot
           {...{
             schema,
             modelName,
             parentModelName,
             parentFieldName,
             fieldOrder,
-            editable,
-            deletable,
-            detailField,
             summary,
-            data,
             fromIndex,
             customProps,
-            user,
           }}
-        />) : (footerShown && <Foot
-          {...{
-            schema,
-            modelName,
-            parentModelName,
-            parentFieldName,
-            fieldOrder,
-            editable,
-            deletable,
-            detailField,
-            selectOptions,
-            data,
-            tableView,
-            fromIndex,
-            customProps,
-            user,
-            summary
-          }}
-        />)}
+        />
       </table>
       {fromIndex ? (
         <IndexPagination
