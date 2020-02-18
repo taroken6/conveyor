@@ -401,7 +401,8 @@ export const DefaultDetailTable = ({
   user,
   tableView,
   modalData,
-  customProps
+  customProps,
+  summary
 }) => {
   const fieldType = R.path([modelName, 'fields', fieldName, 'type'], schema)
   const targetInverseFieldName = R.prop('backref', fieldType)
@@ -469,7 +470,8 @@ export const DefaultDetailTable = ({
             tableView,
             collapse,
             modalData,
-            customProps
+            customProps,
+            summary
           }}
         /> }
       </React.Fragment>
@@ -654,7 +656,8 @@ export const DetailFields = ({
   path,
   user,
   tableView,
-  customProps
+  customProps,
+  summary
 }) => {
   if (!node) { return <div className='container'>Loading...</div> }
 
@@ -726,7 +729,8 @@ export const DetailFields = ({
               id,
               user,
               tableView,
-              customProps
+              customProps,
+              summary
             }}
           />
         )
@@ -759,7 +763,8 @@ const DefaultDetail = ({
   tableView,
   selectOptions,
   modelStore,
-  customProps
+  customProps,
+  summary
 }) => {
   const DetailTitleOverride = getDetailTitleOverride(schema, modelName)
   const DetailPageOverride = getDetailPageOverride(schema, modelName)
@@ -821,7 +826,8 @@ const DefaultDetail = ({
             tableView,
             selectOptions,
             modelStore,
-            customProps
+            customProps,
+            summary
           }}
         />
       )}
@@ -843,7 +849,8 @@ const Detail = ({
   tableView,
   selectOptions,
   modelStore,
-  customProps
+  customProps,
+  summary
 }) => {
   const DetailOverride = getDetailOverride(schema, modelName)
 
@@ -865,7 +872,8 @@ const Detail = ({
         tableView,
         selectOptions,
         modelStore,
-        customProps
+        customProps,
+        summary
       }}
     />
   )

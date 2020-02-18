@@ -240,36 +240,3 @@ export const isTableSortable = ({ schema, modelName, user }) => {
   const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, user }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
-
-export const isTableFooterShown = ({ schema, modelName, user }) => {
-  const footerShown = R.pathOr(false, [modelName, 'showFooter'], schema)
-
-  if (footerShown === true) {
-    return true
-  }
-
-  if (R.type(footerShown) === 'Function' && footerShown({ schema, modelName, user }) === true) {
-    return true
-  }
-
-  const model = R.prop(modelName, schema)
-  const fieldOrder = R.prop('fieldOrder', model)
-  const boolList = R.map(fieldName => isFooterShown({ schema, modelName, fieldName, user }), fieldOrder)
-
-  return !R.isEmpty(R.filter(R.identity, boolList))
-}
-
-export const isFooterShown = ({ schema, modelName, fieldName, user }) => {
-  const fieldFooterShown = R.pathOr(false, [modelName, 'fields', fieldName, 'showFooter'], schema)
-
-  if (fieldFooterShown === true) {
-    return true
-  }
-
-  if (R.type(fieldFooterShown) === 'Function' && fieldFooterShown({ schema, modelName, user }) === true) {
-    return true
-  }
-
-  // by default totals are shown for currency fields
-  return isCurrency(getField(schema, modelName, fieldName))
-}

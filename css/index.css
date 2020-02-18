@@ -166,3 +166,12 @@ body {
   padding-top: 10px;
   margin-right: 5px;
 }
+
+.goto-tooltip {
+  max-width: 200px;
+}
+
+.goto-tooltip-invalid {
+  color: #ff5555;
+  font-size: 14px;
+}

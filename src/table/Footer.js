@@ -1,22 +1,39 @@
 import React from 'react'
-import { getFooterLabel, getActions, getFieldConditions, getFooterFields, getShownFooters } from '../utils/schemaGetters'
-import { shouldDisplay, isTableFooterShown, isFooterShown } from '../Utils'
-import { Summation } from './Summation'
+import { getFieldConditions } from '../utils/schemaGetters'
+import { shouldDisplay } from '../Utils'
 import * as R from 'ramda'
+import { getType } from '../utils/getType'
 
 export const TFoot = ({
   schema,
   modelName,
+  parentModelName,
+  parentFieldName,
   fieldOrder,
-  editable,
-  deletable,
-  detailField,
-  data,
   summary,
   fromIndex,
   customProps,
-  user,
 }) => {
+  const getSummaryPath = fieldName => fromIndex ? [modelName, fieldName] : [parentModelName, parentFieldName, fieldName]
+
+  const checkFooterField = fieldName => {
+      const summaryPath = getSummaryPath(fieldName)
+      const schemaPath = [modelName, 'fields', fieldName, 'showFooter']
+      return(
+        R.path(summaryPath, summary) &&
+        R.path(schemaPath, schema)
+      )
+    }
+
+  const showFooter = R.any(
+    checkFooterField,
+    fieldOrder
+  )
+
+  if (!showFooter) {
+    return null
+  }
+
   return (
     <tfoot>
       <tr>
@@ -36,23 +53,24 @@ export const TFoot = ({
             }
           }
 
-          const showFooterInfo = isFooterShown({ schema, modelName, fieldName, user })
-          const shownFooters = getShownFooters({ schema, modelName, type: fieldName.type, data, user, customProps })
+          if (!checkFooterField(fieldName)) {
+            return <th key={`${idx}-${modelName}-${fieldName}`} />
+          }
+          const summaryPath = getSummaryPath(fieldName)
+          let total = R.path(summaryPath, summary)
+
+          if (getType({ schema, modelName, fieldName }) === 'currency')
+            total = new Intl.NumberFormat('en-US', {
+              style: 'currency', currency: 'USD'
+            }).format(total)
 
           return (
             <th key={`${idx}-${modelName}-${fieldName}`} style={{ minWidth: '130px' }}>
-              <Footer
-                {...{
-                  schema,
-                  modelName,
-                  fieldName,
-                  title: showFooterInfo ? getFooterLabel({ schema, modelName, fieldName, data, customProps }) : false,
-                  summary,
-                  showFooterInfo,
-                  shownFooters,
-                  customProps
-                }}
-              />
+              <div className="footer">
+                <div className="sum">
+                  {total}
+                </div>
+              </div>
             </th>
           )
         })}
@@ -61,13 +79,4 @@ export const TFoot = ({
   )
 }
 
-export const Footer = ({ schema, modelName, fieldName, title, summary, showFooterInfo, customProps }) => {
-  return (
-    <div className="footer">
-      <div className="sum">
-        <span className="footer-title">{title ? `Total ${title}: ` : null}</span>
-        {showFooterInfo && <Summation {...{ schema, modelName, fieldName, summary, customProps }} />}
-      </div>
-    </div>
-  )
-}
+

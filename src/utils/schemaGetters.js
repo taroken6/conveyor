@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { titleize, humanize, isFooterShown } from '../Utils'
+import { titleize, humanize, isIndexTableFieldFooterShown } from '../Utils'
 import pluralize from 'pluralize'
 import { inputTypes } from '../consts'
 
@@ -136,47 +136,6 @@ export const getIndexFields = ({ schema, modelName, data, user, customProps }) =
     return indexFieldOrder
   }
   return defaultOrder
-}
-
-export const getFooterFields = ({ schema, modelName, fieldName, customProps }) => {
-  const footerFieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFooters({ schema, modelName, type: fieldName.type, fieldName, customProps })
-  if (R.type(footerFieldOrder) === 'Function') {
-    return footerFieldOrder({ schema, modelName, fieldName, defaultOrder, customProps })
-  } else if (R.type(footerFieldOrder) === 'Array') {
-    return footerFieldOrder
-  }
-  return defaultOrder
-}
-
-export const getShownFooters = ({ schema, modelName, type, data, user, customProps }) => {
-  const fields = R.prop('fields', getModel(schema, modelName))
-
-  return R.filter(fieldName => {
-    let show
-
-    switch (type) {
-      case inputTypes.CURRENCY_TYPE:
-        show = fieldName
-        break
-
-      default:
-        show = R.propOr(false, 'summable', getField(schema, modelName, fieldName))
-    }
-    if (R.type(show) === 'Function') {
-      show = show({ schema, modelName, fieldName, data, user, customProps })
-    }
-    return show
-  }, fields)
-}
-
-export const getFooterLabel = ({ schema, modelName, fieldName, data, customProps }) => {
-  const displayName = R.pathOr(humanize(fieldName), [modelName, 'fields', fieldName, 'displayName'], schema)
-
-  if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, customProps })
-  }
-  return displayName
 }
 
 export const getTooltipFields = (schema, modelName, customProps = null) => {
