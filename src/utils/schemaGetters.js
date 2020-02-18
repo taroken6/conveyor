@@ -3,6 +3,10 @@ import { titleize, humanize, isIndexTableFieldFooterShown } from '../Utils'
 import pluralize from 'pluralize'
 import { inputTypes } from '../consts'
 
+export const getFieldHelp = ({ schema, modelName, fieldName }) => {
+  return R.path([modelName, 'fields', fieldName, 'fieldHelpText'], schema)
+}
+
 // This is an example of our naming issue, node and data should not both be passed here
 export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
   const displayName = R.pathOr(
