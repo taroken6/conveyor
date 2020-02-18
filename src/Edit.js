@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import { getActions } from './utils/schemaGetters'
+import { getActions, getFieldHelpText } from './utils/schemaGetters'
 import Input from './form/Input'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
@@ -103,17 +103,23 @@ export const EditCancelButton = ({ onClick }) => {
 export const EditInput = ({ schema, modelName, fieldName, node, editData, error, selectOptions, modelStore, customProps }) => {
   const actions = getActions(schema, modelName)
   const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
-  return <Input key={fieldName} {...{
-    selectOptions,
-    modelStore,
-    schema,
-    onChange: ({ ...props }) => onEditInputChange({ id: node.id, modelName, ...props }),
-    fieldName,
-    modelName,
-    node,
-    value: editData,
-    error,
-    inline: true,
-    customProps
-  }} />
+  return (
+    <div>
+      <Input key={fieldName} {...{
+        selectOptions,
+        modelStore,
+        schema,
+        onChange: ({ ...props }) => onEditInputChange({ id: node.id, modelName, ...props }),
+        fieldName,
+        modelName,
+        node,
+        value: editData,
+        error,
+        inline: true,
+        customProps
+      }} />
+      {/* <span>hi</span> */}
+      {/* <span>{getFieldHelpText({ schema, modelName, fieldName })}</span> */}
+    </div>
+  )
 }
