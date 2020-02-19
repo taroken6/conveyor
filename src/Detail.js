@@ -85,7 +85,6 @@ export const DefaultDetailAttribute = ({
   editData,
   tooltipData,
   selectOptions,
-  modelStore,
   id,
   path,
   user,
@@ -137,7 +136,6 @@ export const DefaultDetailAttribute = ({
               editData: fieldEditData,
               error,
               selectOptions,
-              modelStore
             }} />
           </div>
           <div className='inline-btn-group'>
@@ -343,7 +341,6 @@ export const DefaultDetailTable = ({
   path,
   editData,
   selectOptions,
-  modelStore,
   tooltipData,
   user,
   tableView,
@@ -400,7 +397,6 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
-            modelStore,
             tooltipData,
             node,
             data,
@@ -451,7 +447,6 @@ export const DefaultDetailTable = ({
             value: getFieldEditData(editData, modelName, fieldName, id),
             error: getFieldErrorEdit(editData, modelName, fieldName, id),
             selectOptions,
-            modelStore,
             customLabel: DetailLabel,
             onChange: ({ ...props }) => onEditInputChange({
               id,
@@ -513,7 +508,6 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
-            modelStore,
             tooltipData,
             node,
             data,
@@ -595,7 +589,6 @@ export const DetailFields = ({
   editData,
   tooltipData,
   selectOptions,
-  modelStore,
   path,
   user,
   tableView,
@@ -629,7 +622,6 @@ export const DetailFields = ({
                 fieldName,
                 node,
                 selectOptions,
-                modelStore,
                 editData,
                 tooltipData,
                 modalData,
@@ -664,7 +656,6 @@ export const DetailFields = ({
               fieldName,
               node,
               selectOptions,
-              modelStore,
               editData,
               tooltipData,
               modalData,
@@ -705,7 +696,6 @@ const DefaultDetail = ({
   user,
   tableView,
   selectOptions,
-  modelStore,
   customProps,
   summary
 }) => {
@@ -768,7 +758,6 @@ const DefaultDetail = ({
             user,
             tableView,
             selectOptions,
-            modelStore,
             customProps,
             summary
           }}
@@ -791,7 +780,6 @@ const Detail = ({
   user,
   tableView,
   selectOptions,
-  modelStore,
   customProps,
   summary
 }) => {
@@ -814,7 +802,6 @@ const Detail = ({
         user,
         tableView,
         selectOptions,
-        modelStore,
         customProps,
         summary
       }}

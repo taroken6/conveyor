@@ -58,7 +58,6 @@ const Input = ({
   inline,
   onChange,
   selectOptions,
-  modelStore,
   disabled,
   customLabel,
   formStack,
@@ -87,7 +86,6 @@ const Input = ({
         inline,
         onChange,
         selectOptions,
-        modelStore,
         disabled,
         customLabel,
         onMenuOpen,
@@ -120,7 +118,6 @@ const Input = ({
     inline,
     onChange,
     selectOptions,
-    modelStore,
     disabled,
     customLabel,
     onMenuOpen,
@@ -173,7 +170,6 @@ export const InputCore = ({
   inline,
   onChange,
   selectOptions,
-  modelStore,
   customLabel,
   onMenuOpen,
   onCreatableMenuOpen,
@@ -238,7 +234,6 @@ export const InputCore = ({
         formStack,
         value,
         customProps,
-        modelStore
       })
       return (
         <FlexibleInput
@@ -262,7 +257,6 @@ export const InputCore = ({
         formStack,
         value,
         customProps,
-        modelStore
       })
       return (
         <FlexibleInput

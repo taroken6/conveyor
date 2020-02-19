@@ -174,7 +174,6 @@ export const TableRowWithEdit = ({
   editData,
   tooltipData,
   selectOptions,
-  modelStore,
   user,
   parentNode,
   customProps
@@ -203,7 +202,6 @@ export const TableRowWithEdit = ({
           editData: fieldEditData,
           error,
           selectOptions,
-          modelStore,
           customProps
         }}
       />
@@ -329,7 +327,6 @@ const TBody = ({
   tableEditable,
   deletable,
   selectOptions,
-  modelStore,
   user,
   parentNode,
   fromIndex,
@@ -381,7 +378,6 @@ const TBody = ({
                       editData,
                       tooltipData,
                       selectOptions,
-                      modelStore,
                       user,
                       parentNode,
                       customProps
@@ -452,7 +448,6 @@ export const Table = ({
   modalData,
   editData,
   selectOptions,
-  modelStore,
   parentId,
   parentModelName,
   parentFieldName,
@@ -531,7 +526,6 @@ export const Table = ({
             parentFieldName,
             modalData,
             selectOptions,
-            modelStore,
             editData,
             deletable,
             tableEditable: editable,

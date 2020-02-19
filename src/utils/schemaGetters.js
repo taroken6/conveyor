@@ -170,11 +170,11 @@ export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
 
-export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, customProps, modelStore }) => {
+export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, customProps }) => {
   const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
   if (disabledDropDownCond) {
     options = disabledDropDownCond({
-      schema, modelName, fieldName, options, formStack, value, customProps, modelStore
+      schema, modelName, fieldName, options, formStack, value, customProps
     })
   }
   return options
