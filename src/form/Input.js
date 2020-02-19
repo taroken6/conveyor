@@ -133,7 +133,7 @@ const Input = ({
         onKeyDown,
         customProps,
       }} />
-      {fieldHelp && <span className='help-text'>{fieldHelp}</span>}
+      {fieldHelp && <small className='help-text'>{fieldHelp}</small>}
     </div>
   )
 }

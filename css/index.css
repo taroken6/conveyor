@@ -168,6 +168,6 @@ body {
 }
 
 .help-text {
-  font-size: 12px;
   color: #5f5f5f;
+  margin-bottom: 2px;
 }
