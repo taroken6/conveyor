@@ -166,3 +166,8 @@ body {
   margin: 0% !important;
   padding: 0% !important;
 }
+
+.help-text {
+  font-size: 12px;
+  color: #5f5f5f;
+}

@@ -118,7 +118,7 @@ export const EditInput = ({ schema, modelName, fieldName, node, editData, error,
         inline: true,
         customProps
       }} />
-      <span>foo</span>
+      <span className='help-text'>some placeholder help text here blah blah blah</span>
       {/* <span>{getFieldHelpText({ schema, modelName, fieldName })}</span> */}
     </div>
   )
