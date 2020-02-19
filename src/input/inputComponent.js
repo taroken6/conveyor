@@ -96,6 +96,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, is
               `${evt.getFullYear()}-${(evt.getUTCMonth() + 1)}-${evt.getUTCDate()}`
             )
           }}
+          className='form-control'
           isClearable={isClearable}
           {...customInput}
         />
