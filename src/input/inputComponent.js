@@ -26,7 +26,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
   }
 
   return (
-    <div className='form-group zero-space' style={{ flexGrow: 1 }}>
+    <div className='form-group zero-space'>
       {labelComp}
       {children}
       {errorComp}
@@ -236,7 +236,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
-    <div className='input-group mb-3'>
+    <div className='input-group'>
       <div className='input-group-prepend'>
         <span className='input-group-text'>$</span>
       </div>
