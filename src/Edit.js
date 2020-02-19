@@ -104,22 +104,18 @@ export const EditInput = ({ schema, modelName, fieldName, node, editData, error,
   const actions = getActions(schema, modelName)
   const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
   return (
-    <div>
-      <Input key={fieldName} {...{
-        selectOptions,
-        modelStore,
-        schema,
-        onChange: ({ ...props }) => onEditInputChange({ id: node.id, modelName, ...props }),
-        fieldName,
-        modelName,
-        node,
-        value: editData,
-        error,
-        inline: true,
-        customProps
-      }} />
-      <span className='help-text'>some placeholder help text here blah blah blah</span>
-      {/* <span>{getFieldHelpText({ schema, modelName, fieldName })}</span> */}
-    </div>
+    <Input key={fieldName} {...{
+      selectOptions,
+      modelStore,
+      schema,
+      onChange: ({ ...props }) => onEditInputChange({ id: node.id, modelName, ...props }),
+      fieldName,
+      modelName,
+      node,
+      value: editData,
+      error,
+      inline: true,
+      customProps
+    }} />
   )
 }
