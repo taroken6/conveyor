@@ -16,11 +16,11 @@ export const getFieldLabel = ({ schema, modelName, fieldName, node, data, custom
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, node, data, formStack, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, user, formStack, customProps }) => {
   const defaultValue = titleize(humanize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, node, data, formStack, customProps })
+    return displayName({ schema, modelName, node, data, user, formStack, customProps })
   }
   return displayName
 }
@@ -170,11 +170,11 @@ export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
 
-export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, modelStore }) => {
+export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, modelStore, customProps }) => {
   const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
   if (disabledDropDownCond) {
     options = disabledDropDownCond({
-      schema, modelName, fieldName, options, formStack, value, modelStore
+      schema, modelName, fieldName, options, formStack, value, modelStore, customProps
     })
   }
   return options
