@@ -1,7 +1,6 @@
 import * as R from 'ramda'
 import { titleize, humanize, isIndexTableFieldFooterShown } from '../Utils'
 import pluralize from 'pluralize'
-import { inputTypes } from '../consts'
 
 export const getFieldHelpText = ({ schema, modelName, fieldName }) => {
   return R.propOr(null, 'fieldHelp', getField(schema, modelName, fieldName))
