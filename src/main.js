@@ -60,6 +60,7 @@ import { FieldOrderButton } from './table/FiledOrderAlter'
 import { FieldOrderInput } from './table/FiledOrderAlter'
 import { getFieldOrderAlterDetailProps } from './table/FiledOrderAlter'
 import { getFieldOrderAlternate } from './table/FiledOrderAlter'
+import { DefaultDetailLabel } from './Detail'
 
 export { Index }
 export { Create }
@@ -123,3 +124,4 @@ export { FieldOrderButton }
 export { FieldOrderInput }
 export { getFieldOrderAlterDetailProps }
 export { getFieldOrderAlternate }
+export { DefaultDetailLabel }

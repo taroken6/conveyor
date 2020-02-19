@@ -46,8 +46,6 @@ export const FieldOrderButton = ({
   </button>
 
 export const FieldOrderInput = ({
-  hasValues,
-  open,
   options,
   fieldOrderAltValues,
   fieldOrderChange,

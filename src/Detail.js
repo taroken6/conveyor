@@ -289,7 +289,7 @@ export const DefaultDetailO2MTableTitle = ({
         }}/>
       </div>
       { hasValues && open && <FieldOrderInput {...{
-        hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName
+        options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName
       }} />}
     </DefaultDetailTableTitleWrapper>
   )
@@ -352,7 +352,7 @@ const DefaultDetailM2MTableTitle = ({
         }}/>
       </div>
       { hasValues && open && <FieldOrderInput {...{
-        hasValues, open, options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName
+        options, fieldOrderAltValues, fieldOrderChange, modelName, fieldName
       }} />}
     </div>
   )
