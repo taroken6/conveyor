@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import { getActions, getFieldHelpText } from './utils/schemaGetters'
+import { getActions } from './utils/schemaGetters'
 import Input from './form/Input'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
