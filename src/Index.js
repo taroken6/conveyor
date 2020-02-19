@@ -48,7 +48,9 @@ export const DefaultIndexTitle = ({
         selectOptions,
         data,
         filterOrder,
-        filterInputs: currentFilters, user
+        filterInputs: currentFilters,
+        user,
+        customProps
       }} />}
       <div className='float-right'>
         {filterable && <FilterModalButton {...{ modelName, filtersAreActive }} />}

@@ -237,6 +237,7 @@ export const InputCore = ({
         })),
         formStack,
         value,
+        customProps,
         modelStore
       })
       return (
@@ -260,6 +261,7 @@ export const InputCore = ({
         options: R.path([modelName, fieldName], selectOptions),
         formStack,
         value,
+        customProps,
         modelStore
       })
       return (
