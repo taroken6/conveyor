@@ -107,12 +107,12 @@ const formatFilter = ({
   onFilterSubmit,
   onFilterDropdown,
   filterInputs,
-  deleteFilter, user
+  deleteFilter, user, customProps
 }) => {
   const filterInput = R.prop(fieldName, filterInputs)
   const filterables = getFilterableFields({ modelName, schema, user })
   const toOptions = fieldName => ({
-    label: getFieldLabel({ schema, modelName, fieldName, data }),
+    label: getFieldLabel({ schema, modelName, fieldName, data, customProps }),
     value: fieldName
   })
   const unfiltered = filterables.filter(fieldName => !filterOrder.includes(fieldName))
@@ -183,7 +183,7 @@ const ActiveFilters = ({
   onFilterSubmit,
   onFilterDropdown,
   filterInputs,
-  user
+  user, customProps
 }) => (
   <div id={'active-filters-' + modelName} className="mb-2">
     <ul className="list-group">
@@ -212,7 +212,7 @@ const ActiveFilters = ({
             onFilterDropdown,
             filterInputs,
             deleteFilter,
-            user
+            user, customProps
           })
         )
       )}
@@ -234,7 +234,7 @@ export const FilterModal = ({
   selectOptions,
   data,
   filterOrder,
-  filterInputs, user
+  filterInputs, user, customProps
 }) => {
   const actions = getActions(schema, modelName)
   const tableOptions = R.prop('tableOptions', actions)
@@ -263,7 +263,7 @@ export const FilterModal = ({
           onFilterChange,
           onFilterSubmit,
           onFilterDropdown,
-          filterInputs, user
+          filterInputs, user, customProps
         }} />
       }
     />
