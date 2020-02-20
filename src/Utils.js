@@ -78,13 +78,12 @@ export const getEnumLabel = ({ schema, modelName, fieldName, value }) => {
  * parent 'node' must be labeled 'parentNode'
  */
 
-export const isTableEditable = ({ schema, modelName, data, user, parentNode, fieldOrder, customProps }) => {
+export const isTableEditable = ({ schema, modelName, data, parentNode, fieldOrder, customProps }) => {
   return !R.isEmpty(
     data.filter(node =>
       isRowEditable({
         schema,
         modelName,
-        user,
         node,
         parentNode,
         fieldOrder,
@@ -95,7 +94,7 @@ export const isTableEditable = ({ schema, modelName, data, user, parentNode, fie
 }
 
 //isRowEditable loops over all displayed fields to determine if the row is editable
-export const isRowEditable = ({ schema, modelName, node, parentNode, user, fieldOrder, customProps }) => {
+export const isRowEditable = ({ schema, modelName, node, parentNode, fieldOrder, customProps }) => {
   if (!fieldOrder) {
     fieldOrder = Object.keys(node)
   }
@@ -108,7 +107,6 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, user, field
         fieldName,
         node,
         parentNode,
-        user,
         fieldOrder,
         customProps
       })
@@ -119,18 +117,18 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, user, field
   return false
 }
 
-export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, user, customProps }) => {
+export const isFieldEditable = ({ schema, modelName, fieldName, node, parentNode, customProps }) => {
   const editable = R.propOr(!R.equals('id', fieldName), 'editable', getField(schema, modelName, fieldName))
   if (R.type(editable) === 'Boolean') {
     return editable
   } else if (R.type(editable) === 'Function') {
-    return editable({ schema, modelName, fieldName, node, parentNode, user, customProps })
+    return editable({ schema, modelName, fieldName, node, parentNode, customProps })
   } else {
     return false
   }
 }
 
-export const isTableDeletable = ({ schema, modelName, data, parentNode, user, customProps }) => {
+export const isTableDeletable = ({ schema, modelName, data, parentNode, customProps }) => {
   return !R.isEmpty(
     data.filter(node =>
       isDeletable({
@@ -138,30 +136,29 @@ export const isTableDeletable = ({ schema, modelName, data, parentNode, user, cu
         modelName,
         node,
         parentNode,
-        user,
         customProps
       })
     )
   )
 }
 
-export const isDeletable = ({ schema, modelName, node, parentNode, user, customProps }) => {
+export const isDeletable = ({ schema, modelName, node, parentNode, customProps }) => {
   const deletable = R.propOr(true, 'deletable', getModel(schema, modelName))
   if (R.type(deletable) === 'Boolean') {
     return deletable
   } else if (R.type(deletable) === 'Function') {
-    return deletable({ schema, modelName, node, parentNode, user, customProps })
+    return deletable({ schema, modelName, node, parentNode, customProps })
   } else {
     return false
   }
 }
 
-export const isCreatable = ({ schema, modelName, user, parentNode, data, customProps }) => {
+export const isCreatable = ({ schema, modelName, parentNode, data, customProps }) => {
   const creatable = R.propOr(true, 'creatable', getModel(schema, modelName))
   if (R.type(creatable) === 'Boolean') {
     return creatable
   } else if (R.type(creatable) === 'Function') {
-    return creatable({ schema, modelName, user, parentNode, data, customProps })
+    return creatable({ schema, modelName, parentNode, data, customProps })
   } else {
     return false
   }
@@ -210,33 +207,33 @@ export const isFieldDisabled = ({ schema, modelName, fieldName, formStack, custo
 }
 
 // note: should not be used w/o checking 'isTableSortable' as well (model lvl req)
-export const isSortable = ({ schema, modelName, fieldName, user, customProps }) => {
+export const isSortable = ({ schema, modelName, fieldName, customProps }) => {
   // first check if can sort on field level
   const fieldSortable = R.pathOr(true, [modelName, 'fields', fieldName, 'sortable'], schema)
   if (fieldSortable === false) {
     return false
   }
   // repeat above if 'fieldSortable' is function
-  if (R.type(fieldSortable) === 'Function' && fieldSortable({ schema, modelName, fieldName, user, customProps }) === false) {
+  if (R.type(fieldSortable) === 'Function' && fieldSortable({ schema, modelName, fieldName, customProps }) === false) {
     return false
   }
   // by default, all non-rel fields are sortable
   return !isRel(getField(schema, modelName, fieldName))
 }
 
-export const isTableSortable = ({ schema, modelName, user, customProps }) => {
+export const isTableSortable = ({ schema, modelName, customProps }) => {
   // first check if can sort on model level
   const tableSortable = R.pathOr(true, [modelName, 'sortable'], schema)
   if (tableSortable === false) {
     return false
   }
   // repeat above if 'tableSortable' is function
-  if (R.type(tableSortable) === 'Function' && tableSortable({ schema, modelName, user, customProps }) === false) {
+  if (R.type(tableSortable) === 'Function' && tableSortable({ schema, modelName, customProps }) === false) {
     return false
   }
   // next, check field level sort
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
-  const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, user, customProps }), fieldOrder)
+  const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, customProps }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
 }

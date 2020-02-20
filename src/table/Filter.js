@@ -9,7 +9,7 @@ import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
 import { getType } from '../utils/getType'
 
 // should not be used w/o checking 'isTableFilterable' as well (model level req)
-const isFilterable = ({ schema, modelName, fieldName, user }) => {
+const isFilterable = ({ schema, modelName, fieldName }) => {
   // first check if can filter on field level
   const fieldFilterable = R.pathOr(true, [modelName, 'fields', fieldName, 'filterable'], schema)
   if (fieldFilterable === false) {
@@ -18,7 +18,7 @@ const isFilterable = ({ schema, modelName, fieldName, user }) => {
   // repeat above if 'fieldFilterable' is function
   if (
     R.type(fieldFilterable) === 'Function' &&
-    fieldFilterable({ schema, modelName, fieldName, user }) === false
+    fieldFilterable({ schema, modelName, fieldName }) === false
   ) {
     return false
   }
@@ -34,7 +34,7 @@ const isFilterable = ({ schema, modelName, fieldName, user }) => {
   )
 }
 
-export const isTableFilterable = ({ schema, modelName, user }) => {
+export const isTableFilterable = ({ schema, modelName }) => {
   // first check if can filter on model level
   const tableFilterable = R.pathOr(true, [modelName, 'filterable'], schema)
   if (tableFilterable === false) {
@@ -43,7 +43,7 @@ export const isTableFilterable = ({ schema, modelName, user }) => {
   // repeat above if 'tableFilterable' is function
   if (
     R.type(tableFilterable) === 'Function' &&
-    tableFilterable({ schema, modelName, user }) === false
+    tableFilterable({ schema, modelName }) === false
   ) {
     return false
   }
@@ -51,16 +51,16 @@ export const isTableFilterable = ({ schema, modelName, user }) => {
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
   const boolList = R.map(fieldName =>
-    isFilterable({ schema, modelName, fieldName, user }),
+    isFilterable({ schema, modelName, fieldName }),
     fieldOrder
   )
   return !R.isEmpty(R.filter(R.identity, boolList))
 }
 
-const getFilterableFields = ({ modelName, schema, user }) => {
+const getFilterableFields = ({ modelName, schema }) => {
   const fields = R.pathOr([], [modelName, 'fieldOrder'], schema)
   const filterables = fields.filter(
-    fieldName => isFilterable({ schema, modelName, fieldName, user })
+    fieldName => isFilterable({ schema, modelName, fieldName })
   )
   return filterables
 }
@@ -107,10 +107,11 @@ const formatFilter = ({
   onFilterSubmit,
   onFilterDropdown,
   filterInputs,
-  deleteFilter, user, customProps
+  deleteFilter,
+  customProps
 }) => {
   const filterInput = R.prop(fieldName, filterInputs)
-  const filterables = getFilterableFields({ modelName, schema, user })
+  const filterables = getFilterableFields({ modelName, schema })
   const toOptions = fieldName => ({
     label: getFieldLabel({ schema, modelName, fieldName, data, customProps }),
     value: fieldName
@@ -183,7 +184,7 @@ const ActiveFilters = ({
   onFilterSubmit,
   onFilterDropdown,
   filterInputs,
-  user, customProps
+  customProps
 }) => (
   <div id={'active-filters-' + modelName} className="mb-2">
     <ul className="list-group">
@@ -212,7 +213,7 @@ const ActiveFilters = ({
             onFilterDropdown,
             filterInputs,
             deleteFilter,
-            user, customProps
+            customProps
           })
         )
       )}
@@ -234,7 +235,8 @@ export const FilterModal = ({
   selectOptions,
   data,
   filterOrder,
-  filterInputs, user, customProps
+  filterInputs,
+  customProps
 }) => {
   const actions = getActions(schema, modelName)
   const tableOptions = R.prop('tableOptions', actions)
@@ -263,7 +265,8 @@ export const FilterModal = ({
           onFilterChange,
           onFilterSubmit,
           onFilterDropdown,
-          filterInputs, user, customProps
+          filterInputs,
+          customProps
         }} />
       }
     />

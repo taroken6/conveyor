@@ -107,7 +107,7 @@ export const Pagination = ({
   const hasNext = lastIndex > 0 && idx < lastIndex
   const hasLast = lastIndex > 0 && idx < lastIndex - 1
 
-  // number displayed to user
+  // number displayed
   const displayIndex = idx + 1
 
   // no pagination

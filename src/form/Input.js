@@ -14,12 +14,12 @@ import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
 import { getType } from '../utils/getType'
 
-export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, user, customProps }) => {
+export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
   const relModelName = R.prop('modelName', relSchemaEntry)
   const id = `input-${modelName}-${fieldName}`
   const required = R.prop('required', getField(schema, modelName, fieldName))
-  const creatable = isCreatable({ schema, modelName: relModelName, user, customProps })
+  const creatable = isCreatable({ schema, modelName: relModelName, customProps })
 
   const Label = ({ labelStr }) => (
     <label htmlFor={id}>
@@ -58,7 +58,6 @@ const Input = ({
   inline,
   onChange,
   selectOptions,
-  modelStore,
   disabled,
   customLabel,
   formStack,
@@ -87,7 +86,6 @@ const Input = ({
         inline,
         onChange,
         selectOptions,
-        modelStore,
         disabled,
         customLabel,
         onMenuOpen,
@@ -120,7 +118,6 @@ const Input = ({
     inline,
     onChange,
     selectOptions,
-    modelStore,
     disabled,
     customLabel,
     onMenuOpen,
@@ -173,7 +170,6 @@ export const InputCore = ({
   inline,
   onChange,
   selectOptions,
-  modelStore,
   customLabel,
   onMenuOpen,
   onCreatableMenuOpen,
@@ -237,7 +233,7 @@ export const InputCore = ({
         })),
         formStack,
         value,
-        modelStore, customProps,
+        customProps
       })
       return (
         <FlexibleInput
@@ -260,7 +256,7 @@ export const InputCore = ({
         options: R.path([modelName, fieldName], selectOptions),
         formStack,
         value,
-        modelStore, customProps,
+        customProps
       })
       return (
         <FlexibleInput

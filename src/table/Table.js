@@ -174,8 +174,6 @@ export const TableRowWithEdit = ({
   editData,
   tooltipData,
   selectOptions,
-  modelStore,
-  user,
   parentNode,
   customProps
 }) => {
@@ -186,7 +184,6 @@ export const TableRowWithEdit = ({
       modelName,
       fieldName,
       node,
-      user,
       parentNode,
       customProps
     })
@@ -203,7 +200,6 @@ export const TableRowWithEdit = ({
           editData: fieldEditData,
           error,
           selectOptions,
-          modelStore,
           customProps
         }}
       />
@@ -329,8 +325,6 @@ const TBody = ({
   tableEditable,
   deletable,
   selectOptions,
-  modelStore,
-  user,
   parentNode,
   fromIndex,
   customProps
@@ -345,7 +339,6 @@ const TBody = ({
           modelName,
           node,
           parentNode,
-          user,
           fieldOrder,
           customProps
         })
@@ -381,8 +374,6 @@ const TBody = ({
                       editData,
                       tooltipData,
                       selectOptions,
-                      modelStore,
-                      user,
                       parentNode,
                       customProps
                     }}
@@ -452,7 +443,6 @@ export const Table = ({
   modalData,
   editData,
   selectOptions,
-  modelStore,
   parentId,
   parentModelName,
   parentFieldName,
@@ -461,7 +451,6 @@ export const Table = ({
   Head = THead,
   Body = TBody,
   Foot = TFoot,
-  user,
   collapse,
   fromIndex,
   customProps,
@@ -483,7 +472,6 @@ export const Table = ({
     modelName,
     data,
     parentNode,
-    user,
     customProps
   })
   const detailField = calcDetailField({ schema, modelName, fieldOrder })
@@ -492,7 +480,6 @@ export const Table = ({
     modelName,
     data,
     parentNode,
-    user,
     fieldOrder,
     customProps
   })
@@ -512,8 +499,7 @@ export const Table = ({
             selectOptions,
             tableView,
             fromIndex,
-            customProps,
-            user
+            customProps
           }}
         />
         <Body
@@ -531,11 +517,9 @@ export const Table = ({
             parentFieldName,
             modalData,
             selectOptions,
-            modelStore,
             editData,
             deletable,
             tableEditable: editable,
-            user,
             parentNode,
             fromIndex,
             customProps
