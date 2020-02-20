@@ -24,15 +24,14 @@ export const DefaultIndexTitle = ({
   selectOptions,
   path,
   data,
-  user,
   tableView,
   customProps,
 }) => {
   const actions = getActions(schema, modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
-  const creatable = isCreatable({ schema, modelName, data, user, customProps })
-  const filterable = isTableFilterable({ schema, modelName, user })
+  const creatable = isCreatable({ schema, modelName, data, customProps })
+  const filterable = isTableFilterable({ schema, modelName })
   const currentFilters = R.path([modelName, 'filter', 'filterValue'], tableView)
   const filterOrder = R.path([modelName, 'filter', 'filterOrder'], tableView)
   const filtersAreActive = R.path([modelName, 'filter', 'filtersAreActive'], tableView)
@@ -40,7 +39,7 @@ export const DefaultIndexTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {getModelLabelPlural({ schema, modelName, data, user, customProps })}
+        {getModelLabelPlural({ schema, modelName, data, customProps })}
       </h3>
       {filterable && <FilterModal {...{
         schema,
@@ -49,7 +48,6 @@ export const DefaultIndexTitle = ({
         data,
         filterOrder,
         filterInputs: currentFilters,
-        user,
         customProps
       }} />}
       <div className='float-right'>
@@ -75,7 +73,6 @@ const DefaultIndex = ({
   selectOptions,
   path,
   tooltipData,
-  user,
   tableView,
   customProps,
   summary
@@ -94,7 +91,6 @@ const DefaultIndex = ({
     schema,
     modelName,
     data,
-    user,
     customProps
   })
   const actions = getActions(schema, modelName)
@@ -118,7 +114,6 @@ const DefaultIndex = ({
             selectOptions,
             path,
             tooltipData,
-            user,
             tableView,
             customProps
           }}
@@ -135,7 +130,6 @@ const DefaultIndex = ({
             selectOptions,
             path,
             tooltipData,
-            user,
             tableView,
             customProps,
             fieldOrder,
@@ -159,7 +153,6 @@ const Index = ({
   selectOptions,
   path,
   tooltipData,
-  user,
   tableView,
   customProps,
   summary,
@@ -178,7 +171,7 @@ const Index = ({
     return (
       <div className='container'>
         <h1>
-          {`No ${getModelLabel({ schema, modelName, data, user, customProps })} Exists`}
+          {`No ${getModelLabel({ schema, modelName, data, customProps })} Exists`}
           <CreateButton {...{
             onClick: () => onCreateClick({ modelName })
           }} />
@@ -201,7 +194,6 @@ const Index = ({
         selectOptions,
         path,
         tooltipData,
-        user,
         tableView,
         customProps,
         summary

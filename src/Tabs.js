@@ -19,7 +19,6 @@ const TabFields = ({
   tooltipData,
   modalData,
   selectOptions,
-  user,
   tableView,
   customProps
 }) => {
@@ -37,7 +36,6 @@ const TabFields = ({
       path,
       modalData,
       selectOptions,
-      user,
       tableView,
       customProps
     }} />
@@ -65,7 +63,6 @@ const TabFields = ({
       editData,
       descriptionList,
       selectOptions,
-      user,
       tableView,
       customProps
     }} />
@@ -86,7 +83,6 @@ export const RecursiveTab = ({
   tooltipData,
   path,
   selectOptions,
-  user,
   tableView,
   customProps
 }) => {
@@ -106,7 +102,6 @@ export const RecursiveTab = ({
         modalData,
         tooltipData,
         selectOptions,
-        user,
         tableView,
         customProps
       }} />
@@ -129,7 +124,6 @@ export const RecursiveTab = ({
         path,
         modalData,
         selectOptions,
-        user,
         tableView,
         customProps
       }} />
@@ -173,7 +167,6 @@ export const RecursiveTab = ({
                   tooltipData,
                   path,
                   selectOptions,
-                  user,
                   tableView,
                   customProps,
                   ...renderProps

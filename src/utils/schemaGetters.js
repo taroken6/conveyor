@@ -16,20 +16,20 @@ export const getFieldLabel = ({ schema, modelName, fieldName, node, data, custom
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, node, data, user, formStack, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, formStack, customProps }) => {
   const defaultValue = titleize(humanize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, node, data, user, formStack, customProps })
+    return displayName({ schema, modelName, node, data, formStack, customProps })
   }
   return displayName
 }
 
-export const getModelLabelPlural = ({ schema, modelName, data, user, customProps }) => {
+export const getModelLabelPlural = ({ schema, modelName, data, customProps }) => {
   const defaultValue = pluralize(titleize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, user, customProps })
+    return displayName({ schema, modelName, data, customProps })
   }
   return displayName
 }
@@ -60,7 +60,7 @@ export const getField = (schema, modelName, fieldName) => (
   )(schema, modelName)
 )
 
-const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
+const getShownFields = ({ schema, modelName, type, node, data, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   return R.filter(fieldName => {
     let show
@@ -82,7 +82,7 @@ const getShownFields = ({ schema, modelName, type, node, data, user, customProps
     }
     if (R.type(show) === 'Function') {
       show = show({
-        schema, modelName, fieldName, node, data, user, customProps
+        schema, modelName, fieldName, node, data, customProps
       })
     }
     return show
@@ -93,11 +93,11 @@ export const getRequiredFields = (schema, modelName, customProps = null) => {
   return getShownFields({ schema, modelName, type: 'required', customProps })
 }
 
-export const getCreateFields = ({ schema, modelName, formStack, user, customProps }) => {
+export const getCreateFields = ({ schema, modelName, formStack, customProps }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', user, customProps })
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', customProps })
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName, formStack, user, defaultOrder, customProps })
+    return createFieldOrder({ schema, modelName, formStack, defaultOrder, customProps })
   } else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
   }
@@ -127,11 +127,11 @@ export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   return defaultOrder
 }
 
-export const getIndexFields = ({ schema, modelName, data, user, customProps }) => {
+export const getIndexFields = ({ schema, modelName, data, customProps }) => {
   const indexFieldOrder = R.prop('indexFieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, user, customProps })
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, customProps })
   if (R.type(indexFieldOrder) === 'Function') {
-    return indexFieldOrder({ schema, modelName, data, user, defaultOrder, customProps })
+    return indexFieldOrder({ schema, modelName, data, defaultOrder, customProps })
   } else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
   }

@@ -174,7 +174,6 @@ export const TableRowWithEdit = ({
   editData,
   tooltipData,
   selectOptions,
-  user,
   parentNode,
   customProps
 }) => {
@@ -185,7 +184,6 @@ export const TableRowWithEdit = ({
       modelName,
       fieldName,
       node,
-      user,
       parentNode,
       customProps
     })
@@ -327,7 +325,6 @@ const TBody = ({
   tableEditable,
   deletable,
   selectOptions,
-  user,
   parentNode,
   fromIndex,
   customProps
@@ -342,7 +339,6 @@ const TBody = ({
           modelName,
           node,
           parentNode,
-          user,
           fieldOrder,
           customProps
         })
@@ -378,7 +374,6 @@ const TBody = ({
                       editData,
                       tooltipData,
                       selectOptions,
-                      user,
                       parentNode,
                       customProps
                     }}
@@ -456,7 +451,6 @@ export const Table = ({
   Head = THead,
   Body = TBody,
   Foot = TFoot,
-  user,
   collapse,
   fromIndex,
   customProps,
@@ -478,7 +472,6 @@ export const Table = ({
     modelName,
     data,
     parentNode,
-    user,
     customProps
   })
   const detailField = calcDetailField({ schema, modelName, fieldOrder })
@@ -487,7 +480,6 @@ export const Table = ({
     modelName,
     data,
     parentNode,
-    user,
     fieldOrder,
     customProps
   })
@@ -507,8 +499,7 @@ export const Table = ({
             selectOptions,
             tableView,
             fromIndex,
-            customProps,
-            user
+            customProps
           }}
         />
         <Body
@@ -529,7 +520,6 @@ export const Table = ({
             editData,
             deletable,
             tableEditable: editable,
-            user,
             parentNode,
             fromIndex,
             customProps
