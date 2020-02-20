@@ -21,7 +21,7 @@ export const THead = ({
   user
 }) => {
   // first check if sortable on model level
-  const tableSortable = fromIndex && isTableSortable({ schema, modelName, user })
+  const tableSortable = fromIndex && isTableSortable({ schema, modelName, user, customProps })
   const actions = getActions(schema, modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
   return (
@@ -48,7 +48,7 @@ export const THead = ({
 
           const sortKeyObj = R.path([modelName, 'sort'], tableView)
           // now check if field level is sortable as well
-          const showSort = tableSortable ? isSortable({ schema, modelName, fieldName, user }) : false
+          const showSort = tableSortable ? isSortable({ schema, modelName, fieldName, user, customProps }) : false
           const sortKey = R.prop('fieldName', sortKeyObj) === fieldName
             ? R.prop('sortKey', sortKeyObj) : undefined
           return (
