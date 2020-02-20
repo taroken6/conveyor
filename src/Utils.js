@@ -207,33 +207,33 @@ export const isFieldDisabled = ({ schema, modelName, fieldName, formStack, custo
 }
 
 // note: should not be used w/o checking 'isTableSortable' as well (model lvl req)
-export const isSortable = ({ schema, modelName, fieldName }) => {
+export const isSortable = ({ schema, modelName, fieldName, customProps }) => {
   // first check if can sort on field level
   const fieldSortable = R.pathOr(true, [modelName, 'fields', fieldName, 'sortable'], schema)
   if (fieldSortable === false) {
     return false
   }
   // repeat above if 'fieldSortable' is function
-  if (R.type(fieldSortable) === 'Function' && fieldSortable({ schema, modelName, fieldName }) === false) {
+  if (R.type(fieldSortable) === 'Function' && fieldSortable({ schema, modelName, fieldName, customProps }) === false) {
     return false
   }
   // by default, all non-rel fields are sortable
   return !isRel(getField(schema, modelName, fieldName))
 }
 
-export const isTableSortable = ({ schema, modelName }) => {
+export const isTableSortable = ({ schema, modelName, customProps }) => {
   // first check if can sort on model level
   const tableSortable = R.pathOr(true, [modelName, 'sortable'], schema)
   if (tableSortable === false) {
     return false
   }
   // repeat above if 'tableSortable' is function
-  if (R.type(tableSortable) === 'Function' && tableSortable({ schema, modelName }) === false) {
+  if (R.type(tableSortable) === 'Function' && tableSortable({ schema, modelName, customProps }) === false) {
     return false
   }
   // next, check field level sort
   const model = R.prop(modelName, schema)
   const fieldOrder = R.prop('fieldOrder', model)
-  const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName }), fieldOrder)
+  const boolList = R.map(fieldName => isSortable({ schema, modelName, fieldName, customProps }), fieldOrder)
   return !R.isEmpty(R.filter(R.identity, boolList))
 }

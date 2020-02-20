@@ -233,7 +233,7 @@ export const InputCore = ({
         })),
         formStack,
         value,
-        customProps,
+        customProps
       })
       return (
         <FlexibleInput
@@ -256,7 +256,7 @@ export const InputCore = ({
         options: R.path([modelName, fieldName], selectOptions),
         formStack,
         value,
-        customProps,
+        customProps
       })
       return (
         <FlexibleInput
