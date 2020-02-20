@@ -197,7 +197,7 @@ export const isFieldDisabled = ({ schema, modelName, fieldName, formStack, custo
   const disableCondition = getFieldDisableCondition(schema, modelName, fieldName)
 
   if (R.type(disableCondition) === 'Function') {
-    return disableCondition({ schema, modelName, fieldName, formStack, defaultDisable, customProps })
+    return disableCondition({ schema, modelName, fieldName, defaultDisable, customProps })
   }
   if (R.type(disableCondition) === 'Boolean') {
     return disableCondition

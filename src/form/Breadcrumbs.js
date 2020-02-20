@@ -12,7 +12,7 @@ export const Breadcrumbs = ({ schema, formStack, customProps }) => {
         {stack.map((crumb, idx) => {
           const modelName = R.prop('modelName', crumb)
           const actions = getActions(schema, modelName)
-          const modelDisplayName = getModelLabel({ schema, modelName, formStack, customProps })
+          const modelDisplayName = getModelLabel({ schema, modelName, customProps })
           const onBreadcrumbClick = R.path(['create', 'onBreadcrumbClick'], actions)
           return (
             <li className={`breadcrumb-item ${index === idx && 'active'}`} key={`create-breadcrumb-${idx}`}>
