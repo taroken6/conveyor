@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { titleize, humanize, isIndexTableFieldFooterShown } from '../Utils'
+import { titleize, humanize } from '../Utils'
 import pluralize from 'pluralize'
 
 export const getFieldHelpText = ({ schema, modelName, fieldName }) => {
@@ -28,11 +28,11 @@ export const getModelLabel = ({ schema, modelName, node, data, formStack, custom
   return displayName
 }
 
-export const getModelLabelPlural = ({ schema, modelName, data, user, customProps }) => {
+export const getModelLabelPlural = ({ schema, modelName, data, customProps }) => {
   const defaultValue = pluralize(titleize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayNamePlural'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, data, user, customProps })
+    return displayName({ schema, modelName, data, customProps })
   }
   return displayName
 }
@@ -63,7 +63,7 @@ export const getField = (schema, modelName, fieldName) => (
   )(schema, modelName)
 )
 
-const getShownFields = ({ schema, modelName, type, node, data, user, customProps }) => {
+const getShownFields = ({ schema, modelName, type, node, data, customProps }) => {
   const fieldOrder = R.prop('fieldOrder', getModel(schema, modelName))
   return R.filter(fieldName => {
     let show
@@ -85,7 +85,7 @@ const getShownFields = ({ schema, modelName, type, node, data, user, customProps
     }
     if (R.type(show) === 'Function') {
       show = show({
-        schema, modelName, fieldName, node, data, user, customProps
+        schema, modelName, fieldName, node, data, customProps
       })
     }
     return show
@@ -96,11 +96,11 @@ export const getRequiredFields = (schema, modelName, customProps = null) => {
   return getShownFields({ schema, modelName, type: 'required', customProps })
 }
 
-export const getCreateFields = ({ schema, modelName, formStack, user, customProps }) => {
+export const getCreateFields = ({ schema, modelName, formStack, customProps }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', user, customProps })
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', customProps })
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName, formStack, user, defaultOrder, customProps })
+    return createFieldOrder({ schema, modelName, formStack, defaultOrder, customProps })
   } else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
   }
@@ -130,11 +130,11 @@ export const getDetailFields = ({ schema, modelName, node, customProps }) => {
   return defaultOrder
 }
 
-export const getIndexFields = ({ schema, modelName, data, user, customProps }) => {
+export const getIndexFields = ({ schema, modelName, data, customProps }) => {
   const indexFieldOrder = R.prop('indexFieldOrder', getModel(schema, modelName))
-  const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, user, customProps })
+  const defaultOrder = getShownFields({ schema, modelName, type: 'showIndex', data, customProps })
   if (R.type(indexFieldOrder) === 'Function') {
-    return indexFieldOrder({ schema, modelName, data, user, defaultOrder, customProps })
+    return indexFieldOrder({ schema, modelName, data, defaultOrder, customProps })
   } else if (R.type(indexFieldOrder) === 'Array') {
     return indexFieldOrder
   }
@@ -173,11 +173,11 @@ export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
 
-export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, modelStore }) => {
+export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, customProps }) => {
   const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
   if (disabledDropDownCond) {
     options = disabledDropDownCond({
-      schema, modelName, fieldName, options, formStack, value, modelStore
+      schema, modelName, fieldName, options, formStack, value, customProps
     })
   }
   return options

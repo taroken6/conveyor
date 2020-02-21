@@ -100,12 +100,11 @@ export const EditCancelButton = ({ onClick }) => {
   )
 }
 
-export const EditInput = ({ schema, modelName, fieldName, node, editData, error, selectOptions, modelStore, customProps }) => {
+export const EditInput = ({ schema, modelName, fieldName, node, editData, error, selectOptions, customProps }) => {
   const actions = getActions(schema, modelName)
   const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
   return <Input key={fieldName} {...{
     selectOptions,
-    modelStore,
     schema,
     onChange: ({ ...props }) => onEditInputChange({ id: node.id, modelName, ...props }),
     fieldName,

@@ -85,10 +85,8 @@ export const DefaultDetailAttribute = ({
   editData,
   tooltipData,
   selectOptions,
-  modelStore,
   id,
   path,
-  user,
   customProps
 }) => {
   const actions = getActions(schema, modelName)
@@ -99,7 +97,7 @@ export const DefaultDetailAttribute = ({
   const DetailLabel = LabelOverride || DefaultDetailLabel
   const DetailValue = ValueOverride || Field
 
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
+  const editable = isFieldEditable({ schema, modelName, fieldName, node, customProps })
   const fieldType = R.prop('type', getField(schema, modelName, fieldName))
 
   if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
@@ -115,7 +113,7 @@ export const DefaultDetailAttribute = ({
     const onFileSubmit = R.path(['edit', 'onFileSubmit'], actions)
 
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
-    const creatable = isCreatable({ schema, modelName: relModelName, parentNode: node, user, customProps })
+    const creatable = isCreatable({ schema, modelName: relModelName, parentNode: node, customProps })
     const targetInverseFieldName = R.prop('backref', fieldType)
     const targetModelName = R.prop('target', fieldType)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
@@ -137,7 +135,6 @@ export const DefaultDetailAttribute = ({
               editData: fieldEditData,
               error,
               selectOptions,
-              modelStore
             }} />
           </div>
           <div className='inline-btn-group'>
@@ -236,8 +233,8 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
   )
 }
 
-export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, user, collapsable, collapse, collapseTableChange, customProps }) => {
-  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, user, customProps })
+export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, collapsable, collapse, collapseTableChange, customProps }) => {
+  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, customProps })
 
   return (
     <DefaultDetailTableTitleWrapper>
@@ -269,13 +266,12 @@ const DefaultDetailM2MTableTitle = ({
   targetInverseFieldName,
   path,
   targetModelName,
-  user,
   collapsable,
   collapse,
   collapseTableChange,
   customProps
 }) => {
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, user, customProps })
+  const editable = isFieldEditable({ schema, modelName, fieldName, node, customProps })
 
   return (
     <div style={{ marginBottom: '10px' }}>
@@ -313,10 +309,9 @@ const DefaultDetailM2MFieldLabel = ({
   targetInverseFieldName,
   path,
   targetModelName,
-  user,
   customProps
 }) => {
-  const creatable = isCreatable({ schema, modelName: targetModelName, user, parentNode: node, customProps })
+  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, customProps })
   const required = R.prop('required', getField(schema, modelName, fieldName))
   const Label = () => (
     <div style={{ marginBottom: '10px' }}>
@@ -343,9 +338,7 @@ export const DefaultDetailTable = ({
   path,
   editData,
   selectOptions,
-  modelStore,
   tooltipData,
-  user,
   tableView,
   modalData,
   customProps,
@@ -383,7 +376,6 @@ export const DefaultDetailTable = ({
           node,
           path,
           targetModelName,
-          user,
           collapsable,
           collapse,
           collapseTableChange,
@@ -400,7 +392,6 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
-            modelStore,
             tooltipData,
             node,
             data,
@@ -411,7 +402,6 @@ export const DefaultDetailTable = ({
               ...props
             }),
             fieldOrder,
-            user,
             tableView,
             collapse,
             modalData,
@@ -437,7 +427,6 @@ export const DefaultDetailTable = ({
         targetInverseFieldName,
         path,
         targetModelName,
-        user,
         customProps
       })
 
@@ -451,7 +440,6 @@ export const DefaultDetailTable = ({
             value: getFieldEditData(editData, modelName, fieldName, id),
             error: getFieldErrorEdit(editData, modelName, fieldName, id),
             selectOptions,
-            modelStore,
             customLabel: DetailLabel,
             onChange: ({ ...props }) => onEditInputChange({
               id,
@@ -497,7 +485,6 @@ export const DefaultDetailTable = ({
           targetInverseFieldName,
           path,
           targetModelName,
-          user,
           collapsable,
           collapse,
           collapseTableChange,
@@ -513,7 +500,6 @@ export const DefaultDetailTable = ({
             modelName: targetModelName,
             editData,
             selectOptions,
-            modelStore,
             tooltipData,
             node,
             data,
@@ -524,7 +510,6 @@ export const DefaultDetailTable = ({
               ...props
             }),
             fieldOrder,
-            user,
             tableView,
             collapse,
             modalData
@@ -555,8 +540,8 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null,
   )
 }
 
-const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, customProps }) => {
-  const model = getModelLabel({ schema, modelName, node, user, customProps })
+const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, customProps }) => {
+  const model = getModelLabel({ schema, modelName, node, customProps })
   const label = getDisplayValue({ schema, modelName, node, customProps })
   const actions = getActions(schema, modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
@@ -566,7 +551,7 @@ const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, user, cust
   const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
   return (
     <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
-      { isDeletable({ schema, modelName, node, user, customProps }) &&
+      { isDeletable({ schema, modelName, node, customProps }) &&
         <div className='float-right'>
           <DeleteButton {...{ modalId, onDeleteWarning, modelName, id }} />
           <DeleteDetail {...{
@@ -595,9 +580,7 @@ export const DetailFields = ({
   editData,
   tooltipData,
   selectOptions,
-  modelStore,
   path,
-  user,
   tableView,
   customProps,
   summary
@@ -629,13 +612,11 @@ export const DetailFields = ({
                 fieldName,
                 node,
                 selectOptions,
-                modelStore,
                 editData,
                 tooltipData,
                 modalData,
                 path,
                 id,
-                user,
                 tableView,
                 customProps
               }}
@@ -664,13 +645,11 @@ export const DetailFields = ({
               fieldName,
               node,
               selectOptions,
-              modelStore,
               editData,
               tooltipData,
               modalData,
               path,
               id,
-              user,
               tableView,
               customProps,
               summary
@@ -702,10 +681,8 @@ const DefaultDetail = ({
   path,
   match,
   tooltipData,
-  user,
   tableView,
   selectOptions,
-  modelStore,
   customProps,
   summary
 }) => {
@@ -745,7 +722,6 @@ const DefaultDetail = ({
             path,
             match,
             tooltipData,
-            user,
             selectOptions,
             customProps
           }}
@@ -765,10 +741,8 @@ const DefaultDetail = ({
             tabs,
             path,
             fields: [],
-            user,
             tableView,
             selectOptions,
-            modelStore,
             customProps,
             summary
           }}
@@ -788,10 +762,8 @@ const Detail = ({
   path,
   match, // 'match' should be passed in by React by default
   tooltipData,
-  user,
   tableView,
   selectOptions,
-  modelStore,
   customProps,
   summary
 }) => {
@@ -811,10 +783,8 @@ const Detail = ({
         path,
         match,
         tooltipData,
-        user,
         tableView,
         selectOptions,
-        modelStore,
         customProps,
         summary
       }}
