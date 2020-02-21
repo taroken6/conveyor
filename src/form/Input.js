@@ -108,28 +108,33 @@ const Input = ({
 
     return <DisabledInput {...{ value, label }} />
   }
-  return <div>
-    <InputCore {...{
-      schema,
-      modelName,
-      fieldName,
-      node,
-      value,
-      error,
-      inline,
-      onChange,
-      selectOptions,
-      disabled,
-      customLabel,
-      onMenuOpen,
-      onCreatableMenuOpen,
-      formStack,
-      autoFocus,
-      onKeyDown,
-      customProps,
-    }} />
-    {fieldHelp && <small className='help-text'>{fieldHelp}</small>}
-  </div>
+
+  const fieldHelp = getFieldHelpText({ schema, modelName, fieldName })
+
+  return (
+    <div>
+      <InputCore {...{
+        schema,
+        modelName,
+        fieldName,
+        node,
+        value,
+        error,
+        inline,
+        onChange,
+        selectOptions,
+        disabled,
+        customLabel,
+        onMenuOpen,
+        onCreatableMenuOpen,
+        formStack,
+        autoFocus,
+        onKeyDown,
+        customProps,
+      }} />
+      {fieldHelp && <small className='help-text'>{fieldHelp}</small>}
+    </div>
+  )
 }
 
 export const getOnChange = ({ inputType, onChange, fieldName }) => {
