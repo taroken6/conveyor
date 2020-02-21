@@ -9,8 +9,7 @@
 
 /.vscode
 /.vim
-
 /docs/_build/
-/docs/conf.py
-/docs/make.bat
 /docs/Makefile
+/docs/make.bat
+/docs/conf.py

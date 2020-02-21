@@ -107,7 +107,6 @@ export const isRowEditable = ({ schema, modelName, node, parentNode, fieldOrder,
         fieldName,
         node,
         parentNode,
-        fieldOrder,
         customProps
       })
     ) {
@@ -164,11 +163,11 @@ export const isCreatable = ({ schema, modelName, parentNode, data, customProps }
   }
 }
 
-export const shouldDisplay = ({ schema, modelName, id, fieldName, node, displayCondition, customProps }) => {
+export const shouldDisplay = ({ schema, modelName, fieldName, node, displayCondition, customProps }) => {
   if (R.type(displayCondition) === 'Boolean') {
     return displayCondition
   } else if (R.type(displayCondition) === 'Function') {
-    return displayCondition({ schema, modelName, id, fieldName, node, customProps })
+    return displayCondition({ schema, modelName, fieldName, node, customProps })
   } else {
     return true
   }
