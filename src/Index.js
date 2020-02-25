@@ -64,7 +64,7 @@ const PageNotFound = () => (
   </div>
 )
 
-const DefaultIndex = ({
+export const DefaultIndex = ({
   schema,
   modelName,
   data,
@@ -128,7 +128,6 @@ const DefaultIndex = ({
             modalData,
             editData,
             selectOptions,
-            path,
             tooltipData,
             tableView,
             customProps,

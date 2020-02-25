@@ -37,13 +37,13 @@ const getDisabledValue = ({ schema, modelName, fieldName, form }) => {
   }
 }
 
-const DefaultCreateTitle = ({ schema, modelName, customProps }) => {
+export const DefaultCreateTitle = ({ schema, modelName, customProps }) => {
   return (
     <h1>Create {getModelLabel({ schema, modelName, customProps })}</h1>
   )
 }
 
-const DefaultCreatePage = ({
+export const DefaultCreatePage = ({
   schema,
   modelName,
   formStack,
@@ -167,7 +167,7 @@ const DefaultCreatePage = ({
   )
 }
 
-const DefaultCreate = ({
+export const DefaultCreate = ({
   schema,
   modelName,
   formStack,

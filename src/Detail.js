@@ -257,7 +257,7 @@ export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, t
   )
 }
 
-const DefaultDetailM2MTableTitle = ({
+export const DefaultDetailM2MTableTitle = ({
   schema,
   modelName,
   id,
@@ -301,7 +301,7 @@ const DefaultDetailM2MTableTitle = ({
   )
 }
 
-const DefaultDetailM2MFieldLabel = ({
+export const DefaultDetailM2MFieldLabel = ({
   schema,
   modelName,
   fieldName,
@@ -540,7 +540,7 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null,
   )
 }
 
-const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, customProps }) => {
+export const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, customProps }) => {
   const model = getModelLabel({ schema, modelName, node, customProps })
   const label = getDisplayValue({ schema, modelName, node, customProps })
   const actions = getActions(schema, modelName)
@@ -594,7 +594,7 @@ export const DetailFields = ({
       <dl className='row'>
         {descriptionList.map(fieldName => {
           const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
-          if (shouldDisplay({schema, modelName, id, fieldName, node, displayCondition, customProps}) === false) {
+          if (shouldDisplay({schema, modelName, fieldName, node, displayCondition, customProps}) === false) {
               return null
           }
           const override = getDetailFieldOverride(schema, modelName, fieldName)
@@ -626,7 +626,7 @@ export const DetailFields = ({
       </dl>
       {tableFields.map(fieldName => {
         const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
-        if (shouldDisplay({schema, modelName, id, fieldName, node, displayCondition, customProps}) === false) {
+        if (shouldDisplay({schema, modelName, fieldName, node, displayCondition, customProps}) === false) {
             return null
         }
         const override = getDetailFieldOverride(schema, modelName, fieldName)
@@ -671,7 +671,7 @@ const Wrapper = ({ children }) => (
   </div>
 )
 
-const DefaultDetail = ({
+export const DefaultDetail = ({
   schema,
   modelName,
   id,
