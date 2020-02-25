@@ -116,29 +116,31 @@ const DefaultCreatePage = ({
             autoFocusAdded = true
           }
           return (
-            <Input
-              key={fieldName}
-              {...{
-                schema,
-                modelName,
-                fieldName,
-                value,
-                error,
-                selectOptions,
-                onChange,
-                disabled,
-                formStack,
-                customLabel: makeCreateLabel({
+            <div className='mb-3'>
+              <Input
+                key={fieldName}
+                {...{
                   schema,
                   modelName,
                   fieldName,
+                  value,
+                  error,
+                  selectOptions,
+                  onChange,
+                  disabled,
+                  formStack,
+                  customLabel: makeCreateLabel({
+                    schema,
+                    modelName,
+                    fieldName,
+                    customProps
+                  }),
+                  autoFocus,
+                  onKeyDown,
                   customProps
-                }),
-                autoFocus,
-                onKeyDown,
-                customProps
-              }}
-            />
+                }}
+              />
+            </div>
           )
         })}
       </div>
@@ -147,7 +149,7 @@ const DefaultCreatePage = ({
           Cannot save or cancel until all subsequent creates are resolved.
         </p>
       )}
-      <div className='btn-group'>
+      <div className='btn-group mt-2 mb-3'>
         <button
           className='btn btn-success'
           role='button'

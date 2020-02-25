@@ -122,7 +122,7 @@ const formatFilter = ({
     ? { label: null, value: null }
     : toOptions(filterOrder[index])
   return (
-    <li key={`${index}-${modelName}-${fieldName}-format-filter`} className='list-group-item filter'>
+    <li key={`${index}-${modelName}-${fieldName}-format-filter`} className='list-group-item'>
       <div className='filter-fieldname-dropdown'>
         <div className='w-100'>
           <FlexibleInput {...{

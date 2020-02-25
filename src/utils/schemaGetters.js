@@ -2,6 +2,10 @@ import * as R from 'ramda'
 import { titleize, humanize } from '../Utils'
 import pluralize from 'pluralize'
 
+export const getFieldHelpText = ({ schema, modelName, fieldName }) => {
+  return R.propOr(null, 'fieldHelp', getField(schema, modelName, fieldName))
+}
+
 // This is an example of our naming issue, node and data should not both be passed here
 export const getFieldLabel = ({ schema, modelName, fieldName, node, data, customProps }) => {
   const displayName = R.pathOr(

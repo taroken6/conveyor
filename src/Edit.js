@@ -86,7 +86,7 @@ export const TableEditButton = ({ schema, modelName, id, fieldName, node }) => {
 
 export const EditSaveButton = ({ onClick }) => {
   return (
-    <button className='btn btn-sm btn-success'
+    <button className='btn btn-sm btn-success mt-1'
       onClick={onClick}
     >Save</button>
   )
@@ -94,7 +94,7 @@ export const EditSaveButton = ({ onClick }) => {
 
 export const EditCancelButton = ({ onClick }) => {
   return (
-    <button className='btn btn-sm btn'
+    <button className='btn btn-sm btn mt-1'
       onClick={onClick}
     >Cancel</button>
   )
