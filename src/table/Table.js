@@ -137,7 +137,6 @@ export const TableButtonGroup = ({
             name: getDisplayValue({
               schema,
               modelName,
-              parentModelName,
               node,
               customProps
             }),
@@ -167,7 +166,6 @@ export const TableButtonGroup = ({
 export const TableRowWithEdit = ({
   modelName,
   fieldName,
-  parentModelName,
   node,
   schema,
   detailField,
@@ -216,7 +214,6 @@ export const TableRowWithEdit = ({
           schema,
           modelName,
           fieldName,
-          parentModelName,
           node,
           tooltipData,
           id: node.id,
@@ -230,7 +227,6 @@ export const TableRowWithEdit = ({
     const displayString = getDisplayValue({
       schema,
       modelName,
-      parentModelName,
       node,
       customProps
     })
@@ -242,7 +238,6 @@ export const TableRowWithEdit = ({
         schema,
         modelName,
         fieldName,
-        parentModelName,
         node,
         tooltipData,
         id: node.id,
@@ -367,7 +362,6 @@ const TBody = ({
                     {...{
                       modelName,
                       fieldName,
-                      parentModelName,
                       node,
                       schema,
                       detailField,

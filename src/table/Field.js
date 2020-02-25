@@ -81,12 +81,12 @@ const FieldImageModal = ({ schema, modelName, fieldName, id, node, customProps }
   return <ImageLinkModal {...{ id: modalId, title: label, url }} />
 }
 
-export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node, tooltipData, customProps }) => {
+export const FieldToOne = ({ schema, modelName, fieldName, node, tooltipData, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
 
   const relModelName = R.prop('modelName', relSchemaEntry)
 
-  const displayString = getDisplayValue({ schema, modelName: relModelName, parentModelName, node, customProps })
+  const displayString = getDisplayValue({ schema, modelName: relModelName, node, customProps })
   const relId = R.prop('id', node)
 
   if (!displayString) { return <span>N/A</span> }
@@ -120,14 +120,14 @@ export const FieldToOne = ({ schema, modelName, fieldName, parentModelName, node
   }
 }
 
-export const FieldToMany = ({ schema, modelName, fieldName, parentModelName, tooltipData, node }) => {
+export const FieldToMany = ({ schema, modelName, fieldName, tooltipData, node }) => {
   const multiRelField = R.prop(fieldName, node)
 
   const relListWithLink = (field, idx, obj) => (
     <React.Fragment key={`fragment-${field.id}`}>
       <FieldToOne
         key={`field-m2o-${field.id}`}
-        {...{ schema, modelName, fieldName, parentModelName, tooltipData, node: field }}
+        {...{ schema, modelName, fieldName, tooltipData, node: field }}
       />
       { (idx !== (obj.length - 1)) && <span>{', '}</span>}
     </React.Fragment>
@@ -140,13 +140,12 @@ export const FieldToMany = ({ schema, modelName, fieldName, parentModelName, too
   )
 }
 
-export const Field = ({ schema, modelName, fieldName, parentModelName, tooltipData, node, id, customProps }) => {
+export const Field = ({ schema, modelName, fieldName, tooltipData, node, id, customProps }) => {
   const props = {
     schema,
     modelName,
     fieldName,
     tooltipData,
-    parentModelName,
     node,
     id,
     customProps
