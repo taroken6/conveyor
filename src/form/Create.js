@@ -134,7 +134,10 @@ const DefaultCreatePage = ({
                     modelName,
                     fieldName,
                     customProps
-                  })
+                  }),
+                  autoFocus,
+                  onKeyDown,
+                  customProps
                 }}
               />
             </div>
