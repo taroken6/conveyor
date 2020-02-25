@@ -7,7 +7,7 @@ import { inputTypes } from '../consts'
 import { getInputOverride, isCreatable, skipOverride } from '../Utils'
 import {
   getActions, getEnumChoices, getEnumChoiceOrder, getField,
-  getFieldLabel, getOptionsOverride
+  getFieldLabel, getOptionsOverride, getFieldHelpText
 } from '../utils/schemaGetters'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import CreateButton from '../CreateButton'
@@ -107,24 +107,32 @@ const Input = ({
 
     return <DisabledInput {...{ value, label }} />
   }
-  return <InputCore {...{
-    schema,
-    modelName,
-    fieldName,
-    node,
-    value,
-    error,
-    inline,
-    onChange,
-    selectOptions,
-    disabled,
-    customLabel,
-    onMenuOpen,
-    onCreatableMenuOpen,
-    autoFocus,
-    onKeyDown,
-    customProps,
-  }} />
+
+  const fieldHelp = getFieldHelpText({ schema, modelName, fieldName })
+
+  return (
+    <div>
+      <InputCore {...{
+        schema,
+        modelName,
+        fieldName,
+        node,
+        value,
+        error,
+        inline,
+        onChange,
+        selectOptions,
+        disabled,
+        customLabel,
+        onMenuOpen,
+        onCreatableMenuOpen,
+        autoFocus,
+        onKeyDown,
+        customProps,
+      }} />
+      {fieldHelp && <small className='help-text'>{fieldHelp}</small>}
+    </div>
+  )
 }
 
 export const getOnChange = ({ inputType, onChange, fieldName }) => {
