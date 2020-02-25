@@ -90,7 +90,6 @@ const Input = ({
         customLabel,
         onMenuOpen,
         onCreatableMenuOpen,
-        formStack,
         autoFocus,
         onKeyDown,
         customProps
@@ -127,7 +126,6 @@ const Input = ({
         customLabel,
         onMenuOpen,
         onCreatableMenuOpen,
-        formStack,
         autoFocus,
         onKeyDown,
         customProps,
@@ -181,7 +179,6 @@ export const InputCore = ({
   customLabel,
   onMenuOpen,
   onCreatableMenuOpen,
-  formStack,
   customInput,  // optional; used for FlexibleInput only; differs from 'customProps'
   autoFocus,
   onKeyDown,
@@ -239,7 +236,6 @@ export const InputCore = ({
           label: enumChoices[choice],
           value: choice
         })),
-        formStack,
         value,
         customProps
       })
@@ -262,7 +258,6 @@ export const InputCore = ({
         modelName,
         fieldName,
         options: R.path([modelName, fieldName], selectOptions),
-        formStack,
         value,
         customProps
       })

@@ -9,6 +9,7 @@
 -   Fix multi-select bug #157
 -   Add Removable feature #159
 -   Fix target name in 'Remove' modal #163
+-   props: 'formStack', 'user': no longer passed into overrides. 'modelStore' no longer passed into conveyor
 
 ## Version 1.5.0
 

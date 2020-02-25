@@ -19,11 +19,11 @@ export const getFieldLabel = ({ schema, modelName, fieldName, node, data, custom
   return displayName
 }
 
-export const getModelLabel = ({ schema, modelName, node, data, formStack, customProps }) => {
+export const getModelLabel = ({ schema, modelName, node, data, customProps }) => {
   const defaultValue = titleize(humanize(modelName))
   const displayName = R.pathOr(defaultValue, [modelName, 'displayName'], schema)
   if (R.type(displayName) === 'Function') {
-    return displayName({ schema, modelName, node, data, formStack, customProps })
+    return displayName({ schema, modelName, node, data, customProps })
   }
   return displayName
 }
@@ -96,11 +96,11 @@ export const getRequiredFields = (schema, modelName, customProps = null) => {
   return getShownFields({ schema, modelName, type: 'required', customProps })
 }
 
-export const getCreateFields = ({ schema, modelName, formStack, customProps }) => {
+export const getCreateFields = ({ schema, modelName, customProps }) => {
   const createFieldOrder = R.prop('createFieldOrder', getModel(schema, modelName))
   const defaultOrder = getShownFields({ schema, modelName, type: 'showCreate', customProps })
   if (R.type(createFieldOrder) === 'Function') {
-    return createFieldOrder({ schema, modelName, formStack, defaultOrder, customProps })
+    return createFieldOrder({ schema, modelName, defaultOrder, customProps })
   } else if (R.type(createFieldOrder) === 'Array') {
     return createFieldOrder
   }
@@ -173,11 +173,11 @@ export const getDropDownDisableCondition = (schema, modelName, fieldName) => {
   return R.propOr(null, 'disabledDropDown', getField(schema, modelName, fieldName))
 }
 
-export const getOptionsOverride = ({ schema, modelName, fieldName, options, formStack, value, customProps }) => {
+export const getOptionsOverride = ({ schema, modelName, fieldName, options, value, customProps }) => {
   const disabledDropDownCond = getDropDownDisableCondition(schema, modelName, fieldName)
   if (disabledDropDownCond) {
     options = disabledDropDownCond({
-      schema, modelName, fieldName, options, formStack, value, customProps
+      schema, modelName, fieldName, options, value, customProps
     })
   }
   return options

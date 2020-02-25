@@ -37,12 +37,9 @@ const getDisabledValue = ({ schema, modelName, fieldName, form }) => {
   }
 }
 
-const DefaultCreateTitle = ({ schema, modelName, formStack, customProps }) => {
-  const stackIndex = R.prop('index', formStack)
-  const stack = R.prop('stack', formStack)
-  const form = R.prop(stackIndex, stack)
+const DefaultCreateTitle = ({ schema, modelName, customProps }) => {
   return (
-    <h1>Create {getModelLabel({ schema, modelName, form, formStack, customProps })}</h1>
+    <h1>Create {getModelLabel({ schema, modelName, customProps })}</h1>
   )
 }
 
@@ -57,10 +54,9 @@ const DefaultCreatePage = ({
   const originFieldName = R.prop('originFieldName', formStack)
   const stack = R.prop('stack', formStack)
   const form = R.prop(stackIndex, stack)
-  customProps = R.assoc('form', form, customProps)
 
   const origin = R.prop('originModelName', formStack)
-  const fieldOrder = getCreateFields({ schema, modelName, formStack, customProps })
+  const fieldOrder = getCreateFields({ schema, modelName, customProps })
   if (origin && stackIndex === 0) {
     const index = fieldOrder.indexOf(originFieldName)
     if (index !== -1) {
@@ -200,8 +196,6 @@ const DefaultCreate = ({
           {...{
             schema,
             modelName,
-            formStack,
-            selectOptions,
             customProps
           }}
         />
