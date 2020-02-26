@@ -50,66 +50,6 @@ const defaultTypeMap = {
   [inputTypes.BOOLEAN_TYPE]: InputSwitch
 }
 
-/**
- * 'FlexibleInput' is the only entry point.
- *
- * @example
- *
- * Example 1: Generate a single instance of your form input.
- *
- *  <FlexibleInput
- *      type={'String'}
- *      value={'Foo'}
- *      onChange={myOnChangeFunc}
- *      id={'my-unique-id'}
- *  />
- *
- *
- * @example
- *
- * Example 2: Override label and error component with custom logic
- *
- * // You can override the package's error and label components entirely
- * // by passing in your own function. The customError component must take an
- * // 'error' and 'id' prop, and the customLabel must take 'labelStr' and 'required' attributes.
- *
- *  const CustomError = ({error, id}) => <div style={{'fontSize': '80%', 'color': '#dc3545'}}>{`${ makeThisListAString(error) } foo`}</div>
- *  //
- *  const CustomLabel = ({labelStr, required}) =>
- *      <label htmlFor={id}>{`Custom ${labelStr} ${required ? ' **' : ''}`}</label>
- *
- *  return (
- *      <FlexibleInput
- *          type={'String'}
- *          value={'Foo'}
- *          onChange={myOnChangeFunc}
- *          id={id}
- *          labelStr={'My Label'}
- *          error={['my error', 'my other error']}
- *          customError={CustomError}
- *          customLabel={CustomLabel}
- *      />
- *  )
- *
- * @example
- *
- *  Example 3: Radio and Select type requires 'options' prop in the following format:
- *
- *  const options = [
- *      {label: 'This is True', value: 'true'},
- *      {label: 'This is False', value: 'false'}
- *  ]
- *  return (
- *      <FlexibleInput
- *          type={'Radio'}
- *          options={options}
- *          value={'false'}
- *          onChange={onChange}
- *          id={id}
- *      />
- *  )
-*/
-
 const FlexibleInput = props => {
   /**
    * @param { string } type - One of following type designators:

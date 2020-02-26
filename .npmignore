@@ -1,0 +1,9 @@
+/src
+/quick_docs
+/docs
+/.idea
+/*.tgz
+buildFile
+.babelrc
+.eslintrc.json
+/tests

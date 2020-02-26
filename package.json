@@ -1,8 +1,7 @@
 {
-  "name": "conveyor",
-  "private": false,
-  "version": "1.6.2",
-  "description": "",
+  "name": "@autoinvent/conveyor",
+  "version": "0.1.0",
+  "description": "A frontend dashboard generator for inventory data.",
   "main": "lib/main.js",
   "scripts": {
     "lib": "./node_modules/.bin/babel src --out-dir lib",
@@ -11,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/autoinvent/conveyor"
   },
   "author": "",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
