@@ -1,15 +1,10 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
 /node_modules
-
-
-#idea
 /.idea
-
 /.vscode
 /.vim
 /docs/_build/
 /docs/Makefile
 /docs/make.bat
 /docs/conf.py
+/lib
+/*.tgz
