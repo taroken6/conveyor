@@ -8,38 +8,14 @@ import DetailLink from './DetailLink'
 import { DisabledInput } from './form/Input'
 import { FieldToOne } from './table/Field'
 import FlexibleInput from './input/index'
-import { getActions } from './utils/schemaGetters'
-import getDisplayValue from './utils/getDisplayValue'
-import { getEnumLabel } from './Utils'
-import { getField } from './utils/schemaGetters'
-import { getFieldLabel } from './utils/schemaGetters'
-import { getFields } from './utils/schemaGetters'
-import { getHasIndex } from './utils/schemaGetters'
-import { getHasDetail } from './utils/schemaGetters'
-import { getIndexFields } from './utils/schemaGetters'
-import { getModel } from './utils/schemaGetters'
-import { getModelLabel } from './utils/schemaGetters'
-import { getModelLabelPlural } from './utils/schemaGetters'
-import { getRequiredFields } from './utils/schemaGetters'
-import { getTooltipFields } from './utils/schemaGetters'
-import { getType } from './utils/getType'
-import { humanize } from './Utils'
 import Input from './form/Input'
-import { inputTypes } from './consts'
-import { isCreatable } from './Utils'
-import { isDeletable } from './Utils'
-import { isTableDeletable } from './Utils'
-import { isRel } from './utils/isType'
 import { Modal } from './Modal'
 import RelTooltip from './Tooltip'
 import { storeValueToArrayBuffer } from './utils/fileConverters'
 import { TableButtonGroup } from './table/Table'
 import Tooltip from './Tooltip'
-import { isManyToMany } from './utils/isType'
-import { isTableEditable } from './Utils'
 import { TableRowWithEdit } from './table/Table'
 import { TableButtonCell } from './table/Table'
-import { calcDetailField } from './table/Table'
 import { toggleState } from './TreeTable'
 import { formatCSS } from './TreeTable'
 import { getRows } from './TreeTable'
@@ -49,7 +25,6 @@ import { CollapseTableButton } from './Detail'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { DeleteButton } from './table/Table'
 import { Search } from './Search'
-import { getSearchable } from './utils/schemaGetters'
 // model overrides
 import { DefaultDetail } from './Detail'
 import { RecursiveTab } from './Tabs'
@@ -81,38 +56,14 @@ export { DetailLink }
 export { DisabledInput }
 export { FieldToOne }
 export { FlexibleInput }
-export { getActions }
-export { getDisplayValue }
-export { getEnumLabel }
-export { getField }
-export { getFieldLabel }
-export { getFields }
-export { getHasIndex }
-export { getHasDetail }
-export { getIndexFields }
-export { getModel }
-export { getModelLabel }
-export { getModelLabelPlural }
-export { getRequiredFields }
-export { getTooltipFields }
-export { getType }
-export { humanize }
 export { Input }
-export { inputTypes }
-export { isCreatable }
-export { isDeletable }
-export { isTableDeletable }
-export { isRel }
 export { Modal }
 export { RelTooltip }
 export { storeValueToArrayBuffer }
 export { TableButtonGroup }
 export { Tooltip }
-export { isManyToMany }
-export { isTableEditable }
 export { TableRowWithEdit }
 export { TableButtonCell }
-export { calcDetailField }
 export { toggleState }
 export { formatCSS }
 export { getRows }
@@ -122,7 +73,6 @@ export { CollapseTableButton }
 export { DeleteDetail }
 export { DeleteButton }
 export { Search }
-export { getSearchable }
 // model overrides
 export { DefaultDetail }
 export { RecursiveTab }

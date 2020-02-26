@@ -8,3 +8,5 @@
 /docs/conf.py
 /lib
 /*.tgz
+/.yalc
+yalc.lock

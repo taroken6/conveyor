@@ -3,6 +3,7 @@
 
 rm -R lib
 npm run lib
-rm conveyor-1.6.2.tgz
+# uncomment when first tar file created
+# rm conveyor-*.tgz
 npm pack --quiet
 echo "!!! conveyor tar files ready !!!"

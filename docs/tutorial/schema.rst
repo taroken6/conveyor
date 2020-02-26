@@ -8,7 +8,16 @@ Schema
 Minimum Schema
 ------------------
 
-Below is a code example of the minimum schema necessary to get the app going without errors:
+'schemaJSON' is the json object that is created (by you) before being converted to conveyor-schema's SchemaBuilder object.
+
+ .. code-block:: javascript
+
+    const schemaJSON = {
+       'Book': Book,
+        ...otherModels
+    }
+
+Below is an example 'Book' model. These are the minimum props necessary to get the app going without errors.
 
  .. code-block:: javascript
 

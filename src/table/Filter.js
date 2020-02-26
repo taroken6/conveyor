@@ -5,62 +5,11 @@ import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import FlexibleInput from '../input'
 import { Modal } from '../Modal'
-import { getFieldLabel, getActions } from '../utils/schemaGetters.js'
-import { getType } from '../utils/getType'
 
-// should not be used w/o checking 'isTableFilterable' as well (model level req)
-const isFilterable = ({ schema, modelName, fieldName }) => {
-  // first check if can filter on field level
-  const fieldFilterable = R.pathOr(true, [modelName, 'fields', fieldName, 'filterable'], schema)
-  if (fieldFilterable === false) {
-    return false
-  }
-  // repeat above if 'fieldFilterable' is function
-  if (
-    R.type(fieldFilterable) === 'Function' &&
-    fieldFilterable({ schema, modelName, fieldName }) === false
-  ) {
-    return false
-  }
-  // next, filter out field types which don't work with magql
-  const inputType = getType({ schema, modelName, fieldName })
-  return !(
-    R.isNil(inputType) ||
-    (inputType === inputTypes.CREATABLE_STRING_SELECT_TYPE) ||
-    (inputType === inputTypes.ONE_TO_MANY_TYPE) ||
-    (inputType === inputTypes.MANY_TO_MANY_TYPE) ||
-    (inputType === inputTypes.PHONE_TYPE) ||
-    (inputType === inputTypes.ID_TYPE)
-  )
-}
-
-export const isTableFilterable = ({ schema, modelName }) => {
-  // first check if can filter on model level
-  const tableFilterable = R.pathOr(true, [modelName, 'filterable'], schema)
-  if (tableFilterable === false) {
-    return false
-  }
-  // repeat above if 'tableFilterable' is function
-  if (
-    R.type(tableFilterable) === 'Function' &&
-    tableFilterable({ schema, modelName }) === false
-  ) {
-    return false
-  }
-  // next, check field level filter
-  const model = R.prop(modelName, schema)
-  const fieldOrder = R.prop('fieldOrder', model)
-  const boolList = R.map(fieldName =>
-    isFilterable({ schema, modelName, fieldName }),
-    fieldOrder
-  )
-  return !R.isEmpty(R.filter(R.identity, boolList))
-}
-
-const getFilterableFields = ({ modelName, schema }) => {
-  const fields = R.pathOr([], [modelName, 'fieldOrder'], schema)
+const getFilterableFields = ({ schema, modelName, data, customProps }) => {
+  const fields = R.pathOr([], [modelName, 'fieldOrder'], schema.schemaJSON)
   const filterables = fields.filter(
-    fieldName => isFilterable({ schema, modelName, fieldName })
+    fieldName => schema.isFilterable({ modelName, fieldName, data, customProps })
   )
   return filterables
 }
@@ -111,9 +60,9 @@ const formatFilter = ({
   customProps
 }) => {
   const filterInput = R.prop(fieldName, filterInputs)
-  const filterables = getFilterableFields({ modelName, schema })
+  const filterables = getFilterableFields({ schema, modelName, data, customProps })
   const toOptions = fieldName => ({
-    label: getFieldLabel({ schema, modelName, fieldName, data, customProps }),
+    label: schema.getFieldLabel({ modelName, fieldName, data, customProps }),
     value: fieldName
   })
   const unfiltered = filterables.filter(fieldName => !filterOrder.includes(fieldName))
@@ -238,7 +187,7 @@ export const FilterModal = ({
   filterInputs,
   customProps
 }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const tableOptions = R.prop('tableOptions', actions)
   const addFilter = R.prop('addFilter', tableOptions)
   const deleteFilter = R.prop('deleteFilter', tableOptions)
@@ -324,7 +273,7 @@ const FilterOptions = ({
   operator,
   onFilterDropdown
 }) => {
-  const inputType = getType({ schema, modelName, fieldName })
+  const inputType = schema.getType(modelName, fieldName)
 
   let options
   switch (inputType) {
@@ -390,7 +339,7 @@ export const FilterComp = ({
   }
   const value = R.prop('value', filterInput)
   const operator = R.prop('operator', filterInput)
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
     <React.Fragment>

@@ -1,9 +1,7 @@
 import React from 'react'
-import { getFieldLabel, getActions, getFieldConditions } from '../utils/schemaGetters'
 import { showButtonColumn } from './Table'
 import * as R from 'ramda'
 import { SortButton } from './Sort'
-import {isSortable, isTableSortable, shouldDisplay} from '../Utils'
 import { getNextSortKey } from './Sort.js'
 
 export const THead = ({
@@ -19,24 +17,18 @@ export const THead = ({
   customProps
 }) => {
   // first check if sortable on model level
-  const tableSortable = fromIndex && isTableSortable({ schema, modelName, customProps })
-  const actions = getActions(schema, modelName)
+  const tableSortable = fromIndex && schema.isTableSortable({ modelName, customProps })
+  const actions = schema.getActions(modelName)
   const onSort = R.path(['tableOptions', 'sort'], actions)
   return (
     <thead>
       <tr>
         {fieldOrder.map((fieldName, idx) => {
           if (fromIndex === true) {
-            const displayCondition = R.prop(
-              'index',
-              getFieldConditions(schema, modelName, fieldName)
-            )
             if (
-              shouldDisplay({
-                schema,
+              schema.shouldDisplayIndex({
                 modelName,
                 fieldName,
-                displayCondition,
                 customProps
               }) === false
             ) {
@@ -46,7 +38,7 @@ export const THead = ({
 
           const sortKeyObj = R.path([modelName, 'sort'], tableView)
           // now check if field level is sortable as well
-          const showSort = tableSortable ? isSortable({ schema, modelName, fieldName, customProps }) : false
+          const showSort = tableSortable ? schema.isSortable({ modelName, fieldName, customProps }) : false
           const sortKey = R.prop('fieldName', sortKeyObj) === fieldName
             ? R.prop('sortKey', sortKeyObj) : undefined
           return (
@@ -63,8 +55,8 @@ export const THead = ({
                 {...{
                   modelName,
                   fieldName,
-                  title: getFieldLabel({
-                    schema, modelName, fieldName, data, customProps
+                  title: schema.getFieldLabel({
+                    modelName, fieldName, data, customProps
                   }), // this is the actual 'data' list, not 'node'
                   onSort,
                   showSort,

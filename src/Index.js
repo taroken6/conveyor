@@ -2,19 +2,9 @@ import React from 'react'
 import { Table } from './table/Table'
 import * as R from 'ramda'
 import CreateButton from './CreateButton'
-import { FilterModal, FilterModalButton, isTableFilterable } from './table/Filter'
-import {
-  getActions,
-  getHasIndex, getModel,
-  getIndexFields, getModelLabel,
-  getModelLabelPlural, getSingleton
-} from './utils/schemaGetters'
+import { FilterModal, FilterModalButton } from './table/Filter'
 import { Redirect } from 'react-router-dom'
 import {
-  isCreatable,
-  getIndexOverride,
-  getIndexTitleOverride,
-  getIndexPageOverride,
   skipOverride
 } from './Utils'
 
@@ -27,11 +17,11 @@ export const DefaultIndexTitle = ({
   tableView,
   customProps,
 }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
   const onClick = () => onCreateClick({ modelName, path })
-  const creatable = isCreatable({ schema, modelName, data, customProps })
-  const filterable = isTableFilterable({ schema, modelName })
+  const creatable = schema.isCreatable({ modelName, data, customProps })
+  const filterable = schema.isTableFilterable({ modelName, data, customProps })
   const currentFilters = R.path([modelName, 'filter', 'filterValue'], tableView)
   const filterOrder = R.path([modelName, 'filter', 'filterOrder'], tableView)
   const filtersAreActive = R.path([modelName, 'filter', 'filtersAreActive'], tableView)
@@ -39,7 +29,7 @@ export const DefaultIndexTitle = ({
   return (
     <div style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
-        {getModelLabelPlural({ schema, modelName, data, customProps })}
+        {schema.getModelLabelPlural({ modelName, data, customProps })}
       </h3>
       {filterable && <FilterModal {...{
         schema,
@@ -77,23 +67,22 @@ export const DefaultIndex = ({
   customProps,
   summary
 }) => {
-  if (!getHasIndex(schema, modelName) || R.isNil(getModel(schema, modelName))) {
+  if (!schema.getHasIndex(modelName) || R.isNil(schema.getModel(modelName))) {
     return <PageNotFound />
   }
 
-  const IndexTitleOverride = getIndexTitleOverride(schema, modelName)
-  const IndexPageOverride = getIndexPageOverride(schema, modelName)
+  const IndexTitleOverride = schema.getIndexTitleOverride(modelName)
+  const IndexPageOverride = schema.getIndexPageOverride(modelName)
 
   const IndexTitle = IndexTitleOverride || DefaultIndexTitle
   const IndexPage = IndexPageOverride || Table
 
-  const fieldOrder = getIndexFields({
-    schema,
+  const fieldOrder = schema.getIndexFields({
     modelName,
     data,
     customProps
   })
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onDelete = R.path(['delete', 'onIndexDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onIndexEditSubmit'], actions)
 
@@ -157,7 +146,7 @@ const Index = ({
   summary,
 }) => {
   // if singleton, Index redirects to Detail pg
-  if (getSingleton(schema, modelName)) {
+  if (schema.getSingleton(modelName)) {
     const singleton = R.last(data)
     // singleton may not be null when last deleted; test for 'id'
     const singleId = R.propOr(null, 'id', singleton)
@@ -165,12 +154,12 @@ const Index = ({
       return <Redirect to={`/${modelName}/${singleId}`} />
     }
     // if no singleId exists, must create
-    const actions = getActions(schema, modelName)
+    const actions = schema.getActions(modelName)
     const onCreateClick = R.path(['create', 'onIndexCreate'], actions)
     return (
       <div className='container'>
         <h1>
-          {`No ${getModelLabel({ schema, modelName, data, customProps })} Exists`}
+          {`No ${schema.getModelLabel({ modelName, data, customProps })} Exists`}
           <CreateButton {...{
             onClick: () => onCreateClick({ modelName })
           }} />
@@ -179,7 +168,7 @@ const Index = ({
     )
   }
 
-  const IndexOverride = getIndexOverride(schema, modelName)
+  const IndexOverride = schema.getIndexOverride(modelName)
   const IndexComponent = IndexOverride || DefaultIndex
 
   return skipOverride(IndexOverride) ? null : (

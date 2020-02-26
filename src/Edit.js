@@ -1,6 +1,5 @@
 import React from 'react'
 import * as R from 'ramda'
-import { getActions } from './utils/schemaGetters'
 import Input from './form/Input'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
@@ -70,7 +69,7 @@ const EditButton = ({ onClick }) => {
 }
 
 export const RowEditButton = ({ schema, modelName, id, node }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onEditClick = R.path(['edit', 'onTableRowEdit'], actions)
   return (
     <EditButton {...{ onClick: () => onEditClick({ modelName, id, node }) }} />
@@ -78,7 +77,7 @@ export const RowEditButton = ({ schema, modelName, id, node }) => {
 }
 
 export const TableEditButton = ({ schema, modelName, id, fieldName, node }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onEditClick = R.path(['edit', 'onAttributeEdit'], actions)
 
   return <EditButton {...{ onClick: () => onEditClick({ modelName, id, fieldName, value: R.prop(fieldName, node) }) }} />
@@ -101,7 +100,7 @@ export const EditCancelButton = ({ onClick }) => {
 }
 
 export const EditInput = ({ schema, modelName, fieldName, node, editData, error, selectOptions, customProps }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
   return <Input key={fieldName} {...{
     selectOptions,
