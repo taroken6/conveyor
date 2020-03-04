@@ -4,22 +4,17 @@ import React from 'react'
 import * as R from 'ramda'
 import FlexibleInput from '../input/index'
 import { inputTypes } from '../consts'
-import { getInputOverride, isCreatable, skipOverride } from '../Utils'
-import {
-  getActions, getEnumChoices, getEnumChoiceOrder, getField,
-  getFieldLabel, getOptionsOverride, getFieldHelpText
-} from '../utils/schemaGetters'
+import { skipOverride } from '../Utils'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
-import { getType } from '../utils/getType'
 
 export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick, customProps }) => {
   const relSchemaEntry = getRelSchemaEntry({ schema, modelName, fieldName })
   const relModelName = R.prop('modelName', relSchemaEntry)
   const id = `input-${modelName}-${fieldName}`
-  const required = R.prop('required', getField(schema, modelName, fieldName))
-  const creatable = isCreatable({ schema, modelName: relModelName, customProps })
+  const required = R.prop('required', schema.getField(modelName, fieldName))
+  const creatable = schema.isCreatable({ modelName: relModelName, customProps })
 
   const Label = ({ labelStr }) => (
     <label htmlFor={id}>
@@ -65,8 +60,8 @@ const Input = ({
   onKeyDown,
   customProps
 }) => {
-  const InputOverride = getInputOverride(schema, modelName, fieldName)
-  const actions = getActions(schema, modelName)
+  const InputOverride = schema.getInputOverride(modelName, fieldName)
+  const actions = schema.getActions(modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
 
@@ -97,8 +92,7 @@ const Input = ({
   }
 
   if (disabled) {
-    const label = getFieldLabel({
-      schema,
+    const label = schema.getFieldLabel({
       modelName,
       fieldName,
       node: R.path(['originNode'], formStack),
@@ -108,7 +102,7 @@ const Input = ({
     return <DisabledInput {...{ value, label }} />
   }
 
-  const fieldHelp = getFieldHelpText({ schema, modelName, fieldName })
+  const fieldHelp = schema.getFieldHelpText(modelName, fieldName)
 
   return (
     <div>
@@ -184,10 +178,10 @@ export const InputCore = ({
   onKeyDown,
   customProps
 }) => {
-  const inputType = getType({ schema, modelName, fieldName })
+  const inputType = schema.getType(modelName, fieldName)
 
   const defaultHandleOnChange = getOnChange({ inputType, onChange, fieldName })
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
+  const fieldLabel = schema.getFieldLabel({ modelName, fieldName, customProps })
   const defaultProps = {
     id: `input-${modelName}-${fieldName}`,
     type: inputType,
@@ -195,13 +189,13 @@ export const InputCore = ({
     labelStr: inline ? null : fieldLabel,
     value,
     error,
-    required: R.prop('required', getField(schema, modelName, fieldName)),
+    required: R.prop('required', schema.getField(modelName, fieldName)),
     customInput,
     autoFocus,
     onKeyDown
   }
-  const enumChoices = getEnumChoices(schema, modelName, fieldName)
-  const enumChoiceOrder = getEnumChoiceOrder(schema, modelName, fieldName)
+  const enumChoices = schema.getEnumChoices(modelName, fieldName)
+  const enumChoiceOrder = schema.getEnumChoiceOrder(modelName, fieldName)
   let options
 
   switch (inputType) {
@@ -228,8 +222,7 @@ export const InputCore = ({
         />
       )
     case inputTypes.ENUM_TYPE:
-      options = getOptionsOverride({
-        schema,
+      options = schema.getOptionsOverride({
         modelName,
         fieldName,
         options: enumChoiceOrder.map(choice => ({
@@ -253,8 +246,7 @@ export const InputCore = ({
     case inputTypes.MANY_TO_ONE_TYPE:
     case inputTypes.ONE_TO_MANY_TYPE:
     case inputTypes.MANY_TO_MANY_TYPE:
-      options = getOptionsOverride({
-        schema,
+      options = schema.getOptionsOverride({
         modelName,
         fieldName,
         options: R.path([modelName, fieldName], selectOptions),

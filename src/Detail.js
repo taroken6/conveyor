@@ -1,28 +1,11 @@
 import React from 'react'
 import * as R from 'ramda'
 import { DeleteButton, Table } from './table/Table'
-import { isOneToMany, isManyToMany } from './utils/isType'
 import Field, { getRelSchemaEntry } from './table/Field'
 import {
-  getDetailFieldOverride,
-  getDetailLabelOverride,
-  getDetailValueOverride,
-  isFieldEditable,
-  isCreatable,
-  isDeletable,
   skipOverride,
-  getDetailOverride,
-  getDetailTitleOverride,
-  getDetailPageOverride,
-  shouldDisplay
 } from './Utils'
-import {
-  getActions, getModelAttribute, getField,
-  getDetailFields, getHasIndex, getModelLabel, getFieldLabel,
-  getFieldConditions, getCollapsable
-} from './utils/schemaGetters'
 import { RecursiveTab } from './Tabs'
-import { getType } from './utils/getType'
 import CreateButton from './CreateButton'
 import {
   EditSaveButton,
@@ -36,7 +19,6 @@ import {
   EditInput
 } from './Edit'
 import { Popover, PopoverContent } from './Popover'
-import getDisplayValue from './utils/getDisplayValue'
 import Input from './form/Input'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/index.css'
@@ -66,11 +48,11 @@ export const CollapseTableButton = ({ modelName, fieldName, id, collapse, collap
 }
 
 export const DefaultDetailLabel = ({ schema, modelName, fieldName, node, customProps }) => {
-  const LabelInfoComponent = R.path(['components', 'labelInfo'], getField(schema, modelName, fieldName))
+  const LabelInfoComponent = R.path(['components', 'labelInfo'], schema.getField(modelName, fieldName))
   if (skipOverride(LabelInfoComponent)) {
     return null
   }
-  const fieldLabel = getFieldLabel({ schema, modelName, fieldName, node, customProps })
+  const fieldLabel = schema.getFieldLabel({ modelName, fieldName, node, customProps })
   if (LabelInfoComponent) {
     return <LabelInfoPopover {...{ LabelInfoComponent, fieldLabel }} />
   }
@@ -89,16 +71,16 @@ export const DefaultDetailAttribute = ({
   path,
   customProps
 }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
 
-  const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
-  const ValueOverride = getDetailValueOverride(schema, modelName, fieldName)
+  const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
+  const ValueOverride = schema.getDetailValueOverride(modelName, fieldName)
 
   const DetailLabel = LabelOverride || DefaultDetailLabel
   const DetailValue = ValueOverride || Field
 
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, customProps })
-  const fieldType = R.prop('type', getField(schema, modelName, fieldName))
+  const editable = schema.isFieldEditable({ modelName, fieldName, node, customProps })
+  const fieldType = R.prop('type', schema.getField(modelName, fieldName))
 
   if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
     return null
@@ -113,7 +95,7 @@ export const DefaultDetailAttribute = ({
     const onFileSubmit = R.path(['edit', 'onFileSubmit'], actions)
 
     const fieldEditData = getFieldEditData(editData, modelName, fieldName, node.id)
-    const creatable = isCreatable({ schema, modelName: relModelName, parentNode: node, customProps })
+    const creatable = schema.isCreatable({ modelName: relModelName, parentNode: node, customProps })
     const targetInverseFieldName = R.prop('backref', fieldType)
     const targetModelName = R.prop('target', fieldType)
     const error = getFieldErrorEdit(editData, modelName, fieldName, node.id)
@@ -212,7 +194,7 @@ export const DefaultDetailAttribute = ({
 }
 
 export const DetailCreateButton = ({ schema, targetModelName, path, targetInverseFieldName, node }) => {
-  const onCreateClick = R.path(['create', 'onDetailCreate'], getActions(schema, targetModelName))
+  const onCreateClick = R.path(['create', 'onDetailCreate'], schema.getActions(targetModelName))
 
   const onClick = () => onCreateClick({
     modelName: targetModelName,
@@ -234,7 +216,7 @@ export const DefaultDetailTableTitleWrapper = ({ children }) => {
 }
 
 export const DefaultDetailO2MTableTitle = ({ schema, modelName, fieldName, id, targetInverseFieldName, targetModelName, path, node, collapsable, collapse, collapseTableChange, customProps }) => {
-  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, customProps })
+  const creatable = schema.isCreatable({ modelName: targetModelName, parentNode: node, customProps })
 
   return (
     <DefaultDetailTableTitleWrapper>
@@ -271,7 +253,7 @@ export const DefaultDetailM2MTableTitle = ({
   collapseTableChange,
   customProps
 }) => {
-  const editable = isFieldEditable({ schema, modelName, fieldName, node, customProps })
+  const editable = schema.isFieldEditable({ modelName, fieldName, node, customProps })
 
   return (
     <div style={{ marginBottom: '10px' }}>
@@ -283,7 +265,7 @@ export const DefaultDetailM2MTableTitle = ({
           collapse,
           collapseTableChange
         }}/>}
-        {getFieldLabel({ schema, modelName, fieldName, node, customProps })}
+        {schema.getFieldLabel({ modelName, fieldName, node, customProps })}
       </h4>
       {editable && <div className='pl-2 d-inline'>
         <TableEditButton {...{
@@ -311,11 +293,11 @@ export const DefaultDetailM2MFieldLabel = ({
   targetModelName,
   customProps
 }) => {
-  const creatable = isCreatable({ schema, modelName: targetModelName, parentNode: node, customProps })
-  const required = R.prop('required', getField(schema, modelName, fieldName))
+  const creatable = schema.isCreatable({ modelName: targetModelName, parentNode: node, customProps })
+  const required = R.prop('required', schema.getField(modelName, fieldName))
   const Label = () => (
     <div style={{ marginBottom: '10px' }}>
-      <h4 className='d-inline'>{getFieldLabel({ schema, modelName, fieldName, node, customProps })}</h4>
+      <h4 className='d-inline'>{schema.getFieldLabel({ modelName, fieldName, node, customProps })}</h4>
       { required && ' *'}
       { creatable && <DetailCreateButton {...{
         schema,
@@ -344,26 +326,26 @@ export const DefaultDetailTable = ({
   customProps,
   summary
 }) => {
-  const fieldType = R.path([modelName, 'fields', fieldName, 'type'], schema)
+  const fieldType = R.path([modelName, 'fields', fieldName, 'type'], schema.schemaJSON)
   const targetInverseFieldName = R.prop('backref', fieldType)
   const targetModelName = R.prop('target', fieldType)
   const data = R.propOr(null, fieldName, node)
-  const fieldOrder = R.path([modelName, 'fields', fieldName, 'type', 'tableFields'], schema)
-  const actions = getActions(schema, modelName)
+  const fieldOrder = R.path([modelName, 'fields', fieldName, 'type', 'tableFields'], schema.schemaJSON)
+  const actions = schema.getActions(modelName)
   const onDelete = R.path(['delete', 'onDetailDelete'], actions)
   const onEditSubmit = R.path(['edit', 'onDetailTableEditSubmit'], actions)
-  const type = getType({ schema, modelName, fieldName })
+  const type = schema.getType(modelName, fieldName)
   const collapse = R.path([modelName, 'fields', fieldName, 'collapse'], tableView)
   const collapseTableChange = R.path(['tableOptions', 'collapseTableChange'], actions)
-  const collapsable = getCollapsable(schema, modelName, fieldName)
+  const collapsable = schema.getCollapsable(modelName, fieldName)
 
   if (!data) { return <div className='container'>Loading...</div> }
 
-  const ValueOverride = getDetailValueOverride(schema, modelName, fieldName)
+  const ValueOverride = schema.getDetailValueOverride(modelName, fieldName)
   const DetailValue = ValueOverride || Table
 
   if (type.includes('OneToMany')) {
-    const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+    const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
     const DetailLabel = LabelOverride || DefaultDetailO2MTableTitle
     return (
       <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
@@ -413,12 +395,12 @@ export const DefaultDetailTable = ({
     )
   } else if (type === 'ManyToMany') {
     if (isFieldEditing(editData, modelName, id, fieldName)) {
-      const actions = getActions(schema, modelName)
+      const actions = schema.getActions(modelName)
       const onEditInputChange = R.path(['edit', 'onEditInputChange'], actions)
       const onSaveClick = R.path(['edit', 'onDetailAttributeSubmit'], actions)
       const onCancelClick = R.path(['edit', 'onAttributeEditCancel'], actions)
 
-      const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+      const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
       const DetailLabel = LabelOverride || DefaultDetailM2MFieldLabel({
         schema,
         modelName,
@@ -468,7 +450,7 @@ export const DefaultDetailTable = ({
       )
     }
 
-    const LabelOverride = getDetailLabelOverride(schema, modelName, fieldName)
+    const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
     const DetailLabel = LabelOverride || DefaultDetailM2MTableTitle
 
     if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
@@ -477,7 +459,8 @@ export const DefaultDetailTable = ({
 
     return (
       <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
-        { skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema,
+        { skipOverride(LabelOverride) ? null : <DetailLabel {...{
+          schema,
           modelName,
           id,
           fieldName,
@@ -512,7 +495,8 @@ export const DefaultDetailTable = ({
             fieldOrder,
             tableView,
             collapse,
-            modalData
+            modalData,
+            customProps,
           }}
         /> }
       </React.Fragment>
@@ -521,19 +505,19 @@ export const DefaultDetailTable = ({
 }
 
 export const partitionDetailFields = ({ schema, modelName, node, include = null, customProps }) => {
-  let detailFields = getDetailFields({ schema, modelName, node, customProps })
+  let detailFields = schema.getDetailFields({ modelName, node, customProps })
 
   if (include) {
     detailFields = detailFields.filter(fieldName => R.includes(fieldName, include))
   }
   return R.partition(
     (fieldName) => {
-      const detailAttribute = R.prop('detailAttribute', getField(schema, modelName, fieldName))
+      const detailAttribute = R.prop('detailAttribute', schema.getField(modelName, fieldName))
       if (!R.isNil(detailAttribute)) {
         return !detailAttribute
       }
-      return isOneToMany(R.path([modelName, 'fields', fieldName], schema)) ||
-        isManyToMany(R.path([modelName, 'fields', fieldName], schema))
+      return schema.isOneToMany(modelName, fieldName) ||
+        schema.isManyToMany(modelName, fieldName)
     }
     ,
     detailFields
@@ -541,17 +525,17 @@ export const partitionDetailFields = ({ schema, modelName, node, include = null,
 }
 
 export const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, customProps }) => {
-  const model = getModelLabel({ schema, modelName, node, customProps })
-  const label = getDisplayValue({ schema, modelName, node, customProps })
-  const actions = getActions(schema, modelName)
+  const model = schema.getModelLabel({ modelName, node, customProps })
+  const label = schema.getDisplayValue({ modelName, node, customProps })
+  const actions = schema.getActions(modelName)
   const onDelete = R.path(['delete', 'onDetailDeleteFromDetailPage'], actions)
   const onDeleteWarning = R.path(['delete', 'onDeleteWarning'], actions)
   const modalId = 'confirm-delete-' + modelName
   const id = R.prop('id', node)
-  const HeaderLink = getHasIndex(schema, modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
+  const HeaderLink = schema.getHasIndex(modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
   return (
     <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
-      { isDeletable({ schema, modelName, node, customProps }) &&
+      { schema.isDeletable({ modelName, node, customProps }) &&
         <div className='float-right'>
           <DeleteButton {...{ modalId, onDeleteWarning, modelName, id }} />
           <DeleteDetail {...{
@@ -593,11 +577,10 @@ export const DetailFields = ({
     <React.Fragment>
       <dl className='row'>
         {descriptionList.map(fieldName => {
-          const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
-          if (shouldDisplay({schema, modelName, fieldName, node, displayCondition, customProps}) === false) {
+          if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps }) === false) {
               return null
           }
-          const override = getDetailFieldOverride(schema, modelName, fieldName)
+          const override = schema.getDetailFieldOverride(modelName, fieldName)
 
           if (skipOverride(override)) {
             return null
@@ -625,11 +608,10 @@ export const DetailFields = ({
         })}
       </dl>
       {tableFields.map(fieldName => {
-        const displayCondition = R.prop('detail', getFieldConditions(schema, modelName, fieldName))
-        if (shouldDisplay({schema, modelName, fieldName, node, displayCondition, customProps}) === false) {
+        if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps}) === false) {
             return null
         }
-        const override = getDetailFieldOverride(schema, modelName, fieldName)
+        const override = schema.getDetailFieldOverride(modelName, fieldName)
 
         if (skipOverride(override)) {
           return null
@@ -686,10 +668,10 @@ export const DefaultDetail = ({
   customProps,
   summary
 }) => {
-  const DetailTitleOverride = getDetailTitleOverride(schema, modelName)
-  const DetailPageOverride = getDetailPageOverride(schema, modelName)
+  const DetailTitleOverride = schema.getDetailTitleOverride(modelName)
+  const DetailPageOverride = schema.getDetailPageOverride(modelName)
 
-  const tabs = getModelAttribute(schema, modelName, 'tabs')
+  const tabs = schema.getModelAttribute(modelName, 'tabs')
 
   const DefaultDetailPage = tabs && tabs.length > 0 ? RecursiveTab : DetailFields
 
@@ -767,7 +749,7 @@ const Detail = ({
   customProps,
   summary
 }) => {
-  const DetailOverride = getDetailOverride(schema, modelName)
+  const DetailOverride = schema.getDetailOverride(modelName)
 
   const DetailComponent = DetailOverride || DefaultDetail
 

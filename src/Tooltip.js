@@ -1,6 +1,5 @@
 import { Tooltip } from 'react-tippy'
 import React from 'react'
-import { getActions } from './utils/schemaGetters'
 import * as R from 'ramda'
 import { Link } from 'react-router-dom'
 
@@ -35,7 +34,7 @@ export const RelTooltipContent = ({ data }) => {
 
 /** @type { React.StatelessComponent<{ fieldName: string, schema: any, id: string, modelName: string, data: {name: string, value: {text: string, url?: string}}[], interactive: boolean, tooltipOpened: function> } */
 const RelTooltip = ({ schema, modelName, id, data, children }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const tooltipOpened = R.path(['tooltip', 'onTooltipOpen'], actions)
   return <Tooltip
     useContext

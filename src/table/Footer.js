@@ -1,8 +1,5 @@
 import React from 'react'
-import { getFieldConditions } from '../utils/schemaGetters'
-import { shouldDisplay } from '../Utils'
 import * as R from 'ramda'
-import { getType } from '../utils/getType'
 
 export const TFoot = ({
   schema,
@@ -21,7 +18,7 @@ export const TFoot = ({
       const schemaPath = [modelName, 'fields', fieldName, 'showFooter']
       return(
         R.path(summaryPath, summary) &&
-        R.path(schemaPath, schema)
+        R.path(schemaPath, schema.schemaJSON)
       )
     }
 
@@ -39,13 +36,10 @@ export const TFoot = ({
       <tr>
         {fieldOrder.map((fieldName, idx) => {
           if (fromIndex === true) {
-            const displayCondition = R.prop('index', getFieldConditions(schema, modelName, fieldName))
             if (
-              shouldDisplay({
-                schema,
+              schema.shouldDisplayIndex({
                 modelName,
                 fieldName,
-                displayCondition,
                 customProps
               }) === false
             ) {
@@ -59,7 +53,7 @@ export const TFoot = ({
           const summaryPath = getSummaryPath(fieldName)
           let total = R.path(summaryPath, summary)
 
-          if (getType({ schema, modelName, fieldName }) === 'currency')
+          if (schema.getType(modelName, fieldName) === 'currency')
             total = new Intl.NumberFormat('en-US', {
               style: 'currency', currency: 'USD'
             }).format(total)

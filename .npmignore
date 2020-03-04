@@ -7,3 +7,5 @@ buildFile
 .babelrc
 .eslintrc.json
 /tests
+yalc.lock
+/.yalc

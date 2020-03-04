@@ -1,13 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
 import { Modal } from '../Modal'
-import { isEnum } from '../utils/isType'
-import { getEnumLabel } from '../Utils'
-import {
-  getFields as getFieldDefinitions, getActions,
-  getModel
-} from '../utils/schemaGetters'
-import { getModelLabel, getFieldLabel } from '../utils/schemaGetters'
 
 const exclusionCondition = key => !R.includes(key, ['__typename', 'id'])
 
@@ -19,13 +12,14 @@ const getHeaders = (schema, modelName, node) =>
 
 
 const getRowFields = (schema, modelName, node, nodeOrder) => {
-  const fieldDefinitions = getFieldDefinitions(schema, modelName)
+  const fieldDefinitions = schema.getFields(modelName)
   if (!nodeOrder) {
     nodeOrder = Object.keys(node)
   }
+  // 'key' is fieldName, id, or __typename
   const fields = nodeOrder.map((key) => {
     const value = R.prop(key, node)
-    const override = R.path([modelName, 'deleteModal', 'rows', key], schema)
+    const override = R.path([modelName, 'deleteModal', 'rows', key], schema.schemaJSON)
     if (override) {
       return override({ schema, modelName, node, fieldName: key })
     }
@@ -35,9 +29,8 @@ const getRowFields = (schema, modelName, node, nodeOrder) => {
     }
 
     if (exclusionCondition(key)) {
-      const fieldDefinition = R.prop(key, fieldDefinitions)
-      if (isEnum(fieldDefinition)) {
-        return getEnumLabel({ schema, modelName, fieldName: key, value })
+      if (schema.isEnum(modelName, key)) {
+        return schema.getEnumLabel(modelName, key, value)
       } else {
         return value
       }
@@ -83,12 +76,12 @@ const ReviewTable = ({ schema, table, customProps }) => {
     const node = table[0]
     const nodeModelName = R.prop('__typename', node)
     // get headers from schema
-    const customHeaders = R.path([nodeModelName, 'deleteModal', 'headers'], schema)
+    const customHeaders = R.path([nodeModelName, 'deleteModal', 'headers'], schema.schemaJSON)
 
     if (!customHeaders) {
       // pick fields that 'node' contains & order them by 'fieldOrder'
       const headerFields = getHeaders(schema, nodeModelName, node)
-      const fieldOrder = R.propOr([], 'fieldOrder', getModel(schema, nodeModelName))
+      const fieldOrder = R.propOr([], 'fieldOrder', schema.getModel(nodeModelName))
 
       editedHeaderFields = R.filter(
         R.identity,
@@ -100,11 +93,11 @@ const ReviewTable = ({ schema, table, customProps }) => {
 
     // turn fieldNames in to labels
     headers = editedHeaderFields.map(fieldName =>
-      getFieldLabel({schema, modelName: nodeModelName, fieldName, customProps})
+      schema.getFieldLabel({ modelName: nodeModelName, fieldName, data: table, customProps })
     )
   }
-  const tableDisplayName = getModelLabel({
-    schema, modelName: R.propOr('', '__typename', R.head(table)), customProps
+  const tableDisplayName = schema.getModelLabel({
+    modelName: R.propOr('', '__typename', R.head(table)), data: table, customProps
   })
   return (
     <div className='mt-2'>
@@ -142,7 +135,7 @@ export const DeleteDetail = ({
   customProps
 }) => {
   const modalStore = R.prop('Delete', modalData)
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onCancelDelete = R.path(['delete', 'onCancelDelete'], actions)
   return (
     <Modal {...{ id: modalId, title }}>
@@ -182,13 +175,15 @@ export const RemoveDetail = ({
   modalId,
   title = 'Confirm Removal',
   onRemove,
+  modelName,
   parentModelName,
   parentFieldName,
   parentId,
-  name,
+  node,
   customProps
 }) => {
-  const parentField = getFieldLabel({ schema, modelName: parentModelName, fieldName: parentFieldName, customProps })
+  const name = schema.getDisplayValue({ modelName, node, customProps })
+  const parentField = schema.getFieldLabel({ modelName: parentModelName, fieldName: parentFieldName, node, customProps })
   return (
     <Modal {...{ id: modalId, title }}>
       <span>

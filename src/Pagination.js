@@ -1,6 +1,5 @@
 import React from 'react'
 import * as R from 'ramda'
-import { getActions } from './utils/schemaGetters'
 import { Tooltip } from 'react-tippy'
 import FlexibleInput from './input'
 import { inputTypes } from './consts'
@@ -188,7 +187,7 @@ export const Pagination = ({
 }
 
 export const IndexPagination = ({ schema, modelName, tableView }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onChangePage = R.path(['tableOptions', 'changePage'], actions)
   const onChangeGoto = R.path(['tableOptions', 'changeGotoPage'], actions)
   const page = R.path([modelName, 'page'], tableView)
@@ -218,7 +217,7 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
 }
 
 export const DetailPagination = ({ schema, modelName, fieldName, tableView }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onChangePage = R.path(['tableOptions', 'changeRelTablePage'], actions)
   const onChangeGoto = R.path(['tableOptions', 'changeRelGotoPage'], actions)
   const page = R.path([modelName, 'fields', fieldName, 'page'], tableView)

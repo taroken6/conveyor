@@ -1,7 +1,5 @@
 import React from 'react'
 import * as R from 'ramda'
-import { getActions } from '../utils/schemaGetters'
-import { getModelLabel } from '../utils/schemaGetters'
 
 export const Breadcrumbs = ({ schema, formStack, customProps }) => {
   const stack = R.prop('stack', formStack)
@@ -11,8 +9,8 @@ export const Breadcrumbs = ({ schema, formStack, customProps }) => {
       <ol className='breadcrumb'>
         {stack.map((crumb, idx) => {
           const modelName = R.prop('modelName', crumb)
-          const actions = getActions(schema, modelName)
-          const modelDisplayName = getModelLabel({ schema, modelName, customProps })
+          const actions = schema.getActions(modelName)
+          const modelDisplayName = schema.getModelLabel({ modelName, customProps })
           const onBreadcrumbClick = R.path(['create', 'onBreadcrumbClick'], actions)
           return (
             <li className={`breadcrumb-item ${index === idx && 'active'}`} key={`create-breadcrumb-${idx}`}>

@@ -3,18 +3,11 @@ import Field from './Field'
 import { THead } from './Header'
 import { TFoot } from './Footer'
 import {
-  getCellOverride,
-  isTableDeletable,
-  isFieldEditable,
-  isTableEditable,
-  isRowEditable,
   skipOverride,
-  shouldDisplay
 } from '../Utils'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import { Link } from 'react-router-dom'
-import { getModel, getActions, getFieldConditions } from '../utils/schemaGetters'
 import { DeleteDetail, RemoveDetail } from '../delete/DeleteDetail'
 import {
   RowEditButton,
@@ -25,9 +18,7 @@ import {
   getFieldEditData,
   getFieldErrorEdit
 } from '../Edit'
-import getDisplayValue from '../utils/getDisplayValue'
 import { IndexPagination, DetailPagination } from '../Pagination'
-import { getType } from '../utils/getType'
 
 export const DetailViewButton = ({ modelName, id }) => (
   <Link to={`/${modelName}/${id}`} className="btn btn-sm btn-outline-primary">
@@ -81,9 +72,9 @@ export const TableButtonGroup = ({
   fromIndex,
   customProps
 }) => {
-  const parentFieldType = getType({ schema, modelName: parentModelName, fieldName: parentFieldName })
+  const parentFieldType = schema.getType(parentModelName, parentFieldName)
   const m2m = parentFieldType === 'ManyToMany'
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onRemove = R.path(['edit', 'onDetailTableRemoveSubmit'], actions)
   const modalId = `confirm-${m2m ? 'remove' : 'delete'}-${modelName}-${parentFieldName}-${idx}`
   const id = node.id
@@ -134,12 +125,7 @@ export const TableButtonGroup = ({
             parentId,
             parentModelName,
             parentFieldName,
-            name: getDisplayValue({
-              schema,
-              modelName,
-              node,
-              customProps
-            }),
+            node,
             customProps
           }}
         />
@@ -177,8 +163,7 @@ export const TableRowWithEdit = ({
 }) => {
   if (
     isEditing(editData, modelName, node.id) &&
-    isFieldEditable({
-      schema,
+    schema.isFieldEditable({
       modelName,
       fieldName,
       node,
@@ -203,7 +188,7 @@ export const TableRowWithEdit = ({
       />
     )
   }
-  const Override = getCellOverride(schema, modelName, fieldName)
+  const Override = schema.getCellOverride(modelName, fieldName)
   if (skipOverride(Override)) {
     return null
   }
@@ -224,12 +209,7 @@ export const TableRowWithEdit = ({
   }
   // Add DetailLink to the field that is marked as the displayField
   if (detailField === fieldName) {
-    const displayString = getDisplayValue({
-      schema,
-      modelName,
-      node,
-      customProps
-    })
+    const displayString = schema.getDisplayValue({ modelName, node, customProps })
     return <DetailLink {...{ modelName, id: node.id }}>{displayString}</DetailLink>
   }
   return (
@@ -324,13 +304,12 @@ const TBody = ({
   fromIndex,
   customProps
 }) => {
-  const actions = getActions(schema, modelName)
+  const actions = schema.getActions(modelName)
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (
     <tbody>
       {data.map((node, idx) => {
-        const editable = isRowEditable({
-          schema,
+        const editable = schema.isRowEditable({
           modelName,
           node,
           parentNode,
@@ -341,13 +320,10 @@ const TBody = ({
           <tr key={`table-tr-${node.id}`}>
             {fieldOrder.map((fieldName, headerIdx) => {
               if (fromIndex === true) {
-                const displayCondition = R.prop('index', getFieldConditions(schema, modelName, fieldName))
                 if (
-                  shouldDisplay({
-                    schema,
+                  schema.shouldDisplayIndex({
                     modelName,
                     fieldName,
-                    displayCondition,
                     customProps
                   }) === false
                 ) {
@@ -413,18 +389,6 @@ const TBody = ({
   )
 }
 
-export const calcDetailField = ({ schema, modelName, fieldOrder }) => {
-  const model = getModel(schema, modelName)
-  const schemaDefinedLinkField = R.prop('tableLinkField', model)
-
-  // If the schema explicitly defines a field that is not found, raise an error
-  if (schemaDefinedLinkField && !fieldOrder.includes(schemaDefinedLinkField)) {
-    throw new Error('Schema attribute for displayField does not exist in fieldOrder.')
-  }
-  // If the schema does not define a displayField then check if there is a name field
-  return schemaDefinedLinkField || (fieldOrder.includes('name') ? 'name' : null)
-}
-
 /* Generic Overidable Table. To Override th/td pass in Table with <thead>/<tbody> component overriden. */
 export const Table = ({
   schema,
@@ -461,16 +425,14 @@ export const Table = ({
     return <div style={{ paddingBottom: '10px' }}>N/A</div>
   }
 
-  const deletable = isTableDeletable({
-    schema,
+  const deletable = schema.isTableDeletable({
     modelName,
     data,
     parentNode,
     customProps
   })
-  const detailField = calcDetailField({ schema, modelName, fieldOrder })
-  const editable = isTableEditable({
-    schema,
+  const detailField = schema.getTableLinkField(modelName, fieldOrder)
+  const editable = schema.isTableEditable({
     modelName,
     data,
     parentNode,

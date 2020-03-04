@@ -64,3 +64,16 @@ Import css from conveyor, react-datepicker, rc-switch, and react-tippy into your
     import 'react-tippy/dist/tippy.css'
     import 'conveyor/css/index.css'
     import 'rc-switch/assets/index.css'
+
+==================
+Conveyor-Schema
+==================
+
+Conveyor needs a schema of 'SchemaBuilder' type. to convert your schemaJSON simply do:
+
+ .. code-block:: javascript
+
+    import { SchemaBuilder } from '@autoinvent/conveyor-schema'
+
+    // now schema is ready to be passed into any conveyor component
+    const schema = new SchemaBuilder(schemaJSON)

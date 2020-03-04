@@ -1,24 +1,16 @@
 import React from 'react'
-import { getType } from '../utils/getType'
 import * as consts from '../consts'
 import * as R from 'ramda'
 import DetailLink from '../DetailLink'
 import Switch from 'rc-switch'
-import { getEnumLabel } from '../Utils'
-import { getModel, getTooltipFields } from '../utils/schemaGetters'
-import getDisplayValue from '../utils/getDisplayValue'
 import { ImageLinkModal } from '../Modal'
-import { getFieldLabel } from '../utils/schemaGetters'
 import Tooltip from '../Tooltip'
 
 // gets the schema of the relationship model, based on field meta
 export const getRelSchemaEntry = ({ schema, modelName, fieldName }) => {
-  const fieldTargetModel = R.path(
-    [modelName, 'fields', fieldName, 'type', 'target'],
-    schema
-  )
+  const fieldTargetModel = R.path(['type', 'target'], schema.getField(modelName, fieldName))
 
-  return getModel(schema, fieldTargetModel)
+  return schema.getModel(fieldTargetModel)
 }
 
 const FieldString = ({ schema, modelName, fieldName, node }) => {
@@ -67,7 +59,7 @@ const FieldEnum = ({ schema, modelName, fieldName, node }) => {
   const value = R.prop(fieldName, node)
   if (value) {
     return (
-      <span>{ getEnumLabel({ schema, modelName, fieldName, value }) }</span>
+      <span>{ schema.getEnumLabel(modelName, fieldName, value) }</span>
     )
   }
   return <span>{ 'N/A' }</span>
@@ -75,7 +67,7 @@ const FieldEnum = ({ schema, modelName, fieldName, node }) => {
 
 const FieldImageModal = ({ schema, modelName, fieldName, id, node, customProps }) => {
   const url = R.prop(fieldName, node)
-  const label = getFieldLabel({ schema, modelName, fieldName, node, customProps })
+  const label = schema.getFieldLabel({ modelName, fieldName, node, customProps })
   const modalId = `img-modal-${modelName}-${fieldName}-${id}`
 
   return <ImageLinkModal {...{ id: modalId, title: label, url }} />
@@ -86,12 +78,12 @@ export const FieldToOne = ({ schema, modelName, fieldName, node, tooltipData, cu
 
   const relModelName = R.prop('modelName', relSchemaEntry)
 
-  const displayString = getDisplayValue({ schema, modelName: relModelName, node, customProps })
+  const displayString = schema.getDisplayValue({ modelName: relModelName, node, customProps })
   const relId = R.prop('id', node)
 
   if (!displayString) { return <span>N/A</span> }
 
-  const displayTooltip = (getTooltipFields(schema, relModelName).length !== 0)
+  const displayTooltip = (schema.getTooltipFields({ modelName: relModelName, customProps }).length !== 0)
   if (displayTooltip) {
     return (
       <Tooltip
@@ -151,7 +143,7 @@ export const Field = ({ schema, modelName, fieldName, tooltipData, node, id, cus
     customProps
   }
 
-  const type = getType({ schema, modelName, fieldName })
+  const type = schema.getType(modelName, fieldName)
 
   switch (type) {
     case consts.inputTypes.STRING_TYPE:
