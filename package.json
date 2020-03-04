@@ -32,7 +32,7 @@
     "react-router-dom": "^4.3.1"
   },
   "dependencies": {
-    "@autoinvent/conveyor-schema": "file:.yalc/@autoinvent/conveyor-schema",
+    "@autoinvent/conveyor-schema": "0.1.0",
     "ramda": "^0.26.1",
     "rc-switch": "^1.9.0",
     "react": "^16.8.6",
