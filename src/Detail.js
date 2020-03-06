@@ -38,7 +38,7 @@ const LabelInfoPopover = ({ LabelInfoComponent, fieldLabel }) => (
 )
 
 export const CollapseTableButton = ({ modelName, fieldName, id, collapse, collapseTableChange }) => {
-  const CollapseTableIcon = collapse ? FaAngleDown : FaAngleDown
+  const CollapseTableIcon = collapse ? FaAngleRight : FaAngleDown
   return (
     <CollapseTableIcon
       className={`hide-icon-${collapse ? 'angle-right' : 'angle-down'}`}

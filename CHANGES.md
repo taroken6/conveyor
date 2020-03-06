@@ -4,6 +4,7 @@
 
 Unreleased
 
+Fixed CollapseTableIcon being set to FaAngleDown instead of FaAngleRight when collapsed
 
 ## Version 0.2.0
 
