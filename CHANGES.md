@@ -4,6 +4,8 @@
 
 Unreleased
 
+Updated pagination to start at index 1; updated tableView structure (not backwards compatible change)
+
 
 ## Version 0.2.0
 
