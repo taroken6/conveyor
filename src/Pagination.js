@@ -36,8 +36,8 @@ const GotoTooltip = ({
               fieldName,
               // goto is the page number, which will always be 1 greater than the index
               // because index begins at 0 while page number begins at 1
-              updatedPageIndex: goto - 1,
-              isValid: 1 <= goto && goto <= lastIndex + 1 && Number.isInteger(goto)
+              updatedPageIndex: goto,
+              isValid: 1 <= goto && goto <= lastIndex && Number.isInteger(goto)
             })}
           >Go</button>
         </div>
@@ -67,7 +67,7 @@ const PaginationLink = ({
   if (isNaN(text)) {
     return (
       <Tooltip
-        html={<span>{`Page ${updatedPageIndex + 1}`}</span>}
+        html={<span>{`Page ${updatedPageIndex}`}</span>}
       >{link}</Tooltip>
     )
   }
@@ -101,13 +101,10 @@ export const Pagination = ({
   amtPerPage
 }) => {
   // get previous & last conditions; 'lastIndex' can be null or '0' value
-  const hasFirst = idx > 1
-  const hasPrev = idx > 0
-  const hasNext = lastIndex > 0 && idx < lastIndex
-  const hasLast = lastIndex > 0 && idx < lastIndex - 1
-
-  // number displayed
-  const displayIndex = idx + 1
+  const hasFirst = idx > 2
+  const hasPrev = idx > 1
+  const hasNext = lastIndex > 1 && idx < lastIndex
+  const hasLast = lastIndex > 1 && idx < (lastIndex - 1)
 
   // no pagination
   if (!hasFirst && !hasPrev && !hasNext && !hasLast) {
@@ -124,7 +121,7 @@ export const Pagination = ({
               fieldName,
               onChangePage,
               text: '«',
-              updatedPageIndex: 0
+              updatedPageIndex: 1
             }}
           />
         )}
@@ -148,7 +145,7 @@ export const Pagination = ({
             lastIndex,
             goto,
             canGoto,
-            text: `${displayIndex}`,
+            text: `${idx}`,
             updatedPageIndex: (idx)
           }} />
         }
@@ -176,8 +173,8 @@ export const Pagination = ({
         )}
         {totalDataLength && amtPerPage && (
           <span className="ml-2 my-auto">
-            {idx * amtPerPage + 1}-
-            {Math.min((idx + 1) * amtPerPage, totalDataLength)} of{' '}
+            {((idx - 1) * amtPerPage) + 1}-
+            {Math.min((idx * amtPerPage), totalDataLength)} of{' '}
             {totalDataLength}
           </span>
         )}
@@ -195,13 +192,13 @@ export const IndexPagination = ({ schema, modelName, tableView }) => {
   const canGoto = R.propOr(true, 'canGoto', page)
 
   // current page idx
-  const idx = R.propOr(0, 'currentPage', page)
+  const idx = R.propOr(1, 'currentPage', page)
 
   // get index of last hypothetical data point
   const lastIndex = R.prop('lastIndex', page)
 
-  const totalDataLength = R.path([modelName, 'page', 'total'], tableView)
-  const amtPerPage = R.prop('amtPerPage', tableView)
+  const totalDataLength = R.prop('total', page)
+  const amtPerPage = R.prop('amtPerPage', page)
 
   return <Pagination {...{
     modelName,
@@ -225,16 +222,14 @@ export const DetailPagination = ({ schema, modelName, fieldName, tableView }) =>
   const canGoto = R.propOr(true, 'canGoto', page)
 
   // current page idx
-  const idx = R.propOr(0, 'currentPage', page)
+  const idx = R.propOr(1, 'currentPage', page)
 
   // get index of last hypothetical data point
   const lastIndex = R.prop('lastIndex', page)
 
-  const totalDataLength = R.path(
-    [modelName, 'fields', fieldName, 'page', 'total'],
-    tableView
-  )
-  const amtPerPage = R.prop('amtPerPage', tableView)
+  const totalDataLength = R.prop('total', page)
+  const amtPerPage = R.prop('amtPerPage', page)
+
 
   return <Pagination {...{
     modelName,
