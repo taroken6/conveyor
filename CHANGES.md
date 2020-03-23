@@ -1,8 +1,12 @@
 #Conveyor Changelog
 
-## Version 0.3.0
+## Version 0.4.0
 
 Unreleased
+
+## Version 0.3.0
+
+Released 3-22-20
 
 Updated pagination to start at index 1; updated tableView structure (not backwards compatible change)
 
