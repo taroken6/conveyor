@@ -171,3 +171,7 @@ body {
   color: #5f5f5f;
   margin-bottom: 2px;
 }
+
+.page-link {
+  cursor: pointer;
+}

@@ -59,7 +59,6 @@ const PaginationLink = ({
 }) => {
   const link = <a
     className='page-link'
-    href='#'
     onClick={() => onChangePage({
       modelName, fieldName, updatedPageIndex
     })}
