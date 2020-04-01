@@ -1,10 +1,19 @@
 #Conveyor Changelog
 
-## Version 0.3.0
+## Version 0.4.0
 
 Unreleased
 
 Fixed CollapseTableIcon being set to FaAngleDown instead of FaAngleRight when collapsed
+Removed href=# (anchor to top of page) from PaginationLink
+
+
+## Version 0.3.0
+
+Released 3-22-20
+
+Updated pagination to start at index 1; updated tableView structure (not backwards compatible change)
+
 
 ## Version 0.2.0
 
