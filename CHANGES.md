@@ -4,6 +4,10 @@
 
 Unreleased
 
+Fixed CollapseTableIcon being set to FaAngleDown instead of FaAngleRight when collapsed
+Removed href=# (anchor to top of page) from PaginationLink
+
+
 ## Version 0.3.0
 
 Released 3-22-20
