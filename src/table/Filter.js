@@ -238,7 +238,9 @@ export const FilterModalButton = ({ modelName, filtersAreActive }) => (
 
 const stringOptions = [
   { label: 'Includes', value: 'INCLUDES' },
-  { label: 'Equals', value: 'EQUALS' }
+  { label: 'Equals', value: 'EQUALS' },
+  { label: 'Exists', value: 'EXISTS' },
+  { label: 'Does Not Exist', value: 'DOESNOTEXIST' }
 ]
 
 const numberOptions = [
@@ -354,7 +356,7 @@ export const FilterComp = ({
         }} />
       </div>
       <div className='filter-input'>
-        <InputCore {...{
+      { R.prop('value', operator) !== 'EXISTS' && R.prop('value', operator) !== 'DOESNOTEXIST' && <InputCore {...{
           schema,
           modelName,
           fieldName,
@@ -366,7 +368,7 @@ export const FilterComp = ({
           customInput: {
             placeholder: 'Enter value...',
           }
-        }} />
+        }} /> }
       </div>
     </React.Fragment>
   )
