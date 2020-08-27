@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@autoinvent/conveyor-schema": "0.1.0",
+    "print-js": "^1.0.63",
     "ramda": "^0.26.1",
     "rc-switch": "^1.9.0",
     "react": "^16.8.6",
