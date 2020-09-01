@@ -5,6 +5,8 @@
 Unreleased
 
 Added spellCheck to input types: String, TextArea
+Added print button to ImageModal
+Added EXISTS and DOESNOTEXIST string operators for the filter
 Fixed CollapseTableIcon being set to FaAngleDown instead of FaAngleRight when collapsed
 Removed href=# (anchor to top of page) from PaginationLink
 

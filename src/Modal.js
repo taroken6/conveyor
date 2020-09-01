@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import PrintButton from './PrintButton'
 
 export const Modal = ({ id, title, children }) => (
   <div className='modal fade' id={id} tabIndex={-1}>
@@ -33,6 +34,9 @@ const ImageModal = ({ id, title, url }) => {
         </div>
         <div>
           <a className='text-secondary' href={url} target='_blank' rel='noopener noreferrer'>Click to view the original image.</a>
+        </div>
+        <div>
+          <PrintButton url={url} />
         </div>
       </div>
     )
