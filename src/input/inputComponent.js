@@ -128,9 +128,10 @@ const inputStringTypeMap = {
  * @property { function } customError
  * @property { function } customLabel
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
+ * @property { boolean } spellCheck
  */
 
-export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => (
+export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown, spellCheck }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -142,6 +143,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
       id={id}
       value={value}
       onKeyDown={onKeyDown}
+      spellCheck={spellCheck}
       {...customInput}
     />
   </FormGroup>
@@ -276,9 +278,10 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
  * @property { function } customError
  * @property { function } customLabel
  * @property { boolean } autoFocus; update isAutoFocusInput() when changing
+ * @property { boolean } spellCheck
  */
 
-export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus }) => (
+export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, spellCheck }) => (
   <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
@@ -288,6 +291,7 @@ export const InputTextArea = ({ onChange, id, labelStr, error, value, className,
       value={value}
       onChange={evt => onChange(evt.target.value)}
       id={id}
+      spellCheck={spellCheck}
       {...customInput}
     />
   </FormGroup>

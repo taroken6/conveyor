@@ -4,6 +4,7 @@
 
 Unreleased
 
+Added spellCheck to input types: String, TextArea
 Fixed CollapseTableIcon being set to FaAngleDown instead of FaAngleRight when collapsed
 Removed href=# (anchor to top of page) from PaginationLink
 

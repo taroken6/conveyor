@@ -100,6 +100,7 @@ const FlexibleInput = props => {
    *      not available for 'Checkbox' type
    * @param { boolean } [autoFocus] refers to specific fields (see isAutoFocusInput()) that have
    *      autofocus input feature
+   * @param { boolean } [spellCheck] - adds spell checking to the input box. Available for "String" and "TextArea" types.
    *
    * @returns { object } - Single input component
    */
@@ -108,10 +109,16 @@ const FlexibleInput = props => {
 
   switch (params.type) {
     case inputTypes.STRING_TYPE:
+      params['spellCheck'] = R.defaultTo(true, params['spellCheck'])
+      break
+
     case inputTypes.EMAIL_TYPE:
     case inputTypes.PHONE_TYPE:
     case inputTypes.URL_TYPE:
     case inputTypes.TEXTAREA_TYPE:
+      params['spellCheck'] = R.defaultTo(true, params['spellCheck'])
+      break
+
     case inputTypes.INT_TYPE:
     case inputTypes.PASSWORD_TYPE:
     case inputTypes.CURRENCY_TYPE:
