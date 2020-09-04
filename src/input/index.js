@@ -109,16 +109,14 @@ const FlexibleInput = props => {
 
   switch (params.type) {
     case inputTypes.STRING_TYPE:
+    case inputTypes.TEXTAREA_TYPE:
       params['spellCheck'] = R.defaultTo(true, params['spellCheck'])
+      params['value'] = R.defaultTo('', params['value'])
+      params['className'] = R.defaultTo('form-control', params['className'])
       break
-
     case inputTypes.EMAIL_TYPE:
     case inputTypes.PHONE_TYPE:
     case inputTypes.URL_TYPE:
-    case inputTypes.TEXTAREA_TYPE:
-      params['spellCheck'] = R.defaultTo(true, params['spellCheck'])
-      break
-
     case inputTypes.INT_TYPE:
     case inputTypes.PASSWORD_TYPE:
     case inputTypes.CURRENCY_TYPE:
