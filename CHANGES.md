@@ -4,6 +4,7 @@
 
 Unreleased
 
+Corrected redirect logic for empty detail page
 Added spellCheck to input types: String, TextArea
 Added print button to ImageModal
 Added EXISTS and DOESNOTEXIST string operators for the filter

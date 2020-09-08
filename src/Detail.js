@@ -682,7 +682,7 @@ export const DefaultDetail = ({
     return <div className='container'>Loading...</div>
   }
 
-  if (R.prop('result', node) === null) {
+  if (R.isEmpty(node)) {
     return <Redirect to={`/${modelName}`} />
   }
 
