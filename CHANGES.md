@@ -2,7 +2,7 @@
 
 ## Version 0.4.0
 
-Unreleased
+Released 9-15-20
 
 Corrected redirect logic for empty detail page
 Added spellCheck to input types: String, TextArea
