@@ -37,6 +37,7 @@ const RelTooltip = ({ schema, modelName, id, data, children }) => {
   const actions = schema.getActions(modelName)
   const tooltipOpened = R.path(['tooltip', 'onTooltipOpen'], actions)
   return <Tooltip
+    useContext
     interactive
     html={<RelTooltipContent data={data} />}
     delay={0}
