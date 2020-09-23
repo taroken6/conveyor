@@ -678,11 +678,11 @@ export const DefaultDetail = ({
   const DetailTitle = DetailTitleOverride || DefaultDetailPageTitle
   const DetailPage = DetailPageOverride || DefaultDetailPage
 
-  if (!node) {
+  if (R.isEmpty(node)) {
     return <div className='container'>Loading...</div>
   }
 
-  if (R.isEmpty(node)) {
+  if (node === null) {
     return <Redirect to={`/${modelName}`} />
   }
 
