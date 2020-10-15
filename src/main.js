@@ -1,4 +1,5 @@
 import Index from './Index'
+import Alerts from './Alerts'
 import Create from './form/Create'
 import CreateButton from './CreateButton'
 import { DefaultDetailTableTitleWrapper } from './Detail'
@@ -47,6 +48,7 @@ import { DefaultDetailM2MTableTitle } from './Detail'
 import { InputCore } from './form/Input'
 
 export { Index }
+export { Alerts }
 export { Create }
 export { CreateButton }
 export { DefaultDetailTableTitleWrapper }
