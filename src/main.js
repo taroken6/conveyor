@@ -26,6 +26,8 @@ import { CollapseTableButton } from './Detail'
 import { DeleteDetail } from './delete/DeleteDetail'
 import { DeleteButton } from './table/Table'
 import { Search } from './Search'
+import { DetailPagination } from './Pagination'
+
 // model overrides
 import { DefaultDetail } from './Detail'
 import { RecursiveTab } from './Tabs'
@@ -75,6 +77,7 @@ export { CollapseTableButton }
 export { DeleteDetail }
 export { DeleteButton }
 export { Search }
+export { DetailPagination }
 // model overrides
 export { DefaultDetail }
 export { RecursiveTab }
