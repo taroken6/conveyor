@@ -40,6 +40,7 @@ The schema utilized by the framework will be different than the existing schema 
           fieldName: "" #Name of the field, used as the key in fields dictionary
           fieldHelp: "" #Text to display under the field when it is being edited
           displayName: "" or function #Provides how the field should be displayed or function that calculates displayName
+          noDataDisplayString: "" #Text to display when a field has no data
           detailAttribute: boolean #Determines whether or not a field should display in the attribute or table section of a detail page
           type:  "" #When type is a string it provides the type of a simple type such as string, int, or date
           OR

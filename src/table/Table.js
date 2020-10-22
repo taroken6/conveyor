@@ -422,7 +422,8 @@ export const Table = ({
     return <div>...Loading</div>
   }
   if (!fromIndex && data.length === 0) {
-    return <div style={{ paddingBottom: '10px' }}>N/A</div>
+    const noDataDisplayString = R.pathOr('N/A', ['fields', parentFieldName, 'noDataDisplayString'], schema.getModel(parentModelName))
+    return <div style={{ paddingBottom: '10px' }}>{noDataDisplayString}</div>
   }
 
   const deletable = schema.isTableDeletable({
