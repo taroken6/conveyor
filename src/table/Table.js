@@ -414,6 +414,9 @@ export const Table = ({
   customProps,
   summary
 }) => {
+  const paginateIndex = R.propOr(true, 'paginate', schema.getModel(modelName))
+  const paginateDetail = R.pathOr(true, ['fields', parentFieldName, 'paginate'], schema.getModel(parentModelName))
+
   if (!fromIndex && collapse) {
     return null
   }
@@ -495,7 +498,7 @@ export const Table = ({
           }}
         />
       </table>
-      {fromIndex ? (
+      {paginateIndex && fromIndex ? (
         <IndexPagination
           {...{
             schema,
@@ -503,7 +506,7 @@ export const Table = ({
             tableView
           }}
         />
-      ) : (
+      ) : paginateDetail && (
         <DetailPagination
           {...{
             schema,
