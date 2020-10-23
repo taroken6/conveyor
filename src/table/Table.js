@@ -422,7 +422,8 @@ export const Table = ({
     return <div>...Loading</div>
   }
   if (!fromIndex && data.length === 0) {
-    return <div style={{ paddingBottom: '10px' }}>N/A</div>
+    const noDataDisplayValue = schema.getNoDataDisplayValue({ modelName: parentModelName, fieldName: parentFieldName, node: parentNode, customProps })
+    return <div style={{ paddingBottom: '10px' }}>{noDataDisplayValue}</div>
   }
 
   const deletable = schema.isTableDeletable({
