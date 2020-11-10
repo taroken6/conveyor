@@ -177,7 +177,7 @@ body {
 }
 
 .alert {
-  margin: 0 auto;
+  margin: auto;
   width: 60%;
   pointer-events: auto;
   margin-bottom: 1px !important;
