@@ -175,3 +175,9 @@ body {
 .page-link {
   cursor: pointer;
 }
+
+.alerts {
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+}
