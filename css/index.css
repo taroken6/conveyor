@@ -176,6 +176,13 @@ body {
   cursor: pointer;
 }
 
+.alert {
+  margin: 0 auto;
+  width: 60%;
+  pointer-events: auto;
+  margin-bottom: 1px !important;
+}
+
 .alerts {
   width: 100%;
   pointer-events: none;
