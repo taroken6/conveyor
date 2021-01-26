@@ -1,9 +1,12 @@
 #Conveyor Changelog
 
-## Unreleased
+## Version 0.5.0
 
 Added noDataDisplayValue to fields, which displays custom values when there is no data
 Added Alerts component
+Added ability to turn off pagination on model or detail level
+Added a prop noDataDisplayString that allows user to customize the string that displays when a field has no data
+Fix disappearing select options, broken initialOffset
 
 
 ## Version 0.4.0
