@@ -4,8 +4,7 @@ Conveyor Tutorial
 .. toctree::
    :maxdepth: 3
 
-   getting_started
    schema
-   containers
+   schemaNuancesAndNotes
+   tabs
    field_types
-   singleton
