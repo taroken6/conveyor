@@ -4,15 +4,6 @@
 Schema Nuances and Notes
 ******************************
 
-'schemaJSON' is the json object that is created (by you) before being converted to conveyor-schema's SchemaBuilder object.
-
- .. code-block:: javascript
-
-    const schemaJSON = {
-       'Book': Book,
-        ...otherModels
-    }
-
 Below is a partial schema for the 'Book' model.
 
  .. code-block:: javascript
