@@ -34,7 +34,7 @@ You can use InputCore to render a field conditionally or alter props:
 
  .. code-block:: javascript
 
-    import { InputCore } from 'conveyor'
+    import { InputCore } from '@autoinvent/conveyor'
 
     // in the schema, when you override an input:
     schema = { <modelName>: { fields: { <fieldName>: {
@@ -55,14 +55,13 @@ Disable a field in the create page. (By default, conveyor does this when creatin
 
  .. code-block:: javascript
 
-    import { InputCore, DisabledInput, getFieldLabel } from 'conveyor'
+    import { InputCore, DisabledInput } from '@autoinvent/conveyor'
 
     // alter the field to be disabled
     const FooInput = ({ schema, modelName, fieldName, formStack, value ...props }) => {
       if (someCondition) {
         // 'label' is the text above the field on the create page
-        const label = getFieldLabel({
-          schema,
+        const label = schema.getFieldLabel({
           modelName,
           fieldName,
           node: R.path(['originNode'], formStack),
@@ -107,7 +106,8 @@ If you want to create a custom string type:
 
  .. code-block:: javascript
 
-    import { FlexibleInput, inputTypes, getOnChange } from 'conveyor'
+    import { FlexibleInput, getOnChange } from '@autoinvent/conveyor'
+    import { inputTypes } from '@autoinvent/conveyor-schema'
 
     return (
       <FlexibleInput {...{
@@ -145,7 +145,8 @@ If you want to create a custom file type, adding new file extensions:
 
  .. code-block:: javascript
 
-    import { FlexibleInput, inputTypes, getOnChange } from 'conveyor'
+    import { FlexibleInput, getOnChange } from '@autoinvent/conveyor'
+    import { inputTypes } from '@autoinvent/conveyor-schema'
 
     return (
       <FlexibleInput {...{
@@ -188,7 +189,7 @@ Copy this boilerplate and pass it to conveyor's "FlexibleInput"
 
  .. code-block:: javascript
 
-    import { getField, getFieldLabel, getOnChange, getType } from 'conveyor'
+    import { getOnChange } from '@autoinvent/conveyor'
 
     // recreate onKeyDown
     const onKeyDown = evt => {
@@ -197,11 +198,11 @@ Copy this boilerplate and pass it to conveyor's "FlexibleInput"
       }
     }
     // get inputType from the schema
-    const inputType = getType({ schema, modelName, fieldName })
+    const inputType = schema.getType(modelName, fieldName)
     // wrap onChange in 'getOnChange'
     const defaultHandleOnChange = getOnChange({ inputType, onChange, fieldName })
     // get label string
-    const fieldLabel = getFieldLabel({ schema, modelName, fieldName, customProps })
+    const fieldLabel = schema.getFieldLabel({ modelName, fieldName, customProps })
     // default props for FlexibleInput
     const defaultProps = {
       id: `input-${modelName}-${fieldName}`,
@@ -210,7 +211,7 @@ Copy this boilerplate and pass it to conveyor's "FlexibleInput"
       labelStr: inline ? null : fieldLabel,
       value,
       error,
-      required: R.prop('required', getField(schema, modelName, fieldName)),
+      required: R.prop('required', schema.getField(modelName, fieldName)),
       customInput,
       autoFocus, // default: true for first string-like element on page
       onKeyDown

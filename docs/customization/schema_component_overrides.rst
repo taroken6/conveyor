@@ -100,8 +100,7 @@ Field Overrides
 
     // for 'cell' component, if the fieldName === 'tableLinkField' (schema-designated field which is the object's 'title' field, usually 'name'), and you want to mimic conveyor behavior, return this instead of 'Field':
 
-    const displayString = getDisplayValue({
-      schema,
+    const displayString = schema.getDisplayValue({
       modelName,
       node,
       customProps
