@@ -3,6 +3,7 @@ import { inputTypes } from '../consts'
 import * as R from 'ramda'
 import {
   InputDate,
+  InputDateTime,
   InputString,
   InputPassword,
   InputInt,
@@ -42,6 +43,7 @@ const defaultTypeMap = {
   [inputTypes.CURRENCY_TYPE]: InputCurrency,
   [inputTypes.PASSWORD_TYPE]: InputPassword,
   [inputTypes.DATE_TYPE]: InputDate,
+  [inputTypes.DATETIME_TYPE]: InputDateTime,
   [inputTypes.FILE_TYPE]: InputFile,
   [inputTypes.RADIO_TYPE]: InputRadio,
   [inputTypes.SELECT_TYPE]: InputSelect,
@@ -58,9 +60,12 @@ const FlexibleInput = props => {
    * @param { string } id - Unique input id
    * @param { any } [value] - Display value. Default: varies with type. Date value
    *      can be a moment object or a string.
-   * @param { string } [dateFormat] - Optional value for the DateInput component.
-   *      Default: 'YYYY-MM-DD'. Date value as a string should be consistent with
+   * @param { string } [dateFormat] - Optional value for the DateInput/DateTimeInput component.
+   *      Default: 'YYYY-MM-DD' or 'YYYY-MM-DD HH:mm'. Date value as a string should be consistent with
    *      dateFormat See moment.js for other format types
+   * @param { string } [timeFormat] - Optional value for the DateTimeInput component.
+   *      Default: 'HH:mm'. Time value as a string should be consistent with
+   *      timeFormat See moment.js for other format types
    * @param { string } [labelStr] - String used for built-in <label> component.
    *      Not available for "Boolean" type
    * @param { function } onChange
@@ -101,6 +106,8 @@ const FlexibleInput = props => {
    * @param { boolean } [autoFocus] refers to specific fields (see isAutoFocusInput()) that have
    *      autofocus input feature
    * @param { boolean } [spellCheck] - adds spell checking to the input box. Available for "String" and "TextArea" types.
+   * @param { boolean } [useUTC] - Optional value for the DateTimeInput component. Determines if UTC conversions should
+   *      be made or not.
    *
    * @returns { object } - Single input component
    */
@@ -127,6 +134,13 @@ const FlexibleInput = props => {
     case inputTypes.DATE_TYPE:
       params['dateFormat'] = R.defaultTo('yyyy/MM/dd', params['dateFormat'])
       params['isClearable'] = R.defaultTo(true, params['isClearable'])
+      break
+
+    case inputTypes.DATETIME_TYPE:
+      params['dateFormat'] = R.defaultTo('yyyy/MM/dd HH:mm', params['dateFormat'])
+      params['timeFormat'] = R.defaultTo('HH:mm', params['timeFormat'])
+      params['isClearable'] = R.defaultTo(true, params['isClearable'])
+      params['useUTC'] = R.defaultTo(true, params['useUTC'])
       break
 
     case inputTypes.FILE_TYPE:

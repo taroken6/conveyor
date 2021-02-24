@@ -1,6 +1,12 @@
 #Conveyor Changelog
 
+## Unreleased
+
+Add DateTime input type
+
 ## Version 0.5.0
+
+Released 1-26-21
 
 Added noDataDisplayValue to fields, which displays custom values when there is no data
 Added Alerts component

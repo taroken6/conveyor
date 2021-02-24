@@ -188,6 +188,7 @@ export const InputCore = ({
     case inputTypes.INT_TYPE:
     case inputTypes.TEXTAREA_TYPE:
     case inputTypes.DATE_TYPE:
+    case inputTypes.DATETIME_TYPE:
     case inputTypes.URL_TYPE:
     case inputTypes.EMAIL_TYPE:
     case inputTypes.PHONE_TYPE:

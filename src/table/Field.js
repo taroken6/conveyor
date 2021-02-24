@@ -151,6 +151,7 @@ export const Field = ({ schema, modelName, fieldName, tooltipData, node, id, cus
     case consts.inputTypes.FLOAT_TYPE:
     case consts.inputTypes.INT_TYPE:
     case consts.inputTypes.DATE_TYPE:
+    case consts.inputTypes.DATETIME_TYPE:
     case consts.inputTypes.TEXTAREA_TYPE:
     case consts.inputTypes.CREATABLE_STRING_SELECT_TYPE:
       return <FieldString {...{ noDataDisplayValue, ...props }} />
