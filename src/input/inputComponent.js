@@ -7,6 +7,8 @@ import Switch from 'rc-switch'
 import * as R from 'ramda'
 import { inputTypes } from '../consts'
 import { optimizeSelect } from '../utils/optimizeSelect'
+import { convertLocalToUTCDate, convertUTCToLocalDate } from '../utils/timezoneHelpers'
+import moment from 'moment'
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)
 
@@ -102,6 +104,75 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, is
         />
       </div>
     </FormGroup>
+  )
+}
+
+/**
+ * Singular component for DateTime Type.
+ *
+ * See React DatePicker for details on: dateFormat, isClearable
+ *
+ * should NOT have onKeyDown because the 'enter' key should be reserved for DatePicker operations
+
+ * @property { function } onChange - returns evt:
+ *      evt => onChange(evt)
+ * @property { string } id
+ * @property { string } [labelStr]
+ * @property { string } [error]
+ * @property { any } value - FlexibleInput component sets default to: null
+ * @property { string } dateFormat
+ * @property { string } timeFormat
+ * @property { string } className - FlexibleInput component sets default to: 'form-control'
+ * @property { boolean } isClearable - FlexibleInput component sets default to: true
+ * @property { boolean } useUTC - FlexibleInput component sets default to: true
+ * @property { object } [customInput] - Can override the following default
+ *      settings : { placeholderText: 'Click to select a date', fixedHeight: true,
+ *          dateFormat: 'YYYY-MM-DD'}. See React DatePicker docs for full list.
+ * @property { boolean } required
+ * @property { function } customError
+ * @property { function } customLabel
+ */
+
+// TODO: get classname for invalid from new react-datepicker
+export const InputDateTime = ({ onChange, id, labelStr, error, value, dateFormat, timeFormat, isClearable, useUTC, required, customInput, customError, customLabel }) => {
+  if (!value) {
+    value = ''
+  }
+
+  return (
+      <FormGroup
+          labelStr={labelStr}
+          htmlFor={id}
+          error={error}
+          required={required}
+          customError={R.defaultTo(CustomErrorComponent, customError)}
+          customLabel={customLabel}
+      >
+          <div style={{ display: 'inherit' }}>
+              <DatePicker
+                  placeholderText="Click to select a date"
+                  fixedHeight={true}
+                  dateFormat={dateFormat}
+                  selected={useUTC ? convertUTCToLocalDate(value) : new Date(value)}
+                  onChange={(date) => {
+                    if (date === undefined || date === null) {
+                      return (onChange(null))
+                    }
+                    return onChange(
+                        useUTC
+                            ? convertLocalToUTCDate(date).toISOString()
+                            : moment(date.toString()).toISOString(true)
+                    )
+                  }}
+                  className="form-control"
+                  isClearable={isClearable}
+                  showTimeSelect
+                  timeIntervals={15}
+                  timeFormat={timeFormat}
+                  {...customInput}
+              />
+          </div>
+      </FormGroup>
   )
 }
 

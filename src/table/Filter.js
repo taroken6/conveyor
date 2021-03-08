@@ -288,6 +288,7 @@ const FilterOptions = ({
       options = enumOptions
       break;
     case inputTypes.DATE_TYPE:
+    case inputTypes.DATETIME_TYPE:
       options = dateOptions
       break;
     case inputTypes.BOOLEAN_TYPE:
