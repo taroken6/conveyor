@@ -2,7 +2,12 @@
 
 ## Unreleased
 
+## Version 0.6.0
+
+Released 3-10-21
+
 Add DateTime input type
+
 
 ## Version 0.5.0
 
