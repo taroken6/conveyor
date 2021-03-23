@@ -91,41 +91,26 @@ const Input = ({
       }} />
   }
 
-  if (disabled) {
-    const label = schema.getFieldLabel({
+  return (
+    <InputCore {...{
+      schema,
       modelName,
       fieldName,
-      node: R.path(['originNode'], formStack),
-      customProps
-    })
-
-    return <DisabledInput {...{ value, label }} />
-  }
-
-  const fieldHelp = schema.getFieldHelpText(modelName, fieldName)
-
-  return (
-    <div>
-      <InputCore {...{
-        schema,
-        modelName,
-        fieldName,
-        node,
-        value,
-        error,
-        inline,
-        onChange,
-        selectOptions,
-        disabled,
-        customLabel,
-        onMenuOpen,
-        onCreatableMenuOpen,
-        autoFocus,
-        onKeyDown,
-        customProps,
-      }} />
-      {fieldHelp && <small className='help-text'>{fieldHelp}</small>}
-    </div>
+      node,
+      value,
+      error,
+      inline,
+      onChange,
+      selectOptions,
+      disabled,
+      customLabel,
+      formStack,
+      onMenuOpen,
+      onCreatableMenuOpen,
+      autoFocus,
+      onKeyDown,
+      customProps,
+    }} />
   )
 }
 
@@ -147,6 +132,62 @@ export const getOnChange = ({ inputType, onChange, fieldName }) => {
 }
 
 export const InputCore = ({
+  schema,
+  modelName,
+  fieldName,
+  node,
+  value,
+  error,
+  inline,
+  onChange,
+  selectOptions,
+  disabled,
+  customLabel,
+  formStack,
+  onMenuOpen,
+  onCreatableMenuOpen,
+  customInput,  // optional; used for FlexibleInput only; differs from 'customProps'
+  autoFocus,
+  onKeyDown,
+  customProps
+}) => {
+  if (disabled) {
+      const label = schema.getFieldLabel({
+      modelName,
+      fieldName,
+      node: R.path(['originNode'], formStack),
+      customProps
+    })
+
+    return <DisabledInput {...{ value, label }} />
+  }
+
+  const fieldHelp = schema.getFieldHelpText(modelName, fieldName)
+
+  return (
+    <div>
+      <InputInnerCore {...{
+        schema,
+        modelName,
+        fieldName,
+        value,
+        error,
+        inline,
+        onChange,
+        selectOptions,
+        customLabel,
+        onMenuOpen,
+        onCreatableMenuOpen,
+        autoFocus,
+        onKeyDown,
+        customProps,
+      }} />
+      {fieldHelp && <small className='help-text'>{fieldHelp}</small>}
+    </div>
+  )
+}
+
+const InputInnerCore = ({
   schema,
   modelName,
   fieldName,
