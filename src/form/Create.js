@@ -180,7 +180,7 @@ export const DefaultCreate = ({
   }
 
   return (
-    <div className='container'>
+    <div className={'container conv-create conv-create-'+modelName}>
       <Breadcrumbs
         schema={schema}
         formStack={formStack}

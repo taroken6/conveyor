@@ -534,7 +534,8 @@ export const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, cus
   const id = R.prop('id', node)
   const HeaderLink = schema.getHasIndex(modelName) ? <Link to={'/' + modelName}>{model}</Link> : model
   return (
-    <div><h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
+    <div className={'conv-default-detail-page-title conv-default-detail-page-title-' + modelName}>
+      <h2 className='d-inline'>{HeaderLink}:<b> {label}</b></h2>
       { schema.isDeletable({ modelName, node, customProps }) &&
         <div className='float-right'>
           <DeleteButton {...{ modalId, onDeleteWarning, modelName, id }} />
@@ -575,7 +576,7 @@ export const DetailFields = ({
 
   return (
     <React.Fragment>
-      <dl className='row'>
+      <dl className={'row conv-detail-attributes conv-detail-attributes-' + modelName}>
         {descriptionList.map(fieldName => {
           if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps }) === false) {
               return null
@@ -642,8 +643,8 @@ export const DetailFields = ({
   )
 }
 
-const Wrapper = ({ children }) => (
-  <div className='container'>
+const Wrapper = ({ children, modelName }) => (
+  <div className={'container conv-detail-wrapper conv-detail-wrapper-' + modelName}>
     <div className='row'>
       <div className='col'>
         {children}
@@ -678,7 +679,7 @@ export const DefaultDetail = ({
   const DetailPage = DetailPageOverride || DefaultDetailPage
 
   if (R.isEmpty(node)) {
-    return <div className='container'>Loading...</div>
+    return <div className='container conv-detail-wrapper conv-detail-wrapper-loading'>Loading...</div>
   }
 
   if (node === null) {
@@ -690,7 +691,7 @@ export const DefaultDetail = ({
   }
 
   return (
-    <Wrapper>
+    <Wrapper modelName={modelName}>
       {skipOverride(DetailTitleOverride) ? null : (
         <DetailTitle key={`DetailTitle-${id}-${schema}-${modelName}`}
           {...{

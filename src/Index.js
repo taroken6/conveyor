@@ -27,7 +27,7 @@ export const DefaultIndexTitle = ({
   const filtersAreActive = R.path([modelName, 'filter', 'filtersAreActive'], tableView)
 
   return (
-    <div style={{ marginBottom: '10px' }}>
+    <div className={'conv-default-index-title conv-default-index-title-' + modelName} style={{ marginBottom: '10px' }}>
       <h3 className='d-inline'>
         {schema.getModelLabelPlural({ modelName, data, customProps })}
       </h3>
@@ -91,7 +91,7 @@ export const DefaultIndex = ({
   }
 
   return (
-    <div className='container'>
+    <div className={'container conv-index conv-index-' + modelName}>
       {skipOverride(IndexTitleOverride) ? null : (
         <IndexTitle
           {...{

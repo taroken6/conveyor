@@ -165,7 +165,7 @@ export const InputCore = ({
   const fieldHelp = schema.getFieldHelpText(modelName, fieldName)
 
   return (
-    <div>
+    <div className={'conv-input conv-input-model-'+modelName}>
       <InputInnerCore {...{
         schema,
         modelName,

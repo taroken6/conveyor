@@ -71,7 +71,7 @@ const formatFilter = ({
     ? { label: null, value: null }
     : toOptions(filterOrder[index])
   return (
-    <li key={`${index}-${modelName}-${fieldName}-format-filter`} className='list-group-item'>
+    <li key={`${index}-${modelName}-${fieldName}-format-filter`} className='list-group-item conv-format-filter'>
       <div className='filter-fieldname-dropdown'>
         <div className='w-100'>
           <FlexibleInput {...{
@@ -135,7 +135,7 @@ const ActiveFilters = ({
   filterInputs,
   customProps
 }) => (
-  <div id={'active-filters-' + modelName} className="mb-2">
+  <div id={'active-filters-' + modelName} className={"mb-2 conv-active-filters conv-active-filters-" + modelName}>
     <ul className="list-group">
       {R.isEmpty(filterOrder) || R.isNil(filterOrder) ? (
         <li
@@ -200,6 +200,7 @@ export const FilterModal = ({
     <Modal
       id={'filter-' + modelName}
       title={'Filters - ' + modelName}
+      className={'conv-filter-modal conv-filter-modal-' + modelName}
       children={
         <ActiveFilters {...{
           modelName,
@@ -224,7 +225,7 @@ export const FilterModal = ({
 
 export const FilterModalButton = ({ modelName, filtersAreActive }) => (
   <button
-    className='btn btn-sm btn-outline-primary'
+    className={'btn btn-sm btn-outline-primary conv-filter-modal-button conv-filter-modal-button-' + modelName}
     data-toggle='modal'
     data-target={'#filter-' + modelName}
   >
@@ -346,7 +347,7 @@ export const FilterComp = ({
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
     <React.Fragment>
-      <div className='filter-operator-dropdown'>
+      <div className='filter-operator-dropdown conv-filter-operator-dropdown'>
         <FilterOptions {...{
           schema,
           modelName,
@@ -356,7 +357,7 @@ export const FilterComp = ({
           onFilterDropdown,
         }} />
       </div>
-      <div className='filter-input'>
+      <div className='filter-input conv-filter-input'>
       { R.prop('value', operator) !== 'EXISTS' && R.prop('value', operator) !== 'DOESNOTEXIST' && <InputCore {...{
           schema,
           modelName,

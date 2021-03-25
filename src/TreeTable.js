@@ -52,7 +52,7 @@ const ToggleContainer = ({ stateNode, toggleRow, children }) => {
   const handleClick = makeOnClick(stateNode, toggleRow)
 
   const component = (
-    <div style={{ cursor: 'pointer' }} onClick={handleClick}>
+    <div className='conv-toggle-container-component' style={{ cursor: 'pointer' }} onClick={handleClick}>
       {children}
     </div>
   )
@@ -62,6 +62,7 @@ const ToggleContainer = ({ stateNode, toggleRow, children }) => {
     delay={1000}
     hideDelay={0}
     position={'left'}
+    className='conv-toggle-container-tooltip'
     popperOptions={{
       modifiers: {
         preventOverflow: {

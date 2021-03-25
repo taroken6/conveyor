@@ -9,7 +9,7 @@ const PrintButton = ({ url }) => (
       type: 'image',
       style: 'img {display: block; margin: auto;}'
     })}
-    className='btn btn-sm btn-outline-success'
+    className='btn btn-sm btn-outline-success conv-print-button'
     style={{ marginTop: '5px' }}
     role='button'
   >Print</button>

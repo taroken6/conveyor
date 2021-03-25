@@ -14,7 +14,7 @@ const GotoTooltip = ({
   canGoto,
 }) => {
   return (
-    <div id={`${modelName}${fieldName ? '-' + fieldName : ''}-pg-tooltip`} className='goto-tooltip'>
+    <div id={`${modelName}${fieldName ? '-' + fieldName : ''}-pg-tooltip`} className='goto-tooltip conv-goto-tooltip'>
       {canGoto ? null : <div className='mb-2 goto-tooltip-invalid'>Please enter a valid page number.</div>}
       <div className='d-flex'>
         <div className='mr-2 float-left'>
@@ -112,7 +112,7 @@ export const Pagination = ({
 
   return (
     <nav aria-label="Page navigation example">
-      <ul className="pagination">
+      <ul className="pagination conv-pagination">
         {hasFirst && (
           <PaginationLink
             {...{

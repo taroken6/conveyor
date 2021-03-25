@@ -8,7 +8,7 @@ export const RelTooltipContent = ({ data }) => {
     return <span>...loading</span>
   }
   return (
-    <table className='table table-sm table-bordered table-striped tooltip-table'>
+    <table className='table table-sm table-bordered table-striped tooltip-table conv-rel-tooltip-content'>
       <tbody>
         {data.map(({ name, value }) => (
           <tr key={`tooltip-${name}`}>
@@ -42,6 +42,7 @@ const RelTooltip = ({ schema, modelName, id, data, children }) => {
     html={<RelTooltipContent data={data} />}
     delay={0}
     theme='light'
+    className='conv-rel-tooltip'
     onShow={() => tooltipOpened({ modelName: modelName, id })}
     popperOptions={{
       modifiers: {
