@@ -5,7 +5,7 @@ export const Breadcrumbs = ({ schema, formStack, customProps }) => {
   const stack = R.prop('stack', formStack)
   const index = R.prop('index', formStack)
   return (
-    <nav aria-label='breadcrumbs' style={{ width: '100%' }}>
+    <nav aria-label='breadcrumbs' className='conv-breadcrumbs' style={{ width: '100%' }}>
       <ol className='breadcrumb'>
         {stack.map((crumb, idx) => {
           const modelName = R.prop('modelName', crumb)

@@ -2,8 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PrintButton from './PrintButton'
 
-export const Modal = ({ id, title, children }) => (
-  <div className='modal fade' id={id} tabIndex={-1}>
+export const Modal = ({ id, title, className='', children }) => (
+  <div className={'modal fade conv-modal '+className} id={id} tabIndex={-1}>
     <div className='modal-dialog modal-lg'>
       <div className='modal-content'>
         <div className='modal-header'>
@@ -18,15 +18,15 @@ export const Modal = ({ id, title, children }) => (
   </div>
 )
 
-const ImageModal = ({ id, title, url }) => {
+const ImageModal = ({ id, title, className, url }) => {
   let child
   if (!url) {
     child = (
-      <div className='text-center'>{'...generating image'}</div>
+      <div className='text-center conv-image-modal conv-image-modal-loading'>{'...generating image'}</div>
     )
   } else {
     child = (
-      <div className='text-center'>
+      <div className='text-center conv-image-modal conv-image-modal-loaded'>
         <div>
           <a href={url} target='_blank' rel='noopener noreferrer'>
             <img className='img-fluid' src={`${url}?ts=${Date.now()}`} />
@@ -42,7 +42,7 @@ const ImageModal = ({ id, title, url }) => {
     )
   }
   return (
-    <Modal {...{ id, title }}>
+    <Modal {...{ id, title, className }}>
       {child}
     </Modal>
   )
@@ -51,6 +51,7 @@ const ImageModal = ({ id, title, url }) => {
 export const ImageLinkModal = ({
   id,
   title,
+  className,
   url
 }) => {
   if (!url || url === 'None') { return <span>No Image</span> }
@@ -59,7 +60,7 @@ export const ImageLinkModal = ({
       <Link to={`show-${id}`} data-toggle='modal' data-target={'#' + id}>
         Click to view
       </Link>
-      <ImageModal {...{ id, title, url }} />
+      <ImageModal {...{ id, title, className, url }} />
     </React.Fragment>
   )
 }

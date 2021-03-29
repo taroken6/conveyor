@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+Add classNames to common components Issue #13
+
 ## Version 0.6.0
 
 Released 3-10-21

@@ -30,7 +30,7 @@ export const relationshipLabelFactory = ({ schema, modelName, fieldName, onClick
 }
 
 export const DisabledInput = ({ value, label }) => (
-  <React.Fragment>
+  <div className='conv-disabled-input'>
     <span>{label}</span>
     {
       // TODO: Move into css files
@@ -40,7 +40,7 @@ export const DisabledInput = ({ value, label }) => (
         {value}
       </div>
     </div>
-  </React.Fragment>
+  </div>
 )
 
 const Input = ({
@@ -165,7 +165,7 @@ export const InputCore = ({
   const fieldHelp = schema.getFieldHelpText(modelName, fieldName)
 
   return (
-    <div>
+    <div className={'conv-input conv-input-model-'+modelName}>
       <InputInnerCore {...{
         schema,
         modelName,

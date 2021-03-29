@@ -73,9 +73,9 @@ const HeaderRow = ({ headers }) => {
 const ReviewTable = ({ schema, table, customProps }) => {
   let headers = []
   let editedHeaderFields
+  const node = table[0]
+  const nodeModelName = R.prop('__typename', node)
   if (!R.isEmpty(table)) {
-    const node = table[0]
-    const nodeModelName = R.prop('__typename', node)
     // get headers from schema
     const customHeaders = R.path([nodeModelName, 'deleteModal', 'headers'], schema.schemaJSON)
 
@@ -101,7 +101,7 @@ const ReviewTable = ({ schema, table, customProps }) => {
     modelName: R.propOr('', '__typename', R.head(table)), data: table, customProps
   })
   return (
-    <div className='mt-2'>
+    <div className={'mt-2 conv-delete-modal-table conv-delete-modal-table-'+nodeModelName}>
       <h5 className='d-inline'>{tableDisplayName}</h5>
       <table className='table table-striped table-bordered'>
         <tbody>
@@ -139,7 +139,7 @@ export const DeleteDetail = ({
   const actions = schema.getActions(modelName)
   const onCancelDelete = R.path(['delete', 'onCancelDelete'], actions)
   return (
-    <Modal {...{ id: modalId, title }}>
+    <Modal {...{ id: modalId, title, className: 'conv-delete-modal' }}>
       <span><strong>The following entries will be deleted:</strong></span>
       {!modalStore && <div className={'text-center'}>...loading</div>}
       {modalStore && modalStore.map((table, index) => (
@@ -186,7 +186,7 @@ export const RemoveDetail = ({
   const name = schema.getDisplayValue({ modelName, node, customProps })
   const parentField = schema.getFieldLabel({ modelName: parentModelName, fieldName: parentFieldName, node, customProps })
   return (
-    <Modal {...{ id: modalId, title }}>
+    <Modal {...{ id: modalId, title, className: 'conv-delete-modal' }}>
       <span>
         <strong>{`Do you want to remove ${name} from ${parentField}?`}</strong>
         {` Note: ${name} will not be deleted, but the relationship will be cut.`}

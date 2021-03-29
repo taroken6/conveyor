@@ -12,7 +12,7 @@ import moment from 'moment'
 
 const errorBuilder = ({ error, id }) => error.map(r => <div key={`${r}-${id}-error`}>{r}<br /></div>)
 
-export const FormGroup = ({ labelStr, htmlFor, error, children, required, customError = null, customLabel = null }) => {
+export const FormGroup = ({ labelStr, htmlFor, error, children, className, required, customError = null, customLabel = null }) => {
   let errorComp
   if (!customError && error) {
     errorComp = <div className='invalid-feedback'>{errorBuilder({ error, id: htmlFor })}</div>
@@ -28,7 +28,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, required, custom
   }
 
   return (
-    <div className='form-group zero-space'>
+    <div className={'form-group zero-space '+className}>
       {labelComp}
       {children}
       {errorComp}
@@ -81,7 +81,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, is
   }
 
   return (
-    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-date'
       customError={R.defaultTo(CustomErrorComponent, customError)}
       customLabel={customLabel}>
       <div style={{ display: 'inherit' }}>
@@ -145,6 +145,7 @@ export const InputDateTime = ({ onChange, id, labelStr, error, value, dateFormat
           htmlFor={id}
           error={error}
           required={required}
+          className='conv-input-component conv-input-type-datetime'
           customError={R.defaultTo(CustomErrorComponent, customError)}
           customLabel={customLabel}
       >
@@ -203,7 +204,7 @@ const inputStringTypeMap = {
  */
 
 export const InputString = ({ type, onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown, spellCheck }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-string'
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <input
@@ -238,7 +239,7 @@ export const InputString = ({ type, onChange, id, labelStr, error, value, classN
  */
 
 export const InputPassword = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-password'
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <input
@@ -281,7 +282,7 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
     error = R.append('Number too large.', error)
   }
   return (
-    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-int'
       customError={R.defaultTo(null, customError)}
       customLabel={customLabel}>
       <input
@@ -307,7 +308,7 @@ export const InputInt = ({ onChange, id, labelStr, error, value, className, requ
 }
 
 export const InputCurrency = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, onKeyDown }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-currency'
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <div className='input-group'>
@@ -353,7 +354,7 @@ export const InputCurrency = ({ onChange, id, labelStr, error, value, className,
  */
 
 export const InputTextArea = ({ onChange, id, labelStr, error, value, className, required, customInput, customError, customLabel, autoFocus, spellCheck }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-textarea'
     customError={R.defaultTo(null, customError)}
     customLabel={customLabel}>
     <textarea
@@ -387,7 +388,7 @@ export const InputTextArea = ({ onChange, id, labelStr, error, value, className,
  */
 
 export const InputRadio = ({ onChange, id, labelStr, error, value, className, options, inline, required, customInput, customError, customLabel }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-radio'
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
     {options.map((option, idx) => (
@@ -423,7 +424,7 @@ export const InputRadio = ({ onChange, id, labelStr, error, value, className, op
 
 export const InputFile = ({ onChange, error, id, labelStr, className, required, customInput, customError, customLabel }) => {
   return (
-    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+    <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-file'
       customError={R.defaultTo(null, customError)}
       customLabel={customLabel}>
       <input
@@ -456,7 +457,7 @@ export const InputFile = ({ onChange, error, id, labelStr, className, required, 
  */
 
 export const InputSwitch = ({ onChange, value, inline, id, className, labelStr, error, required, customInput, customError, customLabel }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-switch'
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
     <div key={`checkbox-${id}`} className={`${className} ${inline ? ' form-check-inline' : ''}`}>
@@ -492,7 +493,7 @@ export const InputSwitch = ({ onChange, value, inline, id, className, labelStr, 
 export const InputCheckbox = ({ onChange, value, id, className, labelStr, error, required, customInput, customError }) => {
   customError = R.defaultTo(CustomErrorComponent, customError)
   return (
-    <div key={`checkbox-${id}`} className={className}>
+    <div key={`checkbox-${id}`} className={'conv-input-component conv-input-type-checkbox '+className}>
       <label className='form-check-label'>
         <input
           className='form-check-input'
@@ -538,7 +539,7 @@ export const InputCheckbox = ({ onChange, value, id, className, labelStr, error,
  */
 
 export const InputSelect = ({ labelStr, id, error, className, isClearable, isMulti, value, options, onChange, noOptionsMessage, onMenuOpen, required, customInput, customError, customLabel }) => (
-  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required}
+  <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-select'
     customError={R.defaultTo(CustomErrorComponent, customError)}
     customLabel={customLabel}>
     <Select
@@ -601,6 +602,7 @@ export const InputCreatableStringSelect = ({
       htmlFor={id}
       error={error}
       required={required}
+      className='conv-input-component conv-input-type-creatable-string-select'
       customError={R.defaultTo(CustomErrorComponent, customError)}
       customLabel={customLabel}
     >

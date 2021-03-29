@@ -446,7 +446,7 @@ export const Table = ({
 
   return (
     <React.Fragment>
-      <table className="table table-striped table-bordered table-hover">
+      <table className={"table table-striped table-bordered table-hover conv-table conv-table-" + modelName}>
         <Head
           {...{
             schema,

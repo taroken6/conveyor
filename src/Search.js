@@ -54,7 +54,7 @@ export const Search = ({
   const showResults = queryText && entries.length > 0
   return (
     <div
-      className="mr-3 dropdown form-inline"
+      className="mr-3 dropdown form-inline conv-search"
       onKeyPress={evt => {
         if (evt.key === 'Enter') {
           onTriggerSearch({ queryText })
@@ -82,7 +82,7 @@ export const Search = ({
       />
       {showResults && searchDropdown && (
         <div
-          className={`dropdown-menu dropdown-menu-right ${entries.length > 0 &&
+          className={`dropdown-menu dropdown-menu-right conv-search-dropdown ${entries.length > 0 &&
             'show'}`}
           style={{
             maxHeight: '60vh',
