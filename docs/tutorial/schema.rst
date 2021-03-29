@@ -21,72 +21,72 @@ Schema Overview
 
   {
     <modelName>: {
-      tabs: (O) #See tab documentation, determined by Front end
-      hasIndex: (0) boolean #Whether the model should be included in an index page
-      deletable: (C) boolean or function #Whether the given field should be deletable
-      creatable: (C) boolean or function #Whether the given field should be creatable
-      singleton: (O) boolean #Whether this model is singleton (display one instance only)
-      createFieldOrder: (O) #List or a function that returns a list of the order that the create fields display
-      indexFieldOrder: (O) #List or a function that returns a list of the order that the index fields display
-      detailFieldOrder: (O) #List or a function that returns a list of the order that the detail fields display
-      queryName: (R) #Name of gql query that will return a single instance of the model
-      queryAllName: (R) #Name of gqlquery that will return all instances of the model
-      queryRequired: (R) #List of fields that must be present on the query
-      modelName: (AG) #Name of model
-      displayName: (DEF) "" or function #Singular display name of model or function that calculates displayName, used on detail page
-      displayNamePlural: (DEF) "" or function #Plural display name of Model or function that calculates displayNamePlural, used on index page
-      tableLinkField: (C) "" #name of the field/column in a table that have a hyperlink to the detail page, a value of null means no link to the model should be displayed on a table
-      displayField: (O) "" or function #name of field that holds the data used to represent the instance when it is being displayed or referenced, defaults to "name" if left undefined, can also be a function that determines the value for any instance of the model
-      fieldOrder: (R) "" #List of ALL fields on a model in the order that they should be displayed on its own Detail and Index pages, also serves as a fall back if a different model is displaying this model without having specified the order in which the fields should be displayed.
-      filterable: (O) bool or func #Whether the given table should be filterable (can be set on field lvl as well)
-      sortable: (O) bool or func #Whether the given table should be sortable (can be set on field lvl as well)
-      paginate: (O) bool #if false, deactivates pagination for the model index table
+      tabs: (O) # See tab documentation, determined by Front end
+      hasIndex: (0) bool # Whether the model should be included in an index page
+      deletable: (C) bool or function # Whether the given field should be deletable
+      creatable: (C) bool or function # Whether the given field should be creatable
+      singleton: (O) bool # Whether this model is singleton (display one instance only)
+      createFieldOrder: (O) # List or a function that returns a list of the order that the create fields display
+      indexFieldOrder: (O) # List or a function that returns a list of the order that the index fields display
+      detailFieldOrder: (O) # List or a function that returns a list of the order that the detail fields display
+      queryName: (R) # Name of gql query that will return a single instance of the model
+      queryAllName: (R) # Name of gqlquery that will return all instances of the model
+      queryRequired: (R) [str] # List of fields that must be present on the query
+      modelName: (AG) # Name of model
+      displayName: (DEF) str or function # Singular display name of model or function that calculates displayName, used on detail page
+      displayNamePlural: (DEF) str or function # Plural display name of Model or function that calculates displayNamePlural, used on index page
+      tableLinkField: (C) str # name of the field/column in a table that have a hyperlink to the detail page, a value of null means no link to the model should be displayed on a table
+      displayField: (O) str or function # name of field that holds the data used to represent the instance when it is being displayed or referenced, defaults to "name" if left undefined, can also be a function that determines the value for any instance of the model
+      fieldOrder: (R) [str] # List of ALL fields on a model in the order that they should be displayed on its own Detail and Index pages, also serves as a fall back if a different model is displaying this model without having specified the order in which the fields should be displayed.
+      filterable: (O) bool or func # Whether the given table should be filterable (can be set on field lvl as well)
+      sortable: (O) bool or func # Whether the given table should be sortable (can be set on field lvl as well)
+      paginate: (O) bool # If false, deactivates pagination for the model index table
       fields: {
         <fieldName>: {
           components: (O) {
-            cell: () => {} #Override the display component of model.field when displayed within a table, determined by Front end
-            detail: () => {} #Override the display label and value of model.field when displayed on a detail page, determined by Front end
-            detailLabel: () => {} #Override the display label of model.field when displayed on a detail page, determined by Front end
-            detailValue: () => {} #Override the display value of model.field when displayed on a detail page, determined by Front end
-            input: () => {} #Override the input component of model.field when editing, determined by Front end
-            labelInfo: () => {} #the content to display in the popover when the label is clicked on
+            cell: function # Override the display component of model.field when displayed within a table, determined by Front end
+            detail: function # Override the display label and value of model.field when displayed on a detail page, determined by Front end
+            detailLabel: function # Override the display label of model.field when displayed on a detail page, determined by Front end
+            detailValue: function # Override the display value of model.field when displayed on a detail page, determined by Front end
+            input: function # Override the input component of model.field when editing, determined by Front end
+            labelInfo: function # the content to display in the popover when the label is clicked on
           }
-          required: (AG) bool #If field is required in order to submit form
-          fieldName: (AG) "" #Name of the field, used as the key in fields dictionary
-          fieldHelp: (O) "" #Text to display under the field when it is being edited
-          displayName: (DEF) "" or function #Provides how the field should be displayed or function that calculates displayName
-          noDataDisplayValue: (DEF) "" or function #Value to display when a field has no data
-          detailAttribute: (O) boolean #for custom/virtual fields; unnecessary if 'type' specified; Ensures that field doesn't appear with other tables, but rather other detail attributes
-          type: (AG) "" #When type is a string it provides the type of a simple type such as string, int, or date
+          required: (AG) bool # If field is required in order to submit form
+          fieldName: (AG) str # Name of the field, used as the key in fields dictionary
+          fieldHelp: (O) str # Text to display under the field when it is being edited
+          displayName: (DEF) str or function # Provides how the field should be displayed or function that calculates displayName
+          noDataDisplayValue: (DEF) str or function # Value to display when a field has no data
+          detailAttribute: (O) bool # for custom/virtual fields; unnecessary if 'type' specified; Ensures that field doesn't appear with other tables, but rather other detail attributes
+          type: (AG) str # When type is a string it provides the type of a simple type such as string, int, or date
           OR
-          type: { #When type is an object is provides the type of a more complicated type such as relationship or enum
-            type: (AG**) "" # Database type of OneToOne, OneToMany, ManyToMany, or ManyToOne
-            target: (AG) "" #modelName of the target of the relationship
-            backref: (AG) "" #name of relationship on the targets side
-            tableFields: (R) [] #List of fields on the target model to display when displaying a table on the detail page
+          type: Obj { # When type is an object is provides the type of a more complicated type such as relationship or enum
+            type: (AG**) str # Database type of OneToOne, OneToMany, ManyToMany, or ManyToOne
+            target: (AG) str # modelName of the target of the relationship
+            backref: (AG) str # name of relationship on the targets side
+            tableFields: (R) [] # List of fields on the target model to display when displaying a table on the detail page
           }
-          choices: (AG) { #Dict of choice values to their labels
+          choices: (AG) Obj { # If this is a choice field, maps out values & their labels
               'choice_value' : 'choice_label'
           }
-          choiceOrder: (AG) [] #Order of 'choices' appearing in Enum field
+          choiceOrder: (AG) [str] # Order of 'choices' appearing in Enum field
           displayConditions: (O) {
-            detail: () => #A function that evaluates to true or false to determines if the field will display on a detail page
-            index: () => #A function that evaluates to true or false to determines if the field will display in an index table
-            create: () => #A function that evaluates to true or false to determine if the field will display on a create page
+            detail: () => # A function that evaluates to true or false to determines if the field will display on a detail page
+            index: () => # A function that evaluates to true or false to determines if the field will display in an index table
+            create: () => # A function that evaluates to true or false to determine if the field will display on a create page
           },
-          hideable: (O) #bool; if table component can be hidden, have 'hide' button
-          disabled: (O) #bool or function #Whether field should be disabled or not,
-          disabledDropDown: (O) #function which filters out or disables drop down options,
-          sortable: (C) bool or func #Whether the given field should be sortable on tables (can be set on table lvl as well)
-          filterable: (C) bool or func #Whether the given field should be filterable on tables (can be set on table lvl as well)
-          editable: (C) boolean or function #Whether the given field should be editable
-          showDetail: (C) boolean or function #Whether the given field should be displayed on the detail page
-          showIndex: (C) boolean or function #Whether the given field should be displayed on the index page
-          showCreate: (C) boolean or function #Whether the given field should be displayed on the create page
-          showTooltip: (C) boolean or function #Whether the given field should be displayed on the tooltip
-          queryIndex: (O) boolean #Whether should be queried while fetching index page; by default the query will look at 'showIndex' prop but, if showIndex is false and queryIndex is true, will still query the field; used if you wish to have a field be available but NOT displaying for index
-          queryDetail: (O) boolean #Whether should be queried while fetching detail page; by default the query will look at 'showDetail' prop but, if showDetail is false and queryDetail is true, will still query the field; used if you wish to have a field be available but NOT displaying for detail
-          virtualField: (O) boolean #If set true, will deactivate the field from being queried so that no back end resolver needs to be created.
+          hideable: (O) bool # If table component can be hidden, have 'hide' button
+          disabled: (O) bool or function # Whether field should be disabled or not,
+          disabledDropDown: (O) func # filters out or disables drop down options,
+          sortable: (C) bool or func # Whether the given field should be sortable on tables (can be set on table lvl as well)
+          filterable: (C) bool or func # Whether the given field should be filterable on tables (can be set on table lvl as well)
+          editable: (C) bool or function # Whether the given field should be editable
+          showDetail: (C) bool or function # Whether the given field should be displayed on the detail page
+          showIndex: (C) bool or function # Whether the given field should be displayed on the index page
+          showCreate: (C) bool or function # Whether the given field should be displayed on the create page
+          showTooltip: (C) bool or function # Whether the given field should be displayed on the tooltip
+          queryIndex: (O) bool # Whether should be queried while fetching index page; by default the query will look at 'showIndex' prop but, if showIndex is false and queryIndex is true, will still query the field; used if you wish to have a field be available but NOT displaying for index
+          queryDetail: (O) bool # Whether should be queried while fetching detail page; by default the query will look at 'showDetail' prop but, if showDetail is false and queryDetail is true, will still query the field; used if you wish to have a field be available but NOT displaying for detail
+          virtualField: (O) bool # If set true, will deactivate the field from being queried so that no back end resolver needs to be created.
         }
       },
       actions: (AGF) {
@@ -103,15 +103,15 @@ Schema Overview
       },
       //model level components
       components: (O) {
-        detail: () => {} // Detail override components (both title and page)
-        detailTitle: () => {} // Detail Title override component
-        detailPage: () => {} // Detail Page override components
-        create: () => {} // Create override components (both title and page)
-        createTitle: () => {} // Create Title override component
-        createPage: () => {} // Create page override component
-        index: () => {} // Index page override components (both title and page)
-        indexTitle: () => {} Index title override component
-        indexPage: () => {} // Index page override component
+        detail: function # Detail override component (both title and page)
+        detailTitle: function # Detail Title override component
+        detailPage: function # Detail Page override component
+        create: function # Create override component (both title and page)
+        createTitle: function # Create Title override component
+        createPage: function # Create page override component
+        index: function # Index override component (both title and page)
+        indexTitle: function # Index title override component
+        indexPage: function # Index page override component
       }
     }
   }
