@@ -76,7 +76,7 @@ export const DefaultCreatePage = ({
     }
   }
   return (
-    <React.Fragment>
+    <div className={'conv-create-page conv-create-page-' + modelName}>
       <div>* Indicates a Required Field</div>
       <br />
       <div>
@@ -158,7 +158,7 @@ export const DefaultCreatePage = ({
           Cancel
         </button>
       </div>
-    </React.Fragment>
+    </div>
   )
 }
 

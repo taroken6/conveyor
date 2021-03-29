@@ -346,8 +346,8 @@ export const FilterComp = ({
   const actions = schema.getActions(modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   return (
-    <React.Fragment>
-      <div className='filter-operator-dropdown conv-filter-operator-dropdown'>
+    <div className={'conv-filter-comp conv-filter-comp-' + modelName}>
+      <div className='filter-operator-dropdown'>
         <FilterOptions {...{
           schema,
           modelName,
@@ -357,7 +357,7 @@ export const FilterComp = ({
           onFilterDropdown,
         }} />
       </div>
-      <div className='filter-input conv-filter-input'>
+      <div className='filter-input'>
       { R.prop('value', operator) !== 'EXISTS' && R.prop('value', operator) !== 'DOESNOTEXIST' && <InputCore {...{
           schema,
           modelName,
@@ -372,6 +372,6 @@ export const FilterComp = ({
           }
         }} /> }
       </div>
-    </React.Fragment>
+    </div>
   )
 }

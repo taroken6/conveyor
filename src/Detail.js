@@ -348,7 +348,7 @@ export const DefaultDetailTable = ({
     const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
     const DetailLabel = LabelOverride || DefaultDetailO2MTableTitle
     return (
-      <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
+      <div key={`Fragment-${id}-${targetModelName}-${fieldName}`} className={'conv-detail-table conv-detail-table-' + targetModelName}>
         { skipOverride(LabelOverride) ? null : <DetailLabel {...{
           schema,
           modelName,
@@ -391,7 +391,7 @@ export const DefaultDetailTable = ({
             summary
           }}
         /> }
-      </React.Fragment>
+      </div>
     )
   } else if (type === 'ManyToMany') {
     if (isFieldEditing(editData, modelName, id, fieldName)) {
@@ -413,7 +413,7 @@ export const DefaultDetailTable = ({
       })
 
       return (
-        <React.Fragment>
+        <div className={'conv-detail-table conv-detail-table-' + targetModelName}>
           <Input {...{
             schema,
             modelName,
@@ -446,7 +446,7 @@ export const DefaultDetailTable = ({
               })
             }} />
           </div>
-        </React.Fragment>
+        </div>
       )
     }
 
@@ -458,7 +458,7 @@ export const DefaultDetailTable = ({
     }
 
     return (
-      <React.Fragment key={`Fragment-${id}-${targetModelName}-${fieldName}`}>
+      <div key={`Fragment-${id}-${targetModelName}-${fieldName}`} className={'conv-detail-table conv-detail-table-' + targetModelName}>
         { skipOverride(LabelOverride) ? null : <DetailLabel {...{
           schema,
           modelName,
@@ -499,7 +499,7 @@ export const DefaultDetailTable = ({
             customProps,
           }}
         /> }
-      </React.Fragment>
+      </div>
     )
   }
 }
