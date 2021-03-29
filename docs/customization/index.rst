@@ -6,3 +6,4 @@ Customization
 
    schema_component_overrides
    customizing_fields
+   conveyor_css_classes
