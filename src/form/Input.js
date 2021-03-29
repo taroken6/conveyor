@@ -178,6 +178,7 @@ export const InputCore = ({
         customLabel,
         onMenuOpen,
         onCreatableMenuOpen,
+        customInput,  // optional; used for FlexibleInput only; differs from 'customProps'
         autoFocus,
         onKeyDown,
         customProps,
