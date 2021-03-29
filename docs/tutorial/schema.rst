@@ -29,17 +29,17 @@ Schema Overview
       createFieldOrder: (O) # List or a function that returns a list of the order that the create fields display
       indexFieldOrder: (O) # List or a function that returns a list of the order that the index fields display
       detailFieldOrder: (O) # List or a function that returns a list of the order that the detail fields display
-      queryName: (R) # Name of gql query that will return a single instance of the model
-      queryAllName: (R) # Name of gqlquery that will return all instances of the model
+      queryName: (R) str # Name of gql query that will return a single instance of the model
+      queryAllName: (R) str # Name of gqlquery that will return all instances of the model
       queryRequired: (R) [str] # List of fields that must be present on the query
-      modelName: (AG) # Name of model
+      modelName: (AG) str # Name of model
       displayName: (DEF) str or function # Singular display name of model or function that calculates displayName, used on detail page
       displayNamePlural: (DEF) str or function # Plural display name of Model or function that calculates displayNamePlural, used on index page
       tableLinkField: (C) str # name of the field/column in a table that have a hyperlink to the detail page, a value of null means no link to the model should be displayed on a table
       displayField: (O) str or function # name of field that holds the data used to represent the instance when it is being displayed or referenced, defaults to "name" if left undefined, can also be a function that determines the value for any instance of the model
       fieldOrder: (R) [str] # List of ALL fields on a model in the order that they should be displayed on its own Detail and Index pages, also serves as a fall back if a different model is displaying this model without having specified the order in which the fields should be displayed.
-      filterable: (O) bool or func # Whether the given table should be filterable (can be set on field lvl as well)
-      sortable: (O) bool or func # Whether the given table should be sortable (can be set on field lvl as well)
+      filterable: (O) bool or function # Whether the given table should be filterable (can be set on field lvl as well)
+      sortable: (O) bool or function # Whether the given table should be sortable (can be set on field lvl as well)
       paginate: (O) bool # If false, deactivates pagination for the model index table
       fields: {
         <fieldName>: {
@@ -63,22 +63,22 @@ Schema Overview
             type: (AG**) str # Database type of OneToOne, OneToMany, ManyToMany, or ManyToOne
             target: (AG) str # modelName of the target of the relationship
             backref: (AG) str # name of relationship on the targets side
-            tableFields: (R) [] # List of fields on the target model to display when displaying a table on the detail page
+            tableFields: (R) [str] # List of fields on the target model to display when displaying a table on the detail page
           }
           choices: (AG) Obj { # If this is a choice field, maps out values & their labels
               'choice_value' : 'choice_label'
           }
           choiceOrder: (AG) [str] # Order of 'choices' appearing in Enum field
           displayConditions: (O) {
-            detail: () => # A function that evaluates to true or false to determines if the field will display on a detail page
-            index: () => # A function that evaluates to true or false to determines if the field will display in an index table
-            create: () => # A function that evaluates to true or false to determine if the field will display on a create page
+            detail: # A function that evaluates to true or false to determines if the field will display on a detail page
+            index: # A function that evaluates to true or false to determines if the field will display in an index table
+            create: # A function that evaluates to true or false to determine if the field will display on a create page
           },
           hideable: (O) bool # If table component can be hidden, have 'hide' button
           disabled: (O) bool or function # Whether field should be disabled or not,
-          disabledDropDown: (O) func # filters out or disables drop down options,
-          sortable: (C) bool or func # Whether the given field should be sortable on tables (can be set on table lvl as well)
-          filterable: (C) bool or func # Whether the given field should be filterable on tables (can be set on table lvl as well)
+          disabledDropDown: (O) function # filters out or disables drop down options,
+          sortable: (C) bool or function # Whether the given field should be sortable on tables (can be set on table lvl as well)
+          filterable: (C) bool or function # Whether the given field should be filterable on tables (can be set on table lvl as well)
           editable: (C) bool or function # Whether the given field should be editable
           showDetail: (C) bool or function # Whether the given field should be displayed on the detail page
           showIndex: (C) bool or function # Whether the given field should be displayed on the index page
@@ -89,6 +89,7 @@ Schema Overview
           virtualField: (O) bool # If set true, will deactivate the field from being queried so that no back end resolver needs to be created.
         }
       },
+      # Redux Actions
       actions: (AGF) {
         create: {
         }
@@ -101,7 +102,7 @@ Schema Overview
         detail{
         },
       },
-      //model level components
+      # model level components
       components: (O) {
         detail: function # Detail override component (both title and page)
         detailTitle: function # Detail Title override component
