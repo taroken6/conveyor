@@ -283,6 +283,149 @@ export const TableButtonCell = ({
   )
 }
 
+const TDList = ({
+  schema,
+  modelName,
+  fieldOrder,
+  parentId,
+  parentModelName,
+  parentFieldName,
+  detailField,
+  tooltipData,
+  modalData,
+  editData,
+  tableEditable,
+  deletable,
+  selectOptions,
+  parentNode,
+  node,
+  fromIndex,
+  customProps
+}) => {
+  return fieldOrder.map((fieldName, headerIdx) => {
+     if (fromIndex === true) {
+       if (
+         schema.shouldDisplayIndex({
+           modelName,
+           fieldName,
+           customProps
+         }) === false
+       ) {
+         return null
+       }
+     }
+
+     return (
+       <td key={`${node.id}-${headerIdx}`}>
+         <TableRowWithEdit
+           key={`table-td-${node.id}-${headerIdx}`}
+           {...{
+             modelName,
+             fieldName,
+             node,
+             schema,
+             detailField,
+             editData,
+             tooltipData,
+             selectOptions,
+             parentNode,
+             customProps
+           }}
+         />
+       </td>
+     )
+   })
+}
+
+const TRList = ({
+  schema,
+  modelName,
+  data, // ordered list
+  fieldOrder,
+  onDelete,
+  onEditSubmit,
+  parentId,
+  parentModelName,
+  parentFieldName,
+  detailField,
+  tooltipData,
+  modalData,
+  editData,
+  tableEditable,
+  deletable,
+  selectOptions,
+  parentNode,
+  fromIndex,
+  customProps,
+  onEditCancel
+}) => {
+  return data.map((node, idx) => {
+    const editable = schema.isRowEditable({
+      modelName,
+      node,
+      parentNode,
+      fieldOrder,
+      customProps
+    })
+    return (
+    <tr key={`table-tr-${node.id}`}>
+      <TDList
+        {...{
+          schema,
+          modelName,
+          fieldOrder,
+          parentId,
+          parentModelName,
+          parentFieldName,
+          detailField,
+          tooltipData,
+          modalData,
+          editData,
+          tableEditable,
+          deletable,
+          selectOptions,
+          parentNode,
+          node,
+          fromIndex,
+          customProps
+        }}
+      />
+      {showButtonColumn({
+        deletable,
+        editable: tableEditable,
+        detailField
+      }) && (
+        <td key={`${node.id}-edit-delete`}>
+          {
+            <TableButtonCell
+              {...{
+                modelName,
+                parentModelName,
+                node,
+                schema,
+                detailField,
+                editData,
+                onEditSubmit,
+                onEditCancel,
+                deletable,
+                editable,
+                parentId,
+                modalData,
+                parentFieldName,
+                onDelete,
+                idx,
+                fromIndex,
+                customProps
+              }}
+            />
+          }
+        </td>
+      )}
+    </tr>
+    )
+    })
+}
+
 const TBody = ({
   schema,
   modelName,
@@ -308,83 +451,30 @@ const TBody = ({
   const onEditCancel = R.path(['edit', 'onTableEditCancel'], actions)
   return (
     <tbody>
-      {data.map((node, idx) => {
-        const editable = schema.isRowEditable({
+      <TRList
+        {...{
+          schema,
           modelName,
-          node,
-          parentNode,
+          data, // ordered list
           fieldOrder,
-          customProps
-        })
-        return (
-          <tr key={`table-tr-${node.id}`}>
-            {fieldOrder.map((fieldName, headerIdx) => {
-              if (fromIndex === true) {
-                if (
-                  schema.shouldDisplayIndex({
-                    modelName,
-                    fieldName,
-                    customProps
-                  }) === false
-                ) {
-                  return null
-                }
-              }
-
-              return (
-                <td key={`${node.id}-${headerIdx}`}>
-                  <TableRowWithEdit
-                    key={`table-td-${node.id}-${headerIdx}`}
-                    {...{
-                      modelName,
-                      fieldName,
-                      node,
-                      schema,
-                      detailField,
-                      editData,
-                      tooltipData,
-                      selectOptions,
-                      parentNode,
-                      customProps
-                    }}
-                  />
-                </td>
-              )
-            })}
-            {showButtonColumn({
-              deletable,
-              editable: tableEditable,
-              detailField
-            }) && (
-              <td key={`${node.id}-edit-delete`}>
-                {
-                  <TableButtonCell
-                    {...{
-                      modelName,
-                      parentModelName,
-                      node,
-                      schema,
-                      detailField,
-                      editData,
-                      onEditSubmit,
-                      onEditCancel,
-                      deletable,
-                      editable,
-                      parentId,
-                      modalData,
-                      parentFieldName,
-                      onDelete,
-                      idx,
-                      fromIndex,
-                      customProps
-                    }}
-                  />
-                }
-              </td>
-            )}
-          </tr>
-        )
-      })}
+          onDelete,
+          onEditSubmit,
+          parentId,
+          parentModelName,
+          parentFieldName,
+          detailField,
+          tooltipData,
+          modalData,
+          editData,
+          tableEditable,
+          deletable,
+          selectOptions,
+          parentNode,
+          fromIndex,
+          customProps,
+          onEditCancel
+        }}
+      />
     </tbody>
   )
 }

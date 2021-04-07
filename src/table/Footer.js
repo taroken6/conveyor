@@ -34,43 +34,70 @@ export const TFoot = ({
   return (
     <tfoot>
       <tr>
-        {fieldOrder.map((fieldName, idx) => {
-          if (fromIndex === true) {
-            if (
-              schema.shouldDisplayIndex({
-                modelName,
-                fieldName,
-                customProps
-              }) === false
-            ) {
-              return null
-            }
-          }
-
-          if (!checkFooterField(fieldName)) {
-            return <th key={`${idx}-${modelName}-${fieldName}`} />
-          }
-          const summaryPath = getSummaryPath(fieldName)
-          let total = R.path(summaryPath, summary)
-
-          if (schema.getType(modelName, fieldName) === 'currency')
-            total = new Intl.NumberFormat('en-US', {
-              style: 'currency', currency: 'USD'
-            }).format(total)
-
-          return (
-            <th key={`${idx}-${modelName}-${fieldName}`} style={{ minWidth: '130px' }}>
-              <div className="footer">
-                <div className="sum">
-                  {total}
-                </div>
-              </div>
-            </th>
-          )
-        })}
+        <ThFootList
+          {...{
+            schema,
+            modelName,
+            parentModelName,
+            parentFieldName,
+            fieldOrder,
+            summary,
+            fromIndex,
+            customProps,
+            getSummaryPath,
+            checkFooterField
+          }}
+        />
       </tr>
     </tfoot>
   )
 }
 
+const ThFootList = ({
+  schema,
+  modelName,
+  parentModelName,
+  parentFieldName,
+  fieldOrder,
+  summary,
+  fromIndex,
+  customProps,
+  getSummaryPath,
+  checkFooterField
+}) => {
+  return fieldOrder.map((fieldName, idx) => {
+    if (fromIndex === true) {
+     if (
+       schema.shouldDisplayIndex({
+         modelName,
+         fieldName,
+         customProps
+       }) === false
+     ) {
+       return null
+     }
+    }
+
+    if (!checkFooterField(fieldName)) {
+     return <th key={`${idx}-${modelName}-${fieldName}`} />
+    }
+    const summaryPath = getSummaryPath(fieldName)
+    let total = R.path(summaryPath, summary)
+
+    if (schema.getType(modelName, fieldName) === 'currency')
+     total = new Intl.NumberFormat('en-US', {
+       style: 'currency', currency: 'USD'
+     }).format(total)
+
+    return (
+     <th key={`${idx}-${modelName}-${fieldName}`} style={{ minWidth: '130px' }}>
+       <div className="footer">
+         <div className="sum">
+           {total}
+         </div>
+       </div>
+     </th>
+    )
+    })
+}
 

@@ -548,6 +548,97 @@ export const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, cus
   )
 }
 
+const DetailAttributeList = ({
+  schema,
+  modelName,
+  id,
+  node,
+  modalData,
+  tableFields,
+  descriptionList,
+  editData,
+  tooltipData,
+  selectOptions,
+  path,
+  tableView,
+  customProps,
+  summary
+}) => {
+  return descriptionList.map(fieldName => {
+   if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps }) === false) {
+       return null
+   }
+   const override = schema.getDetailFieldOverride(modelName, fieldName)
+   const DetailAttribute = useOverride(override, DefaultDetailAttribute)
+
+   // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
+   return (
+     <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
+       {...{
+         schema,
+         modelName,
+         fieldName,
+         node,
+         selectOptions,
+         editData,
+         tooltipData,
+         modalData,
+         path,
+         id,
+         tableView,
+         customProps
+       }}
+     />
+   )
+ })
+}
+
+const DetailTableList = ({
+  schema,
+  modelName,
+  id,
+  node,
+  modalData,
+  tableFields,
+  descriptionList,
+  editData,
+  tooltipData,
+  selectOptions,
+  path,
+  tableView,
+  customProps,
+  summary
+}) => {
+  return tableFields.map(fieldName => {
+     if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps}) === false) {
+         return null
+     }
+     const override = schema.getDetailFieldOverride(modelName, fieldName)
+     const DetailTable = useOverride(override, DefaultDetailTable)
+
+     // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
+     return (
+       <DetailTable key={`DetailTable-${id}-${modelName}-${fieldName}`}
+         {...{
+           schema,
+           modelName,
+           fieldName,
+           node,
+           selectOptions,
+           editData,
+           tooltipData,
+           modalData,
+           path,
+           id,
+           tableView,
+           customProps,
+           summary
+         }}
+       />
+     )
+    })
+}
+
 export const DetailFields = ({
   schema,
   modelName,
@@ -571,62 +662,43 @@ export const DetailFields = ({
   return (
     <React.Fragment>
       <dl className={'row conv-detail-attributes conv-detail-attributes-' + modelName}>
-        {descriptionList.map(fieldName => {
-          if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps }) === false) {
-              return null
-          }
-          const override = schema.getDetailFieldOverride(modelName, fieldName)
-          const DetailAttribute = useOverride(override, DefaultDetailAttribute)
-
-          // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
-          return (
-            <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
-              {...{
-                schema,
-                modelName,
-                fieldName,
-                node,
-                selectOptions,
-                editData,
-                tooltipData,
-                modalData,
-                path,
-                id,
-                tableView,
-                customProps
-              }}
-            />
-          )
-        })}
+        <DetailAttributeList
+          {...{
+            schema,
+            modelName,
+            id,
+            node,
+            modalData,
+            tableFields,
+            descriptionList,
+            editData,
+            tooltipData,
+            selectOptions,
+            path,
+            tableView,
+            customProps,
+            summary
+          }}
+        />
       </dl>
-      {tableFields.map(fieldName => {
-        if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps}) === false) {
-            return null
-        }
-        const override = schema.getDetailFieldOverride(modelName, fieldName)
-        const DetailTable = useOverride(override, DefaultDetailTable)
-
-        // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
-        return (
-          <DetailTable key={`DetailTable-${id}-${modelName}-${fieldName}`}
-            {...{
-              schema,
-              modelName,
-              fieldName,
-              node,
-              selectOptions,
-              editData,
-              tooltipData,
-              modalData,
-              path,
-              id,
-              tableView,
-              customProps,
-              summary
-            }}
-          />
-        )
-      })}
+      <DetailTableList
+        {...{
+          schema,
+          modelName,
+          id,
+          node,
+          modalData,
+          tableFields,
+          descriptionList,
+          editData,
+          tooltipData,
+          selectOptions,
+          path,
+          tableView,
+          customProps,
+          summary
+        }}
+      />
     </React.Fragment>
   )
 }
