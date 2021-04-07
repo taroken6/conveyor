@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
 import { Breadcrumbs } from './Breadcrumbs'
 import { isAutoFocusInput } from '../input/index'
-import { skipOverride } from '../Utils'
+import { skipOverride, useOverride } from '../Utils'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
@@ -172,8 +172,8 @@ export const DefaultCreate = ({
   const CreateTitleOverride = schema.getCreateTitleOverride(modelName)
   const CreatePageOverride = schema.getCreatePageOverride(modelName)
 
-  const CreateTitle = CreateTitleOverride || DefaultCreateTitle
-  const CreatePage = CreatePageOverride || DefaultCreatePage
+  const CreateTitle = useOverride(CreateTitleOverride, DefaultCreateTitle)
+  const CreatePage = useOverride(CreatePageOverride, DefaultCreatePage)
 
   if (skipOverride(CreateTitleOverride) && skipOverride(CreatePageOverride)) {
     return null
@@ -186,26 +186,22 @@ export const DefaultCreate = ({
         formStack={formStack}
         customProps={customProps}
       />
-      {skipOverride(CreateTitleOverride) ? null : (
-        <CreateTitle
-          {...{
-            schema,
-            modelName,
-            customProps
-          }}
-        />
-      )}
-      {skipOverride(CreatePageOverride) ? null : (
-        <CreatePage
-          {...{
-            schema,
-            modelName,
-            formStack,
-            selectOptions,
-            customProps
-          }}
-        />
-      )}
+      <CreateTitle
+        {...{
+          schema,
+          modelName,
+          customProps
+        }}
+      />
+      <CreatePage
+        {...{
+          schema,
+          modelName,
+          formStack,
+          selectOptions,
+          customProps
+        }}
+      />
     </div>
   )
 }
@@ -219,13 +215,13 @@ const Create = ({
 }) => {
   const CreateOverride = schema.getCreateOverride(modelName)
 
-  const CreateComponent = CreateOverride || DefaultCreate
+  const CreateComponent = useOverride(CreateOverride, DefaultCreate)
 
   if (R.prop('index', formStack) === -1) {
     return <Redirect to={R.propOr('/', 'originPath', formStack)} />
   }
 
-  return skipOverride(CreateOverride) ? null : (
+  return (
     <CreateComponent
       {...{ schema, modelName, formStack, selectOptions, customProps }}
     />
