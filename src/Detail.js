@@ -4,6 +4,7 @@ import { DeleteButton, Table } from './table/Table'
 import Field, { getRelSchemaEntry } from './table/Field'
 import {
   skipOverride,
+  useOverride,
 } from './Utils'
 import { RecursiveTab } from './Tabs'
 import CreateButton from './CreateButton'
@@ -76,8 +77,8 @@ export const DefaultDetailAttribute = ({
   const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
   const ValueOverride = schema.getDetailValueOverride(modelName, fieldName)
 
-  const DetailLabel = LabelOverride || DefaultDetailLabel
-  const DetailValue = ValueOverride || Field
+  const DetailLabel = useOverride(LabelOverride, DefaultDetailLabel)
+  const DetailValue = useOverride(ValueOverride, Field)
 
   const editable = schema.isFieldEditable({ modelName, fieldName, node, customProps })
   const fieldType = R.prop('type', schema.getField(modelName, fieldName))
@@ -103,9 +104,7 @@ export const DefaultDetailAttribute = ({
     return (
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
-          {
-            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
-          }
+          <DetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
         </dt>
         <dd className='col-sm-9'>
           <div className='detail-edit d-inline-block pull-left'>
@@ -154,22 +153,18 @@ export const DefaultDetailAttribute = ({
     return (
       <React.Fragment>
         <dt className='col-sm-3 text-sm-right'>
-          {
-            skipOverride(LabelOverride) ? null : <DetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
-          }
+          <DetailLabel {...{ schema, modelName, fieldName, node, customProps }} />
         </dt>
         <dd className='col-sm-9'>
-          {
-            skipOverride(ValueOverride) ? null : <DetailValue {...{
-              schema,
-              modelName,
-              fieldName,
-              node,
-              id,
-              tooltipData,
-              customProps
-            }} />
-          }
+          <DetailValue {...{
+            schema,
+            modelName,
+            fieldName,
+            node,
+            id,
+            tooltipData,
+            customProps
+          }} />
           {editable &&
             <InlineEditButton {...{
               onEditClick: (evt) => onEdit({
@@ -342,14 +337,14 @@ export const DefaultDetailTable = ({
   if (!data) { return <div className='container'>Loading...</div> }
 
   const ValueOverride = schema.getDetailValueOverride(modelName, fieldName)
-  const DetailValue = ValueOverride || Table
+  const DetailValue = useOverride(ValueOverride, Table)
 
   if (type.includes('OneToMany')) {
     const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
-    const DetailLabel = LabelOverride || DefaultDetailO2MTableTitle
+    const DetailLabel = useOverride(LabelOverride, DefaultDetailO2MTableTitle)
     return (
       <div key={`Fragment-${id}-${targetModelName}-${fieldName}`} className={'conv-detail-table conv-detail-table-' + targetModelName}>
-        { skipOverride(LabelOverride) ? null : <DetailLabel {...{
+        <DetailLabel {...{
           schema,
           modelName,
           fieldName,
@@ -363,8 +358,7 @@ export const DefaultDetailTable = ({
           collapseTableChange,
           customProps
         }} />
-        }
-        { skipOverride(ValueOverride) ? null : <DetailValue
+        <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -390,7 +384,7 @@ export const DefaultDetailTable = ({
             customProps,
             summary
           }}
-        /> }
+        />
       </div>
     )
   } else if (type === 'ManyToMany') {
@@ -451,7 +445,7 @@ export const DefaultDetailTable = ({
     }
 
     const LabelOverride = schema.getDetailLabelOverride(modelName, fieldName)
-    const DetailLabel = LabelOverride || DefaultDetailM2MTableTitle
+    const DetailLabel = useOverride(LabelOverride, DefaultDetailM2MTableTitle)
 
     if (skipOverride(LabelOverride) && skipOverride(ValueOverride)) {
       return null
@@ -459,7 +453,7 @@ export const DefaultDetailTable = ({
 
     return (
       <div key={`Fragment-${id}-${targetModelName}-${fieldName}`} className={'conv-detail-table conv-detail-table-' + targetModelName}>
-        { skipOverride(LabelOverride) ? null : <DetailLabel {...{
+        <DetailLabel {...{
           schema,
           modelName,
           id,
@@ -472,8 +466,8 @@ export const DefaultDetailTable = ({
           collapse,
           collapseTableChange,
           customProps
-        }} /> }
-        { skipOverride(ValueOverride) ? null : <DetailValue
+        }} />
+        <DetailValue
           key={`Table-${id}-${targetModelName}-${fieldName}`}
           {...{
             schema,
@@ -498,7 +492,7 @@ export const DefaultDetailTable = ({
             modalData,
             customProps,
           }}
-        /> }
+        />
       </div>
     )
   }
@@ -554,6 +548,97 @@ export const DefaultDetailPageTitle = ({ schema, modelName, node, modalData, cus
   )
 }
 
+const DetailAttributeList = ({
+  schema,
+  modelName,
+  id,
+  node,
+  modalData,
+  tableFields,
+  descriptionList,
+  editData,
+  tooltipData,
+  selectOptions,
+  path,
+  tableView,
+  customProps,
+  summary
+}) => {
+  return descriptionList.map(fieldName => {
+   if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps }) === false) {
+       return null
+   }
+   const override = schema.getDetailFieldOverride(modelName, fieldName)
+   const DetailAttribute = useOverride(override, DefaultDetailAttribute)
+
+   // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
+   return (
+     <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
+       {...{
+         schema,
+         modelName,
+         fieldName,
+         node,
+         selectOptions,
+         editData,
+         tooltipData,
+         modalData,
+         path,
+         id,
+         tableView,
+         customProps
+       }}
+     />
+   )
+ })
+}
+
+const DetailTableList = ({
+  schema,
+  modelName,
+  id,
+  node,
+  modalData,
+  tableFields,
+  descriptionList,
+  editData,
+  tooltipData,
+  selectOptions,
+  path,
+  tableView,
+  customProps,
+  summary
+}) => {
+  return tableFields.map(fieldName => {
+     if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps}) === false) {
+         return null
+     }
+     const override = schema.getDetailFieldOverride(modelName, fieldName)
+     const DetailTable = useOverride(override, DefaultDetailTable)
+
+     // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
+     return (
+       <DetailTable key={`DetailTable-${id}-${modelName}-${fieldName}`}
+         {...{
+           schema,
+           modelName,
+           fieldName,
+           node,
+           selectOptions,
+           editData,
+           tooltipData,
+           modalData,
+           path,
+           id,
+           tableView,
+           customProps,
+           summary
+         }}
+       />
+     )
+    })
+}
+
 export const DetailFields = ({
   schema,
   modelName,
@@ -577,68 +662,43 @@ export const DetailFields = ({
   return (
     <React.Fragment>
       <dl className={'row conv-detail-attributes conv-detail-attributes-' + modelName}>
-        {descriptionList.map(fieldName => {
-          if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps }) === false) {
-              return null
-          }
-          const override = schema.getDetailFieldOverride(modelName, fieldName)
-
-          if (skipOverride(override)) {
-            return null
-          }
-          const DetailAttribute = override || DefaultDetailAttribute
-          // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
-          return (
-            <DetailAttribute key={`DetailAttribute-${id}-${modelName}-${fieldName}`}
-              {...{
-                schema,
-                modelName,
-                fieldName,
-                node,
-                selectOptions,
-                editData,
-                tooltipData,
-                modalData,
-                path,
-                id,
-                tableView,
-                customProps
-              }}
-            />
-          )
-        })}
+        <DetailAttributeList
+          {...{
+            schema,
+            modelName,
+            id,
+            node,
+            modalData,
+            tableFields,
+            descriptionList,
+            editData,
+            tooltipData,
+            selectOptions,
+            path,
+            tableView,
+            customProps,
+            summary
+          }}
+        />
       </dl>
-      {tableFields.map(fieldName => {
-        if (schema.shouldDisplayDetail({ modelName, fieldName, node, customProps}) === false) {
-            return null
-        }
-        const override = schema.getDetailFieldOverride(modelName, fieldName)
-
-        if (skipOverride(override)) {
-          return null
-        }
-        const DetailTable = override || DefaultDetailTable
-        // same props go into DetailTable & DetailAttribute (even if not used) override gets all same props
-        return (
-          <DetailTable key={`DetailTable-${id}-${modelName}-${fieldName}`}
-            {...{
-              schema,
-              modelName,
-              fieldName,
-              node,
-              selectOptions,
-              editData,
-              tooltipData,
-              modalData,
-              path,
-              id,
-              tableView,
-              customProps,
-              summary
-            }}
-          />
-        )
-      })}
+      <DetailTableList
+        {...{
+          schema,
+          modelName,
+          id,
+          node,
+          modalData,
+          tableFields,
+          descriptionList,
+          editData,
+          tooltipData,
+          selectOptions,
+          path,
+          tableView,
+          customProps,
+          summary
+        }}
+      />
     </React.Fragment>
   )
 }
@@ -675,8 +735,8 @@ export const DefaultDetail = ({
 
   const DefaultDetailPage = tabs && tabs.length > 0 ? RecursiveTab : DetailFields
 
-  const DetailTitle = DetailTitleOverride || DefaultDetailPageTitle
-  const DetailPage = DetailPageOverride || DefaultDetailPage
+  const DetailTitle = useOverride(DetailTitleOverride, DefaultDetailPageTitle)
+  const DetailPage = useOverride(DetailPageOverride, DefaultDetailPage)
 
   if (R.isEmpty(node)) {
     return <div className='container conv-detail-wrapper conv-detail-wrapper-loading'>Loading...</div>
@@ -692,7 +752,6 @@ export const DefaultDetail = ({
 
   return (
     <Wrapper modelName={modelName}>
-      {skipOverride(DetailTitleOverride) ? null : (
         <DetailTitle key={`DetailTitle-${id}-${schema}-${modelName}`}
           {...{
             schema,
@@ -708,8 +767,6 @@ export const DefaultDetail = ({
             customProps
           }}
         />
-      )}
-      {skipOverride(DetailPageOverride) ? null : (
         <DetailPage key={`DetailPage-${id}-${schema}-${modelName}`}
           {...{
             schema,
@@ -729,7 +786,6 @@ export const DefaultDetail = ({
             summary
           }}
         />
-      )}
     </Wrapper>
   )
 }
@@ -751,9 +807,9 @@ const Detail = ({
 }) => {
   const DetailOverride = schema.getDetailOverride(modelName)
 
-  const DetailComponent = DetailOverride || DefaultDetail
+  const DetailComponent = useOverride(DetailOverride, DefaultDetail)
 
-  return skipOverride(DetailOverride) ? null : (
+  return (
     <DetailComponent key={`DetailComponent-${id}-${schema}-${modelName}`}
       {...{
         schema,

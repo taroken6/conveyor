@@ -3,6 +3,7 @@
 ## Unreleased
 
 Add classNames to common components Issue #13
+Refactor, added NullComponent branched lists to own branches
 
 ## Version 0.6.0
 

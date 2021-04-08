@@ -4,7 +4,7 @@ import React from 'react'
 import * as R from 'ramda'
 import FlexibleInput from '../input/index'
 import { inputTypes } from '../consts'
-import { skipOverride } from '../Utils'
+import { useOverride } from '../Utils'
 import { arrayBufferToStoreValue } from '../utils/fileConverters'
 import CreateButton from '../CreateButton'
 import { getRelSchemaEntry } from '../table/Field'
@@ -61,38 +61,13 @@ const Input = ({
   customProps
 }) => {
   const InputOverride = schema.getInputOverride(modelName, fieldName)
+  const ChosenInput = useOverride(InputOverride, InputCore)
   const actions = schema.getActions(modelName)
   const onMenuOpen = R.path(['input', 'onMenuOpen'], actions)
   const onCreatableMenuOpen = R.path(['input', 'onCreatableMenuOpen'], actions)
 
-  if (skipOverride(InputOverride)) {
-    return null
-  }
-
-  if (InputOverride) {
-    return <InputOverride
-      {...{
-        schema,
-        modelName,
-        fieldName,
-        node,
-        value,
-        error,
-        inline,
-        onChange,
-        selectOptions,
-        disabled,
-        customLabel,
-        onMenuOpen,
-        onCreatableMenuOpen,
-        autoFocus,
-        onKeyDown,
-        customProps
-      }} />
-  }
-
   return (
-    <InputCore {...{
+    <ChosenInput {...{
       schema,
       modelName,
       fieldName,

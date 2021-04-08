@@ -5,7 +5,8 @@ import CreateButton from './CreateButton'
 import { FilterModal, FilterModalButton } from './table/Filter'
 import { Redirect } from 'react-router-dom'
 import {
-  skipOverride
+  skipOverride,
+  useOverride,
 } from './Utils'
 
 export const DefaultIndexTitle = ({
@@ -74,8 +75,8 @@ export const DefaultIndex = ({
   const IndexTitleOverride = schema.getIndexTitleOverride(modelName)
   const IndexPageOverride = schema.getIndexPageOverride(modelName)
 
-  const IndexTitle = IndexTitleOverride || DefaultIndexTitle
-  const IndexPage = IndexPageOverride || Table
+  const IndexTitle = useOverride(IndexTitleOverride, DefaultIndexTitle)
+  const IndexPage = useOverride(IndexPageOverride, Table)
 
   const fieldOrder = schema.getIndexFields({
     modelName,
@@ -92,42 +93,38 @@ export const DefaultIndex = ({
 
   return (
     <div className={'container conv-index conv-index-' + modelName}>
-      {skipOverride(IndexTitleOverride) ? null : (
-        <IndexTitle
-          {...{
-            schema,
-            modelName,
-            data,
-            modalData,
-            editData,
-            selectOptions,
-            path,
-            tooltipData,
-            tableView,
-            customProps
-          }}
-        />
-      )}
-      {skipOverride(IndexPageOverride) ? null : (
-        <IndexPage
-          {...{
-            schema,
-            modelName,
-            data,
-            modalData,
-            editData,
-            selectOptions,
-            tooltipData,
-            tableView,
-            customProps,
-            fieldOrder,
-            fromIndex: true,
-            onDelete,
-            onEditSubmit,
-            summary
-          }}
-        />
-      )}
+      <IndexTitle
+        {...{
+          schema,
+          modelName,
+          data,
+          modalData,
+          editData,
+          selectOptions,
+          path,
+          tooltipData,
+          tableView,
+          customProps
+        }}
+      />
+      <IndexPage
+        {...{
+          schema,
+          modelName,
+          data,
+          modalData,
+          editData,
+          selectOptions,
+          tooltipData,
+          tableView,
+          customProps,
+          fieldOrder,
+          fromIndex: true,
+          onDelete,
+          onEditSubmit,
+          summary
+        }}
+      />
     </div>
   )
 }
@@ -169,9 +166,9 @@ const Index = ({
   }
 
   const IndexOverride = schema.getIndexOverride(modelName)
-  const IndexComponent = IndexOverride || DefaultIndex
+  const IndexComponent = useOverride(IndexOverride, DefaultIndex)
 
-  return skipOverride(IndexOverride) ? null : (
+  return (
     <IndexComponent
       {...{
         schema,

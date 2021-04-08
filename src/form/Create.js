@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import Input, { relationshipLabelFactory } from './Input'
 import { Breadcrumbs } from './Breadcrumbs'
 import { isAutoFocusInput } from '../input/index'
-import { skipOverride } from '../Utils'
+import { skipOverride, useOverride } from '../Utils'
 
 const getFieldErrorCreate = ({ formStack, stackIndex, fieldName }) => (
   R.path(['stack', stackIndex, 'errors', fieldName], formStack)
@@ -41,6 +41,76 @@ export const DefaultCreateTitle = ({ schema, modelName, customProps }) => {
   )
 }
 
+const FieldInputList = ({
+  schema,
+  modelName,
+  formStack,
+  stackIndex,
+  form,
+  selectOptions,
+  customProps,
+  onKeyDown,
+  onChange,
+  fieldOrder
+}) => {
+  let autoFocusAdded = false
+
+  return fieldOrder.map(fieldName => {
+    if (schema.shouldDisplayCreate({ modelName, fieldName, customProps }) === false) {
+        return null
+    }
+
+    const disabled = schema.isFieldDisabled({
+      modelName,
+      fieldName,
+      formStack,
+      customProps
+    })
+    const value = disabled
+      ? getDisabledValue({ schema, modelName, fieldName, form })
+      : R.path(['fields', fieldName], form)
+    const error = getFieldErrorCreate({
+      formStack,
+      stackIndex,
+      fieldName
+    })
+    let autoFocus = false
+    if (
+      !autoFocusAdded &&
+      isAutoFocusInput(schema.getType(modelName, fieldName))
+    ) {
+      autoFocus = true
+      autoFocusAdded = true
+    }
+    return (
+      <div className='mb-3' key={`defaultCreatePage-${fieldName}`}>
+        <Input
+          {...{
+            schema,
+            modelName,
+            fieldName,
+            value,
+            error,
+            selectOptions,
+            onChange,
+            disabled,
+            formStack,
+            customLabel: makeCreateLabel({
+              schema,
+              modelName,
+              fieldName,
+              customProps
+            }),
+            autoFocus,
+            onKeyDown,
+            customProps
+          }}
+        />
+      </div>
+    )
+  })
+}
+
 export const DefaultCreatePage = ({
   schema,
   modelName,
@@ -68,72 +138,32 @@ export const DefaultCreatePage = ({
   const onCancel = R.path(['create', 'onCancel'], actions)
   const onSave = R.path(['create', 'onSave'], actions)
   const disableButtons = stackIndex !== stack.length - 1
-  let autoFocusAdded = false
 
   const onKeyDown = evt => {
     if (evt.key === 'Enter') {
       return onSave({ modelName })
     }
   }
+
   return (
     <div className={'conv-create-page conv-create-page-' + modelName}>
       <div>* Indicates a Required Field</div>
       <br />
       <div>
-        {fieldOrder.map(fieldName => {
-          if (schema.shouldDisplayCreate({ modelName, fieldName, customProps }) === false) {
-              return null
-          }
-
-          const disabled = schema.isFieldDisabled({
+        <FieldInputList
+          {...{
+            schema,
             modelName,
-            fieldName,
-            formStack,
-            customProps
-          })
-          const value = disabled
-            ? getDisabledValue({ schema, modelName, fieldName, form })
-            : R.path(['fields', fieldName], form)
-          const error = getFieldErrorCreate({
             formStack,
             stackIndex,
-            fieldName
-          })
-          let autoFocus = false
-          if (
-            !autoFocusAdded &&
-            isAutoFocusInput(schema.getType(modelName, fieldName))
-          ) {
-            autoFocus = true
-            autoFocusAdded = true
-          }
-          return (
-            <div className='mb-3' key={`defaultCreatePage-${fieldName}`}>
-              <Input
-                {...{
-                  schema,
-                  modelName,
-                  fieldName,
-                  value,
-                  error,
-                  selectOptions,
-                  onChange,
-                  disabled,
-                  formStack,
-                  customLabel: makeCreateLabel({
-                    schema,
-                    modelName,
-                    fieldName,
-                    customProps
-                  }),
-                  autoFocus,
-                  onKeyDown,
-                  customProps
-                }}
-              />
-            </div>
-          )
-        })}
+            form,
+            selectOptions,
+            customProps,
+            onKeyDown,
+            onChange,
+            fieldOrder
+          }}
+        />
       </div>
       {disableButtons && (
         <p className='text-danger'>
@@ -172,8 +202,8 @@ export const DefaultCreate = ({
   const CreateTitleOverride = schema.getCreateTitleOverride(modelName)
   const CreatePageOverride = schema.getCreatePageOverride(modelName)
 
-  const CreateTitle = CreateTitleOverride || DefaultCreateTitle
-  const CreatePage = CreatePageOverride || DefaultCreatePage
+  const CreateTitle = useOverride(CreateTitleOverride, DefaultCreateTitle)
+  const CreatePage = useOverride(CreatePageOverride, DefaultCreatePage)
 
   if (skipOverride(CreateTitleOverride) && skipOverride(CreatePageOverride)) {
     return null
@@ -186,26 +216,22 @@ export const DefaultCreate = ({
         formStack={formStack}
         customProps={customProps}
       />
-      {skipOverride(CreateTitleOverride) ? null : (
-        <CreateTitle
-          {...{
-            schema,
-            modelName,
-            customProps
-          }}
-        />
-      )}
-      {skipOverride(CreatePageOverride) ? null : (
-        <CreatePage
-          {...{
-            schema,
-            modelName,
-            formStack,
-            selectOptions,
-            customProps
-          }}
-        />
-      )}
+      <CreateTitle
+        {...{
+          schema,
+          modelName,
+          customProps
+        }}
+      />
+      <CreatePage
+        {...{
+          schema,
+          modelName,
+          formStack,
+          selectOptions,
+          customProps
+        }}
+      />
     </div>
   )
 }
@@ -219,13 +245,13 @@ const Create = ({
 }) => {
   const CreateOverride = schema.getCreateOverride(modelName)
 
-  const CreateComponent = CreateOverride || DefaultCreate
+  const CreateComponent = useOverride(CreateOverride, DefaultCreate)
 
   if (R.prop('index', formStack) === -1) {
     return <Redirect to={R.propOr('/', 'originPath', formStack)} />
   }
 
-  return skipOverride(CreateOverride) ? null : (
+  return (
     <CreateComponent
       {...{ schema, modelName, formStack, selectOptions, customProps }}
     />
