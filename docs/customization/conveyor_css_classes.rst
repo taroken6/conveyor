@@ -29,6 +29,7 @@ DisabledInput				‘conv-disabled-input’
 
 *InputComponents*
 displaying at the FormGroup level
+CustomErrorComponent    ''
 (any input type)			‘conv-input-component’
 InputDate				‘ conv-input-type-date’
 InputDateTime			‘ conv-input-type-datetime’
@@ -50,6 +51,9 @@ formatFilter				‘conv-format-filter’
 FilterModal				‘conv-filter-modal’ ‘conv-filter-modal-{modelName}
 FilterModalButton			‘conv-filter-modal-button’ ‘conv-filter-modal-button-{modelName}’
 ActiveFilters				‘conv-active-filters’ ‘conv-active-filters-{modelName}’
+
+*Header/Footer*
+'conv-formatted-th'
 
 *Alerts*
 Alerts					‘conv-alerts’
@@ -87,7 +91,9 @@ GotoTooltip				‘conv-goto-tooltip’
 PrintButton				‘conv-print-button’
 
 *Search*
-Search					‘conv-search’ ‘conv-search-dropdown’ (for dropdown)
+Search					‘conv-search’ ‘conv-search-dropdown’ (for dropdown) 'conv-dropdown-item' 'conv-search-dropdown-model-label'
+Highlight               'conv-highlight'
+
 
 *Tabs*
 TabFields				‘conv-tab-fields’
@@ -99,3 +105,4 @@ RelTooltip				‘conv-rel-tooltip’
 
 *TreeTable*
 ToggleContainer			‘conv-toggle-container-tooltip’(for the tooltip) ‘conv-toggle-container-component’ (for tooltip contents)
+renderRow               'conv-tree-table-header' 'conv-tree-table-header-label'

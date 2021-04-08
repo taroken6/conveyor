@@ -6,7 +6,7 @@ import { inputTypes } from './consts'
 /* returns empty span tag if we're at the end of the string */
 const Highlight = ({ searchText, rowLen, idx }) => {
   if (rowLen !== idx + 1) {
-    return <span style={{ backgroundColor: 'yellow' }}>{searchText}</span>
+    return <span className='conv-highlight'>{searchText}</span>
   }
   return <span />
 }
@@ -84,29 +84,20 @@ export const Search = ({
         <div
           className={`dropdown-menu dropdown-menu-right conv-search-dropdown ${entries.length > 0 &&
             'show'}`}
-          style={{
-            maxHeight: '60vh',
-            overflowY: 'auto',
-            whiteSpace: 'normal',
-            position: 'absolute'
-          }}
         >
           {
           entries.map((entry, index) => (
             <Link
               key={entry.name}
               onClick={() => onLinkClick()}
-              className="dropdown-item"
+              className="dropdown-item conv-dropdown-item"
               to={entry.detailURL}
-              style={{
-                whiteSpace: 'normal'
-              }}
             >
               <HighlightString
                 searchText={queryText}
                 textToHighlight={entry.name}
               />
-              <div style={{ fontSize: '11px', paddingLeft: '1em' }}>
+              <div className='conv-search-dropdown-model-label'>
                 {entry.modelLabel}
               </div>
             </Link>

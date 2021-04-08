@@ -188,3 +188,87 @@ body {
   pointer-events: none;
   position: absolute;
 }
+
+.conv-breadcrumbs {
+  width: 100%;
+}
+
+.disabled-input-padding {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.disabled-input-value {
+  padding: 7px 7px 7px 12px;
+  background-color: #E0E0E0;
+  min-height: 40px;
+}
+
+.conv-error-component {
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.date-picker-container {
+  display: inherit;
+}
+
+.conv-formatted-th {
+  min-width: 130px;
+}
+
+.no-data-display {
+  padding-bottom: 10px;
+}
+
+.conv-create-button {
+  margin-left: 10px;
+}
+
+.title-label-container {
+  margin-bottom: 10px;
+}
+
+.clickable-element {
+   cursor: pointer;
+}
+
+.conv-popover-content {
+  text-align: justify;
+  text-justify: inter-word;
+  overflow-y: scroll;
+  max-height: 250px;
+  padding-right: 8px;
+}
+
+.conv-print-button {
+  margin-top: 5px;
+}
+
+.conv-highlight {
+  background-color: yellow;
+}
+
+.conv-search-dropdown {
+  max-height: 60vh;
+  overflow-y: auto;
+  white-space: normal;
+  position: absolute;
+}
+
+.conv-dropdown-item {
+  white-space: normal;
+}
+
+.conv-search-dropdown-model-label {
+  font-size: 11px;
+  padding-left: 1em;
+}
+
+.conv-tree-table-header {
+  display: flex;
+}
+
+.conv-tree-table-header-label {
+  flex-grow: 1;
+}

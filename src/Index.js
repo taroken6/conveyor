@@ -28,7 +28,7 @@ export const DefaultIndexTitle = ({
   const filtersAreActive = R.path([modelName, 'filter', 'filtersAreActive'], tableView)
 
   return (
-    <div className={'conv-default-index-title conv-default-index-title-' + modelName} style={{ marginBottom: '10px' }}>
+    <div className={'title-label-container conv-default-index-title conv-default-index-title-' + modelName}>
       <h3 className='d-inline'>
         {schema.getModelLabelPlural({ modelName, data, customProps })}
       </h3>

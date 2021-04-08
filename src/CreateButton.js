@@ -6,7 +6,6 @@ const CreateButton = ({ onClick }) => (
     to='/Create'
     onClick={onClick}
     className='btn btn-sm btn-outline-success conv-create-button'
-    style={{ marginLeft: '10px' }}
     role='button'
     replace
   >Create</Link>
