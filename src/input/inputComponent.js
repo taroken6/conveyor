@@ -44,7 +44,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, className, requi
  */
 
 const CustomErrorComponent = ({ error, id }) =>
-  <div style={{ 'fontSize': '80%', 'color': '#dc3545' }}>{errorBuilder({ error, id })}</div>
+  <div className='conv-error-component'>{errorBuilder({ error, id })}</div>
 
 /**
  * Singular component for Date Type.
@@ -84,7 +84,7 @@ export const InputDate = ({ onChange, id, labelStr, error, value, dateFormat, is
     <FormGroup labelStr={labelStr} htmlFor={id} error={error} required={required} className='conv-input-component conv-input-type-date'
       customError={R.defaultTo(CustomErrorComponent, customError)}
       customLabel={customLabel}>
-      <div style={{ display: 'inherit' }}>
+      <div className='date-picker-container'>
         <DatePicker
           placeholderText='Click to select a date'
           fixedHeight={true}
@@ -149,7 +149,7 @@ export const InputDateTime = ({ onChange, id, labelStr, error, value, dateFormat
           customError={R.defaultTo(CustomErrorComponent, customError)}
           customLabel={customLabel}
       >
-          <div style={{ display: 'inherit' }}>
+          <div className='date-picker-container'>
               <DatePicker
                   placeholderText="Click to select a date"
                   fixedHeight={true}

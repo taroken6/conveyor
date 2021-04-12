@@ -202,7 +202,7 @@ export const DetailCreateButton = ({ schema, targetModelName, path, targetInvers
 
 export const DefaultDetailTableTitleWrapper = ({ children }) => {
   return (
-    <div style={{ marginBottom: '10px' }}>
+    <div className='title-label-container'>
       <h4 className='d-inline'>
         {children}
       </h4>
@@ -251,7 +251,7 @@ export const DefaultDetailM2MTableTitle = ({
   const editable = schema.isFieldEditable({ modelName, fieldName, node, customProps })
 
   return (
-    <div style={{ marginBottom: '10px' }}>
+    <div className='title-label-container'>
       <h4 className='d-inline'>
         {collapsable && <CollapseTableButton {...{
           modelName,
@@ -291,7 +291,7 @@ export const DefaultDetailM2MFieldLabel = ({
   const creatable = schema.isCreatable({ modelName: targetModelName, parentNode: node, customProps })
   const required = R.prop('required', schema.getField(modelName, fieldName))
   const Label = () => (
-    <div style={{ marginBottom: '10px' }}>
+    <div className='title-label-container'>
       <h4 className='d-inline'>{schema.getFieldLabel({ modelName, fieldName, node, customProps })}</h4>
       { required && ' *'}
       { creatable && <DetailCreateButton {...{

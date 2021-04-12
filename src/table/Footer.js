@@ -90,7 +90,7 @@ const ThFootList = ({
      }).format(total)
 
     return (
-     <th key={`${idx}-${modelName}-${fieldName}`} style={{ minWidth: '130px' }}>
+     <th key={`${idx}-${modelName}-${fieldName}`} className='conv-formatted-th'>
        <div className="footer">
          <div className="sum">
            {total}

@@ -140,8 +140,7 @@ const ActiveFilters = ({
       {R.isEmpty(filterOrder) || R.isNil(filterOrder) ? (
         <li
           key="no-active-filters"
-          className="list-group-item text-muted"
-          style={{ cursor: 'pointer' }}
+          className="list-group-item text-muted clickable-element"
           onClick={() => addFilter({ modelName })}
         >
           Add a rule to get started...

@@ -4,6 +4,7 @@
 
 Add classNames to common components Issue #13
 Refactor, added NullComponent branched lists to own branches
+Move styling from inside react components to the css
 
 ## Version 0.6.0
 

@@ -2,13 +2,7 @@ import { Tooltip } from 'react-tippy'
 import React from 'react'
 
 export const PopoverContent = ({ children }) => (
-  <div className='conv-popover-content' style={{
-    'textAlign': 'justify',
-    'textJustify': 'interWord',
-    'overflowY': 'scroll',
-    'maxHeight': '250px',
-    'paddingRight': '8px'
-  }}>
+  <div className='conv-popover-content'>
     {children}
   </div>
 )

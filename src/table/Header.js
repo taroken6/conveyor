@@ -79,7 +79,7 @@ const THList = ({
     return (
      <th
        key={`${idx}-${modelName}-${fieldName}`}
-       style={{ minWidth: '130px' }}
+       className='conv-formatted-th'
        onClick={() => showSort ? onSort({
          modelName,
          fieldName,
