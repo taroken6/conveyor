@@ -34,7 +34,7 @@ export const FormGroup = ({ labelStr, htmlFor, error, children, className, requi
     labelStrContent = <label htmlFor={htmlFor}>{`${labelStr} ${required ? ' *' : ''}`}</label>
     labelComp = labelStrContent
   }
-  if (LabelInfoComponent) {
+  if (LabelInfoComponent) { 
     if (customLabel)
       popoverContent['labelValue'] = customLabelContent
     else if (labelStr) 
